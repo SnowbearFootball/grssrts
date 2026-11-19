@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coaching Clips</title>
+<style>
+  :root {
+    --bg: #0a0a0a; --panel: #1a1a1a; --edge: #2a2a2a; --red: #ef4444; --red-soft: #f87171;
+    --red-dark: #2a0b0b; --text: #f5f5f5; --muted: #a3a3a3;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { color: var(--red); margin: 4px 0 2px; font-size: clamp(26px, 5vw, 40px); letter-spacing: .5px; }
+  .sub { color: var(--muted); margin: 0 0 18px; }
+  .sessions, .clips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .chip { background: var(--panel); color: var(--text); border: 1px solid var(--edge); border-radius: 999px;
+    padding: 8px 14px; font: inherit; font-size: 15px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; }
+  .stage { background: #000; border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; }
+  canvas { display: block; width: 100%; height: auto; cursor: pointer; }
+  .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px;
+    background: var(--panel); border-top: 1px solid var(--edge); }
+  .controls button, .controls select { background: #262626; color: var(--text); border: 1px solid #333;
+    border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 15px; cursor: pointer; min-width: 44px; }
+  .controls button.primary { background: var(--red); border-color: var(--red); font-weight: 700; min-width: 84px; }
+  .controls input[type=range] { flex: 1 1 160px; accent-color: var(--red); min-width: 120px; }
+  .time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; min-width: 88px; text-align: right; }
+  .dl { display: inline-flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 26px; }
+  .dl a { color: #fff; background: #262626; border: 1px solid #333; border-radius: 8px; padding: 9px 14px;
+    text-decoration: none; font-size: 15px; }
+  .dl a:hover { border-color: var(--red); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--edge); border-left: 4px solid var(--red);
+    border-radius: 12px; padding: 18px; }
+  .card h2 { margin: 0 0 6px; color: var(--red); font-size: 22px; text-transform: uppercase; }
+  .card .lead { margin: 0 0 14px; }
+  .em { color: var(--red-soft); font-weight: 700; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } }
+  .col { border: 1px solid #333; border-radius: 10px; padding: 12px; }
+  .col h3 { margin: 0 0 6px; font-size: 15px; color: var(--red-soft); text-transform: uppercase; }
+  .col ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.55; }
+  .col .trig { border-top: 1px solid #333; margin-top: 10px; padding-top: 8px; }
+  .col .trig h4 { margin: 0 0 4px; font-size: 13px; color: var(--red-soft); letter-spacing: .5px; }
+  .col .trig ul { color: #cfcfcf; }
+  .phrase { margin-top: 14px; background: var(--red-dark); border: 1px solid #7f1d1d; border-radius: 10px;
+    padding: 12px; text-align: center; }
+  .phrase b { display: block; color: var(--red-soft); font-size: 22px; }
+  .phrase span { color: #d4d4d4; font-size: 14px; }
+  footer { color: #666; font-size: 13px; margin-top: 30px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="title">Coaching Clips</h1>
+  <p class="sub" id="subtitle">Watch the drill, then try it at training.</p>
+
+  <div class="sessions" id="sessions" role="group" aria-label="Sessions"></div>
+  <div class="clips" id="clips" role="group" aria-label="Clips"></div>
+
+  <div class="stage">
+    <canvas id="canvas" aria-label="Animated drill"></canvas>
+    <div class="controls">
+      <button id="restart" title="Restart" aria-label="Restart">⟲</button>
+      <button id="prev" title="Previous step" aria-label="Previous step">⏮</button>
+      <button id="play" class="primary">▶ Play</button>
+      <button id="next" title="Next step" aria-label="Next step">⏭</button>
+      <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position">
+      <select id="speed" aria-label="Speed">
+        <option value="0.5">0.5×</option>
+        <option value="0.75">0.75×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.5">1.5×</option>
+      </select>
+      <span class="time" id="time">0:00 / 0:00</span>
+    </div>
+  </div>
+
+  <div class="dl" id="downloads"></div>
+  <div class="cards" id="cards"></div>
+  <footer>Tap the pitch to play or pause. Each step shows the arrows first, then the movement.</footer>
+</div>
+
+<script src="js/drill-engine.js"></script>
+<!-- Sessions: add one script tag per session file -->
+<script src="drills/splash-and-ripple.js"></script>
+<script>
+(function () {
+  const SESSIONS = window.SESSIONS || [];
+  const params = new URLSearchParams(location.search);
+  const $ = id => document.getElementById(id);
+  const canvas = $('canvas');
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+
+  let session = SESSIONS.find(s => s.id === params.get('session')) || SESSIONS[0];
+  let clip = (session.clips.find(c => c.id === params.get('clip'))) || session.clips[0];
+  const player = new DrillEngine.DrillPlayer(canvas, session, clip, { scale: dpr });
+
+  let playing = false, last = 0;
+  const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
+
+  function setPlaying(p) {
+    playing = p;
+    $('play').textContent = p ? '❚❚ Pause' : '▶ Play';
+    if (p) { if (player.t >= player.duration) player.t = 0; last = performance.now(); requestAnimationFrame(tick); }
+  }
+  function tick(now) {
+    if (!playing) return;
+    const dt = (now - last) / 1000; last = now;
+    let t = player.t + dt * parseFloat($('speed').value);
+    if (t >= player.duration) { t = player.duration; setPlaying(false); }
+    player.renderAt(t); sync();
+    if (playing) requestAnimationFrame(tick);
+  }
+  function sync() {
+    $('scrub').value = Math.round((player.t / player.duration) * 1000);
+    $('time').textContent = `${fmt(player.t)} / ${fmt(player.duration)}`;
+  }
+  function seek(t) { player.renderAt(Math.max(0, Math.min(player.duration, t))); sync(); }
+
+  $('play').onclick = () => setPlaying(!playing);
+  canvas.onclick = () => setPlaying(!playing);
+  $('restart').onclick = () => { seek(0); setPlaying(true); };
+  $('scrub').oninput = e => seek((e.target.value / 1000) * player.duration);
+  $('next').onclick = () => {
+    const nxt = player.stepStarts.find(s => s > player.t + 0.05);
+    seek(nxt != null ? nxt : player.duration);
+  };
+  $('prev').onclick = () => {
+    const starts = [0].concat(player.stepStarts);
+    const prev = starts.filter(s => s < player.t - 0.8).pop();
+    seek(prev != null ? prev : 0);
+  };
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (e.code === 'Space') { e.preventDefault(); setPlaying(!playing); }
+    if (e.code === 'ArrowRight') $('next').click();
+    if (e.code === 'ArrowLeft') $('prev').click();
+  });
+
+  function chips(el, items, activeId, onPick) {
+    el.innerHTML = '';
+    items.forEach(it => {
+      const b = document.createElement('button');
+      b.className = 'chip';
+      b.textContent = it.label;
+      b.setAttribute('aria-pressed', it.id === activeId);
+      b.onclick = () => onPick(it.id);
+      el.appendChild(b);
+    });
+    el.style.display = items.length > 1 ? '' : 'none';
+  }
+
+  function renderUI() {
+    $('title').textContent = session.title;
+    $('subtitle').textContent = session.subtitle || '';
+    document.title = `${session.title} · Coaching Clips`;
+    chips($('sessions'), SESSIONS.map(s => ({ id: s.id, label: s.title })), session.id, id => {
+      session = SESSIONS.find(s => s.id === id); clip = session.clips[0];
+      player.session = session; load();
+    });
+    chips($('clips'), session.clips.map(c => ({ id: c.id, label: `${c.kicker ? c.kicker + ': ' : ''}${c.title}` })), clip.id, id => {
+      clip = session.clips.find(c => c.id === id); load();
+    });
+    $('downloads').innerHTML = clip.video
+      ? `<a href="${esc(clip.video)}" download>⬇ Download this clip (MP4)</a>` : '';
+    $('cards').innerHTML = (session.cards || []).map(card => `
+      <section class="card">
+        <h2>${esc(card.title)}</h2>
+        <p class="lead">${rich(card.lead || '')}</p>
+        <div class="cols">${(card.columns || []).map(col => `
+          <div class="col"><h3>${esc(col.heading)}</h3>
+            <ul>${col.items.map(i => `<li>${rich(i)}</li>`).join('')}</ul>
+            ${col.triggers ? `<div class="trig"><h4>TRIGGERS</h4><ul>${col.triggers.map(i => `<li>${rich(i)}</li>`).join('')}</ul></div>` : ''}
+          </div>`).join('')}
+        </div>
+        ${card.phrase ? `<div class="phrase"><b>${esc(card.phrase.big)}</b><span>${esc(card.phrase.small || '')}</span></div>` : ''}
+      </section>`).join('');
+  }
+
+  function load() {
+    setPlaying(false);
+    player.load(clip);
+    const q = new URLSearchParams({ session: session.id, clip: clip.id });
+    history.replaceState(null, '', `?${q}`);
+    renderUI(); sync();
+  }
+
+  load();
+  window.__player = player; // used by tools/render-videos.js
+})();
+</script>
+</body>
+</html>
