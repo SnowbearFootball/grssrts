@@ -31,6 +31,10 @@
     redMid: '#7f1d1d',
     string: 'rgba(239,68,68,0.55)',
     block: '#ef4444',
+    // optional two-tone ("mown grass") theme keys; null = solid colours
+    red2: null,         // second accent tone for stripes / wordmark
+    redDark2: null,     // second tone for the key-phrase box
+    pitchStripe: null,  // second pitch colour for mown stripes
     text: '#f5f5f5',
     muted: '#a3a3a3',
     pitch: '#eef0f2',
@@ -183,6 +187,19 @@
     ctx.closePath();
   }
 
+  // Fill a rect with alternating bands (mown-grass stripes). vertical=true → bands run top to bottom.
+  function fillStripes(ctx, x, y, w, h, c1, c2, band, vertical) {
+    ctx.fillStyle = c1;
+    ctx.fillRect(x, y, w, h);
+    if (!c2) return;
+    ctx.fillStyle = c2;
+    const len = vertical ? w : h;
+    for (let i = 1; i * band < len; i += 2) {
+      if (vertical) ctx.fillRect(x + i * band, y, Math.min(band, w - i * band), h);
+      else ctx.fillRect(x, y + i * band, w, Math.min(band, h - i * band));
+    }
+  }
+
   function drawGoal(ctx, cx, cy) {
     const w = 64, h = 24;
     ctx.save();
@@ -209,9 +226,8 @@
   function drawPitch(ctx, goals) {
     ctx.save();
     roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
-    ctx.fillStyle = C.pitch;
-    ctx.fill();
     ctx.clip();
+    fillStripes(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, C.pitch, C.pitchStripe, PITCH.h / 10, false);
     ctx.fillStyle = C.pitchDot;
     for (let x = PITCH.x + 10; x < PITCH.x + PITCH.w; x += 18) {
       for (let y = PITCH.y + 10; y < PITCH.y + PITCH.h; y += 18) {
@@ -560,6 +576,7 @@
     ctx.fillStyle = C.red;
     roundRect(ctx, PANEL.x, PANEL.y, 5, PANEL.h, 2);
     ctx.fill();
+    if (C.red2) { ctx.save(); ctx.clip(); fillStripes(ctx, PANEL.x, PANEL.y, 5, PANEL.h, C.red, C.red2, 40, false); ctx.restore(); }
 
     const x = PANEL.x + 28, maxW = PANEL.w - 52;
     let y = PANEL.y + 44;
@@ -607,8 +624,11 @@
     if (keyPhrase) {
       const bh = 92, by = PANEL.y + PANEL.h - bh - 20, bx = PANEL.x + 20, bw = PANEL.w - 40;
       roundRect(ctx, bx, by, bw, bh, 10);
-      ctx.fillStyle = C.redDark;
-      ctx.fill();
+      ctx.save();
+      ctx.clip();
+      fillStripes(ctx, bx, by, bw, bh, C.redDark, C.redDark2, 30, true);
+      ctx.restore();
+      roundRect(ctx, bx, by, bw, bh, 10);
       ctx.strokeStyle = C.redMid;
       ctx.lineWidth = 1.5;
       ctx.stroke();
@@ -629,8 +649,11 @@
     ctx.save();
     ctx.fillStyle = '#262626';
     roundRect(ctx, x, y, w, h, 2.5); ctx.fill();
-    ctx.fillStyle = C.red;
-    roundRect(ctx, x, y, Math.max(5, w * clamp(t / cp.duration)), h, 2.5); ctx.fill();
+    roundRect(ctx, x, y, Math.max(5, w * clamp(t / cp.duration)), h, 2.5);
+    ctx.save();
+    ctx.clip();
+    fillStripes(ctx, x, y, w, h, C.red, C.red2, 16, true);
+    ctx.restore();
     ctx.fillStyle = C.bg;
     cp.steps.forEach(s => ctx.fillRect(x + w * (s.start / cp.duration) - 1, y, 2, h));
     ctx.restore();
@@ -647,7 +670,8 @@
     const widths = BRAND.map(p => ctx.measureText(p).width);
     let cx = right - widths.reduce((a, b) => a + b, 0) - gap * (BRAND.length - 1);
     BRAND.forEach((part, i) => {
-      ctx.fillStyle = part === '|' ? C.red : C.text;
+      // solid theme: white words, accent bar. Two-tone theme: the two grass greens, white bar.
+      ctx.fillStyle = C.red2 ? [C.redSoft, C.text, C.red][i] : part === '|' ? C.red : C.text;
       ctx.fillText(part, cx, baseline);
       cx += widths[i] + gap;
     });
