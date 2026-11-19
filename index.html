@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Coaching Clips</title>
+<title>GRSS | RTS</title>
 <style>
   :root {
     --bg: #0a0a0a; --panel: #1a1a1a; --edge: #2a2a2a; --red: #ef4444; --red-soft: #f87171;
@@ -13,6 +13,11 @@
   body { margin: 0; background: var(--bg); color: var(--text);
     font-family: "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif; }
   .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+  .brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 18px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--edge); }
+  .brand b { font-size: 24px; font-weight: 800; letter-spacing: 1.5px; }
+  .brand b span { color: var(--red); margin: 0 4px; }
+  .brand small { color: var(--muted); font-size: 14px; }
   h1 { color: var(--red); margin: 4px 0 2px; font-size: clamp(26px, 5vw, 40px); letter-spacing: .5px; }
   .sub { color: var(--muted); margin: 0 0 18px; }
   .sessions, .clips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
@@ -55,6 +60,7 @@
 </head>
 <body>
 <div class="wrap">
+  <div class="brand"><b>GRSS<span>|</span>RTS</b><small>Grassroots coaching clips</small></div>
   <h1 id="title">Coaching Clips</h1>
   <p class="sub" id="subtitle">Watch the drill, then try it at training.</p>
 
@@ -159,7 +165,7 @@
   function renderUI() {
     $('title').textContent = session.title;
     $('subtitle').textContent = session.subtitle || '';
-    document.title = `${session.title} · Coaching Clips`;
+    document.title = `${session.title} · GRSS | RTS`;
     chips($('sessions'), SESSIONS.map(s => ({ id: s.id, label: s.title })), session.id, id => {
       session = SESSIONS.find(s => s.id === id); clip = session.clips[0];
       player.session = session; load();

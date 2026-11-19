@@ -28,6 +28,9 @@
     red: '#ef4444',
     redSoft: '#f87171',
     redDark: '#2a0b0b',
+    redMid: '#7f1d1d',
+    string: 'rgba(239,68,68,0.55)',
+    block: '#ef4444',
     text: '#f5f5f5',
     muted: '#a3a3a3',
     pitch: '#eef0f2',
@@ -38,7 +41,7 @@
     arrow: '#2b2b2b',
     danger: '#f97316',
   };
-  const TEAM_COLOR = { a: C.attack, d: C.defend };
+  const TEAM_COLOR = { get a() { return C.attack; }, get d() { return C.defend; } };
 
   const PITCH = { x: 40, y: 88, w: 780, h: 600, pad: 26, uw: 100, uh: 75 };
   const PANEL = { x: 848, y: 88, w: 392, h: 600 };
@@ -315,15 +318,15 @@
 
   const ARROW_STYLE = {
     run: { color: C.arrow, width: 3, dash: [7, 7], head: 13 },
-    pass: { color: C.attack, width: 3, dash: [9, 7], head: 13 },
-    passD: { color: C.defend, width: 3, dash: [9, 7], head: 13 },
+    pass: { get color() { return C.attack; }, width: 3, dash: [9, 7], head: 13 },
+    passD: { get color() { return C.defend; }, width: 3, dash: [9, 7], head: 13 },
     loose: { color: '#7a7a7a', width: 2.5, dash: [4, 6], head: 11 },
   };
 
   const TAG_STYLE = {
-    SPLASH: { bg: C.red, fg: '#fff' },
+    SPLASH: { get bg() { return C.red; }, fg: '#fff' },
     RIPPLE: { bg: C.defend, fg: '#fff' },
-    DANGER: { bg: C.danger, fg: '#fff' },
+    DANGER: { get bg() { return C.danger; }, fg: '#fff' },
     FREE: { bg: '#6b7280', fg: '#fff' },
   };
 
@@ -395,7 +398,7 @@
     if (alpha <= 0 || pts.length < 2) return;
     ctx.save();
     ctx.globalAlpha = alpha;
-    ctx.strokeStyle = 'rgba(239,68,68,0.55)';
+    ctx.strokeStyle = C.string;
     ctx.lineWidth = 2.5;
     for (let i = 1; i < pts.length; i++) {
       const a = toPx(pts[i - 1]), b = toPx(pts[i]);
@@ -413,15 +416,16 @@
     if (alpha <= 0) return;
     const pa = toPx(a), pb = toPx(b);
     ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.strokeStyle = blocked ? 'rgba(47,191,127,0.45)' : C.danger;
+    ctx.globalAlpha = blocked ? alpha * 0.5 : alpha;
+    ctx.strokeStyle = blocked ? C.attack : C.danger;
     ctx.lineWidth = 2.5;
     ctx.setLineDash([3, 6]);
     ctx.beginPath(); ctx.moveTo(pa[0], pa[1]); ctx.lineTo(pb[0], pb[1]); ctx.stroke();
     ctx.setLineDash([]);
     if (blocked) {
       const m = lerpP(pa, pb, 0.5);
-      ctx.strokeStyle = C.red;
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = C.block;  // the ✕ stays red: universal "blocked
       ctx.lineWidth = 5;
       ctx.lineCap = 'round';
       ctx.beginPath();
@@ -565,7 +569,7 @@
       for (let i = 0; i < stepDots.count; i++) {
         ctx.beginPath();
         ctx.arc(PANEL.x + PANEL.w - 30 - (stepDots.count - 1 - i) * 18, PANEL.y + 38, 5, 0, Math.PI * 2);
-        ctx.fillStyle = i === stepDots.active ? C.red : i < stepDots.active ? '#7f1d1d' : '#3a3a3a';
+        ctx.fillStyle = i === stepDots.active ? C.red : i < stepDots.active ? C.redMid : '#3a3a3a';
         ctx.fill();
       }
     }
@@ -605,7 +609,7 @@
       roundRect(ctx, bx, by, bw, bh, 10);
       ctx.fillStyle = C.redDark;
       ctx.fill();
-      ctx.strokeStyle = '#7f1d1d';
+      ctx.strokeStyle = C.redMid;
       ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.textAlign = 'center';
@@ -621,7 +625,7 @@
   }
 
   function drawProgress(ctx, cp, t) {
-    const x = 40, y = 700, w = 1200, h = 5;
+    const x = 40, y = 700, w = 1060, h = 5;
     ctx.save();
     ctx.fillStyle = '#262626';
     roundRect(ctx, x, y, w, h, 2.5); ctx.fill();
@@ -629,6 +633,24 @@
     roundRect(ctx, x, y, Math.max(5, w * clamp(t / cp.duration)), h, 2.5); ctx.fill();
     ctx.fillStyle = C.bg;
     cp.steps.forEach(s => ctx.fillRect(x + w * (s.start / cp.duration) - 1, y, 2, h));
+    ctx.restore();
+    drawBrand(ctx, 1240, 709);
+  }
+
+  // Brand wordmark, e.g. "GRSS | RTS" — the bar is drawn in red.
+  const BRAND = ['GRSS', '|', 'RTS'];
+  function drawBrand(ctx, right, baseline) {
+    ctx.save();
+    ctx.font = `800 18px ${FONT}`;
+    ctx.textBaseline = 'alphabetic';
+    const gap = 7;
+    const widths = BRAND.map(p => ctx.measureText(p).width);
+    let cx = right - widths.reduce((a, b) => a + b, 0) - gap * (BRAND.length - 1);
+    BRAND.forEach((part, i) => {
+      ctx.fillStyle = part === '|' ? C.red : C.text;
+      ctx.fillText(part, cx, baseline);
+      cx += widths[i] + gap;
+    });
     ctx.restore();
   }
 
@@ -818,5 +840,7 @@
     }
   }
 
-  global.DrillEngine = { DrillPlayer, compile, WIDTH: W, HEIGHT: H };
+  // Override colours, e.g. DrillEngine.setTheme({ red: '#22c55e', attack: '#f59e0b' })
+  const setTheme = theme => Object.assign(C, theme);
+  global.DrillEngine = { DrillPlayer, compile, setTheme, WIDTH: W, HEIGHT: H };
 })(typeof window !== 'undefined' ? window : globalThis);

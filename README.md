@@ -1,4 +1,7 @@
-# kids-football-skills
+# GRSS | RTS
+
+*Grassroots coaching clips* (repo: kids-football-skills)
+
 
 Animated coaching clips for young players and parents, drawn like a session-plan diagram:
 players are circles (green = attackers, blue = defenders), each step shows the
