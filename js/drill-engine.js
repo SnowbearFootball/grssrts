@@ -25,25 +25,25 @@
     bg: '#0a0a0a',
     panel: '#1a1a1a',
     panelEdge: '#2a2a2a',
-    red: '#ef4444',
-    redSoft: '#f87171',
-    redDark: '#2a0b0b',
-    redMid: '#7f1d1d',
-    string: 'rgba(239,68,68,0.55)',
-    block: '#ef4444',
-    // optional two-tone ("mown grass") theme keys; null = solid colours
-    red2: null,         // second accent tone for stripes / wordmark
-    redDark2: null,     // second tone for the key-phrase box
-    pitchStripe: null,  // second pitch colour for mown stripes
+    // GRSS | RTS grass-green palette (two tones, like mown grass)
+    accent: '#4f9a3c',      // fresh grass: titles, tags, progress
+    accent2: '#3c7f2f',     // deep turf: second stripe tone
+    accentSoft: '#8cc46a',  // light grass: highlighted words, key phrase
+    accentDark: '#132611',  // key-phrase box
+    accentDark2: '#173015', // key-phrase box stripe
+    accentMid: '#2f5f27',   // borders, completed step dots
+    string: 'rgba(79,154,60,0.75)',
+    block: '#ef4444',       // the ✕ on a blocked lane stays red
+    pitchStripe: null,      // set a second pitch colour for mown stripes on the pitch itself
     text: '#f5f5f5',
     muted: '#a3a3a3',
     pitch: '#eef0f2',
     pitchDot: '#d4d8dd',
     pitchEdge: '#c9ced4',
-    attack: '#2fbf7f',
+    attack: '#f59e0b',     // amber, so attackers never blend with the green brand
     defend: '#3b9ae1',
     arrow: '#2b2b2b',
-    danger: '#f97316',
+    danger: '#ef4444',
   };
   const TEAM_COLOR = { get a() { return C.attack; }, get d() { return C.defend; } };
 
@@ -340,7 +340,7 @@
   };
 
   const TAG_STYLE = {
-    SPLASH: { get bg() { return C.red; }, fg: '#fff' },
+    SPLASH: { get bg() { return C.accent; }, fg: '#fff' },
     RIPPLE: { bg: C.defend, fg: '#fff' },
     DANGER: { get bg() { return C.danger; }, fg: '#fff' },
     FREE: { bg: '#6b7280', fg: '#fff' },
@@ -374,7 +374,7 @@
       const ph = (time * 0.7 + i / 3) % 1;
       ctx.beginPath();
       ctx.arc(x, y, R_PX + 4 + ph * 46, 0, Math.PI * 2);
-      ctx.strokeStyle = C.red;
+      ctx.strokeStyle = C.accent;
       ctx.globalAlpha = alpha * (1 - ph) * 0.55;
       ctx.lineWidth = 3;
       ctx.stroke();
@@ -401,7 +401,7 @@
     const a = toPx(from), b = toPx(to);
     ctx.save();
     ctx.globalAlpha = alpha * 0.8;
-    ctx.strokeStyle = C.red;
+    ctx.strokeStyle = C.accent;
     ctx.lineWidth = 2.5;
     ctx.setLineDash([2, 7]);
     ctx.lineCap = 'round';
@@ -452,7 +452,7 @@
     ctx.restore();
   }
 
-  // ---------- rich text: *word* = red highlight ----------
+  // ---------- rich text: *word* = highlight colour ----------
   // Split into words; a word with no space before it (e.g. "." after *highlight*) is glued on.
   function tokens(text) {
     const out = [];
@@ -498,7 +498,7 @@
       line.forEach((tok, j) => {
         if (j > 0 && !tok.glue) cx += space;
         ctx.font = `${tok.em ? 700 : 500} ${size}px ${FONT}`;
-        ctx.fillStyle = tok.em ? C.redSoft : color;
+        ctx.fillStyle = tok.em ? C.accentSoft : color;
         ctx.fillText(tok.w, cx, y + i * lineH);
         cx += tok.width;
       });
@@ -509,7 +509,7 @@
   // ---------- panel / chrome ----------
   function drawHeader(ctx, session, clip) {
     ctx.save();
-    ctx.fillStyle = C.red;
+    ctx.fillStyle = C.accent;
     ctx.font = `800 34px ${FONT}`;
     ctx.textBaseline = 'alphabetic';
     ctx.fillText((session.title || '').toUpperCase(), 40, 52);
@@ -573,10 +573,10 @@
     roundRect(ctx, PANEL.x, PANEL.y, PANEL.w, PANEL.h, 12);
     ctx.fillStyle = C.panel;
     ctx.fill();
-    ctx.fillStyle = C.red;
+    ctx.fillStyle = C.accent;
     roundRect(ctx, PANEL.x, PANEL.y, 5, PANEL.h, 2);
     ctx.fill();
-    if (C.red2) { ctx.save(); ctx.clip(); fillStripes(ctx, PANEL.x, PANEL.y, 5, PANEL.h, C.red, C.red2, 40, false); ctx.restore(); }
+    if (C.accent2) { ctx.save(); ctx.clip(); fillStripes(ctx, PANEL.x, PANEL.y, 5, PANEL.h, C.accent, C.accent2, 40, false); ctx.restore(); }
 
     const x = PANEL.x + 28, maxW = PANEL.w - 52;
     let y = PANEL.y + 44;
@@ -586,7 +586,7 @@
       for (let i = 0; i < stepDots.count; i++) {
         ctx.beginPath();
         ctx.arc(PANEL.x + PANEL.w - 30 - (stepDots.count - 1 - i) * 18, PANEL.y + 38, 5, 0, Math.PI * 2);
-        ctx.fillStyle = i === stepDots.active ? C.red : i < stepDots.active ? C.redMid : '#3a3a3a';
+        ctx.fillStyle = i === stepDots.active ? C.accent : i < stepDots.active ? C.accentMid : '#3a3a3a';
         ctx.fill();
       }
     }
@@ -601,7 +601,7 @@
     const tl = wrapRich(ctx, title || '', maxW, 30);
     ctx.font = `800 30px ${FONT}`;
     tl.lines.forEach(line => {
-      ctx.fillStyle = C.red;
+      ctx.fillStyle = C.accent;
       ctx.fillText(line.map((t, j) => (j && !t.glue ? ' ' : '') + t.w).join(''), x, y);
       y += 36;
     });
@@ -613,7 +613,7 @@
       const ind = bullet ? (isSub ? 40 : 22) : 0;
       if (bullet) {
         ctx.font = `700 21px ${FONT}`;
-        ctx.fillStyle = isSub ? C.muted : C.red;
+        ctx.fillStyle = isSub ? C.muted : C.accent;
         ctx.fillText(isSub ? '–' : bullet, x + (isSub ? 22 : 0), y);
       }
       const h = drawRich(ctx, body, x + ind, y, maxW - ind, isSub ? 19 : 21, isSub ? 26 : 29, isSub ? '#d4d4d4' : C.text);
@@ -626,14 +626,14 @@
       roundRect(ctx, bx, by, bw, bh, 10);
       ctx.save();
       ctx.clip();
-      fillStripes(ctx, bx, by, bw, bh, C.redDark, C.redDark2, 30, true);
+      fillStripes(ctx, bx, by, bw, bh, C.accentDark, C.accentDark2, 30, true);
       ctx.restore();
       roundRect(ctx, bx, by, bw, bh, 10);
-      ctx.strokeStyle = C.redMid;
+      ctx.strokeStyle = C.accentMid;
       ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.textAlign = 'center';
-      ctx.fillStyle = C.redSoft;
+      ctx.fillStyle = C.accentSoft;
       fitFont(ctx, keyPhrase.big, 800, 28, bw - 28);
       ctx.fillText(keyPhrase.big, bx + bw / 2, by + 44);
       ctx.fillStyle = '#d4d4d4';
@@ -652,7 +652,7 @@
     roundRect(ctx, x, y, Math.max(5, w * clamp(t / cp.duration)), h, 2.5);
     ctx.save();
     ctx.clip();
-    fillStripes(ctx, x, y, w, h, C.red, C.red2, 16, true);
+    fillStripes(ctx, x, y, w, h, C.accent, C.accent2, 16, true);
     ctx.restore();
     ctx.fillStyle = C.bg;
     cp.steps.forEach(s => ctx.fillRect(x + w * (s.start / cp.duration) - 1, y, 2, h));
@@ -671,7 +671,7 @@
     let cx = right - widths.reduce((a, b) => a + b, 0) - gap * (BRAND.length - 1);
     BRAND.forEach((part, i) => {
       // solid theme: white words, accent bar. Two-tone theme: the two grass greens, white bar.
-      ctx.fillStyle = C.red2 ? [C.redSoft, C.text, C.red][i] : part === '|' ? C.red : C.text;
+      ctx.fillStyle = C.accent2 ? [C.accentSoft, C.text, C.accent][i] : part === '|' ? C.accent : C.text;
       ctx.fillText(part, cx, baseline);
       cx += widths[i] + gap;
     });
@@ -804,7 +804,7 @@
       ctx.fillStyle = C.muted;
       ctx.font = `600 20px ${FONT}`;
       ctx.fillText((clip.kicker || '').toUpperCase(), PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h / 2 - 50);
-      ctx.fillStyle = C.red;
+      ctx.fillStyle = C.accent;
       ctx.font = `800 54px ${FONT}`;
       ctx.fillText(clip.title.toUpperCase(), PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h / 2 + 10);
       ctx.fillStyle = C.text;
@@ -864,7 +864,7 @@
     }
   }
 
-  // Override colours, e.g. DrillEngine.setTheme({ red: '#22c55e', attack: '#f59e0b' })
+  // Override colours, e.g. DrillEngine.setTheme({ accent: '#22c55e', attack: '#f59e0b' })
   const setTheme = theme => Object.assign(C, theme);
   global.DrillEngine = { DrillPlayer, compile, setTheme, WIDTH: W, HEIGHT: H };
 })(typeof window !== 'undefined' ? window : globalThis);
