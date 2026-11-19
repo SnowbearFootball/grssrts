@@ -16,7 +16,7 @@ window.SESSIONS.push({
   cards: [
     {
       title: 'The Splash',
-      lead: 'The player *closest to the ball*. Your job: *stall their attack*.',
+      lead: 'The player *closest to the ball*. Your job: *stall their attack*. Always stay *between the ball and the goal*: stop the direct shot.',
       columns: [
         { heading: '1. Hold shape', items: ['Block passing lanes', 'Keep your position', 'Make it hard to play forward'],
           triggers: ['Ball far from goal', 'Teammate says "hold"', 'Low chance to win it'] },
@@ -38,10 +38,95 @@ window.SESSIONS.push({
 
   clips: [
     // ------------------------------------------------------------------
+    // 2 v 2 to four mini goals. Coach/defender plays a diagonal pass in,
+    // two attackers come on, two defenders go out to meet them.
+    {
+      id: '2v2',
+      video: 'videos/splash-ripple-1-2v2.mp4',
+      kicker: 'Clip 1',
+      title: '2 v 2',
+      tagline: 'Who\'s the Splash? Who\'s the Ripple?',
+      intro: [
+        '2 v 2 to four mini goals.',
+        'A *diagonal pass* starts it.',
+        'Closest defender = *Splash*. Team mate = *Ripple*.',
+        'When the ball moves, the *roles can reverse*.',
+      ],
+      keyPhrase: { big: 'BALL → SPLASH → GOAL', small: 'Stay between the ball and the goal: stop the shot' },
+      goals: [[22, 'top'], [78, 'top'], [22, 'bottom'], [78, 'bottom']],
+      string: ['rA', 'rB'],
+      players: [
+        { id: 'gq1', team: 'a', x: 9, y: -1.5, dim: true },
+        { id: 'gA', team: 'a', x: 15, y: 2.5 },
+        { id: 'gB', team: 'a', x: 86, y: -1 },
+        { id: 'gq2', team: 'a', x: 93, y: -1.5, dim: true },
+        { id: 'rq1', team: 'd', x: 7, y: 77, dim: true },
+        { id: 'rq2', team: 'd', x: 13, y: 77, dim: true },
+        { id: 'rA', team: 'd', x: 31, y: 75 },
+        { id: 'rB', team: 'd', x: 86, y: 74 },
+        { id: 'rq3', team: 'd', x: 93, y: 77, dim: true },
+      ],
+      ball: { owner: 'rB' },
+      steps: [
+        {
+          title: 'DIAGONAL PASS TO START',
+          text: [
+            'Defender plays a *diagonal pass* to the far attacker.',
+            'Two attackers come on to the pitch.',
+            'Defenders: watch the ball. *Who\'s closest?*',
+          ],
+          ball: { pass: 'gA', start: 0, end: 0.5 },
+          moves: [
+            { id: 'gA', to: [17, 10], start: 0.1, end: 0.55 },
+            { id: 'gB', to: [68, 20], start: 0.2 },
+          ],
+        },
+        {
+          title: 'WHO IS THE SPLASH?',
+          text: [
+            '*Splash* (closest player): get to the ball *quickly*. Stop them coming forward.',
+            'Stay *between the ball and the goal*: stop the direct shot.',
+            '*Ripple:* drop into a good supporting position.',
+          ],
+          tags: { rA: 'SPLASH', rB: 'RIPPLE' },
+          shot: [22, 75],
+          timing: { move: 3 },
+          moves: [
+            { id: 'gA', to: [24, 30], ease: 'linear' },
+            { id: 'gB', to: [66, 28] },
+            { id: 'rA', to: [23.6, 42.5], start: 0.05, ease: 'out' },
+            { id: 'rB', to: [46, 58], start: 0.15 },
+          ],
+        },
+        {
+          title: 'PASS: THE ROLES REVERSE',
+          text: [
+            'Point of attack changes, so the *roles reverse*.',
+            '*New Splash:* get to the ball quickly, stay between the ball and the goal.',
+            '*Old Splash:* drop into a good supporting position.',
+          ],
+          tags: { rB: 'SPLASH', rA: 'RIPPLE' },
+          shot: [78, 75],
+          timing: { move: 3 },
+          ball: { pass: 'gB', start: 0, end: 0.4 },
+          moves: [
+            { id: 'rB', to: [68.5, 41.5], start: 0.25, ease: 'out' },
+            { id: 'rA', to: [45, 56], start: 0.3 },
+          ],
+        },
+      ],
+      summary: [
+        'Closest player = *Splash*. Get there quickly.',
+        'Always stay *between the ball and the goal*.',
+        'Team mate = *Ripple*. Drop in and support.',
+        'Ball moves → *roles reverse*.',
+      ],
+    },
+    // ------------------------------------------------------------------
     {
       id: 'basics',
-      video: 'videos/splash-ripple-1-basics.mp4',
-      kicker: 'Clip 1',
+      video: 'videos/splash-ripple-2-basics.mp4',
+      kicker: 'Clip 2',
       title: 'The Basics',
       tagline: 'Closest player splashes. Everyone else ripples.',
       intro: [
@@ -65,7 +150,7 @@ window.SESSIONS.push({
           title: 'THE SPLASH!',
           text: [
             'Closest player goes to the ball.',
-            'Job: *stall the attack*.',
+            'Job: *stall the attack*. Stay *between the ball and the goal*.',
             '*Ripple:* the two supporting defenders tuck in to a good defensive shape.',
           ],
           tags: { b2: 'SPLASH', b1: 'RIPPLE', b3: 'RIPPLE' },
@@ -118,8 +203,8 @@ window.SESSIONS.push({
     // ------------------------------------------------------------------
     {
       id: 'hold-or-press',
-      video: 'videos/splash-ripple-2-hold-or-press.mp4',
-      kicker: 'Clip 2',
+      video: 'videos/splash-ripple-3-hold-or-press.mp4',
+      kicker: 'Clip 3',
       title: 'Hold or Press?',
       tagline: 'The Splash has two choices. Watch for the trigger.',
       intro: [
@@ -215,8 +300,8 @@ window.SESSIONS.push({
     // ------------------------------------------------------------------
     {
       id: 'outnumbered',
-      video: 'videos/splash-ripple-3-outnumbered.mp4',
-      kicker: 'Clip 3',
+      video: 'videos/splash-ripple-4-outnumbered.mp4',
+      kicker: 'Clip 4',
       title: 'Outnumbered',
       tagline: '3 v 4: deal with the biggest danger first.',
       intro: [

@@ -202,7 +202,8 @@
     ctx.restore();
   }
 
-  function drawPitch(ctx) {
+  // goals: optional list of [x, 'top'|'bottom'] in pitch units (default: one centred goal at each end)
+  function drawPitch(ctx, goals) {
     ctx.save();
     roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
     ctx.fillStyle = C.pitch;
@@ -221,8 +222,9 @@
     roundRect(ctx, PITCH.x + 3, PITCH.y + 3, PITCH.w - 6, PITCH.h - 6, 8);
     ctx.stroke();
     ctx.restore();
-    drawGoal(ctx, PITCH.x + PITCH.w / 2, PITCH.y + 2);
-    drawGoal(ctx, PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h - 2);
+    (goals || [[50, 'top'], [50, 'bottom']]).forEach(([gx, end]) => {
+      drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2);
+    });
   }
 
   function drawPlayer(ctx, p, team, alpha) {
@@ -314,6 +316,7 @@
   const ARROW_STYLE = {
     run: { color: C.arrow, width: 3, dash: [7, 7], head: 13 },
     pass: { color: C.attack, width: 3, dash: [9, 7], head: 13 },
+    passD: { color: C.defend, width: 3, dash: [9, 7], head: 13 },
     loose: { color: '#7a7a7a', width: 2.5, dash: [4, 6], head: 11 },
   };
 
@@ -372,6 +375,18 @@
     ctx.beginPath();
     ctx.arc(x, y, R_PX + 10, 0, Math.PI * 2);
     ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawShotLine(ctx, from, to, alpha) {
+    const a = toPx(from), b = toPx(to);
+    ctx.save();
+    ctx.globalAlpha = alpha * 0.8;
+    ctx.strokeStyle = C.red;
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([2, 7]);
+    ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
     ctx.restore();
   }
 
@@ -626,7 +641,7 @@
     ctx.fillStyle = C.bg;
     ctx.fillRect(0, 0, W, H);
     drawHeader(ctx, session, clip);
-    drawPitch(ctx);
+    drawPitch(ctx, clip.goals);
 
     // Which segment are we in?
     let step = null, local = 0, phase = 'intro', u = 0, pk = 0;
@@ -686,7 +701,7 @@
           const owner = step.startState.ball.owner;
           const a = owner ? playerPos(step, owner, s) : step.startState.ball.at;
           const b = playerPos(step, def.ball.pass, e);
-          arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: ARROW_STYLE.pass, order: -1 });
+          arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: owner && cp.team[owner] === 'd' ? ARROW_STYLE.passD : ARROW_STYLE.pass, order: -1 });
         } else if (def.ball.to) {
           arrows.push({ pts: trimPath([ballStartPos(cp, step, s), def.ball.to], 1.2, 1.4), style: ARROW_STYLE.loose, order: -1 });
         }
@@ -709,6 +724,12 @@
       });
     }
 
+    // shot line: dotted line from the ball to the goal it threatens
+    if (showStepFx && def.shot) {
+      const a = phase === 'move' ? clamp((pk - 0.5) / 0.4) : phase === 'hold' ? 1 : 0;
+      if (a > 0) drawShotLine(ctx, ballPos(cp, step, u), def.shot, a);
+    }
+
     // tags & effects (under players)
     const tags = showStepFx ? def.tags || {} : {};
     const time = t;
@@ -719,7 +740,7 @@
     });
 
     // players
-    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, 1));
+    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, p.dim ? 0.4 : 1));
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
     // tags on top
