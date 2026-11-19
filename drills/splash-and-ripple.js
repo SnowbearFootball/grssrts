@@ -41,11 +41,11 @@ window.SESSIONS.push({
     // 2 v 2 to four mini goals. Coach/defender plays a diagonal pass in,
     // two attackers come on, two defenders go out to meet them.
     {
-      id: '2v2',
-      video: 'videos/splash-ripple-1-2v2.mp4',
-      kicker: 'Clip 1',
-      title: '2 v 2',
-      tagline: 'Who\'s the Splash? Who\'s the Ripple?',
+      id: 'basics-2v2',
+      video: 'videos/splash-ripple-1-basics-2v2.mp4',
+      kicker: 'Clip 1 · 2 v 2',
+      title: 'The Basics',
+      tagline: '2 v 2: Who\'s the Splash? Who\'s the Ripple?',
       intro: [
         '2 v 2 to four mini goals.',
         'A *diagonal pass* starts it.',
@@ -124,14 +124,15 @@ window.SESSIONS.push({
     },
     // ------------------------------------------------------------------
     {
-      id: 'basics',
-      video: 'videos/splash-ripple-2-basics.mp4',
+      id: '3v3',
+      video: 'videos/splash-ripple-2-3v3.mp4',
       kicker: 'Clip 2',
-      title: 'The Basics',
-      tagline: 'Closest player splashes. Everyone else ripples.',
+      title: '3 v 3',
+      tagline: 'Same rules, one more player: the Ripple grows.',
       intro: [
-        'The *Splash* is the player closest to the ball.',
-        'The *Ripple* is how everyone else reacts.',
+        'Same rules as 2 v 2, *one more player* each.',
+        'Closest player = *Splash*.',
+        'The other two = *Ripple*. Tuck in and support.',
         'We are all *connected by string*.',
       ],
       keyPhrase: { big: 'FAST → SLOW → LOW', small: 'Approach fast, slow down, get low' },
@@ -204,7 +205,7 @@ window.SESSIONS.push({
     {
       id: 'hold-or-press',
       video: 'videos/splash-ripple-3-hold-or-press.mp4',
-      kicker: 'Clip 3',
+      kicker: 'Clip 3 · 3 v 3',
       title: 'Hold or Press?',
       tagline: 'The Splash has two choices. Watch for the trigger.',
       intro: [
@@ -301,7 +302,7 @@ window.SESSIONS.push({
     {
       id: 'outnumbered',
       video: 'videos/splash-ripple-4-outnumbered.mp4',
-      kicker: 'Clip 4',
+      kicker: 'Clip 4 · 3 v 4',
       title: 'Outnumbered',
       tagline: '3 v 4: deal with the biggest danger first.',
       intro: [

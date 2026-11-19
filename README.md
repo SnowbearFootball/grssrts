@@ -11,7 +11,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 
 | Session | Clips |
 |---|---|
-| Splash & Ripple (defending) | 1. The Basics · 2. Hold or Press? · 3. Outnumbered (3 v 4) |
+| Splash & Ripple (defending) | 1. The Basics (2 v 2) · 2. 3 v 3 · 3. Hold or Press? (3 v 3) · 4. Outnumbered (3 v 4) |
 
 ## Adding a new session
 
