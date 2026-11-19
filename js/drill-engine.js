@@ -321,6 +321,7 @@
     SPLASH: { bg: C.red, fg: '#fff' },
     RIPPLE: { bg: C.defend, fg: '#fff' },
     DANGER: { bg: C.danger, fg: '#fff' },
+    FREE: { bg: '#6b7280', fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {

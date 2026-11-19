@@ -240,11 +240,11 @@ window.SESSIONS.push({
         {
           title: 'WHAT\'S THE BIGGEST DANGER?',
           text: [
-            '*Splash:* get to the ball and stall.',
-            '*Ripple:* get into good shape, support the Splash, protect against the *biggest threat*.',
-            'Free right winger is the danger — we take a chance on the far side.',
+            'The *ball* is the biggest danger. *Splash:* get to it and stall.',
+            '*Ripple:* good shape, support the Splash, protect the space nearest the ball and goal.',
+            'The far winger is *free* but furthest from the ball, so they\'re the *least danger*. We take that chance.',
           ],
-          tags: { b1: 'SPLASH', b2: 'RIPPLE', b3: 'RIPPLE', g4: 'DANGER' },
+          tags: { b1: 'SPLASH', b2: 'RIPPLE', b3: 'RIPPLE', g4: 'FREE' },
           moves: [
             { id: 'b1', to: [13, 39], ease: 'out' },
             { id: 'b2', to: [31, 51], start: 0.1 },
@@ -252,13 +252,13 @@ window.SESSIONS.push({
           ],
         },
         {
-          title: 'SWITCH! THE DANGER HAS SHIFTED',
+          title: 'QUICK SWITCH! THE DANGER HAS SHIFTED',
           text: [
-            'Ball switched to the free player — *so we shift too!*',
-            '*Splash:* closest player stalls them moving forward.',
+            'A quick switch turns the free player into the *main danger*.',
+            '*Splash:* closest player gets out and stalls them moving forward.',
             '*Ripple:* shuffle over. Left defender *drops in* and gets across.',
           ],
-          tags: { b3: 'SPLASH', b2: 'RIPPLE', b1: 'RIPPLE' },
+          tags: { b3: 'SPLASH', b2: 'RIPPLE', b1: 'RIPPLE', g4: 'DANGER' },
           timing: { move: 3.2 },
           ball: { pass: 'g4', start: 0, end: 0.4 },
           moves: [
@@ -284,7 +284,8 @@ window.SESSIONS.push({
         },
       ],
       summary: [
-        'Outnumbered? Deal with the *biggest danger* first.',
+        'Outnumbered? Deal with the *ball* first; leave the player furthest away.',
+        'A *quick switch* makes that free player the main danger.',
         'Keep shape until *help arrives*.',
         'Ball moves → danger shifts → *we shift*.',
         'One moves, we all move — *connected by string*.',
