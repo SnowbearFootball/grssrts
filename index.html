@@ -105,6 +105,17 @@
   .pill { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; border-radius: 99px; padding: 3px 8px; flex: none; letter-spacing: .04em; }
   .howto svg { flex: none; }
 
+  /* breadcrumbs */
+  .crumbs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 14px; }
+  .crumbs a { color: var(--sub); text-decoration: none; border-bottom: 1px solid var(--edge); }
+  .crumbs a:hover { color: var(--text); border-color: var(--accent); }
+  .crumbs span[aria-current] { color: var(--accent-soft); }
+  /* section view */
+  .section-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 26px; }
+  .section-top svg { width: 44px; height: 44px; flex: none; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-top: 6px; }
+  .section-top h1 { margin: 0 0 6px; font-size: clamp(30px, 5vw, 44px); }
+  .section-top p { margin: 0; color: var(--sub); max-width: 60ch; }
+
   /* session view */
   .session h1 { color: var(--accent); margin: 0 0 2px; font-size: clamp(28px, 5vw, 40px); }
   .sub { color: var(--muted); margin: 0 0 18px; }
@@ -152,7 +163,6 @@
     <a class="brand" href="#" id="home-link" aria-label="GRSS | RTS home">
       <img src="assets/logo/grss-rts-on-dark.svg" alt="GRSS | RTS"><small>Grassroots coaching clips</small>
     </a>
-    <button class="back" id="back" hidden>← All sessions</button>
   </header>
 
   <!-- HOME -->
@@ -163,7 +173,7 @@
         <h1>Watch the drill. <em>Then play it.</em></h1>
         <p>Short animated clips of what we practise at training. Each step shows the runs first as arrows, then the players move.</p>
         <div class="cta">
-          <button class="btn primary" id="go-sessions">Browse sessions</button>
+          <button class="btn primary" id="go-sessions">Choose a section</button>
           <button class="btn" id="go-howto">How the clips work</button>
         </div>
       </div>
@@ -192,11 +202,8 @@
       </figure>
     </section>
 
-    <div class="section-head" id="sections"><h2>Moments of the game</h2><p>Pick a section to filter the sessions.</p></div>
+    <div class="section-head" id="sections"><h2>Moments of the game</h2><p>Choose a section to see its sessions.</p></div>
     <div class="cats" id="cats" role="group" aria-label="Sections"></div>
-
-    <div class="section-head"><h2 id="list-title">All sessions</h2><p id="list-note"></p></div>
-    <div class="sessions-list" id="list"></div>
 
     <div class="section-head" id="howto"><h2>Reading the clips</h2></div>
     <div class="howto">
@@ -207,9 +214,19 @@
     </div>
   </main>
 
-  <!-- SESSION -->
+  <!-- SECTION (e.g. #defending) -->
+  <main id="section" hidden>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><span aria-current="page" id="sec-crumb"></span></nav>
+    <div class="section-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="sec-icon"></svg>
+      <div><p class="eyebrow">Moment of the game</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
+    <div class="section-head"><h2 id="sec-count"></h2></div>
+    <div class="sessions-list" id="list"></div>
+    <p class="none" id="sec-none" hidden></p>
+  </main>
+
+  <!-- SESSION (e.g. #splash-and-ripple) -->
   <main id="session" class="session" hidden>
-    <p class="eyebrow" id="s-cat"></p>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><a href="#" id="s-cat"></a><span aria-hidden="true">›</span><span aria-current="page" id="s-crumb"></span></nav>
     <h1 id="title"></h1>
     <p class="sub" id="subtitle"></p>
     <div class="clips" id="clips" role="group" aria-label="Clips"></div>
@@ -297,7 +314,9 @@
 
   function renderSession() {
     const cat = catOf(session);
-    $('s-cat').textContent = cat ? cat.name : '';
+    $('s-cat').textContent = cat ? cat.name : 'Sessions';
+    $('s-cat').setAttribute('href', cat ? '#' + cat.id : '#');
+    $('s-crumb').textContent = session.title;
     $('title').textContent = session.title;
     $('subtitle').textContent = session.subtitle || '';
     const el = $('clips');
@@ -332,62 +351,62 @@
     renderSession(); sync();
   }
 
-  // ---------- home ----------
-  let filter = null;
+  // ---------- home + section pages ----------
   const clipRange = s => s.clips.map(c => (c.kicker || '').split('·')[1]).filter(Boolean).map(x => x.trim());
-  function sessionCard(s, cls) {
-    const cat = catOf(s);
+  function sessionCard(s) {
     const formats = [...new Set(clipRange(s))];
-    return `<button class="${cls}" data-id="${esc(s.id)}">
+    return `<button class="scard" data-id="${esc(s.id)}">
       ${s.thumb ? `<img src="${esc(s.thumb)}" alt="">` : ''}
-      <div class="meta"><span class="tag">${esc(cat ? cat.name : '')}</span><b>${esc(s.title)}</b>
+      <div class="meta"><b>${esc(s.title)}</b>
         <p>${esc(s.summary || s.subtitle || '')}</p>
-        <span>${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
-        ${cls === 'scard' ? `<ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>` : ''}
+        <span class="tag">${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
+        <ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>
       </div></button>`;
   }
   function renderHome() {
     $('cats').innerHTML = CATS.map(c => {
       const n = SESSIONS.filter(s => s.category === c.id).length;
-      return `<button class="cat${n ? '' : ' empty'}" data-cat="${c.id}" aria-pressed="${filter === c.id}">
+      return `<button class="cat${n ? '' : ' empty'}" data-cat="${c.id}">
         <svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg><b>${esc(c.name)}</b><small>${esc(c.blurb)}</small>
         <span class="count">${n ? plural(n, 'session') : 'Coming soon'}</span></button>`;
     }).join('');
-    const shown = SESSIONS.filter(s => !filter || s.category === filter);
-    const cat = CATS.find(c => c.id === filter);
-    $('list-title').textContent = cat ? cat.name : 'All sessions';
-    $('list-note').innerHTML = filter ? `<a href="#" id="clear">Show all</a>` : '';
-    $('list').hidden = !shown.length;
-    $('list').innerHTML = shown.map(s => sessionCard(s, 'scard')).join('');
-    const none = document.querySelector('.none');
-    if (none) none.remove();
-    if (!shown.length) $('list').insertAdjacentHTML('afterend', `<p class="none">No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added.</p>`);
+  }
+  function renderSection(cat) {
+    const list = SESSIONS.filter(s => s.category === cat.id);
+    $('sec-crumb').textContent = cat.name;
+    $('sec-icon').innerHTML = cat.icon;
+    $('sec-title').textContent = cat.name;
+    $('sec-blurb').textContent = cat.blurb;
+    $('sec-count').textContent = list.length ? plural(list.length, 'session') : 'Sessions';
+    $('list').hidden = !list.length;
+    $('list').innerHTML = list.map(sessionCard).join('');
+    $('sec-none').hidden = !!list.length;
+    $('sec-none').textContent = `No ${cat.name.toLowerCase()} sessions yet. They'll appear here as they're added.`;
   }
   document.addEventListener('click', e => {
     const card = e.target.closest('[data-id]');
     if (card) { location.hash = card.dataset.id; return; }
     const c = e.target.closest('[data-cat]');
-    if (c) { filter = filter === c.dataset.cat ? null : c.dataset.cat; renderHome(); return; }
-    if (e.target.id === 'clear') { e.preventDefault(); filter = null; renderHome(); }
+    if (c) { location.hash = c.dataset.cat; }
   });
-  $('back').onclick = () => { location.hash = ''; };
   $('go-sessions').onclick = () => $('sections').scrollIntoView({ behavior: 'smooth' });
   $('go-howto').onclick = () => $('howto').scrollIntoView({ behavior: 'smooth' });
   $('home-link').onclick = e => { e.preventDefault(); location.hash = ''; };
 
-  // ---------- routing: #<session-id> opens a session, anything else shows home ----------
+  // ---------- routing: '' = home, #<section-id> = section page, #<session-id> = player ----------
   function route() {
     const id = location.hash.replace('#', '');
     const s = SESSIONS.find(x => x.id === id);
-    $('home').hidden = !!s; $('session').hidden = !s; $('back').hidden = !s;
+    const cat = !s && CATS.find(c => c.id === id);
+    $('home').hidden = !!(s || cat); $('section').hidden = !cat; $('session').hidden = !s;
     if (s) {
       if (s !== session) { session = s; clip = s.clips[0]; }
       loadClip();
       document.title = `${s.title} · GRSS | RTS`;
     } else {
       setPlaying(false);
-      renderHome();
-      document.title = 'GRSS | RTS';
+      if (cat) { renderSection(cat); document.title = `${cat.name} · GRSS | RTS`; }
+      else { renderHome(); document.title = 'GRSS | RTS'; }
     }
     window.scrollTo(0, 0);
   }

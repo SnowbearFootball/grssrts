@@ -8,7 +8,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 **arrows first**, then the players and ball move, with the coaching points beside the pitch.
 
 - **Website:** open `index.html`. The home page groups sessions by moment of the game
-  (Defending, Attacking, Transitions, Skills, Goalkeeping); `index.html#<session-id>` opens a session's player.
+  (Defending, Attacking, Transitions, Skills, Goalkeeping); `index.html#<section-id>` (e.g. `#defending`) lists that section's sessions and `index.html#<session-id>` opens a session's player.
 - **Shareable link:** `node tools/build-artifact.js out.html` packs the site into one self-contained page for publishing.
 - **Shareable videos:** `videos/*.mp4` (1080p) to send on WhatsApp, email and so on.
 
