@@ -32,12 +32,12 @@ window.SESSIONS.push({
     },
     {
       title: 'The recovering defender',
-      lead: 'Your shot is done. *Now defend.*',
+      lead: 'Your shot is done. *Now defend: try to stop the striker scoring.*',
       columns: [
         { heading: 'Recover', items: ['Sprint straight back', 'Get *goal-side*: between the ball and the goal', 'Never give up the chase'] },
-        { heading: 'Defend', items: ['Slow them down', 'Block the shot', 'Stay on your feet'] },
+        { heading: 'Defend', items: ['Your job: *stop them scoring*', 'Slow them down', 'Block the shot', 'Stay on your feet'] },
       ],
-      phrase: { big: 'NEVER STOP', small: 'Finish your shot, then get back' },
+      phrase: { big: 'NEVER STOP', small: 'Finish your shot, then get back and stop the goal' },
     },
   ],
 
