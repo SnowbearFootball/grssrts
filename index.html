@@ -159,6 +159,7 @@
   /* age filter + badges */
   .filter { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 16px; font-weight: 600; font-size: 14px; color: var(--sub); }
   .filter select { background: var(--paper); border: 1px solid var(--edge); border-radius: 8px; padding: 7px 10px; font-weight: 600; }
+  .age.type { background: var(--accent); }
   .age { display: inline-block; background: var(--forest); color: var(--cream); font-size: 12px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
 
   /* session view */
@@ -388,6 +389,7 @@
 <!-- Sessions: add one script tag per session file -->
 <script src="drills/splash-and-ripple.js"></script>
 <script src="drills/shoot-and-recover.js"></script>
+<script src="drills/build-out-rotations.js"></script>
 <script>
 (function () {
   const SESSIONS = window.SESSIONS || [];
@@ -570,7 +572,7 @@
     const formats = [...new Set(clipRange(s))];
     return `<button class="scard" data-id="${esc(s.id)}">
       ${s.thumb ? `<img src="${esc(s.thumb)}" alt="">` : ''}
-      <div class="meta"><span><span class="age">${ageLabel(s)}</span></span><b>${esc(s.title)}</b>
+      <div class="meta"><span><span class="age">${ageLabel(s)}</span>${s.type ? ` <span class="age type">${esc(s.type)}</span>` : ''}</span><b>${esc(s.title)}</b>
         <p>${esc(s.summary || s.subtitle || '')}</p>
         <span class="tag">${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
         <ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>

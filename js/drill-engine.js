@@ -161,8 +161,9 @@
   }
 
   function ballOffset(cp, id) {
-    // attackers face down the pitch, defenders face up it
-    const dir = cp.team[id] === 'a' ? 1 : -1;
+    // attackers face down the pitch, defenders face up it (a clip can override with facing: { a: -1 })
+    const f = cp.clip.facing && cp.clip.facing[cp.team[id]];
+    const dir = f != null ? f : cp.team[id] === 'a' ? 1 : -1;
     return [0, dir * (R_U + 1.3)];
   }
 
@@ -831,6 +832,22 @@
     if (showStepFx && def.shot) {
       const a = phase === 'move' ? clamp((pk - 0.5) / 0.4) : phase === 'hold' ? 1 : 0;
       if (a > 0) drawShotLine(ctx, ballPos(cp, step, u), def.shot, a);
+    }
+
+    // highlighted zones, e.g. the "pocket" behind their midfield
+    if (showStepFx && def.zones) {
+      def.zones.forEach(z => {
+        const [zx, zy] = toPx(z.at), r = z.r * ((PITCH.w - 2 * PITCH.pad) / PITCH.uw);
+        ctx.save();
+        ctx.globalAlpha = fxAlpha;
+        ctx.beginPath(); ctx.arc(zx, zy, r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(240, 196, 70, 0.35)'; ctx.fill();
+        if (z.label) {
+          ctx.fillStyle = '#7a5a00'; ctx.font = `700 13px ${FONT}`; ctx.textAlign = 'center';
+          ctx.fillText(z.label.toUpperCase(), zx, zy - r + 16);
+        }
+        ctx.restore();
+      });
     }
 
     // tags & effects (under players)
