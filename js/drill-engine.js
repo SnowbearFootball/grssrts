@@ -48,8 +48,9 @@
     defend: '#3b9ae1',
     arrow: '#2b2b2b',
     danger: '#e5484d',
+    keeper: '#2b2b2b',
   };
-  const TEAM_COLOR = { get a() { return C.attack; }, get d() { return C.defend; } };
+  const TEAM_COLOR = { get a() { return C.attack; }, get d() { return C.defend; }, get k() { return C.keeper; } };
 
   const PITCH = { x: 40, y: 88, w: 780, h: 600, pad: 26, uw: 100, uh: 75 };
   const PANEL = { x: 848, y: 88, w: 392, h: 600 };
@@ -109,12 +110,20 @@
     let state = {
       pos,
       ball: clip.ball && clip.ball.owner ? { owner: clip.ball.owner } : { owner: null, at: clip.ball ? clip.ball.at : [50, 37] },
+      used: clip.ball && clip.ball.owner ? [clip.ball.owner] : [],   // players whose own ball is in play / used
+      spent: [],                                                      // finished balls left where they ended (e.g. in the net)
     };
 
     let t = timing.intro;
     const steps = clip.steps.map((def, index) => {
       const d = Object.assign({}, timing, def.timing || {});
       const moves = def.moves || [];
+      // ball.give: at the start of this step, the given player's own ball comes into play
+      if (def.ball && def.ball.give) {
+        if (!state.ball.owner && state.ball.at) state.spent.push(state.ball.at.slice());
+        state.ball = { owner: def.ball.give };
+        if (!state.used.includes(def.ball.give)) state.used.push(def.ball.give);
+      }
       const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false);
       const hasMotion = moves.length > 0 || !!def.ball;
       const phases = {
@@ -250,7 +259,7 @@
     });
   }
 
-  function drawPlayer(ctx, p, team, alpha) {
+  function drawPlayer(ctx, p, team, alpha, label) {
     const [x, y] = toPx(p);
     ctx.save();
     ctx.globalAlpha = alpha;
@@ -261,6 +270,13 @@
     ctx.lineWidth = 5;
     ctx.strokeStyle = TEAM_COLOR[team];
     ctx.stroke();
+    if (label) {
+      ctx.fillStyle = TEAM_COLOR[team];
+      ctx.font = `800 12px ${FONT}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, x, y + 1);
+    }
     ctx.restore();
   }
 
@@ -348,6 +364,9 @@
     RIPPLE: { bg: C.defend, fg: '#fff' },
     DANGER: { get bg() { return C.danger; }, fg: '#fff' },
     FREE: { bg: '#6b7280', fg: '#fff' },
+    SHOOT: { get bg() { return C.accent; }, fg: '#fff' },
+    DEFEND: { bg: '#16351f', fg: '#fff' },
+    'GO!': { get bg() { return C.accent; }, fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
@@ -824,7 +843,11 @@
     });
 
     // players
-    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, p.dim ? 0.4 : 1));
+    // balls waiting at players' feet, and finished balls (e.g. in the net)
+    const st = phase === 'outro' ? cp.finalState : step.startState;
+    (st.spent || []).forEach(b => drawBall(ctx, b));
+    clip.players.forEach(p => { if (p.ball && !(st.used || []).includes(p.id)) drawBall(ctx, attached(cp, step, p.id, u)); });
+    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, p.dim ? 0.4 : 1, p.label));
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
     // tags on top

@@ -387,6 +387,7 @@
 <script src="js/categories.js"></script>
 <!-- Sessions: add one script tag per session file -->
 <script src="drills/splash-and-ripple.js"></script>
+<script src="drills/shoot-and-recover.js"></script>
 <script>
 (function () {
   const SESSIONS = window.SESSIONS || [];
@@ -402,6 +403,8 @@
   const clipFormat = c => ((c.kicker || '').split('·')[1] || (/\d v \d/.test(c.title) ? c.title : '')).trim();
   const clipAge = (s, c) => (c.ages && c.ages.from) || (s.ages && s.ages.from) || null;
   const minAge = s => Math.min(...s.clips.map(c => clipAge(s, c) || 99), (s.ages && s.ages.from) || 99);
+  const maxAge = s => (s.ages && s.ages.to) || 99;
+  const ageLabel = s => `U${minAge(s)}${maxAge(s) < 99 ? '–U' + maxAge(s) : '+'}`;
   const clipLen = c => DrillEngine.compile(c).duration;
 
   // ---------- player ----------
@@ -489,7 +492,7 @@
           ${tr.area ? `<div><dt>Area</dt><dd>${esc(tr.area)}</dd></div>` : ''}
           ${tr.players ? `<div><dt>Players</dt><dd>${esc(tr.players)}</dd></div>` : ''}
           ${tr.equipment ? `<div><dt>Equipment</dt><dd>${esc(tr.equipment)}</dd></div>` : ''}
-          ${session.ages ? `<div><dt>Ages</dt><dd>U${session.ages.from}+${session.ages.note ? '. ' + esc(session.ages.note) : ''}</dd></div>` : ''}
+          ${session.ages ? `<div><dt>Ages</dt><dd>${session.ages.to ? `U${session.ages.from}–U${session.ages.to}` : `U${session.ages.from}+`}${session.ages.note ? '. ' + esc(session.ages.note) : ''}</dd></div>` : ''}
         </dl><ol>${(tr.setup || []).map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`,
       questions: () => `<ol class="qs">${session.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ol>`,
     };
@@ -508,7 +511,7 @@
     const total = session.clips.reduce((a, c) => a + clipLen(c), 0);
     const formats = [...new Set(session.clips.map(clipFormat).filter(Boolean))];
     $('s-facts').innerHTML = [
-      session.ages ? `<span>U${session.ages.from}+</span>` : '',
+      session.ages ? `<span>${session.ages.to ? `U${session.ages.from}–U${session.ages.to}` : `U${session.ages.from}+`}</span>` : '',
       `<span>${plural(session.clips.length, 'clip')} · about ${Math.ceil(total / 60)} min</span>`,
       formats.length ? `<span>${esc(formats[0])}${formats.length > 1 ? ' → ' + esc(formats[formats.length - 1]) : ''}</span>` : '',
       session.keyPhrase ? `<span class="kp">${esc(session.keyPhrase)}</span>` : '',
@@ -567,7 +570,7 @@
     const formats = [...new Set(clipRange(s))];
     return `<button class="scard" data-id="${esc(s.id)}">
       ${s.thumb ? `<img src="${esc(s.thumb)}" alt="">` : ''}
-      <div class="meta"><span><span class="age">U${minAge(s)}+</span></span><b>${esc(s.title)}</b>
+      <div class="meta"><span><span class="age">${ageLabel(s)}</span></span><b>${esc(s.title)}</b>
         <p>${esc(s.summary || s.subtitle || '')}</p>
         <span class="tag">${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
         <ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>
@@ -579,7 +582,7 @@
   })();
   function renderSection(cat) {
     const all = SESSIONS.filter(s => s.category === cat.id);
-    const list = all.filter(s => !teamAge || minAge(s) <= +teamAge);
+    const list = all.filter(s => !teamAge || (minAge(s) <= +teamAge && +teamAge <= maxAge(s)));
     $('age').value = teamAge;
     $('age').parentElement.hidden = !all.length;
     $('sec-crumb').textContent = cat.name;
