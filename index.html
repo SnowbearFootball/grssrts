@@ -55,8 +55,10 @@
   .hero h1 em { font-style: normal; color: var(--accent); }
   .tagline span, .tagline em { display: block; }
   /* audience line: green words, small orange dividers */
-  .audience { color: var(--text); display: flex; align-items: center; flex-wrap: wrap; }
-  .audience i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin: 0 .9em; }
+  .audience { color: var(--text); display: flex; align-items: center; gap: .9em; letter-spacing: .18em; }
+  .audience span:last-child { margin-right: -.18em; }   /* cancel the spacing after the final S, so it lines up exactly */
+  .audience.fit { justify-content: space-between; }
+  .audience i { flex: none; width: 2px; height: 1.1em; border-radius: 1px; background: var(--accent); }
   /* stepped tagline: each line steps further right */
   .tagline > :nth-child(2) { padding-left: 1.3em; }
   .tagline > :nth-child(3) { padding-left: 3.7em; }
@@ -251,7 +253,7 @@
   <main id="home">
     <section class="hero">
       <div>
-        <p class="eyebrow audience">Coaches<i aria-hidden="true"></i>Players<i aria-hidden="true"></i>Parents</p>
+        <p class="eyebrow audience" id="audience"><span>Coaches</span><i aria-hidden="true"></i><span>Players</span><i aria-hidden="true"></i><span>Parents</span></p>
         <h1 class="tagline"><span>Watch it.</span> <span>Coach it.</span> <em>Play it.</em></h1>
         <p>Short animated clips of what we practise at training. Each step shows the runs first as arrows, then the players move.</p>
         <div class="cta">
@@ -642,7 +644,26 @@
   }
   window.addEventListener('hashchange', route);
   route();
-  if (document.fonts) document.fonts.ready.then(() => player.draw());
+  // Stretch "Coaches | Players | Parents" so the final S lines up with the t of "Play it."
+  function fitAudience() {
+    const aud = $('audience'), play = document.querySelector('.tagline em');
+    if (!aud || !play || aud.offsetParent === null) return;
+    aud.classList.remove('fit'); aud.style.fontSize = ''; aud.style.width = 'max-content';
+    const text = play.firstChild, r = document.createRange();
+    r.setStart(text, 0); r.setEnd(text, Math.max(1, text.length - 1));   // "Play it" without the full stop
+    const target = r.getBoundingClientRect().right - aud.getBoundingClientRect().left;
+    const natural = aud.getBoundingClientRect().width;
+    if (natural > target) {   // narrow screens: shrink the line slightly so it fits
+      const fs = parseFloat(getComputedStyle(aud).fontSize);
+      aud.style.fontSize = Math.max(8, fs * target / natural) + 'px';
+    }
+    aud.style.width = target + 'px';
+    aud.classList.add('fit');
+  }
+  window.addEventListener('resize', fitAudience);
+  window.addEventListener('hashchange', () => setTimeout(fitAudience));
+  fitAudience();
+  if (document.fonts) document.fonts.ready.then(() => { player.draw(); fitAudience(); });
 })();
 </script>
 </body>
