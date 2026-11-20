@@ -7,56 +7,61 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" href="assets/logo/grss-rts-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
-<meta name="theme-color" content="#16351f">
+<meta name="theme-color" content="#f6eedd">
 <style>
   /* LOCAL-FONTS-START */
   @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-600.woff) format("woff"); font-weight: 500 600; }
   @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-700.woff) format("woff"); font-weight: 700 800; }
   /* LOCAL-FONTS-END */
 
-  /* Layout: one column, max 1100px. Home = sections + session cards; #<session-id> = the player.
-     Brand look is deliberately single-theme: forest green, burnt orange, cream. */
+  /* Layout: one column, max 1100px. Views: home · #<section> · #<session> · #<area>.
+     Brand look is deliberately single-theme: cream page, forest-green blocks, burnt-orange accents.
+     The video "screen" keeps the forest frame used in the clips. */
   :root {
-    --bg: #16351f; --panel: #1e4128; --edge: #2b5233; --field: #244a2e;
-    --accent: #d9622b; --accent-soft: #f0905e; --accent-dark: #122b19; --accent-mid: #8a4422;
-    --text: #f2e6cd; --sub: #ddd3be; --muted: #b4c2ae; --attack: #2fbf7f; --defend: #3b9ae1;
+    --bg: #f6eedd; --paper: #fffaf0; --edge: #e3d6ba; --cream: #f2e6cd;
+    --forest: #16351f; --forest-2: #1e4128; --forest-edge: #2b5233;
+    --text: #16351f; --sub: #3d5a44; --muted: #677a68;
+    --accent: #d9622b; --accent-ink: #a8461a; --accent-soft: #f0905e;
+    --attack: #2fbf7f; --defend: #3b9ae1;
     --font: Montserrat, "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif;
-    color-scheme: dark;
+    color-scheme: light;
   }
   * { box-sizing: border-box; }
   html { background: var(--bg); }
   body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 500; line-height: 1.5; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding-block: 18px 60px;
+  .wrap { max-width: 1100px; margin: 0 auto; padding-block: 16px 40px;
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   button, select, input { font: inherit; color: inherit; }
-  :focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; border-radius: 6px; }
-  a { color: var(--accent-soft); }
-
-  /* header */
-  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-    padding-bottom: 14px; border-bottom: 1px solid var(--edge); margin-bottom: 26px; }
-  .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; text-decoration: none; }
-  .brand img { height: 30px; width: auto; display: block; }
-  .brand small { color: var(--muted); font-size: 11px; letter-spacing: .32em; text-transform: uppercase; font-weight: 600; }
-  .back { background: none; border: 1px solid var(--edge); border-radius: 999px; padding: 7px 14px; cursor: pointer;
-    font-size: 14px; font-weight: 600; color: var(--sub); }
-  .back:hover { border-color: var(--accent); color: var(--text); }
-
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  a { color: var(--accent-ink); }
   h1, h2, h3 { text-wrap: balance; line-height: 1.15; }
-  .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--accent-soft); margin: 0 0 6px; }
+  .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--accent-ink); margin: 0 0 6px; }
+
+  /* header + navigation */
+  .top { display: grid; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--edge); margin-bottom: 26px; }
+  .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; text-decoration: none; }
+  .brand img { height: 40px; width: auto; display: block; }
+  .brand small { color: var(--muted); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; font-weight: 600; }
+  .nav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -4px; padding: 2px 4px 4px; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { flex: none; text-decoration: none; color: var(--sub); font-weight: 600; font-size: 14.5px; padding: 7px 12px; border-radius: 999px; border: 1px solid transparent; }
+  .nav a:hover { border-color: var(--edge); color: var(--text); }
+  .nav a[aria-current="page"] { background: var(--forest); color: var(--cream); }
+  .nav .sep { flex: none; width: 1px; background: var(--edge); margin: 6px 4px; }
 
   /* home */
-  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; margin-bottom: 44px; }
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; margin-bottom: 40px; }
   .hero h1 { font-size: clamp(32px, 6vw, 54px); margin: 0 0 12px; font-weight: 800; letter-spacing: -.01em; }
   .hero h1 em { font-style: normal; color: var(--accent); }
   .hero p { color: var(--sub); margin: 0; max-width: 46ch; font-size: 16px; }
-  .hero-art { background: var(--panel); border: 1px solid var(--edge); border-radius: 16px; padding: 14px; min-width: 0; }
+  .hero-art { background: var(--forest); border-radius: 16px; padding: 14px; margin: 0; min-width: 0; }
   .hero-art svg { display: block; width: 100%; height: auto; max-width: 100%; }
-  .hero-art figcaption { color: var(--muted); font-size: 13px; padding: 10px 4px 0; }
+  .hero-art figcaption { color: #c9d3c3; font-size: 13px; padding: 10px 4px 0; }
   .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
-  .btn { border-radius: 999px; padding: 11px 20px; font-weight: 700; font-size: 15px; cursor: pointer; border: 1px solid var(--edge); background: var(--field); }
+  .btn { border-radius: 999px; padding: 11px 20px; font-weight: 700; font-size: 15px; cursor: pointer; border: 1px solid var(--edge); background: var(--paper); text-decoration: none; color: var(--text); display: inline-block; }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
   .btn:hover { border-color: var(--accent); }
+  .btn[aria-disabled="true"] { opacity: .55; cursor: default; }
   /* mini pitch animation: arrows draw on, then the ball is passed along them */
   .mp-arrow { stroke-dasharray: 6 6; animation: mp-draw 7s infinite; }
   .mp-head { animation: mp-head 7s infinite; }
@@ -73,37 +78,30 @@
     .mp-arrow, .mp-head, .mp-ball, .mp-run { animation: none; }
     .mp-ball { offset-distance: 33.8%; }
   }
-  .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--accent-soft); }
 
   .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; }
   .section-head h2 { margin: 0; font-size: 24px; }
   .section-head p { margin: 0; color: var(--muted); font-size: 14px; }
-  .cats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 40px; }
-  .cat { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; text-align: left; cursor: pointer;
-    display: grid; gap: 6px; align-content: start; min-width: 0; }
-  .cat svg { width: 26px; height: 26px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .cat b { font-size: 16px; }
-  .cat small { color: var(--muted); font-size: 12.5px; line-height: 1.4; }
-  .cat .count { font-size: 12px; font-weight: 700; color: var(--sub); margin-top: 4px; }
-  .cat.empty .count { color: var(--muted); font-weight: 600; }
-  .cat[aria-pressed="true"] { border-color: var(--accent); background: var(--field); }
-  .cat:hover { border-color: var(--accent-mid); }
-
-  .sessions-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-bottom: 44px; }
-  .scard { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; text-align: left; padding: 0;
-    cursor: pointer; display: grid; min-width: 0; }
-  .scard img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; max-width: 100%; }
-  .scard .meta { padding: 12px 14px 16px; display: grid; gap: 4px; }
-  .scard b { font-size: 18px; }
-  .scard p { margin: 0; color: var(--sub); font-size: 14px; }
-  .scard ol { margin: 6px 0 0; padding-left: 20px; color: var(--muted); font-size: 13px; }
-  .scard:hover { border-color: var(--accent); }
-  .none { color: var(--muted); background: var(--panel); border: 1px dashed var(--edge); border-radius: 12px; padding: 22px; margin: 0 0 44px; }
+  .mains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 36px; }
+  .main-tile { background: var(--forest); color: var(--cream); border: 0; border-radius: 14px; padding: 18px; text-align: left; cursor: pointer;
+    display: grid; gap: 6px; align-content: start; min-width: 0; text-decoration: none; }
+  .main-tile svg { width: 30px; height: 30px; fill: none; stroke: var(--accent-soft); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .main-tile b { font-size: 20px; }
+  .main-tile small { color: #c9d3c3; font-size: 13.5px; line-height: 1.45; }
+  .main-tile .count { font-size: 12.5px; font-weight: 700; color: var(--accent-soft); margin-top: 6px; }
+  .main-tile:hover { background: var(--forest-2); }
+  .areas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px; }
+  .area-tile { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 4px; align-content: start;
+    text-decoration: none; color: var(--text); min-width: 0; }
+  .area-tile svg { width: 26px; height: 26px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .area-tile .tag { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--accent-ink); }
+  .area-tile b { font-size: 18px; }
+  .area-tile small { color: var(--sub); font-size: 13.5px; line-height: 1.45; }
+  .area-tile:hover { border-color: var(--accent); }
 
   .howto { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
-  .howto div { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; display: flex; gap: 12px; align-items: center; min-width: 0; }
-  .howto span { color: var(--sub); font-size: 14px; }
+  .howto div { background: var(--forest); color: var(--cream); border-radius: 12px; padding: 14px; display: flex; gap: 12px; align-items: center; min-width: 0; }
+  .howto span { font-size: 14px; }
   .dot { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 4px solid; flex: none; }
   .pill { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; border-radius: 99px; padding: 3px 8px; flex: none; letter-spacing: .04em; }
   .howto svg { flex: none; }
@@ -112,75 +110,110 @@
   .crumbs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 14px; }
   .crumbs a { color: var(--sub); text-decoration: none; border-bottom: 1px solid var(--edge); }
   .crumbs a:hover { color: var(--text); border-color: var(--accent); }
-  .crumbs span[aria-current] { color: var(--accent-soft); }
-  /* section view */
-  .section-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 26px; }
-  .section-top svg { width: 44px; height: 44px; flex: none; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-top: 6px; }
-  .section-top h1 { margin: 0 0 6px; font-size: clamp(30px, 5vw, 44px); }
-  .section-top p { margin: 0; color: var(--sub); max-width: 60ch; }
+  .crumbs span[aria-current] { color: var(--accent-ink); }
+
+  /* section + area pages */
+  .page-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 26px; }
+  .page-top svg { width: 44px; height: 44px; flex: none; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-top: 6px; }
+  .page-top h1 { margin: 0 0 6px; font-size: clamp(30px, 5vw, 44px); }
+  .page-top p { margin: 0; color: var(--sub); max-width: 60ch; }
+  .sessions-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-bottom: 30px; }
+  .scard { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; text-align: left; padding: 0;
+    cursor: pointer; display: grid; min-width: 0; }
+  .scard img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; max-width: 100%; }
+  .scard .meta { padding: 12px 14px 16px; display: grid; gap: 4px; }
+  .scard b { font-size: 18px; }
+  .scard p { margin: 0; color: var(--sub); font-size: 14px; }
+  .scard .tag { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
+  .scard ol { margin: 6px 0 0; padding-left: 20px; color: var(--muted); font-size: 13px; }
+  .scard:hover { border-color: var(--accent); }
+  .none { color: var(--sub); background: var(--paper); border: 1px dashed var(--edge); border-radius: 12px; padding: 22px; margin: 0 0 30px; }
+  .soon { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 30px; padding: 0; list-style: none; }
+  .soon li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; font-weight: 600; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+  .soon li span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; flex: none; }
+  .offers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 30px; }
+  .offer { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+  .offer.paid { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .offer h2 { margin: 0; font-size: 22px; }
+  .offer .price { font-weight: 800; font-size: 15px; color: var(--accent-ink); }
+  .offer.paid .price { color: var(--accent-soft); }
+  .offer p, .offer li { margin: 0; font-size: 14.5px; }
+  .offer.paid p, .offer.paid li { color: #d7dfd2; }
+  .offer ol, .offer ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+  .note { color: var(--muted); font-size: 13px; }
 
   /* session view */
   .session h1 { color: var(--accent); margin: 0 0 2px; font-size: clamp(28px, 5vw, 40px); }
   .sub { color: var(--muted); margin: 0 0 18px; }
   .clips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-  .chip { background: var(--panel); border: 1px solid var(--edge); border-radius: 999px; padding: 8px 14px; font-size: 15px; cursor: pointer; }
-  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
-  .stage { background: var(--bg); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; }
+  .chip { background: var(--paper); border: 1px solid var(--edge); border-radius: 999px; padding: 8px 14px; font-size: 15px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--forest); border-color: var(--forest); color: var(--cream); font-weight: 700; }
+  .stage { background: var(--forest); border-radius: 14px; overflow: hidden; }
   canvas { display: block; width: 100%; height: auto; cursor: pointer; }
-  .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px; background: var(--panel); border-top: 1px solid var(--edge); }
-  .controls button, .controls select { background: var(--field); border: 1px solid var(--edge); border-radius: 8px; padding: 8px 12px;
-    font-size: 15px; cursor: pointer; min-width: 44px; }
+  .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px; background: var(--forest-2); color: var(--cream); }
+  .controls button, .controls select { background: var(--forest); border: 1px solid var(--forest-edge); border-radius: 8px; padding: 8px 12px;
+    font-size: 15px; cursor: pointer; min-width: 44px; color: var(--cream); }
   .controls button.primary { background: var(--accent); border-color: var(--accent); font-weight: 700; min-width: 96px; color: #fff; }
   .controls input[type=range] { flex: 1 1 160px; accent-color: var(--accent); min-width: 120px; }
-  .time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; min-width: 88px; text-align: right; }
+  .time { color: #c9d3c3; font-variant-numeric: tabular-nums; font-size: 14px; min-width: 88px; text-align: right; }
   .dl { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 0; }
-  .dl a { color: var(--text); background: var(--field); border: 1px solid var(--edge); border-radius: 8px; padding: 9px 14px; text-decoration: none; font-size: 15px; }
+  .dl a { color: var(--text); background: var(--paper); border: 1px solid var(--edge); border-radius: 8px; padding: 9px 14px; text-decoration: none; font-size: 15px; }
   .dl a:hover { border-color: var(--accent); }
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 26px; }
-  .card { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 18px; min-width: 0; }
+  .card { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 18px; min-width: 0; }
   .card h2 { margin: 0 0 6px; color: var(--accent); font-size: 22px; text-transform: uppercase; }
   .card .lead { margin: 0 0 14px; }
-  .em { color: var(--accent-soft); font-weight: 700; }
+  .em { color: var(--accent-ink); font-weight: 700; }
   .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .col { border: 1px solid var(--edge); border-radius: 10px; padding: 12px; min-width: 0; }
-  .col h3 { margin: 0 0 6px; font-size: 14px; color: var(--accent-soft); text-transform: uppercase; letter-spacing: .03em; }
+  .col h3 { margin: 0 0 6px; font-size: 14px; color: var(--accent-ink); text-transform: uppercase; letter-spacing: .03em; }
   .col ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.55; }
   .col .trig { border-top: 1px solid var(--edge); margin-top: 10px; padding-top: 8px; }
-  .col .trig h4 { margin: 0 0 4px; font-size: 12px; color: var(--accent-soft); letter-spacing: .1em; }
+  .col .trig h4 { margin: 0 0 4px; font-size: 12px; color: var(--accent-ink); letter-spacing: .1em; }
   .col .trig ul { color: var(--sub); }
-  .phrase { margin-top: 14px; background: var(--accent-dark); border: 1px solid var(--accent-mid); border-radius: 10px; padding: 12px; text-align: center; }
+  .phrase { margin-top: 14px; background: var(--forest); border-radius: 10px; padding: 12px; text-align: center; }
   .phrase b { display: block; color: var(--accent-soft); font-size: 22px; }
-  .phrase span { color: var(--sub); font-size: 14px; }
-  footer { color: var(--muted); font-size: 13px; margin-top: 40px; border-top: 1px solid var(--edge); padding-top: 14px; }
+  .phrase span { color: #d7dfd2; font-size: 14px; }
+
+  footer { margin-top: 44px; background: var(--forest); color: #c9d3c3; border-radius: 16px; padding: 22px; display: grid; gap: 10px; font-size: 13px; }
+  footer img { height: 26px; width: auto; display: block; }
 
   @media (max-width: 860px) {
     .hero { grid-template-columns: 1fr; }
-    .cats { grid-template-columns: repeat(2, 1fr); }
+    .mains, .areas { grid-template-columns: 1fr; }
+    .offers { grid-template-columns: 1fr; }
   }
-  @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    /* phones: sections on the first row, the other areas on the second */
+    .nav { flex-wrap: wrap; overflow: visible; }
+    .nav .sep { flex-basis: 100%; height: 0; width: auto; margin: 0; background: none; }
+    .nav a { padding: 6px 10px; font-size: 14px; }
+  }
+  @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } .brand img { height: 32px; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <a class="brand" href="#" id="home-link" aria-label="GRSS | RTS home">
-      <img src="assets/logo/grss-rts-on-dark.svg" alt="GRSS | RTS"><small>Grassroots coaching clips</small>
+      <img src="assets/logo/grss-rts.svg" alt="GRSS | RTS"><small>Grassroots coaching clips</small>
     </a>
+    <nav class="nav" id="nav" aria-label="Main"></nav>
   </header>
 
   <!-- HOME -->
   <main id="home">
     <section class="hero">
       <div>
-        <p class="eyebrow">For players and parents</p>
+        <p class="eyebrow">For players, parents and coaches</p>
         <h1>Watch the drill. <em>Then play it.</em></h1>
         <p>Short animated clips of what we practise at training. Each step shows the runs first as arrows, then the players move.</p>
         <div class="cta">
-          <button class="btn primary" id="go-sessions">Choose a section</button>
+          <button class="btn primary" id="go-sections">Choose a section</button>
           <button class="btn" id="go-howto">How the clips work</button>
         </div>
       </div>
-      <figure class="hero-art" style="margin:0">
+      <figure class="hero-art">
         <svg viewBox="0 0 340 240" role="img" aria-label="A mini pitch: arrows show two passes, then the ball moves along them">
           <rect x="4" y="4" width="332" height="232" rx="12" fill="#eef0f2" stroke="#c9ced4" stroke-width="4"/>
           <rect x="140" y="0" width="60" height="14" fill="#fff" stroke="#1f1f1f" stroke-width="2.5"/>
@@ -205,14 +238,17 @@
       </figure>
     </section>
 
-    <div class="section-head" id="sections"><h2>Moments of the game</h2><p>Choose a section to see its sessions.</p></div>
-    <div class="cats" id="cats" role="group" aria-label="Sections"></div>
+    <div class="section-head" id="sections"><h2>Sessions</h2><p>Choose a section to see its sessions.</p></div>
+    <div class="mains" id="mains"></div>
+
+    <div class="section-head"><h2>More from GRSS | RTS</h2></div>
+    <div class="areas" id="areas"></div>
 
     <div class="section-head" id="howto"><h2>Reading the clips</h2></div>
     <div class="howto">
       <div><span class="dot" style="border-color:var(--attack)"></span><span>Green circles are attackers</span></div>
       <div><span class="dot" style="border-color:var(--defend)"></span><span>Blue circles are defenders</span></div>
-      <div><svg width="44" height="14" viewBox="0 0 44 14" aria-hidden="true"><path d="M2 7h32" stroke="var(--sub)" stroke-width="2.5" stroke-dasharray="5 5"/><path d="M42 7l-9-5v10z" fill="var(--sub)"/></svg><span>Dashed arrows show runs and passes</span></div>
+      <div><svg width="44" height="14" viewBox="0 0 44 14" aria-hidden="true"><path d="M2 7h32" stroke="#f2e6cd" stroke-width="2.5" stroke-dasharray="5 5"/><path d="M42 7l-9-5v10z" fill="#f2e6cd"/></svg><span>Dashed arrows show runs and passes</span></div>
       <div><span class="pill">SPLASH</span><span>Labels show each player's job</span></div>
     </div>
   </main>
@@ -220,11 +256,19 @@
   <!-- SECTION (e.g. #defending) -->
   <main id="section" hidden>
     <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><span aria-current="page" id="sec-crumb"></span></nav>
-    <div class="section-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="sec-icon"></svg>
-      <div><p class="eyebrow">Moment of the game</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
+    <div class="page-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="sec-icon"></svg>
+      <div><p class="eyebrow">Sessions</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
     <div class="section-head"><h2 id="sec-count"></h2></div>
     <div class="sessions-list" id="list"></div>
     <p class="none" id="sec-none" hidden></p>
+  </main>
+
+  <!-- AREA (e.g. #home-ground, #dugout, #kit-room) -->
+  <main id="area" hidden>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><span aria-current="page" id="area-crumb"></span></nav>
+    <div class="page-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="area-icon"></svg>
+      <div><p class="eyebrow" id="area-tag"></p><h1 id="area-title"></h1><p id="area-blurb"></p></div></div>
+    <div id="area-body"></div>
   </main>
 
   <!-- SESSION (e.g. #splash-and-ripple) -->
@@ -255,7 +299,10 @@
     <div class="cards" id="cards"></div>
   </main>
 
-  <footer>Tap the pitch to play or pause. Use ⏮ ⏭ to go step by step.</footer>
+  <footer>
+    <img src="assets/logo/grss-rts-on-dark.svg" alt="GRSS | RTS">
+    <span>Grassroots coaching clips for players, parents and coaches. Tap the pitch to play or pause; use ⏮ ⏭ to go step by step.</span>
+  </footer>
 </div>
 
 <script src="js/logo-data.js"></script>
@@ -267,6 +314,8 @@
 (function () {
   const SESSIONS = window.SESSIONS || [];
   const CATS = window.CATEGORIES || [];
+  const AREAS = window.AREAS || [];
+  const LINKS = window.SITE_LINKS || {};
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
@@ -354,8 +403,26 @@
     renderSession(); sync();
   }
 
-  // ---------- home + section pages ----------
+  // ---------- navigation ----------
+  function renderNav(active) {
+    $('nav').innerHTML = CATS.map(c => `<a href="#${c.id}"${active === c.id ? ' aria-current="page"' : ''}>${esc(c.name)}</a>`).join('') +
+      '<span class="sep" aria-hidden="true"></span>' +
+      AREAS.map(a => `<a href="#${a.id}"${active === a.id ? ' aria-current="page"' : ''}>${esc(a.name)}</a>`).join('');
+  }
+
+  // ---------- home ----------
   const clipRange = s => s.clips.map(c => (c.kicker || '').split('·')[1]).filter(Boolean).map(x => x.trim());
+  function renderHome() {
+    $('mains').innerHTML = CATS.map(c => {
+      const n = SESSIONS.filter(s => s.category === c.id).length;
+      return `<a class="main-tile" href="#${c.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg>
+        <b>${esc(c.name)}</b><small>${esc(c.blurb)}</small><span class="count">${n ? plural(n, 'session') : 'Coming soon'}</span></a>`;
+    }).join('');
+    $('areas').innerHTML = AREAS.map(a => `<a class="area-tile" href="#${a.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${a.icon}</svg>
+        <span class="tag">${esc(a.tag)}</span><b>${esc(a.name)}</b><small>${esc(a.blurb)}</small></a>`).join('');
+  }
+
+  // ---------- section pages ----------
   function sessionCard(s) {
     const formats = [...new Set(clipRange(s))];
     return `<button class="scard" data-id="${esc(s.id)}">
@@ -365,14 +432,6 @@
         <span class="tag">${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
         <ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>
       </div></button>`;
-  }
-  function renderHome() {
-    $('cats').innerHTML = CATS.map(c => {
-      const n = SESSIONS.filter(s => s.category === c.id).length;
-      return `<button class="cat${n ? '' : ' empty'}" data-cat="${c.id}">
-        <svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg><b>${esc(c.name)}</b><small>${esc(c.blurb)}</small>
-        <span class="count">${n ? plural(n, 'session') : 'Coming soon'}</span></button>`;
-    }).join('');
   }
   function renderSection(cat) {
     const list = SESSIONS.filter(s => s.category === cat.id);
@@ -384,32 +443,67 @@
     $('list').hidden = !list.length;
     $('list').innerHTML = list.map(sessionCard).join('');
     $('sec-none').hidden = !!list.length;
-    $('sec-none').textContent = `No ${cat.name.toLowerCase()} sessions yet. They'll appear here as they're added.`;
+    $('sec-none').innerHTML = `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`;
   }
+
+  // ---------- area pages ----------
+  const linkBtn = (url, label, primary) => url
+    ? `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`
+    : `<span class="btn${primary ? ' primary' : ''}" aria-disabled="true">Opening soon</span>`;
+  const soonList = items => `<ul class="soon">${items.map(i => `<li>${esc(i)}<span>Coming soon</span></li>`).join('')}</ul>`;
+  const AREA_BODY = {
+    'home-ground': a => `<div class="section-head"><h2>Coming soon</h2><p>Short drills you can do on your own, with a clip for each.</p></div>${soonList(a.plans)}
+      <p class="note">Tip for parents: five minutes a day with a ball against a wall does more than an hour once a week.</p>`,
+    'dugout': () => `<div class="offers">
+        <section class="offer"><p class="price">Free</p><h2>Suggest a topic</h2>
+          <p>Tell us what your team struggles with. Popular topics become new sessions in the library, free for everyone.</p>
+          <ul><li>Your club and age group</li><li>Which section: goalkeeping, defending or attacking</li><li>The problem, e.g. "we all chase the ball"</li></ul>
+          <div>${linkBtn(LINKS.suggestTopic, 'Suggest a topic', false)}</div></section>
+        <section class="offer paid"><p class="price">From £40</p><h2>Your session, animated</h2>
+          <p>Send us your own session plan or diagram and we'll turn it into animated clips for your players and parents.</p>
+          <ol><li>Send your plan, notes or a photo of your diagram</li><li>We animate it, step by step, arrows first</li><li>You get the clips for your team's WhatsApp group</li></ol>
+          <div>${linkBtn(LINKS.bespokeSession, 'Request a session', true)}</div></section>
+      </div>
+      <p class="note">Please only send plans that are your own work. We never ask for or publish children's names or photos.</p>`,
+    'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
+      <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
+  };
+  function renderArea(a) {
+    $('area-crumb').textContent = a.name;
+    $('area-icon').innerHTML = a.icon;
+    $('area-tag').textContent = a.tag;
+    $('area-title').textContent = a.name;
+    $('area-blurb').textContent = a.blurb;
+    $('area-body').innerHTML = (AREA_BODY[a.id] || (() => ''))(a);
+  }
+
   document.addEventListener('click', e => {
     const card = e.target.closest('[data-id]');
-    if (card) { location.hash = card.dataset.id; return; }
-    const c = e.target.closest('[data-cat]');
-    if (c) { location.hash = c.dataset.cat; }
+    if (card) location.hash = card.dataset.id;
   });
-  $('go-sessions').onclick = () => $('sections').scrollIntoView({ behavior: 'smooth' });
+  $('go-sections').onclick = () => $('sections').scrollIntoView({ behavior: 'smooth' });
   $('go-howto').onclick = () => $('howto').scrollIntoView({ behavior: 'smooth' });
   $('home-link').onclick = e => { e.preventDefault(); location.hash = ''; };
 
-  // ---------- routing: '' = home, #<section-id> = section page, #<session-id> = player ----------
+  // ---------- routing: '' home · #<section> · #<area> · #<session> ----------
+  const VIEWS = ['home', 'section', 'area', 'session'];
+  function show(view) { VIEWS.forEach(v => { $(v).hidden = v !== view; }); }
   function route() {
     const id = location.hash.replace('#', '');
     const s = SESSIONS.find(x => x.id === id);
-    const cat = !s && CATS.find(c => c.id === id);
-    $('home').hidden = !!(s || cat); $('section').hidden = !cat; $('session').hidden = !s;
+    const cat = CATS.find(c => c.id === id);
+    const area = AREAS.find(a => a.id === id);
     if (s) {
+      show('session');
       if (s !== session) { session = s; clip = s.clips[0]; }
       loadClip();
+      renderNav(s.category);
       document.title = `${s.title} · GRSS | RTS`;
     } else {
       setPlaying(false);
-      if (cat) { renderSection(cat); document.title = `${cat.name} · GRSS | RTS`; }
-      else { renderHome(); document.title = 'GRSS | RTS'; }
+      if (cat) { show('section'); renderSection(cat); renderNav(cat.id); document.title = `${cat.name} · GRSS | RTS`; }
+      else if (area) { show('area'); renderArea(area); renderNav(area.id); document.title = `${area.name} · GRSS | RTS`; }
+      else { show('home'); renderHome(); renderNav(null); document.title = 'GRSS | RTS'; }
     }
     window.scrollTo(0, 0);
   }

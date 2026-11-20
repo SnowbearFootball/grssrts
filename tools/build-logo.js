@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /*
- * Builds the GRSS | RTS logo files from the Montserrat font + the football mark.
+ * Builds the GRSS | RTS logo: "GRSS" then "RTS" standing in an angled goal.
+ * The goal's left post is the divider; the back frame and net run back up and to the right,
+ * with the net drawn in perspective on each panel (roof, side, back).
  * Letters are converted to outlines, so the SVGs look identical everywhere.
  *
  *   npm i opentype.js@1.3.4   (once)
@@ -15,81 +17,129 @@ const ROOT = path.resolve(__dirname, '..');
 
 const COLORS = { forest: '#16351f', orange: '#d9622b', cream: '#f2e6cd', white: '#ffffff' };
 const font = opentype.loadSync(path.join(ROOT, 'assets/fonts/montserrat-700.woff'));
-const SIZE = 100, TRACK = 0.09 * SIZE, BASE = 100;
+const EM = 100, TRACK = 0.09 * EM, BASE = 100;
+const f2 = n => +n.toFixed(2);
 
-// Text with letter-spacing → one SVG path string
 function word(text, x0) {
   let x = x0, d = '';
   for (const ch of text) {
     const g = font.charToGlyph(ch);
-    d += g.getPath(x, BASE, SIZE).toPathData(2);
-    x += (g.advanceWidth / font.unitsPerEm) * SIZE + TRACK;
+    d += g.getPath(x, BASE, EM).toPathData(2);
+    x += (g.advanceWidth / font.unitsPerEm) * EM + TRACK;
   }
   return { d, end: x - TRACK };
 }
+const capH = (font.charToGlyph('H').getBoundingBox().y2 / font.unitsPerEm) * EM;
 
-// Football mark in a 48x48 box (classic ball, tilted).
-function footballGeom() {
-  const cx = 24 - 1.6, cy = 24 - 1.2, rot = -Math.PI / 2 + 0.28, rc = 7.4, dd = 17.2, ro = 6.6;
-  const poly = (x, y, r, a0) => Array.from({ length: 5 }, (_, i) => { const a = a0 + i * 2 * Math.PI / 5; return [x + r * Math.cos(a), y + r * Math.sin(a)]; });
-  const P = pts => 'M' + pts.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join('L') + 'Z';
-  const centre = poly(cx, cy, rc, rot);
-  const outers = centre.map((v, i) => { const a = rot + i * 2 * Math.PI / 5; return poly(cx + dd * Math.cos(a), cy + dd * Math.sin(a), ro, a + Math.PI); });
-  const seams = [];
-  centre.forEach((v, i) => seams.push([v, outers[i][0]]));
-  outers.forEach((pg, i) => {
-    const nx = outers[(i + 1) % 5]; let best = null;
-    pg.forEach(p => nx.forEach(q => { const k = Math.hypot(p[0] - q[0], p[1] - q[1]); if (!best || k < best[2]) best = [p, q, k]; }));
-    seams.push([best[0], best[1]]);
-  });
-  return {
-    R: 21.5, ringW: 2.2, seamW: 1.6,
-    outer: outers.map(P).join(''),
-    centre: P(centre),
-    seams: seams.map(([a, b]) => `M${a[0].toFixed(2)} ${a[1].toFixed(2)}L${b[0].toFixed(2)} ${b[1].toFixed(2)}`).join(''),
-  };
+// ---------- goal geometry (all in font units, EM = 100) ----------
+const G = {
+  pw: 5.5,          // front post / crossbar thickness
+  ox: 22, oy: 16,   // back frame offset: right and up
+  padL: 20, padR: 12, padTop: 18, below: 5,
+  cell: 13,         // net mesh size
+  net: 0.5, back: 0.28,
+};
+function goalGeometry(x0, rtsWidth) {
+  const h = G.pw / 2;
+  const W = G.padL + rtsWidth + G.padR;
+  const L = x0 + h, R = x0 + W - h, T = BASE - capH - G.padTop + h, B = BASE + G.below;
+  const bL = L + G.ox, bR = R + G.ox, bT = T - G.oy, bB = B - G.oy;
+  return { L, R, T, B, bL, bR, bT, bB, rtsX: x0 + G.padL };
 }
-const BALL = footballGeom();
+const lerp = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
+// Diamond mesh drawn in the plane of a panel (quad p0-p1 / p3-p2), returned as one path string
+function mesh(p0, p1, p2, p3) {
+  const nu = Math.max(2, Math.round(Math.max(dist(p0, p1), dist(p3, p2)) / G.cell));
+  const nv = Math.max(1, Math.round(Math.max(dist(p0, p3), dist(p1, p2)) / G.cell));
+  const P = (u, v) => lerp(lerp(p0, p1, u), lerp(p3, p2, u), v);
+  let d = '';
+  const seg = pts => { if (pts.length > 1) { const a = pts[0], b = pts[pts.length - 1]; d += `M${f2(a[0])} ${f2(a[1])}L${f2(b[0])} ${f2(b[1])}`; } };
+  for (let k = -nv; k <= nu; k++) {
+    const a = [], b = [];
+    for (let j = 0; j <= nv; j++) {
+      const u1 = (k + j) / nu, u2 = (k + nv - j) / nu, v = j / nv;
+      if (u1 >= 0 && u1 <= 1) a.push(P(u1, v));
+      if (u2 >= 0 && u2 <= 1) b.push(P(u2, v));
+    }
+    seg(a); seg(b);
+  }
+  return d;
+}
+const line = (a, b) => `M${f2(a[0])} ${f2(a[1])}L${f2(b[0])} ${f2(b[1])}`;
 
-function ballSvg(colour, id) {
-  return `<defs><clipPath id="${id}"><circle cx="24" cy="24" r="${BALL.R}"/></clipPath></defs>` +
-    `<g clip-path="url(#${id})"><path d="${BALL.outer}" fill="${colour}"/><path d="${BALL.seams}" stroke="${colour}" stroke-width="${BALL.seamW}" stroke-linecap="round" fill="none"/></g>` +
-    `<path d="${BALL.centre}" fill="${colour}"/><circle cx="24" cy="24" r="${BALL.R}" fill="none" stroke="${colour}" stroke-width="${BALL.ringW}"/>`;
+// Strokes making up the goal: [{ d, w, op }] (net layers first, front frame last)
+function goalStrokes(g, withNet) {
+  const { L, R, T, B, bL, bR, bT, bB } = g;
+  const sw = EM / 64;
+  const s = [];
+  if (withNet) {
+    s.push({ d: mesh([bL, bT], [bR, bT], [bR, bB], [bL, bB]) + mesh([L, T], [L, B], [bL, bB], [bL, bT]), w: sw, op: G.net * G.back });
+    s.push({ d: mesh([L, T], [R, T], [bR, bT], [bL, bT]) + mesh([R, T], [R, B], [bR, bB], [bR, bT]), w: sw, op: G.net });
+  }
+  s.push({ d: line([bL, bT], [bR, bT]) + line([bR, bT], [bR, bB]), w: sw * 1.8, op: 0.8 });
+  s.push({ d: line([bL, bT], [bL, bB]), w: sw * 1.4, op: 0.45 });
+  s.push({ d: line([L, T], [bL, bT]), w: sw * 1.6, op: 0.75 });
+  s.push({ d: line([R, T], [bR, bT]), w: sw * 1.8, op: 0.85 });
+  s.push({ d: line([R, B], [bR, bB]), w: sw * 1.4, op: 0.6 });
+  s.push({ d: line([bL, bB], [bR, bB]), w: sw * 1.2, op: 0.4 });
+  s.push({ d: `M${f2(L)} ${f2(B)}V${f2(T)}H${f2(R)}V${f2(B)}`, w: G.pw, op: 1, join: 'miter' });
+  return s;
 }
 
-// Layout: GRSS · ball · RTS
-const capH = (font.charToGlyph('H').getBoundingBox().y2 / font.unitsPerEm) * SIZE;
+// ---------- wordmark layout ----------
 const g1 = word('GRSS', 0);
-const ballH = 0.74 * SIZE, ballX = g1.end + 0.12 * SIZE, ballY = BASE - capH / 2 - ballH / 2, ballScale = ballH / 48;
-const g2 = word('RTS', ballX + ballH + 0.2 * SIZE);
-const top = BASE - capH, pad = 2;
-const VB = { x: -pad, y: Math.min(top, ballY) - pad, w: g2.end + pad * 2, h: Math.max(BASE, ballY + ballH) - Math.min(top, ballY) + pad * 2 };
+const goalX = g1.end + 0.16 * EM;
+const rtsProbe = word('RTS', 0);
+const goal = goalGeometry(goalX, rtsProbe.end);
+const g2 = word('RTS', goal.rtsX);
+const pad = 3;
+const VB = { x: -pad, y: f2(goal.bT - pad), w: f2(goal.bR + pad * 2), h: f2(goal.B - goal.bT + pad * 2) };
 
-function wordmark(cGrss, cBall, cRts, label) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${VB.x.toFixed(1)} ${VB.y.toFixed(1)} ${VB.w.toFixed(1)} ${VB.h.toFixed(1)}" role="img" aria-label="GRSS | RTS">
+// stand-alone goal + RTS (for the square icon)
+const iconGoal = goalGeometry(0, rtsProbe.end);
+const iconRts = word('RTS', iconGoal.rtsX);
+
+function strokesSvg(strokes, colour) {
+  return strokes.map(s => `<path d="${s.d}" fill="none" stroke="${colour}" stroke-width="${f2(s.w)}" stroke-linecap="${s.join ? 'butt' : 'round'}"${s.join ? ' stroke-linejoin="miter"' : ''}${s.op < 1 ? ` opacity="${s.op}"` : ''}/>`).join('\n');
+}
+function wordmark({ grss, goal: cGoal, rts, net = true, label }) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${VB.x} ${VB.y} ${VB.w} ${VB.h}" role="img" aria-label="GRSS | RTS">
 <title>GRSS | RTS${label ? ' (' + label + ')' : ''}</title>
-<path d="${g1.d}" fill="${cGrss}"/>
-<g transform="translate(${ballX.toFixed(2)} ${ballY.toFixed(2)}) scale(${ballScale.toFixed(4)})">${ballSvg(cBall, 'b')}</g>
-<path d="${g2.d}" fill="${cRts}"/>
+<path d="${g1.d}" fill="${grss}"/>
+${strokesSvg(goalStrokes(goal, net), cGoal)}
+<path d="${g2.d}" fill="${rts}"/>
 </svg>\n`;
 }
 
 const out = path.join(ROOT, 'assets/logo');
 fs.mkdirSync(out, { recursive: true });
+for (const f of fs.readdirSync(out)) if (/\.(svg|png)$/.test(f)) fs.unlinkSync(path.join(out, f));
 const C = COLORS;
-fs.writeFileSync(path.join(out, 'grss-rts.svg'), wordmark(C.forest, C.forest, C.orange, 'main'));
-fs.writeFileSync(path.join(out, 'grss-rts-on-dark.svg'), wordmark(C.cream, C.cream, C.orange, 'on dark'));
-fs.writeFileSync(path.join(out, 'grss-rts-forest.svg'), wordmark(C.forest, C.forest, C.forest, 'one colour'));
-fs.writeFileSync(path.join(out, 'grss-rts-white.svg'), wordmark(C.white, C.white, C.white, 'white'));
-fs.writeFileSync(path.join(out, 'grss-rts-icon.svg'),
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="GRSS | RTS"><title>GRSS | RTS icon</title>
-<rect width="512" height="512" rx="112" fill="${C.forest}"/>
-<g transform="translate(86 86) scale(7.0833)">${ballSvg(C.cream, 'i')}</g></svg>\n`);
+fs.writeFileSync(path.join(out, 'grss-rts.svg'), wordmark({ grss: C.forest, goal: C.forest, rts: C.orange, label: 'main' }));
+fs.writeFileSync(path.join(out, 'grss-rts-on-dark.svg'), wordmark({ grss: C.cream, goal: C.cream, rts: C.orange, label: 'on dark' }));
+fs.writeFileSync(path.join(out, 'grss-rts-forest.svg'), wordmark({ grss: C.forest, goal: C.forest, rts: C.forest, label: 'one colour' }));
+fs.writeFileSync(path.join(out, 'grss-rts-white.svg'), wordmark({ grss: C.white, goal: C.white, rts: C.white, label: 'white' }));
+fs.writeFileSync(path.join(out, 'grss-rts-kit.svg'), wordmark({ grss: C.forest, goal: C.forest, rts: C.orange, net: false, label: 'simplified, for embroidery' }));
+fs.writeFileSync(path.join(out, 'grss-rts-kit-white.svg'), wordmark({ grss: C.white, goal: C.white, rts: C.white, net: false, label: 'simplified, white' }));
 
-// Data for the canvas video engine (drawn with Path2D)
+// Square icon: RTS in the goal, cream on forest
+{
+  const gx0 = -3, gy0 = iconGoal.bT - 3, gw = iconGoal.bR + 6, gh = iconGoal.B - iconGoal.bT + 6;
+  const S = 512, inner = 380, scale = inner / Math.max(gw, gh);
+  const tx = (S - gw * scale) / 2 - gx0 * scale, ty = (S - gh * scale) / 2 - gy0 * scale;
+  fs.writeFileSync(path.join(out, 'grss-rts-icon.svg'),
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${S} ${S}" role="img" aria-label="GRSS | RTS"><title>GRSS | RTS icon</title>
+<rect width="${S}" height="${S}" rx="112" fill="${C.forest}"/>
+<g transform="translate(${f2(tx)} ${f2(ty)}) scale(${f2(scale)})">
+${strokesSvg(goalStrokes(iconGoal, true), C.cream)}
+<path d="${iconRts.d}" fill="${C.orange}"/>
+</g></svg>\n`);
+}
+
+// Data for the canvas video engine (drawn with Path2D, on-dark colours)
 fs.writeFileSync(path.join(ROOT, 'js/logo-data.js'),
   `// Generated by tools/build-logo.js — do not edit by hand.\nwindow.GRSS_LOGO = ${JSON.stringify({
-    vb: VB, grss: g1.d, rts: g2.d, colors: C,
-    ball: { x: ballX, y: ballY, scale: ballScale, ...BALL },
+    vb: VB, grss: g1.d, rts: g2.d, goal: goalStrokes(goal, true), colors: C,
   })};\n`);
 console.log('logo files written', VB);

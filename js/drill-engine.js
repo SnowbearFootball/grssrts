@@ -685,19 +685,16 @@
     ctx.scale(s, s);
     ctx.fillStyle = C.text;
     ctx.fill(P2(L.grss));
-    const B = L.ball;
-    ctx.save();
-    ctx.translate(B.x, B.y);
-    ctx.scale(B.scale, B.scale);
-    ctx.save();
-    ctx.beginPath(); ctx.arc(24, 24, B.R, 0, Math.PI * 2); ctx.clip();
-    ctx.fill(P2(B.outer));
-    ctx.strokeStyle = C.text; ctx.lineWidth = B.seamW; ctx.lineCap = 'round';
-    ctx.stroke(P2(B.seams));
-    ctx.restore();
-    ctx.fill(P2(B.centre));
-    ctx.beginPath(); ctx.arc(24, 24, B.R, 0, Math.PI * 2); ctx.lineWidth = B.ringW; ctx.stroke();
-    ctx.restore();
+    // the goal: net layers, back frame, then the front posts and crossbar
+    ctx.strokeStyle = C.text;
+    (L.goal || []).forEach(st => {
+      ctx.globalAlpha = st.op;
+      ctx.lineWidth = st.w;
+      ctx.lineCap = st.join ? 'butt' : 'round';
+      ctx.lineJoin = st.join || 'round';
+      ctx.stroke(P2(st.d));
+    });
+    ctx.globalAlpha = 1;
     ctx.fillStyle = C.accent;
     ctx.fill(P2(L.rts));
     ctx.restore();
