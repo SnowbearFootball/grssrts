@@ -38,16 +38,17 @@
   .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--accent-ink); margin: 0 0 6px; }
 
   /* header + navigation */
-  .top { display: grid; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--edge); margin-bottom: 26px; }
-  .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; text-decoration: none; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap;
+    padding-bottom: 12px; border-bottom: 1px solid var(--edge); margin-bottom: 26px; }
+  .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-decoration: none; }
   .brand img { height: 40px; width: auto; display: block; }
   .brand small { color: var(--muted); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; font-weight: 600; }
-  .nav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -4px; padding: 2px 4px 4px; }
+  .nav { display: flex; gap: 2px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
   .nav::-webkit-scrollbar { display: none; }
-  .nav a { flex: none; text-decoration: none; color: var(--sub); font-weight: 600; font-size: 14.5px; padding: 7px 12px; border-radius: 999px; border: 1px solid transparent; }
+  .nav a { flex: none; text-decoration: none; color: var(--sub); font-weight: 600; font-size: 13.5px; padding: 5px 9px; border-radius: 999px; border: 1px solid transparent; }
   .nav a:hover { border-color: var(--edge); color: var(--text); }
   .nav a[aria-current="page"] { background: var(--forest); color: var(--cream); }
-  .nav .sep { flex: none; width: 1px; background: var(--edge); margin: 6px 4px; }
+  .nav .sep { flex: none; width: 1px; height: 16px; background: var(--edge); margin: 0 4px; }
 
   /* home */
   .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; margin-bottom: 40px; }
@@ -56,6 +57,7 @@
   .tagline span, .tagline em { display: block; }
   /* audience line: green words, small orange dividers */
   .audience { color: var(--text); display: flex; align-items: center; gap: .9em; letter-spacing: .18em; }
+  .hero .audience { margin-bottom: 22px; }
   .audience span:last-child { margin-right: -.18em; }   /* cancel the spacing after the final S, so it lines up exactly */
   .audience.fit { justify-content: space-between; }
   .audience i { flex: none; width: 2px; height: 1.1em; border-radius: 1px; background: var(--accent); }
@@ -231,11 +233,21 @@
     .progression { grid-template-columns: 1fr 1fr; }
     .train { grid-template-columns: 1fr; }
   }
+  .menu-btn { display: none; }
   @media (max-width: 640px) {
-    /* phones: sections on the first row, the other areas on the second */
-    .nav { flex-wrap: wrap; overflow: visible; }
-    .nav .sep { flex-basis: 100%; height: 0; width: auto; margin: 0; background: none; }
-    .nav a { padding: 6px 10px; font-size: 14px; }
+    /* phones: logo left, Menu button right, menu drops down underneath */
+    .top { position: relative; flex-wrap: nowrap; margin-bottom: 20px; }
+    .brand small { display: none; }
+    .brand img { height: 30px; }
+    .menu-btn { display: inline-flex; align-items: center; gap: 6px; flex: none; background: var(--paper); border: 1px solid var(--edge);
+      border-radius: 999px; padding: 7px 14px; font-weight: 700; font-size: 14px; cursor: pointer; }
+    .menu-btn[aria-expanded="true"] { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+    .nav { display: none; position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; flex-direction: column; align-items: stretch;
+      background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 6px; min-width: 200px;
+      box-shadow: 0 10px 30px rgba(22,53,31,.15); }
+    .nav.open { display: flex; }
+    .nav a { font-size: 15px; padding: 9px 12px; border-radius: 9px; }
+    .nav .sep { width: auto; height: 1px; margin: 4px 8px; }
   }
   @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } .brand img { height: 32px; } }
 </style>
@@ -246,6 +258,7 @@
     <a class="brand" href="#" id="home-link" aria-label="GRSS | RTS home">
       <img src="assets/logo/grss-rts.svg" alt="GRSS | RTS"><small>Grassroots coaching clips</small>
     </a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav"><span aria-hidden="true">☰</span> Menu</button>
     <nav class="nav" id="nav" aria-label="Main"></nav>
   </header>
 
@@ -619,6 +632,16 @@
   $('go-sections').onclick = () => $('sections').scrollIntoView({ behavior: 'smooth' });
   $('go-howto').onclick = () => $('howto').scrollIntoView({ behavior: 'smooth' });
   $('home-link').onclick = e => { e.preventDefault(); location.hash = ''; };
+  const closeMenu = () => { $('nav').classList.remove('open'); $('menu-btn').setAttribute('aria-expanded', 'false'); };
+  $('menu-btn').onclick = e => {
+    e.stopPropagation();
+    const open = !$('nav').classList.contains('open');
+    $('nav').classList.toggle('open', open);
+    $('menu-btn').setAttribute('aria-expanded', String(open));
+  };
+  document.addEventListener('click', e => { if (!e.target.closest('#nav')) closeMenu(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  window.addEventListener('hashchange', closeMenu);
 
   // ---------- routing: '' home · #<section> · #<area> · #<session> ----------
   const VIEWS = ['home', 'section', 'area', 'session'];
