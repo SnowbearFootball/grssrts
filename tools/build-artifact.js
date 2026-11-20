@@ -40,6 +40,8 @@ html = html.replace(/<script src="([^"]+)"><\/script>/g, (m, src) => {
   return `<script>/* ${src} */\n${code}</script>`;
 });
 html = html.replace('<script>/*', '<script>window.NO_DOWNLOADS = true;</script>\n<script>/*');
+// drop the MP4 download link entirely (it would do nothing on the hosted page)
+html = html.replace(/<a href="\$\{esc\(clip\.video\)\}" download>[^<]*<\/a>/, '');
 
 // inline images referenced by the page and by session data (thumbnails)
 html = html.replace(/(["'])(assets\/[^"']+\.(?:svg|jpg|png))\1/g, (m, q, rel) => q + dataUri(rel) + q);
