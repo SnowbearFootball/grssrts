@@ -4,39 +4,43 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GRSS | RTS</title>
+<link rel="icon" href="assets/logo/grss-rts-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<meta name="theme-color" content="#16351f">
 <style>
+  @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-600.woff) format("woff"); font-weight: 600; }
+  @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-700.woff) format("woff"); font-weight: 700 800; }
   :root {
-    --bg: #0a0a0a; --panel: #1a1a1a; --edge: #2a2a2a; --accent: #4f9a3c; --accent-soft: #8cc46a;
-    --accent-dark: #132611; --accent-mid: #2f5f27; --text: #f5f5f5; --muted: #a3a3a3;
+    /* GRSS | RTS: forest green, burnt orange, cream */
+    --bg: #16351f; --panel: #1e4128; --edge: #2b5233; --field: #244a2e; --accent: #d9622b; --accent-soft: #f0905e;
+    --accent-dark: #122b19; --accent-mid: #8a4422; --text: #f2e6cd; --sub: #ddd3be; --muted: #b4c2ae;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text);
-    font-family: "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif; }
+    font-family: Montserrat, "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif; font-weight: 600; }
   .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
   .brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 18px;
     padding-bottom: 12px; border-bottom: 1px solid var(--edge); }
-  .brand b { font-size: 24px; font-weight: 800; letter-spacing: 1.5px; }
-  .brand b { color: var(--accent-soft); }
-  .brand b span { color: var(--text); margin: 0 4px; }
-  .brand b i { font-style: normal; color: var(--accent); }
-  .brand small { color: var(--muted); font-size: 14px; }
+  .brand { align-items: center; gap: 14px; }
+  .brand img { height: 30px; width: auto; display: block; }
+  .brand small { color: var(--muted); font-size: 12px; letter-spacing: .35em; text-transform: uppercase; }
   h1 { color: var(--accent); margin: 4px 0 2px; font-size: clamp(26px, 5vw, 40px); letter-spacing: .5px; }
   .sub { color: var(--muted); margin: 0 0 18px; }
   .sessions, .clips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
   .chip { background: var(--panel); color: var(--text); border: 1px solid var(--edge); border-radius: 999px;
     padding: 8px 14px; font: inherit; font-size: 15px; cursor: pointer; }
   .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
-  .stage { background: #000; border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; }
+  .stage { background: var(--bg); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; }
   canvas { display: block; width: 100%; height: auto; cursor: pointer; }
   .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px;
     background: var(--panel); border-top: 1px solid var(--edge); }
-  .controls button, .controls select { background: #262626; color: var(--text); border: 1px solid #333;
+  .controls button, .controls select { background: var(--field); color: var(--text); border: 1px solid var(--edge);
     border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 15px; cursor: pointer; min-width: 44px; }
   .controls button.primary { background: var(--accent); border-color: var(--accent); font-weight: 700; min-width: 84px; }
   .controls input[type=range] { flex: 1 1 160px; accent-color: var(--accent); min-width: 120px; }
   .time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; min-width: 88px; text-align: right; }
   .dl { display: inline-flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 26px; }
-  .dl a { color: #fff; background: #262626; border: 1px solid #333; border-radius: 8px; padding: 9px 14px;
+  .dl a { color: var(--text); background: var(--field); border: 1px solid var(--edge); border-radius: 8px; padding: 9px 14px;
     text-decoration: none; font-size: 15px; }
   .dl a:hover { border-color: var(--accent); }
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
@@ -47,22 +51,22 @@
   .em { color: var(--accent-soft); font-weight: 700; }
   .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } }
-  .col { border: 1px solid #333; border-radius: 10px; padding: 12px; }
+  .col { border: 1px solid var(--edge); border-radius: 10px; padding: 12px; }
   .col h3 { margin: 0 0 6px; font-size: 15px; color: var(--accent-soft); text-transform: uppercase; }
   .col ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.55; }
-  .col .trig { border-top: 1px solid #333; margin-top: 10px; padding-top: 8px; }
+  .col .trig { border-top: 1px solid var(--edge); margin-top: 10px; padding-top: 8px; }
   .col .trig h4 { margin: 0 0 4px; font-size: 13px; color: var(--accent-soft); letter-spacing: .5px; }
-  .col .trig ul { color: #cfcfcf; }
+  .col .trig ul { color: var(--sub); }
   .phrase { margin-top: 14px; background: var(--accent-dark); border: 1px solid var(--accent-mid); border-radius: 10px;
     padding: 12px; text-align: center; }
   .phrase b { display: block; color: var(--accent-soft); font-size: 22px; }
-  .phrase span { color: #d4d4d4; font-size: 14px; }
-  footer { color: #666; font-size: 13px; margin-top: 30px; }
+  .phrase span { color: var(--sub); font-size: 14px; }
+  footer { color: var(--muted); font-size: 13px; margin-top: 30px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brand"><b>GRSS<span>|</span><i>RTS</i></b><small>Grassroots coaching clips</small></div>
+  <div class="brand"><img src="assets/logo/grss-rts-on-dark.svg" alt="GRSS | RTS"><small>Grassroots coaching clips</small></div>
   <h1 id="title">Coaching Clips</h1>
   <p class="sub" id="subtitle">Watch the drill, then try it at training.</p>
 
@@ -92,6 +96,7 @@
   <footer>Tap the pitch to play or pause. Each step shows the arrows first, then the movement.</footer>
 </div>
 
+<script src="js/logo-data.js"></script>
 <script src="js/drill-engine.js"></script>
 <!-- Sessions: add one script tag per session file -->
 <script src="drills/splash-and-ripple.js"></script>
@@ -200,6 +205,7 @@
   }
 
   load();
+  if (document.fonts) document.fonts.ready.then(() => player.draw());
   window.__player = player; // used by tools/render-videos.js
 })();
 </script>

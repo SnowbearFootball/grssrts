@@ -26,6 +26,8 @@ const [onlySession, onlyClip] = args.filter(a => !a.startsWith('--'));
   const page = await browser.newPage();
   await page.goto('file://' + path.join(ROOT, 'index.html'));
   await page.waitForFunction(() => window.__player);
+  // make sure the brand font is loaded before drawing frames
+  await page.evaluate(() => Promise.all([document.fonts.load('600 20px Montserrat'), document.fonts.load('700 20px Montserrat')]).then(() => document.fonts.ready));
 
   const list = await page.evaluate(() => window.SESSIONS.map(s => ({ id: s.id, clips: s.clips.map(c => ({ id: c.id, video: c.video })) })));
 

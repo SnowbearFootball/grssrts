@@ -16,6 +16,23 @@ players are circles (green = attackers, blue = defenders), each step shows the
 |---|---|
 | Splash & Ripple (defending) | 1. The Basics (2 v 2) · 2. 3 v 3 · 3. Hold or Press? (3 v 3) · 4. Outnumbered (3 v 4) |
 
+## Brand
+
+Colours: forest green `#16351F` · burnt orange `#D9622B` · cream `#F2E6CD`. Font: Montserrat (free, SIL Open Font License, in `assets/fonts`).
+
+Logo files are in `assets/logo/`:
+
+| File | Use |
+|---|---|
+| `grss-rts.svg` / `grss-rts-cream-2000.png` | Main logo on cream or white (kit, posters) |
+| `grss-rts-on-dark.svg` / `grss-rts-forest-2000.png` | On forest green or dark backgrounds |
+| `grss-rts-forest.svg` | One colour (embroidery, single-colour print) |
+| `grss-rts-white.svg` | All white (photos, dark backgrounds) |
+| `grss-rts-transparent-2000.png` | Main logo, transparent background |
+| `grss-rts-icon.svg` / `grss-rts-icon-512.png` | Square icon (WhatsApp profile, home-screen shortcut) |
+
+To change the logo, edit `tools/build-logo.js` and run `node tools/build-logo.js` (needs `npm i opentype.js@1.3.4`). It rebuilds the SVGs and `js/logo-data.js`, which the videos use.
+
 ## Adding a new session
 
 1. Copy `drills/splash-and-ripple.js` to `drills/<new-session>.js` and edit it.

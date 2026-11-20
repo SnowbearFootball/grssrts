@@ -328,7 +328,7 @@ window.SESSIONS.push({
           text: [
             'The *ball* is the biggest danger. *Splash:* get to it and stall.',
             '*Ripple:* good shape, support the Splash, protect the space nearest the ball and goal.',
-            'The far winger is *free* but furthest from the ball, so they\'re the *least danger*. We take that chance.',
+            'The far winger is *free* but furthest away, so the *least danger*. We take that chance.',
           ],
           tags: { b1: 'SPLASH', b2: 'RIPPLE', b3: 'RIPPLE', g4: 'FREE' },
           moves: [

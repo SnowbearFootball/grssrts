@@ -19,31 +19,35 @@
   'use strict';
 
   const W = 1280, H = 720;
-  const FONT = '"Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif';
+  const FONT = 'Montserrat, "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif';
 
   const C = {
-    bg: '#0a0a0a',
-    panel: '#1a1a1a',
-    panelEdge: '#2a2a2a',
-    // GRSS | RTS grass-green palette (two tones, like mown grass)
-    accent: '#4f9a3c',      // fresh grass: titles, tags, progress
-    accent2: '#3c7f2f',     // deep turf: second stripe tone
-    accentSoft: '#8cc46a',  // light grass: highlighted words, key phrase
-    accentDark: '#132611',  // key-phrase box
-    accentDark2: '#173015', // key-phrase box stripe
-    accentMid: '#2f5f27',   // borders, completed step dots
-    string: 'rgba(79,154,60,0.75)',
-    block: '#ef4444',       // the ✕ on a blocked lane stays red
+    // GRSS | RTS brand palette: forest green, burnt orange, cream
+    bg: '#16351f',          // forest frame
+    panel: '#1e4128',
+    panelEdge: '#2b5233',
+    accent: '#d9622b',      // burnt orange: titles, tags, Splash, progress
+    accent2: null,          // optional second tone for stripes (e.g. mown-grass themes)
+    accentSoft: '#f0905e',  // lighter orange: highlighted words, key phrase
+    accentDark: '#122b19',  // key-phrase box
+    accentDark2: null,
+    accentMid: '#8a4422',   // borders, completed step dots
+    string: 'rgba(217,98,43,0.7)',
+    block: '#e5484d',       // the ✕ on a blocked lane
     pitchStripe: null,      // set a second pitch colour for mown stripes on the pitch itself
-    text: '#f5f5f5',
-    muted: '#a3a3a3',
+    text: '#f2e6cd',        // cream
+    subText: '#ddd3be',
+    muted: '#b4c2ae',
+    track: '#2b5233',
+    dotOff: '#2f5a39',
+    overlay: 'rgba(18,43,25,0.93)',
     pitch: '#eef0f2',
     pitchDot: '#d4d8dd',
     pitchEdge: '#c9ced4',
-    attack: '#f59e0b',     // amber, so attackers never blend with the green brand
+    attack: '#2fbf7f',     // green, as in the coaching diagrams
     defend: '#3b9ae1',
     arrow: '#2b2b2b',
-    danger: '#ef4444',
+    danger: '#e5484d',
   };
   const TEAM_COLOR = { get a() { return C.attack; }, get d() { return C.defend; } };
 
@@ -553,7 +557,7 @@
 
   function drawArrowPx(ctx, x1, y1, x2, y2, st) {
     ctx.save();
-    ctx.strokeStyle = st.color === C.arrow ? '#d4d4d4' : st.color;
+    ctx.strokeStyle = st.color === C.arrow ? C.subText : st.color;
     ctx.fillStyle = ctx.strokeStyle;
     ctx.lineWidth = 2.5;
     ctx.setLineDash([5, 5]);
@@ -586,7 +590,7 @@
       for (let i = 0; i < stepDots.count; i++) {
         ctx.beginPath();
         ctx.arc(PANEL.x + PANEL.w - 30 - (stepDots.count - 1 - i) * 18, PANEL.y + 38, 5, 0, Math.PI * 2);
-        ctx.fillStyle = i === stepDots.active ? C.accent : i < stepDots.active ? C.accentMid : '#3a3a3a';
+        ctx.fillStyle = i === stepDots.active ? C.accent : i < stepDots.active ? C.accentMid : C.dotOff;
         ctx.fill();
       }
     }
@@ -616,7 +620,7 @@
         ctx.fillStyle = isSub ? C.muted : C.accent;
         ctx.fillText(isSub ? '–' : bullet, x + (isSub ? 22 : 0), y);
       }
-      const h = drawRich(ctx, body, x + ind, y, maxW - ind, isSub ? 19 : 21, isSub ? 26 : 29, isSub ? '#d4d4d4' : C.text);
+      const h = drawRich(ctx, body, x + ind, y, maxW - ind, isSub ? 19 : 21, isSub ? 26 : 29, isSub ? C.subText : C.text);
       y += h + 12;
     });
     ctx.globalAlpha = 1;
@@ -636,7 +640,7 @@
       ctx.fillStyle = C.accentSoft;
       fitFont(ctx, keyPhrase.big, 800, 28, bw - 28);
       ctx.fillText(keyPhrase.big, bx + bw / 2, by + 44);
-      ctx.fillStyle = '#d4d4d4';
+      ctx.fillStyle = C.subText;
       fitFont(ctx, keyPhrase.small || '', 500, 17, bw - 24);
       ctx.fillText(keyPhrase.small || '', bx + bw / 2, by + 72);
       ctx.textAlign = 'left';
@@ -645,9 +649,9 @@
   }
 
   function drawProgress(ctx, cp, t) {
-    const x = 40, y = 700, w = 1060, h = 5;
+    const x = 40, y = 700, h = 5, w = 1240 - logoWidth(LOGO_H) - 24 - x;
     ctx.save();
-    ctx.fillStyle = '#262626';
+    ctx.fillStyle = C.track;
     roundRect(ctx, x, y, w, h, 2.5); ctx.fill();
     roundRect(ctx, x, y, Math.max(5, w * clamp(t / cp.duration)), h, 2.5);
     ctx.save();
@@ -657,24 +661,45 @@
     ctx.fillStyle = C.bg;
     cp.steps.forEach(s => ctx.fillRect(x + w * (s.start / cp.duration) - 1, y, 2, h));
     ctx.restore();
-    drawBrand(ctx, 1240, 709);
+    drawLogo(ctx, 1240, y + h / 2, LOGO_H, 'right');
   }
 
-  // Brand wordmark, e.g. "GRSS | RTS" — the bar is drawn in red.
-  const BRAND = ['GRSS', '|', 'RTS'];
-  function drawBrand(ctx, right, baseline) {
+  // ---------- GRSS | RTS logo (outlines from js/logo-data.js) ----------
+  const LOGO_H = 22;
+  const LOGO = () => global.GRSS_LOGO;
+  const pathCache = {};
+  const P2 = d => pathCache[d] || (pathCache[d] = new Path2D(d));
+  function logoWidth(h) {
+    const L = LOGO();
+    if (L) return (L.vb.w * h) / L.vb.h;
+    return 0;
+  }
+  // Draws the wordmark h px tall, vertically centred on cy. align: 'right' (x = right edge) or 'center'.
+  function drawLogo(ctx, x, cy, h, align) {
+    const L = LOGO();
+    if (!L || typeof Path2D === 'undefined') return;
+    const s = h / L.vb.h, w = L.vb.w * s;
+    const left = align === 'center' ? x - w / 2 : x - w;
     ctx.save();
-    ctx.font = `800 18px ${FONT}`;
-    ctx.textBaseline = 'alphabetic';
-    const gap = 7;
-    const widths = BRAND.map(p => ctx.measureText(p).width);
-    let cx = right - widths.reduce((a, b) => a + b, 0) - gap * (BRAND.length - 1);
-    BRAND.forEach((part, i) => {
-      // solid theme: white words, accent bar. Two-tone theme: the two grass greens, white bar.
-      ctx.fillStyle = C.accent2 ? [C.accentSoft, C.text, C.accent][i] : part === '|' ? C.accent : C.text;
-      ctx.fillText(part, cx, baseline);
-      cx += widths[i] + gap;
-    });
+    ctx.translate(left - L.vb.x * s, cy - (L.vb.y + L.vb.h / 2) * s);
+    ctx.scale(s, s);
+    ctx.fillStyle = C.text;
+    ctx.fill(P2(L.grss));
+    const B = L.ball;
+    ctx.save();
+    ctx.translate(B.x, B.y);
+    ctx.scale(B.scale, B.scale);
+    ctx.save();
+    ctx.beginPath(); ctx.arc(24, 24, B.R, 0, Math.PI * 2); ctx.clip();
+    ctx.fill(P2(B.outer));
+    ctx.strokeStyle = C.text; ctx.lineWidth = B.seamW; ctx.lineCap = 'round';
+    ctx.stroke(P2(B.seams));
+    ctx.restore();
+    ctx.fill(P2(B.centre));
+    ctx.beginPath(); ctx.arc(24, 24, B.R, 0, Math.PI * 2); ctx.lineWidth = B.ringW; ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = C.accent;
+    ctx.fill(P2(L.rts));
     ctx.restore();
   }
 
@@ -798,8 +823,9 @@
       ctx.save();
       ctx.globalAlpha = a;
       roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
-      ctx.fillStyle = 'rgba(10,10,10,0.9)';
+      ctx.fillStyle = C.overlay;
       ctx.fill();
+      drawLogo(ctx, PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h / 2 - 130, 34, 'center');
       ctx.textAlign = 'center';
       ctx.fillStyle = C.muted;
       ctx.font = `600 20px ${FONT}`;
