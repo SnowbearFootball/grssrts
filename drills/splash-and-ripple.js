@@ -1,9 +1,9 @@
 /*
- * SESSION: Splash & Ripple — Defensive Principle
+ * SESSION: Splash & Ripple (Defending)
  *
  * Pitch units: x 0..100 (left → right), y 0..75 (top → bottom).
  * Blue defenders defend the goal at the BOTTOM. Green attackers attack it.
- * Text: wrap a word or phrase in *stars* to highlight it in red.
+ * Text: wrap a word or phrase in *stars* to highlight it.
  * A line starting with "-" is shown as an indented sub-point.
  */
 window.SESSIONS = window.SESSIONS || [];
@@ -14,6 +14,40 @@ window.SESSIONS.push({
   category: 'defending',
   thumb: 'assets/thumbs/splash-and-ripple.jpg',
   summary: 'Defend as a team. The closest player stalls the attack; everyone else reacts and supports.',
+  keyPhrase: 'Ball → Splash → Goal',
+  // Ages: the youngest age group the session suits (e.g. 10 = U10). Clips can override with their own `ages`.
+  ages: { from: 10, note: 'The 2 v 2 clip works from U8.' },
+
+  // Words players should know, shown under the video
+  keywords: [
+    { word: 'Splash', meaning: 'The player closest to the ball. Gets there quickly and stalls the attack.' },
+    { word: 'Ripple', meaning: 'Everyone else. Reacts to the Splash: support, cover and shuffle across.' },
+    { word: 'String', meaning: 'Defenders are connected. When one moves, the others are pulled with them.' },
+    { word: 'Stall', meaning: 'Stop them going forward. Slow the attack down without diving in.' },
+    { word: 'Trigger', meaning: 'A moment to press: a bad touch, a loose pass or a good chance to win it.' },
+  ],
+
+  // For coaches: setting the practice up (suggested starting points; adjust for your group)
+  training: {
+    area: 'About 30 × 25 yards for 2 v 2; 40 × 30 yards for 3 v 3.',
+    players: '4 to 8 players, plus spares queuing by the goals.',
+    equipment: 'Four mini goals (or cone gates), balls, cones and bibs.',
+    setup: [
+      'Two mini goals at each end. Attackers queue at one end, defenders at the other.',
+      'A defender plays a diagonal pass to start; two attackers and two defenders come on.',
+      'Attackers score in the far goals; if defenders win it, they can score at the other end.',
+      'Rotate after each attack. Build up: 2 v 2, then 3 v 3, then 3 v 4 (outnumbered).',
+    ],
+  },
+
+  // Questions to ask players during and after the practice
+  questions: [
+    'Who is the Splash right now? How do you know?',
+    'Where should the Ripple stand to help the Splash?',
+    'Are you between the ball and the goal?',
+    'The ball has moved. Has your job changed?',
+    'Should the Splash hold or press? What was the trigger?',
+  ],
 
   // Reference cards shown under the video player on the website
   cards: [
@@ -45,6 +79,7 @@ window.SESSIONS.push({
     // two attackers come on, two defenders go out to meet them.
     {
       id: 'basics-2v2',
+      ages: { from: 8 },
       video: 'videos/splash-ripple-1-basics-2v2.mp4',
       kicker: 'Clip 1 · 2 v 2',
       title: 'The Basics',

@@ -511,19 +511,35 @@
   }
 
   // ---------- panel / chrome ----------
+  // Slim top line: SECTION · Session title · Clip n of N
   function drawHeader(ctx, session, clip) {
     ctx.save();
-    ctx.fillStyle = C.accent;
-    ctx.font = `800 34px ${FONT}`;
     ctx.textBaseline = 'alphabetic';
-    ctx.fillText((session.title || '').toUpperCase(), 40, 52);
-    const tw = ctx.measureText((session.title || '').toUpperCase()).width;
-    ctx.fillStyle = C.muted;
-    ctx.font = `500 18px ${FONT}`;
-    ctx.fillText(session.subtitle || '', 40 + tw + 16, 50);
+    const cat = (global.CATEGORIES || []).find(c => c.id === session.category);
+    let x = 40;
+    if (cat) {
+      ctx.fillStyle = C.accent;
+      ctx.font = `700 14px ${FONT}`;
+      const label = cat.name.toUpperCase().split('').join(String.fromCharCode(8202));
+      ctx.fillText(label, x, 50);
+      x += ctx.measureText(label).width + 14;
+      ctx.fillStyle = C.dotOff;
+      ctx.fillRect(x, 33, 2, 22);
+      x += 16;
+    }
+    ctx.fillStyle = C.text;
+    ctx.font = `700 24px ${FONT}`;
+    ctx.fillText(session.title || '', x, 52);
+    x += ctx.measureText(session.title || '').width + 14;
+    const idx = (session.clips || []).indexOf(clip);
+    if (idx >= 0) {
+      ctx.fillStyle = C.muted;
+      ctx.font = `600 16px ${FONT}`;
+      ctx.fillText(`Clip ${idx + 1} of ${session.clips.length}`, x, 51);
+    }
 
     // legend (right)
-    let x = 1240;
+    x = 1240;
     ctx.font = `500 15px ${FONT}`;
     const items = [
       { label: 'Pass', draw: (lx) => drawArrowPx(ctx, lx, 46, lx + 34, 46, ARROW_STYLE.pass) },

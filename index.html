@@ -142,12 +142,46 @@
   .offer ol, .offer ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
   .note { color: var(--muted); font-size: 13px; }
 
+  /* age filter + badges */
+  .filter { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 16px; font-weight: 600; font-size: 14px; color: var(--sub); }
+  .filter select { background: var(--paper); border: 1px solid var(--edge); border-radius: 8px; padding: 7px 10px; font-weight: 600; }
+  .age { display: inline-block; background: var(--forest); color: var(--cream); font-size: 12px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
+
   /* session view */
-  .session h1 { color: var(--accent); margin: 0 0 2px; font-size: clamp(28px, 5vw, 40px); }
-  .sub { color: var(--muted); margin: 0 0 18px; }
-  .clips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-  .chip { background: var(--paper); border: 1px solid var(--edge); border-radius: 999px; padding: 8px 14px; font-size: 15px; cursor: pointer; }
-  .chip[aria-pressed="true"] { background: var(--forest); border-color: var(--forest); color: var(--cream); font-weight: 700; }
+  .s-head { display: grid; gap: 10px; margin-bottom: 22px; }
+  .s-head h1 { margin: 0; font-size: clamp(32px, 6vw, 50px); font-weight: 800; letter-spacing: -.01em; color: var(--text); }
+  .s-head .idea { margin: 0; font-size: clamp(17px, 2.4vw, 20px); color: var(--sub); max-width: 52ch; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .facts span { background: var(--paper); border: 1px solid var(--edge); border-radius: 999px; padding: 5px 12px; font-size: 13.5px; font-weight: 600; }
+  .facts .kp { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; font-size: 12.5px; }
+  .facts-note { margin: 0; color: var(--muted); font-size: 13px; }
+  .prog-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 0 0 10px; }
+  .prog-head h2 { margin: 0; font-size: 18px; }
+  .prog-head p { margin: 0; color: var(--muted); font-size: 13px; }
+  .progression { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .progression button { width: 100%; text-align: left; background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 0; overflow: hidden; cursor: pointer; display: grid; min-width: 0; }
+  .progression img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; background: var(--forest); }
+  .progression .pm { padding: 8px 10px 10px; display: grid; gap: 2px; }
+  .progression .num { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--accent-ink); text-transform: uppercase; }
+  .progression b { font-size: 15px; }
+  .progression small { color: var(--muted); font-size: 12.5px; }
+  .progression button[aria-current="true"] { border-color: var(--forest); box-shadow: inset 0 0 0 2px var(--forest); }
+  .progression button[aria-current="true"] .num { color: var(--forest); }
+  .controls .next-clip { margin-left: auto; }
+  .controls .next-clip.ready { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 26px 0 14px; border-bottom: 1px solid var(--edge); }
+  .tabs button { background: none; border: 0; border-bottom: 3px solid transparent; padding: 8px 4px; margin-right: 12px; font-weight: 700; font-size: 15px; color: var(--muted); cursor: pointer; }
+  .tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+  .words { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .words div { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; min-width: 0; }
+  .words b { display: block; font-size: 18px; color: var(--accent-ink); margin-bottom: 4px; }
+  .words span { color: var(--sub); font-size: 14.5px; }
+  .train { display: grid; grid-template-columns: 1fr 1.4fr; gap: 14px; }
+  .train dl { margin: 0; background: var(--forest); color: var(--cream); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+  .train dt { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-soft); }
+  .train dd { margin: 2px 0 0; font-size: 14.5px; }
+  .train ol, .qs { margin: 0; background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 16px 16px 16px 36px; display: grid; gap: 8px; font-size: 15px; }
+  .qs li::marker { color: var(--accent); font-weight: 800; }
   .stage { background: var(--forest); border-radius: 14px; overflow: hidden; }
   canvas { display: block; width: 100%; height: auto; cursor: pointer; }
   .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px; background: var(--forest-2); color: var(--cream); }
@@ -159,9 +193,9 @@
   .dl { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 0; }
   .dl a { color: var(--text); background: var(--paper); border: 1px solid var(--edge); border-radius: 8px; padding: 9px 14px; text-decoration: none; font-size: 15px; }
   .dl a:hover { border-color: var(--accent); }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 26px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
   .card { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 18px; min-width: 0; }
-  .card h2 { margin: 0 0 6px; color: var(--accent); font-size: 22px; text-transform: uppercase; }
+  .card h2 { margin: 0 0 6px; color: var(--text); font-size: 22px; }
   .card .lead { margin: 0 0 14px; }
   .em { color: var(--accent-ink); font-weight: 700; }
   .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -182,6 +216,8 @@
     .hero { grid-template-columns: 1fr; }
     .mains, .areas { grid-template-columns: 1fr; }
     .offers { grid-template-columns: 1fr; }
+    .progression { grid-template-columns: 1fr 1fr; }
+    .train { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     /* phones: sections on the first row, the other areas on the second */
@@ -259,6 +295,8 @@
     <div class="page-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="sec-icon"></svg>
       <div><p class="eyebrow">Sessions</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
     <div class="section-head"><h2 id="sec-count"></h2></div>
+    <label class="filter" for="age">My team's age
+      <select id="age"><option value="">Any age</option></select></label>
     <div class="sessions-list" id="list"></div>
     <p class="none" id="sec-none" hidden></p>
   </main>
@@ -274,9 +312,16 @@
   <!-- SESSION (e.g. #splash-and-ripple) -->
   <main id="session" class="session" hidden>
     <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><a href="#" id="s-cat"></a><span aria-hidden="true">›</span><span aria-current="page" id="s-crumb"></span></nav>
-    <h1 id="title"></h1>
-    <p class="sub" id="subtitle"></p>
-    <div class="clips" id="clips" role="group" aria-label="Clips"></div>
+    <header class="s-head">
+      <p class="eyebrow" id="s-eyebrow"></p>
+      <h1 id="title"></h1>
+      <p class="idea" id="s-idea"></p>
+      <div class="facts" id="s-facts"></div>
+      <p class="facts-note" id="s-note"></p>
+    </header>
+
+    <div class="prog-head"><h2>The progression</h2><p>Each clip builds on the one before.</p></div>
+    <ol class="progression" id="progression"></ol>
 
     <div class="stage">
       <canvas id="canvas" aria-label="Animated drill"></canvas>
@@ -293,10 +338,13 @@
           <option value="1.5">1.5×</option>
         </select>
         <span class="time" id="time">0:00 / 0:00</span>
+        <button class="next-clip" id="next-clip" hidden>Next clip ›</button>
       </div>
     </div>
     <div class="dl" id="downloads"></div>
-    <div class="cards" id="cards"></div>
+
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="tab-panel"></div>
   </main>
 
   <footer>
@@ -321,6 +369,11 @@
   const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
   const catOf = s => CATS.find(c => c.id === s.category);
   const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+  const fmtLen = sec => sec < 60 ? `${Math.round(sec)}s` : `${Math.floor(sec / 60)}m ${String(Math.round(sec % 60)).padStart(2, '0')}s`;
+  const clipFormat = c => ((c.kicker || '').split('·')[1] || (/\d v \d/.test(c.title) ? c.title : '')).trim();
+  const clipAge = (s, c) => (c.ages && c.ages.from) || (s.ages && s.ages.from) || null;
+  const minAge = s => Math.min(...s.clips.map(c => clipAge(s, c) || 99), (s.ages && s.ages.from) || 99);
+  const clipLen = c => DrillEngine.compile(c).duration;
 
   // ---------- player ----------
   const canvas = $('canvas');
@@ -341,7 +394,7 @@
     if (!playing) return;
     const dt = (now - last) / 1000; last = now;
     let t = player.t + dt * parseFloat($('speed').value);
-    if (t >= player.duration) { t = player.duration; setPlaying(false); }
+    if (t >= player.duration) { t = player.duration; setPlaying(false); $('next-clip').classList.add('ready'); }
     player.renderAt(t); sync();
     if (playing) requestAnimationFrame(tick);
   }
@@ -364,38 +417,94 @@
     if (e.code === 'ArrowLeft') $('prev').click();
   });
 
+  // small picture of each clip (end of its second step), made once per clip
+  const thumbCache = {};
+  function clipThumb(sess, c) {
+    const key = sess.id + '/' + c.id;
+    if (!thumbCache[key]) {
+      const cv = document.createElement('canvas');
+      const p = new DrillEngine.DrillPlayer(cv, sess, c, { scale: 0.3 });
+      const st = p.cp.steps[Math.min(1, p.cp.steps.length - 1)];
+      p.renderAt(st.start + st.total - 0.3);
+      thumbCache[key] = cv.toDataURL('image/jpeg', 0.8);
+    }
+    return thumbCache[key];
+  }
+
+  let tab = 'points';
+  function renderTabs() {
+    const T = [
+      ['points', 'Coaching points', (session.cards || []).length],
+      ['words', 'Key words', (session.keywords || []).length],
+      ['training', 'Try it at training', !!session.training],
+      ['questions', 'Questions to ask', (session.questions || []).length],
+    ].filter(t => t[2]);
+    if (!T.some(t => t[0] === tab)) tab = T.length ? T[0][0] : null;
+    $('tabs').innerHTML = T.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === tab}">${esc(label)}</button>`).join('');
+    const tr = session.training || {};
+    const P = {
+      points: () => `<div class="cards">${(session.cards || []).map(card => `
+        <section class="card">
+          <h2>${esc(card.title)}</h2>
+          <p class="lead">${rich(card.lead || '')}</p>
+          <div class="cols">${(card.columns || []).map(col => `
+            <div class="col"><h3>${esc(col.heading)}</h3>
+              <ul>${col.items.map(i => `<li>${rich(i)}</li>`).join('')}</ul>
+              ${col.triggers ? `<div class="trig"><h4>TRIGGERS</h4><ul>${col.triggers.map(i => `<li>${rich(i)}</li>`).join('')}</ul></div>` : ''}
+            </div>`).join('')}
+          </div>
+          ${card.phrase ? `<div class="phrase"><b>${esc(card.phrase.big)}</b><span>${esc(card.phrase.small || '')}</span></div>` : ''}
+        </section>`).join('')}</div>`,
+      words: () => `<div class="words">${session.keywords.map(k => `<div><b>${esc(k.word)}</b><span>${esc(k.meaning)}</span></div>`).join('')}</div>`,
+      training: () => `<div class="train"><dl>
+          ${tr.area ? `<div><dt>Area</dt><dd>${esc(tr.area)}</dd></div>` : ''}
+          ${tr.players ? `<div><dt>Players</dt><dd>${esc(tr.players)}</dd></div>` : ''}
+          ${tr.equipment ? `<div><dt>Equipment</dt><dd>${esc(tr.equipment)}</dd></div>` : ''}
+          ${session.ages ? `<div><dt>Ages</dt><dd>U${session.ages.from}+${session.ages.note ? '. ' + esc(session.ages.note) : ''}</dd></div>` : ''}
+        </dl><ol>${(tr.setup || []).map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`,
+      questions: () => `<ol class="qs">${session.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ol>`,
+    };
+    $('tab-panel').innerHTML = tab ? P[tab]() : '';
+  }
+  $('tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) { tab = b.dataset.tab; renderTabs(); } });
+
   function renderSession() {
     const cat = catOf(session);
     $('s-cat').textContent = cat ? cat.name : 'Sessions';
     $('s-cat').setAttribute('href', cat ? '#' + cat.id : '#');
     $('s-crumb').textContent = session.title;
+    $('s-eyebrow').textContent = cat ? cat.name : '';
     $('title').textContent = session.title;
-    $('subtitle').textContent = session.subtitle || '';
-    const el = $('clips');
-    el.innerHTML = '';
-    session.clips.forEach(c => {
-      const b = document.createElement('button');
-      b.className = 'chip';
-      b.textContent = `${c.kicker ? c.kicker + ': ' : ''}${c.title}`;
-      b.setAttribute('aria-pressed', c.id === clip.id);
-      b.onclick = () => { clip = c; loadClip(); };
-      el.appendChild(b);
-    });
+    $('s-idea').textContent = session.summary || session.subtitle || '';
+    const total = session.clips.reduce((a, c) => a + clipLen(c), 0);
+    const formats = [...new Set(session.clips.map(clipFormat).filter(Boolean))];
+    $('s-facts').innerHTML = [
+      session.ages ? `<span>U${session.ages.from}+</span>` : '',
+      `<span>${plural(session.clips.length, 'clip')} · about ${Math.ceil(total / 60)} min</span>`,
+      formats.length ? `<span>${esc(formats[0])}${formats.length > 1 ? ' → ' + esc(formats[formats.length - 1]) : ''}</span>` : '',
+      session.keyPhrase ? `<span class="kp">${esc(session.keyPhrase)}</span>` : '',
+    ].join('');
+    $('s-note').textContent = (session.ages && session.ages.note) || '';
+    $('progression').innerHTML = session.clips.map((c, i) => `<li><button data-clip="${esc(c.id)}" aria-current="${c.id === clip.id}">
+        <img src="${clipThumb(session, c)}" alt="">
+        <span class="pm"><span class="num">${i + 1} of ${session.clips.length}</span><b>${esc(c.title)}</b>
+        <small>${[clipFormat(c), fmtLen(clipLen(c)), clipAge(session, c) && clipAge(session, c) < (session.ages || {}).from ? 'from U' + clipAge(session, c) : ''].filter(Boolean).join(' · ')}</small></span>
+      </button></li>`).join('');
+    const i = session.clips.indexOf(clip);
+    $('next-clip').hidden = i >= session.clips.length - 1;
+    $('next-clip').classList.remove('ready');
     $('downloads').innerHTML = clip.video && !window.NO_DOWNLOADS
       ? `<a href="${esc(clip.video)}" download>⬇ Download this clip (MP4)</a>` : '';
-    $('cards').innerHTML = (session.cards || []).map(card => `
-      <section class="card">
-        <h2>${esc(card.title)}</h2>
-        <p class="lead">${rich(card.lead || '')}</p>
-        <div class="cols">${(card.columns || []).map(col => `
-          <div class="col"><h3>${esc(col.heading)}</h3>
-            <ul>${col.items.map(i => `<li>${rich(i)}</li>`).join('')}</ul>
-            ${col.triggers ? `<div class="trig"><h4>TRIGGERS</h4><ul>${col.triggers.map(i => `<li>${rich(i)}</li>`).join('')}</ul></div>` : ''}
-          </div>`).join('')}
-        </div>
-        ${card.phrase ? `<div class="phrase"><b>${esc(card.phrase.big)}</b><span>${esc(card.phrase.small || '')}</span></div>` : ''}
-      </section>`).join('');
+    renderTabs();
   }
+  $('progression').addEventListener('click', e => {
+    const b = e.target.closest('[data-clip]');
+    if (b) { clip = session.clips.find(c => c.id === b.dataset.clip); loadClip(); }
+  });
+  $('next-clip').onclick = () => {
+    const i = session.clips.indexOf(clip);
+    if (i < session.clips.length - 1) { clip = session.clips[i + 1]; loadClip(); setPlaying(true); }
+  };
   function loadClip() {
     setPlaying(false);
     player.session = session;
@@ -427,14 +536,21 @@
     const formats = [...new Set(clipRange(s))];
     return `<button class="scard" data-id="${esc(s.id)}">
       ${s.thumb ? `<img src="${esc(s.thumb)}" alt="">` : ''}
-      <div class="meta"><b>${esc(s.title)}</b>
+      <div class="meta"><span><span class="age">U${minAge(s)}+</span></span><b>${esc(s.title)}</b>
         <p>${esc(s.summary || s.subtitle || '')}</p>
         <span class="tag">${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
         <ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>
       </div></button>`;
   }
+  let teamAge = '';
+  (function fillAges() {
+    for (let a = 7; a <= 16; a++) $('age').insertAdjacentHTML('beforeend', `<option value="${a}">U${a}</option>`);
+  })();
   function renderSection(cat) {
-    const list = SESSIONS.filter(s => s.category === cat.id);
+    const all = SESSIONS.filter(s => s.category === cat.id);
+    const list = all.filter(s => !teamAge || minAge(s) <= +teamAge);
+    $('age').value = teamAge;
+    $('age').parentElement.hidden = !all.length;
     $('sec-crumb').textContent = cat.name;
     $('sec-icon').innerHTML = cat.icon;
     $('sec-title').textContent = cat.name;
@@ -443,7 +559,14 @@
     $('list').hidden = !list.length;
     $('list').innerHTML = list.map(sessionCard).join('');
     $('sec-none').hidden = !!list.length;
-    $('sec-none').innerHTML = `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`;
+    $('sec-none').innerHTML = all.length
+      ? `No ${esc(cat.name.toLowerCase())} sessions for U${esc(teamAge)} yet. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`
+      : `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`;
+  }
+  $('age').onchange = e => {
+    teamAge = e.target.value;
+    const cat = CATS.find(c => c.id === location.hash.replace('#', ''));
+    if (cat) renderSection(cat);
   }
 
   // ---------- area pages ----------
