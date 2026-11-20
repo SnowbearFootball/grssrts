@@ -1,12 +1,12 @@
 /*
  * SESSION: Building Out: Rotations (Attacking · tactical)
  *
- * Green (team 'a') has the ball at centre-back and builds up the pitch towards the top.
+ * Green (team 'a') has the ball at the right centre-back and builds up the pitch towards the top.
  * Red opponents (team 'd') hold their pressing shape. Labels in the circles show positions.
  * Pitch units: x 0..100 (left → right), y 0..75 (top → bottom). Our goal is at the bottom.
  */
 (function () {
-  // Green: 1-4-4-2 style shape, ball with the left centre-back
+  // Green: 1-4-4-2 style shape, ball with the right centre-back
   const green = pos => Object.entries(pos).map(([id, [x, y]]) => ({ id, team: 'a', label: id.replace(/[0-9]/g, ''), x, y }));
   const red = list => list.map(([x, y], i) => ({ id: 'r' + i, team: 'd', x, y }));
 
@@ -106,11 +106,11 @@
           'Rotate so we have *an extra player* at the back and *a free player* in the pocket.',
         ],
         players: [keeper].concat(clip1Green, clip1Red),
-        ball: { owner: 'CB1' },
+        ball: { owner: 'CB2' },
         steps: [
           {
             title: 'THE STARTING SHAPE',
-            text: ['Ball with the left centre-back.', 'Opponents are set to press.', 'Watch how *each move opens a space* for the next one.'],
+            text: ['Ball with the *right centre-back*.', 'Opponents are set to press.', 'Watch how *each move opens a space* for the next one.'],
           },
           {
             title: 'CBs SPLIT, CM DROPS IN',
@@ -119,6 +119,9 @@
               { id: 'CB1', to: [19.3, 55.3] },
               { id: 'CB2', to: [72.7, 55.6] },
               { id: 'CM2', to: [49.4, 54.4], start: 0.1 },
+              // opponents: striker presses towards the ball, their midfielder follows the drop a little
+              { id: 'r9', to: [60, 48.5], start: 0.25, arrow: false },
+              { id: 'r6', to: [53, 39], start: 0.3, arrow: false },
             ],
           },
           {
@@ -127,6 +130,9 @@
             moves: [
               { id: 'LB', to: [3.5, 35.6] },
               { id: 'RB', to: [96, 32.6] },
+              { id: 'r8', to: [8, 32], start: 0.25, arrow: false },
+              { id: 'r7', to: [88, 31], start: 0.25, arrow: false },
+              { id: 'r9', to: [64, 50], start: 0.2, arrow: false },
             ],
           },
           {
@@ -138,6 +144,20 @@
               { id: 'RW', to: [75.9, 24.9] },
               { id: 'LW', to: [18, 17.7] },
               { id: 'CM1', to: [44.2, 28.5], start: 0.15 },
+              { id: 'r3', to: [11, 17], start: 0.2, arrow: false },
+              { id: 'r4', to: [53, 20.5], start: 0.25, arrow: false },
+              { id: 'r5', to: [39, 25], start: 0.3, arrow: false },
+            ],
+          },
+          {
+            title: 'PASS THROUGH THE LINES',
+            text: ['The winger is *free in the pocket*.', 'Centre-back plays it *through the lines*.', 'Their front players are *taken out of the game*.'],
+            zones: [{ at: [75.9, 24.9], r: 9, label: 'Pocket' }],
+            ball: { pass: 'RW', start: 0.05, end: 0.45 },
+            moves: [
+              { id: 'r7', to: [83, 29], start: 0.4, arrow: false },
+              { id: 'r4', to: [62, 22], start: 0.4, arrow: false },
+              { id: 'r9', to: [67, 47], start: 0.3, arrow: false },
             ],
           },
         ],
@@ -145,6 +165,7 @@
           'CBs split, CM *drops in*: back three.',
           'Full-backs *push high* for width.',
           'Wingers *come inside*: one into the pocket.',
+          'Play it *through the lines* to the free player.',
           'Every space we leave, *someone fills it*.',
         ],
       }),
@@ -160,36 +181,58 @@
           'Each player *fills the space* the last one left.',
         ],
         players: [keeper].concat(clip2Green, clip2Red),
-        ball: { owner: 'CB1' },
+        ball: { owner: 'CB2' },
         steps: [
           {
             title: 'THE STARTING SHAPE',
-            text: ['Ball with the left centre-back.', 'Watch the *right-hand side*: four players rotate.'],
+            text: ['Ball with the *right centre-back*.', 'Watch the *right-hand side*: four players rotate.'],
           },
           {
             title: 'CM DROPS WIDE',
             text: ['The centre-mid *drops into the full-back space*.', 'The right centre-back *tucks in* to stay connected.'],
             moves: [
-              { id: 'CM2', to: [82.6, 53.7] },
-              { id: 'CB2', to: [58.2, 54.4], start: 0.1 },
+              { id: 'CB2', to: [58.2, 54.4], end: 0.55 },
+              { id: 'CM2', path: [[62.8, 38.3], [67.5, 39.5], [71.6, 41.0], [75.0, 42.8], [77.9, 45.0], [80.1, 47.5], [81.6, 50.5], [82.6, 53.7]], start: 0.2 },   // curved run round the outside of the CB
+              { id: 'r9', to: [50, 48.5], start: 0.2, arrow: false },
+              { id: 'r6', to: [51, 39], start: 0.35, arrow: false },
             ],
           },
           {
             title: 'FULL-BACK PUSHES HIGH',
             text: ['Their space is covered, so the *full-back pushes high and wide*.'],
-            moves: [{ id: 'RB', to: [96, 31.8] }],
+            moves: [
+              { id: 'RB', to: [96, 31.8] },
+              { id: 'r7', to: [89, 32.5], start: 0.25, arrow: false },
+              { id: 'r9', to: [50, 47.5], start: 0.2, arrow: false },
+            ],
           },
           {
             title: 'WINGER INTO THE POCKET',
             text: ['Full-back holds the width, so the *winger comes inside*.', 'Into the *pocket*: between their midfield and defence.', 'Who marks them now?'],
             zones: [{ at: [66.1, 25.8], r: 9, label: 'Pocket' }],
-            moves: [{ id: 'RW', to: [66.1, 25.8] }],
+            moves: [
+              { id: 'RW', to: [66.1, 25.8] },
+              { id: 'r4', to: [54, 20], start: 0.25, arrow: false },
+              { id: 'r2', to: [90, 15], start: 0.25, arrow: false },
+            ],
+          },
+          {
+            title: 'PASS THROUGH THE LINES',
+            text: ['The winger is *free in the pocket*.', 'Centre-back plays it *through the lines*.', 'Opponents react, but they\'re *too late*.'],
+            zones: [{ at: [66.1, 25.8], r: 9, label: 'Pocket' }],
+            ball: { pass: 'RW', start: 0.05, end: 0.45 },
+            moves: [
+              { id: 'r4', to: [60, 21.5], start: 0.4, arrow: false },
+              { id: 'r6', to: [60, 33], start: 0.4, arrow: false },
+              { id: 'r7', to: [80, 30], start: 0.45, arrow: false },
+            ],
           },
         ],
         summary: [
           'CM *drops wide* into the full-back space.',
           'CB *tucks in*; full-back *goes high and wide*.',
           'Winger moves *into the pocket*.',
+          'CB plays it *through the lines* to them.',
           'Opponents don\'t know *who to mark*.',
         ],
       }),
