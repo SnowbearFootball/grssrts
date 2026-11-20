@@ -11,6 +11,9 @@ window.SESSIONS.push({
   id: 'splash-and-ripple',
   title: 'Splash & Ripple',
   subtitle: 'Defensive Principle',
+  category: 'defending',
+  thumb: 'assets/thumbs/splash-and-ripple.jpg',
+  summary: 'Defend as a team. The closest player stalls the attack; everyone else reacts and supports.',
 
   // Reference cards shown under the video player on the website
   cards: [

@@ -5,6 +5,7 @@
  *   node tools/render-videos.js                 # all clips
  *   node tools/render-videos.js splash-and-ripple basics   # one clip
  *   node tools/render-videos.js --stills        # PNG stills of each step for checking
+ *   node tools/render-videos.js --thumbs        # home-page thumbnail for each session
  *
  * Needs: Playwright (Chromium) and ffmpeg on the PATH.
  */
@@ -30,6 +31,27 @@ const [onlySession, onlyClip] = args.filter(a => !a.startsWith('--'));
   await page.evaluate(() => Promise.all([document.fonts.load('600 20px Montserrat'), document.fonts.load('700 20px Montserrat')]).then(() => document.fonts.ready));
 
   const list = await page.evaluate(() => window.SESSIONS.map(s => ({ id: s.id, clips: s.clips.map(c => ({ id: c.id, video: c.video })) })));
+
+  // --thumbs: one 960x540 JPEG per session (first clip, end of step 2) for the home-page cards
+  if (args.includes('--thumbs')) {
+    for (const s of await page.evaluate(() => window.SESSIONS.map(x => ({ id: x.id, thumb: x.thumb })))) {
+      if (!s.thumb || (onlySession && s.id !== onlySession)) continue;
+      const data = await page.evaluate(sid => {
+        const session = window.SESSIONS.find(x => x.id === sid);
+        const cv = document.createElement('canvas');
+        const p = new DrillEngine.DrillPlayer(cv, session, session.clips[0], { scale: 0.75 });
+        const st = p.cp.steps[Math.min(1, p.cp.steps.length - 1)];
+        p.renderAt(st.start + st.total - 0.3);
+        return cv.toDataURL('image/jpeg', 0.86);
+      }, s.id);
+      const out = path.join(ROOT, s.thumb);
+      fs.mkdirSync(path.dirname(out), { recursive: true });
+      fs.writeFileSync(out, Buffer.from(data.split(',')[1], 'base64'));
+      console.log('thumb: ' + s.thumb);
+    }
+    await browser.close();
+    return;
+  }
 
   for (const s of list) {
     if (onlySession && s.id !== onlySession) continue;

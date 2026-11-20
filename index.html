@@ -2,121 +2,228 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GRSS | RTS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" href="assets/logo/grss-rts-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <meta name="theme-color" content="#16351f">
 <style>
-  @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-600.woff) format("woff"); font-weight: 600; }
+  /* LOCAL-FONTS-START */
+  @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-600.woff) format("woff"); font-weight: 500 600; }
   @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-700.woff) format("woff"); font-weight: 700 800; }
+  /* LOCAL-FONTS-END */
+
+  /* Layout: one column, max 1100px. Home = sections + session cards; #<session-id> = the player.
+     Brand look is deliberately single-theme: forest green, burnt orange, cream. */
   :root {
-    /* GRSS | RTS: forest green, burnt orange, cream */
-    --bg: #16351f; --panel: #1e4128; --edge: #2b5233; --field: #244a2e; --accent: #d9622b; --accent-soft: #f0905e;
-    --accent-dark: #122b19; --accent-mid: #8a4422; --text: #f2e6cd; --sub: #ddd3be; --muted: #b4c2ae;
+    --bg: #16351f; --panel: #1e4128; --edge: #2b5233; --field: #244a2e;
+    --accent: #d9622b; --accent-soft: #f0905e; --accent-dark: #122b19; --accent-mid: #8a4422;
+    --text: #f2e6cd; --sub: #ddd3be; --muted: #b4c2ae; --attack: #2fbf7f; --defend: #3b9ae1;
+    --font: Montserrat, "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif;
+    color-scheme: dark;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text);
-    font-family: Montserrat, "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif; font-weight: 600; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
-  .brand { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 18px;
-    padding-bottom: 12px; border-bottom: 1px solid var(--edge); }
-  .brand { align-items: center; gap: 14px; }
+  html { background: var(--bg); }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 500; line-height: 1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding-block: 18px 60px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  button, select, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; border-radius: 6px; }
+  a { color: var(--accent-soft); }
+
+  /* header */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    padding-bottom: 14px; border-bottom: 1px solid var(--edge); margin-bottom: 26px; }
+  .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; text-decoration: none; }
   .brand img { height: 30px; width: auto; display: block; }
-  .brand small { color: var(--muted); font-size: 12px; letter-spacing: .35em; text-transform: uppercase; }
-  h1 { color: var(--accent); margin: 4px 0 2px; font-size: clamp(26px, 5vw, 40px); letter-spacing: .5px; }
+  .brand small { color: var(--muted); font-size: 11px; letter-spacing: .32em; text-transform: uppercase; font-weight: 600; }
+  .back { background: none; border: 1px solid var(--edge); border-radius: 999px; padding: 7px 14px; cursor: pointer;
+    font-size: 14px; font-weight: 600; color: var(--sub); }
+  .back:hover { border-color: var(--accent); color: var(--text); }
+
+  h1, h2, h3 { text-wrap: balance; line-height: 1.15; }
+  .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--accent-soft); margin: 0 0 6px; }
+
+  /* home */
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; margin-bottom: 44px; }
+  .hero h1 { font-size: clamp(32px, 6vw, 54px); margin: 0 0 12px; font-weight: 800; letter-spacing: -.01em; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { color: var(--sub); margin: 0; max-width: 46ch; font-size: 16px; }
+  .feature { background: var(--panel); border: 1px solid var(--edge); border-radius: 14px; overflow: hidden; cursor: pointer;
+    text-align: left; padding: 0; display: block; width: 100%; min-width: 0; }
+  .feature img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; max-width: 100%; }
+  .feature .meta { padding: 14px 16px 16px; display: grid; gap: 4px; }
+  .feature b { font-size: 20px; }
+  .feature span { color: var(--muted); font-size: 14px; }
+  .feature:hover { border-color: var(--accent); }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent-soft); }
+
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; }
+  .section-head h2 { margin: 0; font-size: 24px; }
+  .section-head p { margin: 0; color: var(--muted); font-size: 14px; }
+  .cats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 40px; }
+  .cat { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; text-align: left; cursor: pointer;
+    display: grid; gap: 6px; align-content: start; min-width: 0; }
+  .cat svg { width: 26px; height: 26px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .cat b { font-size: 16px; }
+  .cat small { color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+  .cat .count { font-size: 12px; font-weight: 700; color: var(--sub); margin-top: 4px; }
+  .cat.empty .count { color: var(--muted); font-weight: 600; }
+  .cat[aria-pressed="true"] { border-color: var(--accent); background: var(--field); }
+  .cat:hover { border-color: var(--accent-mid); }
+
+  .sessions-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-bottom: 44px; }
+  .scard { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; text-align: left; padding: 0;
+    cursor: pointer; display: grid; min-width: 0; }
+  .scard img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; max-width: 100%; }
+  .scard .meta { padding: 12px 14px 16px; display: grid; gap: 4px; }
+  .scard b { font-size: 18px; }
+  .scard p { margin: 0; color: var(--sub); font-size: 14px; }
+  .scard ol { margin: 6px 0 0; padding-left: 20px; color: var(--muted); font-size: 13px; }
+  .scard:hover { border-color: var(--accent); }
+  .none { color: var(--muted); background: var(--panel); border: 1px dashed var(--edge); border-radius: 12px; padding: 22px; margin: 0 0 44px; }
+
+  .howto { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+  .howto div { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; display: flex; gap: 12px; align-items: center; min-width: 0; }
+  .howto span { color: var(--sub); font-size: 14px; }
+  .dot { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 4px solid; flex: none; }
+  .pill { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; border-radius: 99px; padding: 3px 8px; flex: none; letter-spacing: .04em; }
+  .howto svg { flex: none; }
+
+  /* session view */
+  .session h1 { color: var(--accent); margin: 0 0 2px; font-size: clamp(28px, 5vw, 40px); }
   .sub { color: var(--muted); margin: 0 0 18px; }
-  .sessions, .clips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-  .chip { background: var(--panel); color: var(--text); border: 1px solid var(--edge); border-radius: 999px;
-    padding: 8px 14px; font: inherit; font-size: 15px; cursor: pointer; }
+  .clips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .chip { background: var(--panel); border: 1px solid var(--edge); border-radius: 999px; padding: 8px 14px; font-size: 15px; cursor: pointer; }
   .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
   .stage { background: var(--bg); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; }
   canvas { display: block; width: 100%; height: auto; cursor: pointer; }
-  .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px;
-    background: var(--panel); border-top: 1px solid var(--edge); }
-  .controls button, .controls select { background: var(--field); color: var(--text); border: 1px solid var(--edge);
-    border-radius: 8px; padding: 8px 12px; font: inherit; font-size: 15px; cursor: pointer; min-width: 44px; }
-  .controls button.primary { background: var(--accent); border-color: var(--accent); font-weight: 700; min-width: 84px; }
+  .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px; background: var(--panel); border-top: 1px solid var(--edge); }
+  .controls button, .controls select { background: var(--field); border: 1px solid var(--edge); border-radius: 8px; padding: 8px 12px;
+    font-size: 15px; cursor: pointer; min-width: 44px; }
+  .controls button.primary { background: var(--accent); border-color: var(--accent); font-weight: 700; min-width: 96px; color: #fff; }
   .controls input[type=range] { flex: 1 1 160px; accent-color: var(--accent); min-width: 120px; }
   .time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 14px; min-width: 88px; text-align: right; }
-  .dl { display: inline-flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 26px; }
-  .dl a { color: var(--text); background: var(--field); border: 1px solid var(--edge); border-radius: 8px; padding: 9px 14px;
-    text-decoration: none; font-size: 15px; }
+  .dl { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 0; }
+  .dl a { color: var(--text); background: var(--field); border: 1px solid var(--edge); border-radius: 8px; padding: 9px 14px; text-decoration: none; font-size: 15px; }
   .dl a:hover { border-color: var(--accent); }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-  .card { background: var(--panel); border: 1px solid var(--edge); border-left: 4px solid var(--accent);
-    border-radius: 12px; padding: 18px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 26px; }
+  .card { background: var(--panel); border: 1px solid var(--edge); border-radius: 12px; padding: 18px; min-width: 0; }
   .card h2 { margin: 0 0 6px; color: var(--accent); font-size: 22px; text-transform: uppercase; }
   .card .lead { margin: 0 0 14px; }
   .em { color: var(--accent-soft); font-weight: 700; }
   .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } }
-  .col { border: 1px solid var(--edge); border-radius: 10px; padding: 12px; }
-  .col h3 { margin: 0 0 6px; font-size: 15px; color: var(--accent-soft); text-transform: uppercase; }
+  .col { border: 1px solid var(--edge); border-radius: 10px; padding: 12px; min-width: 0; }
+  .col h3 { margin: 0 0 6px; font-size: 14px; color: var(--accent-soft); text-transform: uppercase; letter-spacing: .03em; }
   .col ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.55; }
   .col .trig { border-top: 1px solid var(--edge); margin-top: 10px; padding-top: 8px; }
-  .col .trig h4 { margin: 0 0 4px; font-size: 13px; color: var(--accent-soft); letter-spacing: .5px; }
+  .col .trig h4 { margin: 0 0 4px; font-size: 12px; color: var(--accent-soft); letter-spacing: .1em; }
   .col .trig ul { color: var(--sub); }
-  .phrase { margin-top: 14px; background: var(--accent-dark); border: 1px solid var(--accent-mid); border-radius: 10px;
-    padding: 12px; text-align: center; }
+  .phrase { margin-top: 14px; background: var(--accent-dark); border: 1px solid var(--accent-mid); border-radius: 10px; padding: 12px; text-align: center; }
   .phrase b { display: block; color: var(--accent-soft); font-size: 22px; }
   .phrase span { color: var(--sub); font-size: 14px; }
-  footer { color: var(--muted); font-size: 13px; margin-top: 30px; }
+  footer { color: var(--muted); font-size: 13px; margin-top: 40px; border-top: 1px solid var(--edge); padding-top: 14px; }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
+    .cats { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brand"><img src="assets/logo/grss-rts-on-dark.svg" alt="GRSS | RTS"><small>Grassroots coaching clips</small></div>
-  <h1 id="title">Coaching Clips</h1>
-  <p class="sub" id="subtitle">Watch the drill, then try it at training.</p>
+  <header class="top">
+    <a class="brand" href="#" id="home-link" aria-label="GRSS | RTS home">
+      <img src="assets/logo/grss-rts-on-dark.svg" alt="GRSS | RTS"><small>Grassroots coaching clips</small>
+    </a>
+    <button class="back" id="back" hidden>← All sessions</button>
+  </header>
 
-  <div class="sessions" id="sessions" role="group" aria-label="Sessions"></div>
-  <div class="clips" id="clips" role="group" aria-label="Clips"></div>
+  <!-- HOME -->
+  <main id="home">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">For players and parents</p>
+        <h1>Watch the drill. <em>Then play it.</em></h1>
+        <p>Short animated clips of what we practise at training. Each step shows the runs first as arrows, then the players move.</p>
+      </div>
+      <button class="feature" id="feature"></button>
+    </section>
 
-  <div class="stage">
-    <canvas id="canvas" aria-label="Animated drill"></canvas>
-    <div class="controls">
-      <button id="restart" title="Restart" aria-label="Restart">⟲</button>
-      <button id="prev" title="Previous step" aria-label="Previous step">⏮</button>
-      <button id="play" class="primary">▶ Play</button>
-      <button id="next" title="Next step" aria-label="Next step">⏭</button>
-      <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position">
-      <select id="speed" aria-label="Speed">
-        <option value="0.5">0.5×</option>
-        <option value="0.75">0.75×</option>
-        <option value="1" selected>1×</option>
-        <option value="1.5">1.5×</option>
-      </select>
-      <span class="time" id="time">0:00 / 0:00</span>
+    <div class="section-head"><h2>Moments of the game</h2><p>Pick a section to filter the sessions.</p></div>
+    <div class="cats" id="cats" role="group" aria-label="Sections"></div>
+
+    <div class="section-head"><h2 id="list-title">All sessions</h2><p id="list-note"></p></div>
+    <div class="sessions-list" id="list"></div>
+
+    <div class="section-head"><h2>Reading the clips</h2></div>
+    <div class="howto">
+      <div><span class="dot" style="border-color:var(--attack)"></span><span>Green circles are attackers</span></div>
+      <div><span class="dot" style="border-color:var(--defend)"></span><span>Blue circles are defenders</span></div>
+      <div><svg width="44" height="14" viewBox="0 0 44 14" aria-hidden="true"><path d="M2 7h32" stroke="var(--sub)" stroke-width="2.5" stroke-dasharray="5 5"/><path d="M42 7l-9-5v10z" fill="var(--sub)"/></svg><span>Dashed arrows show runs and passes</span></div>
+      <div><span class="pill">SPLASH</span><span>Labels show each player's job</span></div>
     </div>
-  </div>
+  </main>
 
-  <div class="dl" id="downloads"></div>
-  <div class="cards" id="cards"></div>
-  <footer>Tap the pitch to play or pause. Each step shows the arrows first, then the movement.</footer>
+  <!-- SESSION -->
+  <main id="session" class="session" hidden>
+    <p class="eyebrow" id="s-cat"></p>
+    <h1 id="title"></h1>
+    <p class="sub" id="subtitle"></p>
+    <div class="clips" id="clips" role="group" aria-label="Clips"></div>
+
+    <div class="stage">
+      <canvas id="canvas" aria-label="Animated drill"></canvas>
+      <div class="controls">
+        <button id="restart" title="Restart" aria-label="Restart">⟲</button>
+        <button id="prev" title="Previous step" aria-label="Previous step">⏮</button>
+        <button id="play" class="primary">▶ Play</button>
+        <button id="next" title="Next step" aria-label="Next step">⏭</button>
+        <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position">
+        <select id="speed" aria-label="Speed">
+          <option value="0.5">0.5×</option>
+          <option value="0.75">0.75×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.5">1.5×</option>
+        </select>
+        <span class="time" id="time">0:00 / 0:00</span>
+      </div>
+    </div>
+    <div class="dl" id="downloads"></div>
+    <div class="cards" id="cards"></div>
+  </main>
+
+  <footer>Tap the pitch to play or pause. Use ⏮ ⏭ to go step by step.</footer>
 </div>
 
 <script src="js/logo-data.js"></script>
 <script src="js/drill-engine.js"></script>
+<script src="js/categories.js"></script>
 <!-- Sessions: add one script tag per session file -->
 <script src="drills/splash-and-ripple.js"></script>
 <script>
 (function () {
   const SESSIONS = window.SESSIONS || [];
-  const params = new URLSearchParams(location.search);
+  const CATS = window.CATEGORIES || [];
   const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
+  const catOf = s => CATS.find(c => c.id === s.category);
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+
+  // ---------- player ----------
   const canvas = $('canvas');
   const dpr = Math.min(2, window.devicePixelRatio || 1);
-
-  let session = SESSIONS.find(s => s.id === params.get('session')) || SESSIONS[0];
-  let clip = (session.clips.find(c => c.id === params.get('clip'))) || session.clips[0];
+  let session = SESSIONS[0];
+  let clip = session.clips[0];
   const player = new DrillEngine.DrillPlayer(canvas, session, clip, { scale: dpr });
+  window.__player = player; // used by tools/render-videos.js
 
   let playing = false, last = 0;
   const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
-
   function setPlaying(p) {
     playing = p;
     $('play').textContent = p ? '❚❚ Pause' : '▶ Play';
@@ -140,47 +247,31 @@
   canvas.onclick = () => setPlaying(!playing);
   $('restart').onclick = () => { seek(0); setPlaying(true); };
   $('scrub').oninput = e => seek((e.target.value / 1000) * player.duration);
-  $('next').onclick = () => {
-    const nxt = player.stepStarts.find(s => s > player.t + 0.05);
-    seek(nxt != null ? nxt : player.duration);
-  };
-  $('prev').onclick = () => {
-    const starts = [0].concat(player.stepStarts);
-    const prev = starts.filter(s => s < player.t - 0.8).pop();
-    seek(prev != null ? prev : 0);
-  };
+  $('next').onclick = () => { const n = player.stepStarts.find(s => s > player.t + 0.05); seek(n != null ? n : player.duration); };
+  $('prev').onclick = () => { const p = [0].concat(player.stepStarts).filter(s => s < player.t - 0.8).pop(); seek(p != null ? p : 0); };
   document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if ($('session').hidden || ['INPUT', 'SELECT', 'BUTTON'].includes(e.target.tagName)) return;
     if (e.code === 'Space') { e.preventDefault(); setPlaying(!playing); }
     if (e.code === 'ArrowRight') $('next').click();
     if (e.code === 'ArrowLeft') $('prev').click();
   });
 
-  function chips(el, items, activeId, onPick) {
-    el.innerHTML = '';
-    items.forEach(it => {
-      const b = document.createElement('button');
-      b.className = 'chip';
-      b.textContent = it.label;
-      b.setAttribute('aria-pressed', it.id === activeId);
-      b.onclick = () => onPick(it.id);
-      el.appendChild(b);
-    });
-    el.style.display = items.length > 1 ? '' : 'none';
-  }
-
-  function renderUI() {
+  function renderSession() {
+    const cat = catOf(session);
+    $('s-cat').textContent = cat ? cat.name : '';
     $('title').textContent = session.title;
     $('subtitle').textContent = session.subtitle || '';
-    document.title = `${session.title} · GRSS | RTS`;
-    chips($('sessions'), SESSIONS.map(s => ({ id: s.id, label: s.title })), session.id, id => {
-      session = SESSIONS.find(s => s.id === id); clip = session.clips[0];
-      player.session = session; load();
+    const el = $('clips');
+    el.innerHTML = '';
+    session.clips.forEach(c => {
+      const b = document.createElement('button');
+      b.className = 'chip';
+      b.textContent = `${c.kicker ? c.kicker + ': ' : ''}${c.title}`;
+      b.setAttribute('aria-pressed', c.id === clip.id);
+      b.onclick = () => { clip = c; loadClip(); };
+      el.appendChild(b);
     });
-    chips($('clips'), session.clips.map(c => ({ id: c.id, label: `${c.kicker ? c.kicker + ': ' : ''}${c.title}` })), clip.id, id => {
-      clip = session.clips.find(c => c.id === id); load();
-    });
-    $('downloads').innerHTML = clip.video
+    $('downloads').innerHTML = clip.video && !window.NO_DOWNLOADS
       ? `<a href="${esc(clip.video)}" download>⬇ Download this clip (MP4)</a>` : '';
     $('cards').innerHTML = (session.cards || []).map(card => `
       <section class="card">
@@ -195,18 +286,75 @@
         ${card.phrase ? `<div class="phrase"><b>${esc(card.phrase.big)}</b><span>${esc(card.phrase.small || '')}</span></div>` : ''}
       </section>`).join('');
   }
-
-  function load() {
+  function loadClip() {
     setPlaying(false);
+    player.session = session;
     player.load(clip);
-    const q = new URLSearchParams({ session: session.id, clip: clip.id });
-    history.replaceState(null, '', `?${q}`);
-    renderUI(); sync();
+    renderSession(); sync();
   }
 
-  load();
+  // ---------- home ----------
+  let filter = null;
+  const clipRange = s => s.clips.map(c => (c.kicker || '').split('·')[1]).filter(Boolean).map(x => x.trim());
+  function sessionCard(s, cls) {
+    const cat = catOf(s);
+    const formats = [...new Set(clipRange(s))];
+    return `<button class="${cls}" data-id="${esc(s.id)}">
+      ${s.thumb ? `<img src="${esc(s.thumb)}" alt="">` : ''}
+      <div class="meta"><span class="tag">${esc(cat ? cat.name : '')}</span><b>${esc(s.title)}</b>
+        <p>${esc(s.summary || s.subtitle || '')}</p>
+        <span>${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
+        ${cls === 'scard' ? `<ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>` : ''}
+      </div></button>`;
+  }
+  function renderHome() {
+    const feat = SESSIONS[SESSIONS.length - 1];
+    $('feature').outerHTML = sessionCard(feat, 'feature').replace('<button class="feature"', '<button class="feature" id="feature"');
+    $('cats').innerHTML = CATS.map(c => {
+      const n = SESSIONS.filter(s => s.category === c.id).length;
+      return `<button class="cat${n ? '' : ' empty'}" data-cat="${c.id}" aria-pressed="${filter === c.id}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg><b>${esc(c.name)}</b><small>${esc(c.blurb)}</small>
+        <span class="count">${n ? plural(n, 'session') : 'Coming soon'}</span></button>`;
+    }).join('');
+    const shown = SESSIONS.filter(s => !filter || s.category === filter);
+    const cat = CATS.find(c => c.id === filter);
+    $('list-title').textContent = cat ? cat.name : 'All sessions';
+    $('list-note').innerHTML = filter ? `<a href="#" id="clear">Show all</a>` : '';
+    $('list').hidden = !shown.length;
+    $('list').innerHTML = shown.map(s => sessionCard(s, 'scard')).join('');
+    const none = document.querySelector('.none');
+    if (none) none.remove();
+    if (!shown.length) $('list').insertAdjacentHTML('afterend', `<p class="none">No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added.</p>`);
+  }
+  document.addEventListener('click', e => {
+    const card = e.target.closest('[data-id]');
+    if (card) { location.hash = card.dataset.id; return; }
+    const c = e.target.closest('[data-cat]');
+    if (c) { filter = filter === c.dataset.cat ? null : c.dataset.cat; renderHome(); return; }
+    if (e.target.id === 'clear') { e.preventDefault(); filter = null; renderHome(); }
+  });
+  $('back').onclick = () => { location.hash = ''; };
+  $('home-link').onclick = e => { e.preventDefault(); location.hash = ''; };
+
+  // ---------- routing: #<session-id> opens a session, anything else shows home ----------
+  function route() {
+    const id = location.hash.replace('#', '');
+    const s = SESSIONS.find(x => x.id === id);
+    $('home').hidden = !!s; $('session').hidden = !s; $('back').hidden = !s;
+    if (s) {
+      if (s !== session) { session = s; clip = s.clips[0]; }
+      loadClip();
+      document.title = `${s.title} · GRSS | RTS`;
+    } else {
+      setPlaying(false);
+      renderHome();
+      document.title = 'GRSS | RTS';
+    }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+  route();
   if (document.fonts) document.fonts.ready.then(() => player.draw());
-  window.__player = player; // used by tools/render-videos.js
 })();
 </script>
 </body>

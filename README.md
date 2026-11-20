@@ -7,7 +7,9 @@ Animated coaching clips for young players and parents, drawn like a session-plan
 players are circles (green = attackers, blue = defenders), each step shows the
 **arrows first**, then the players and ball move, with the coaching points beside the pitch.
 
-- **Web player:** open `index.html` to play, pause, step through and scrub each clip.
+- **Website:** open `index.html`. The home page groups sessions by moment of the game
+  (Defending, Attacking, Transitions, Skills, Goalkeeping); `index.html#<session-id>` opens a session's player.
+- **Shareable link:** `node tools/build-artifact.js out.html` packs the site into one self-contained page for publishing.
 - **Shareable videos:** `videos/*.mp4` (1080p) to send on WhatsApp, email and so on.
 
 ## Sessions
@@ -35,9 +37,11 @@ To change the logo, edit `tools/build-logo.js` and run `node tools/build-logo.js
 
 ## Adding a new session
 
-1. Copy `drills/splash-and-ripple.js` to `drills/<new-session>.js` and edit it.
+1. Copy `drills/splash-and-ripple.js` to `drills/<new-session>.js` and edit it. Set `category`
+   to one of the ids in `js/categories.js`, and give it a `summary` and `thumb` path.
 2. Add `<script src="drills/<new-session>.js"></script>` to `index.html`.
-3. Render the videos: `node tools/render-videos.js` (requires Playwright and ffmpeg).
+3. Render the videos and thumbnail: `node tools/render-videos.js` and `node tools/render-videos.js --thumbs`
+   (requires Playwright and ffmpeg).
 
 ### Clip format (quick reference)
 
