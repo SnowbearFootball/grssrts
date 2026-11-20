@@ -54,6 +54,9 @@
   .hero h1 { font-size: clamp(32px, 6vw, 54px); margin: 0 0 12px; font-weight: 800; letter-spacing: -.01em; }
   .hero h1 em { font-style: normal; color: var(--accent); }
   .tagline span, .tagline em { display: block; }
+  /* audience line: green words, small orange dividers */
+  .audience { color: var(--text); display: flex; align-items: center; flex-wrap: wrap; }
+  .audience i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin: 0 .9em; }
   /* stepped tagline: each line steps further right */
   .tagline > :nth-child(2) { padding-left: 1.3em; }
   .tagline > :nth-child(3) { padding-left: 3.7em; }
@@ -248,7 +251,7 @@
   <main id="home">
     <section class="hero">
       <div>
-        <p class="eyebrow">For players, parents and coaches</p>
+        <p class="eyebrow audience">Coaches<i aria-hidden="true"></i>Players<i aria-hidden="true"></i>Parents</p>
         <h1 class="tagline"><span>Watch it.</span> <span>Coach it.</span> <em>Play it.</em></h1>
         <p>Short animated clips of what we practise at training. Each step shows the runs first as arrows, then the players move.</p>
         <div class="cta">
