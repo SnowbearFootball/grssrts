@@ -50,12 +50,16 @@
     danger: '#e5484d',
     keeper: '#2b2b2b',
   };
+  // Per-clip extra team colours: clip.teamColors = { r: '#e5484d', ... }
+  function teamColor(cp, team) { return (cp.clip.teamColors && cp.clip.teamColors[team]) || TEAM_COLOR[team] || C.attack; }
   const TEAM_COLOR = { get a() { return C.attack; }, get d() { return C.defend; }, get k() { return C.keeper; } };
 
   const PITCH = { x: 40, y: 88, w: 780, h: 600, pad: 26, uw: 100, uh: 75 };
   const PANEL = { x: 848, y: 88, w: 392, h: 600 };
-  const R_PX = 17;                                   // player radius in px
-  const R_U = R_PX / ((PITCH.w - 2 * PITCH.pad) / PITCH.uw); // radius in pitch units
+  // player radius; a clip can shrink players with playerScale (e.g. 0.85) to give the pitch more room
+  let R_PX = 17;                                     // player radius in px
+  let R_U = R_PX / ((PITCH.w - 2 * PITCH.pad) / PITCH.uw); // radius in pitch units
+  function setPlayerScale(k) { R_PX = 17 * (k || 1); R_U = R_PX / ((PITCH.w - 2 * PITCH.pad) / PITCH.uw); }
 
   const DEFAULT_TIMING = { intro: 3.5, stepIn: 0.6, arrows: 1.6, read: 1.8, move: 2.6, hold: 2.2, outro: 5 };
 
@@ -103,6 +107,7 @@
 
   // ---------- compile a clip into a timeline ----------
   function compile(clip) {
+    setPlayerScale(clip.playerScale);
     const timing = Object.assign({}, DEFAULT_TIMING, clip.timing || {});
     const team = {};
     const pos = {};
@@ -124,8 +129,8 @@
         state.ball = { owner: def.ball.give };
         if (!state.used.includes(def.ball.give)) state.used.push(def.ball.give);
       }
-      const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false);
-      const hasMotion = moves.length > 0 || !!def.ball;
+      const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false) || !!(def.passes && def.passes.length);
+      const hasMotion = moves.length > 0 || !!def.ball || !!(def.passes && def.passes.length);
       const phases = {
         stepIn: d.stepIn,
         arrows: hasArrows ? d.arrows : 0,
@@ -137,6 +142,7 @@
       const startState = JSON.parse(JSON.stringify(state));
       const endState = JSON.parse(JSON.stringify(state));
       moves.forEach(m => { const path = m.path || [m.to]; endState.pos[m.id] = path[path.length - 1].slice(); });
+      if (def.passes && def.passes.length) endState.ball = { owner: def.passes[def.passes.length - 1].to };
       if (def.ball) {
         if (def.ball.pass) endState.ball = { owner: def.ball.pass };
         else if (def.ball.to) endState.ball = { owner: null, at: def.ball.to.slice() };
@@ -178,7 +184,30 @@
     return b.owner ? attached(cp, step, b.owner, u) : b.at.slice();
   }
 
+  // A sequence of passes in one step: def.passes = [{ to, start, end }, ...] (start/end are 0..1 of the move phase)
+  function passSeq(cp, step) {
+    let from = step.startState.ball.owner;
+    return step.def.passes.map((ps, i) => {
+      const seg = { from, to: ps.to, s: ps.start != null ? ps.start : i / step.def.passes.length, e: ps.end };
+      if (seg.e == null) seg.e = seg.s + 0.6 / step.def.passes.length;
+      from = ps.to;
+      return seg;
+    });
+  }
   function ballPos(cp, step, u) {
+    if (step.def.passes && step.def.passes.length) {
+      const segs = passSeq(cp, step);
+      if (u <= segs[0].s) return ballStartPos(cp, step, u);
+      for (let i = 0; i < segs.length; i++) {
+        const g = segs[i];
+        if (u < g.s) return attached(cp, step, segs[i - 1].to, u);
+        if (u <= g.e) {
+          const a = g.from ? attached(cp, step, g.from, g.s) : ballStartPos(cp, step, g.s);
+          return lerpP(a, attached(cp, step, g.to, g.e), EASE.pass(clamp((u - g.s) / (g.e - g.s))));
+        }
+      }
+      return attached(cp, step, segs[segs.length - 1].to, u);
+    }
     const act = step.def.ball;
     if (!act) return ballStartPos(cp, step, u);
     const s = act.start != null ? act.start : 0;
@@ -260,7 +289,7 @@
     });
   }
 
-  function drawPlayer(ctx, p, team, alpha, label) {
+  function drawPlayer(ctx, p, team, alpha, label, color) {
     const [x, y] = toPx(p);
     ctx.save();
     ctx.globalAlpha = alpha;
@@ -269,10 +298,10 @@
     ctx.fillStyle = '#ffffff';
     ctx.fill();
     ctx.lineWidth = 5;
-    ctx.strokeStyle = TEAM_COLOR[team];
+    ctx.strokeStyle = color || TEAM_COLOR[team];
     ctx.stroke();
     if (label) {
-      ctx.fillStyle = TEAM_COLOR[team];
+      ctx.fillStyle = color || TEAM_COLOR[team];
       ctx.font = `800 12px ${FONT}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -564,9 +593,12 @@
     const items = [
       { label: 'Pass', draw: (lx) => drawArrowPx(ctx, lx, 46, lx + 34, 46, ARROW_STYLE.pass) },
       { label: 'Run', draw: (lx) => drawArrowPx(ctx, lx, 46, lx + 34, 46, ARROW_STYLE.run) },
-      { label: clip.legend && clip.legend.d || 'Defenders', draw: (lx) => legendDot(ctx, lx + 10, 46, C.defend) },
-      { label: clip.legend && clip.legend.a || 'Attackers', draw: (lx) => legendDot(ctx, lx + 10, 46, C.attack) },
-    ];
+    ].concat(clip.legendTeams
+      ? clip.legendTeams.slice().reverse().map(t => ({ label: t.label, draw: (lx) => legendDot(ctx, lx + 10, 46, t.color) }))
+      : [
+        { label: clip.legend && clip.legend.d || 'Defenders', draw: (lx) => legendDot(ctx, lx + 10, 46, C.defend) },
+        { label: clip.legend && clip.legend.a || 'Attackers', draw: (lx) => legendDot(ctx, lx + 10, 46, C.attack) },
+      ]);
     items.forEach(it => {
       const lw = ctx.measureText(it.label).width;
       x -= lw;
@@ -634,7 +666,13 @@
     ctx.globalAlpha = alpha;
     ctx.fillStyle = C.muted;
     ctx.font = `600 15px ${FONT}`;
-    ctx.fillText((kicker || '').toUpperCase(), x, y);
+    // keep the kicker clear of the step dots on the right
+    const dotsW = stepDots ? stepDots.count * 18 + 20 : 0;
+    let kick = (kicker || '').toUpperCase();
+    ctx.font = `600 15px ${FONT}`;
+    if (ctx.measureText(kick).width > maxW - dotsW && kick.includes(' · ')) kick = kick.split(' · ').pop();   // drop the clip name if it won't fit
+    fitFont(ctx, kick, 600, 15, maxW - dotsW);
+    ctx.fillText(kick, x, y);
     y += 44;
 
     ctx.font = `800 30px ${FONT}`;
@@ -738,6 +776,7 @@
 
   // ---------- main frame render ----------
   function render(ctx, cp, session, t) {
+    setPlayerScale(cp.clip.playerScale);
     const clip = cp.clip;
     t = clamp(t, 0, cp.duration);
 
@@ -746,6 +785,21 @@
     ctx.fillRect(0, 0, W, H);
     drawHeader(ctx, session, clip);
     drawPitch(ctx, clip.goals);
+    // marked practice areas: clip.areas = [{ x, y, w, h }] in pitch units, cones at the corners
+    (clip.areas || []).forEach(a => {
+      const [x1, y1] = toPx([a.x, a.y]), [x2, y2] = toPx([a.x + a.w, a.y + a.h]);
+      ctx.save();
+      ctx.fillStyle = 'rgba(22,53,31,0.06)';
+      ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+      ctx.strokeStyle = 'rgba(22,53,31,0.25)'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 6]);
+      ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+      ctx.setLineDash([]);
+      [[x1, y1], [x2, y1], [x1, y2], [x2, y2]].forEach(([cx, cy]) => {
+        ctx.beginPath(); ctx.moveTo(cx, cy - 7); ctx.lineTo(cx + 6, cy + 5); ctx.lineTo(cx - 6, cy + 5); ctx.closePath();
+        ctx.fillStyle = a.cone || '#e5b52b'; ctx.fill();
+      });
+      ctx.restore();
+    });
 
     // Which segment are we in?
     let step = null, local = 0, phase = 'intro', u = 0, pk = 0;
@@ -798,6 +852,14 @@
         const from = step.startState.pos[m.id];
         arrows.push({ pts: trimPath([from].concat(m.path || [m.to]), R_U + 0.6, R_U + 0.6), style: ARROW_STYLE.run, order: m.start || 0 });
       });
+      if (def.passes && def.passes.length) {
+        passSeq(cp, step).forEach((g, i) => {
+          if (!g.from) return;
+          const a = playerPos(step, g.from, g.s), b = playerPos(step, g.to, g.e);
+          const col = teamColor(cp, cp.team[g.from]);
+          arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: { color: col, width: 3, dash: [9, 7], head: 13 }, order: -1 + i * 0.01 });
+        });
+      }
       if (def.ball && def.ball.arrow !== false) {
         const s = def.ball.start != null ? def.ball.start : 0;
         const e = def.ball.end != null ? def.ball.end : 0.4;
@@ -864,7 +926,7 @@
     const st = phase === 'outro' ? cp.finalState : step.startState;
     (st.spent || []).forEach(b => drawBall(ctx, b));
     clip.players.forEach(p => { if (p.ball && !(st.used || []).includes(p.id)) drawBall(ctx, attached(cp, step, p.id, u)); });
-    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, p.dim ? 0.4 : 1, p.label));
+    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, p.dim ? 0.4 : 1, p.label, teamColor(cp, p.team)));
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
     // tags on top
