@@ -581,7 +581,7 @@
     ctx.fillText(session.title || '', x, 52);
     x += ctx.measureText(session.title || '').width + 14;
     const idx = (session.clips || []).indexOf(clip);
-    if (idx >= 0) {
+    if (idx >= 0 && session.clips.length > 1) {
       ctx.fillStyle = C.muted;
       ctx.font = `600 16px ${FONT}`;
       ctx.fillText(`Clip ${idx + 1} of ${session.clips.length}`, x, 51);
