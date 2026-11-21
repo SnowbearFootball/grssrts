@@ -663,7 +663,12 @@
   $('go-howto').onclick = () => { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); };
   const closeDlg = () => { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); };
   $('howto-close').onclick = closeDlg;
-  dlg.addEventListener('click', e => { if (e.target === dlg) closeDlg(); });   // tap outside to close
+  // tap outside the box (on the dimmed background) to close
+  document.addEventListener('pointerdown', e => {
+    if (!dlg.open) return;
+    const r = dlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeDlg();
+  });
   $('home-link').onclick = e => { e.preventDefault(); location.hash = ''; };
   const closeMenu = () => { const l = $('more-list'), b = $('more-btn'); if (l) l.classList.remove('open'); if (b) b.setAttribute('aria-expanded', 'false'); };
   document.addEventListener('click', e => {
