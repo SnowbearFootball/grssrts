@@ -1,0 +1,3 @@
+# Cloudflare Pages: always check for a newer copy, so visitors never see a mix of old and new files.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
