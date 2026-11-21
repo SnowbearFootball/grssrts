@@ -212,6 +212,26 @@
   .qs li::marker { color: var(--accent); font-weight: 800; }
   .stage { background: var(--forest); border-radius: 14px; overflow: hidden; }
   canvas { display: block; width: 100%; height: auto; cursor: pointer; }
+  /* full screen: real full screen where supported, otherwise fill the window (iPhone) */
+  .stage:fullscreen, .stage.fs { position: fixed; inset: 0; z-index: 100; border-radius: 0; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; width: 100%; height: 100%; background: var(--forest);
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
+  .stage:fullscreen canvas, .stage.fs canvas { width: auto; height: auto; max-width: 100%; max-height: calc(100% - 64px); flex: 0 1 auto; }
+  .stage:fullscreen .controls, .stage.fs .controls { width: 100%; max-width: 1100px; }
+  .stage:fullscreen .controls, .stage.fs .controls { padding: 4px 10px; gap: 6px; flex-wrap: nowrap; }
+  .stage:fullscreen .controls button, .stage:fullscreen .controls select,
+  .stage.fs .controls button, .stage.fs .controls select { padding: 4px 9px; font-size: 13px; min-width: 36px; }
+  .stage:fullscreen .controls button.primary, .stage.fs .controls button.primary { min-width: 72px; }
+  .stage:fullscreen .time, .stage.fs .time { font-size: 12px; min-width: 70px; }
+  .stage:fullscreen .next-clip, .stage.fs .next-clip { display: none; }
+  .stage:fullscreen canvas, .stage.fs canvas { max-height: calc(100% - 44px); }
+  .rotate-hint { display: none; }
+  @media (orientation: portrait) {
+    .stage:fullscreen .controls, .stage.fs .controls { flex-wrap: wrap; justify-content: center; }
+    .stage:fullscreen .controls input[type=range], .stage.fs .controls input[type=range] { order: 10; flex-basis: 100%; }
+    .stage:fullscreen .rotate-hint, .stage.fs .rotate-hint { display: block; color: #c9d3c3; font-size: 13px; margin: 14px 0 0; text-align: center; }
+  }
+  body.no-scroll { overflow: hidden; }
   .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px; background: var(--forest-2); color: var(--cream); }
   .controls button, .controls select { background: var(--forest); border: 1px solid var(--forest-edge); border-radius: 8px; padding: 8px 12px;
     font-size: 15px; cursor: pointer; min-width: 44px; color: var(--cream); }
@@ -374,8 +394,10 @@
           <option value="1.5">1.5×</option>
         </select>
         <span class="time" id="time">0:00 / 0:00</span>
+        <button id="fullscreen" title="Full screen" aria-label="Full screen">⛶</button>
         <button class="next-clip" id="next-clip" hidden>Next clip ›</button>
       </div>
+      <p class="rotate-hint">Turn your phone sideways for a bigger view</p>
     </div>
     <div class="dl" id="downloads"></div>
 
@@ -461,6 +483,35 @@
 
   $('play').onclick = () => setPlaying(!playing);
   canvas.onclick = () => setPlaying(!playing);
+
+  // ---------- full screen ----------
+  const stage = document.querySelector('.stage');
+  const isFs = () => document.fullscreenElement === stage || document.webkitFullscreenElement === stage || stage.classList.contains('fs');
+  function fsUpdate() {
+    const on = isFs();
+    $('fullscreen').textContent = on ? '✕' : '⛶';
+    $('fullscreen').setAttribute('aria-label', on ? 'Exit full screen' : 'Full screen');
+    document.body.classList.toggle('no-scroll', on);
+  }
+  function enterFs() {
+    const req = stage.requestFullscreen || stage.webkitRequestFullscreen;
+    if (req) {
+      Promise.resolve(req.call(stage)).then(() => {
+        if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {});
+      }).catch(() => { stage.classList.add('fs'); fsUpdate(); });
+    } else { stage.classList.add('fs'); fsUpdate(); }   // iPhone: fill the window instead
+  }
+  function exitFs() {
+    if (stage.classList.contains('fs')) { stage.classList.remove('fs'); fsUpdate(); return; }
+    const ex = document.exitFullscreen || document.webkitExitFullscreen;
+    if (ex) ex.call(document);
+  }
+  $('fullscreen').onclick = () => (isFs() ? exitFs() : enterFs());
+  canvas.ondblclick = e => { e.preventDefault(); isFs() ? exitFs() : enterFs(); };
+  document.addEventListener('fullscreenchange', fsUpdate);
+  document.addEventListener('webkitfullscreenchange', fsUpdate);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && stage.classList.contains('fs')) exitFs(); });
+  window.addEventListener('hashchange', () => { if (isFs()) exitFs(); });
   $('restart').onclick = () => { seek(0); setPlaying(true); };
   $('scrub').oninput = e => seek((e.target.value / 1000) * player.duration);
   $('next').onclick = () => { const n = player.stepStarts.find(s => s > player.t + 0.05); seek(n != null ? n : player.duration); };
