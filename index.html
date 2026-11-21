@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GRSS | RTS</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="assets/logo/grss-rts-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<meta name="theme-color" content="#f6eedd">
+<style>
+  /* LOCAL-FONTS-START */
+  @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-600.woff) format("woff"); font-weight: 500 600; }
+  @font-face { font-family: Montserrat; src: url(assets/fonts/montserrat-700.woff) format("woff"); font-weight: 700 800; }
+  /* LOCAL-FONTS-END */
+
+  /* Layout: one column, max 1100px. Views: home · #<section> · #<session> · #<area>.
+     Brand look is deliberately single-theme: cream page, forest-green blocks, burnt-orange accents.
+     The video "screen" keeps the forest frame used in the clips. */
+  :root {
+    --bg: #f6eedd; --paper: #fffaf0; --edge: #e3d6ba; --cream: #f2e6cd;
+    --forest: #16351f; --forest-2: #1e4128; --forest-edge: #2b5233;
+    --text: #16351f; --sub: #3d5a44; --muted: #677a68;
+    --accent: #d9622b; --accent-ink: #a8461a; --accent-soft: #f0905e;
+    --attack: #2fbf7f; --defend: #3b9ae1;
+    --font: Montserrat, "Segoe UI", Roboto, "Liberation Sans", Arial, sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 500; line-height: 1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding-block: 16px 40px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  button, select, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  a { color: var(--accent-ink); }
+  h1, h2, h3 { text-wrap: balance; line-height: 1.15; }
+  .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--accent-ink); margin: 0 0 6px; }
+
+  /* header + navigation */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap;
+    padding-bottom: 12px; border-bottom: 1px solid var(--edge); margin-bottom: 26px; }
+  .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-decoration: none; }
+  .brand img { height: 40px; width: auto; display: block; }
+
+  .nav { display: flex; gap: 2px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { flex: none; text-decoration: none; color: var(--sub); font-weight: 600; font-size: 13.5px; padding: 5px 9px; border-radius: 999px; border: 1px solid transparent; }
+  .nav a:hover { border-color: var(--edge); color: var(--text); }
+  .nav a[aria-current="page"] { background: var(--forest); color: var(--cream); }
+  .nav .sep { flex: none; width: 1px; height: 16px; background: var(--edge); margin: 0 4px; }
+
+  /* home */
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; margin-bottom: 40px; }
+  .hero h1 { font-size: clamp(32px, 6vw, 54px); margin: 0 0 12px; font-weight: 800; letter-spacing: -.01em; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .tagline span, .tagline em { display: block; }
+  /* audience line: green words, small orange dividers */
+  /* audience line under the logo, stretched to the logo's width */
+  .audience { color: var(--text); display: flex; align-items: center; justify-content: space-between; gap: .7em; width: max-content;
+    font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+  .audience > span:last-child { margin-right: -.14em; }
+  .audience i { flex: none; width: 2px; height: 1.15em; border-radius: 1px; background: var(--accent); }
+  /* stepped tagline: each line steps further right */
+  .tagline > :nth-child(2) { padding-left: 1.3em; }
+  .tagline > :nth-child(3) { padding-left: 3.7em; }
+  /* coaches are the main audience: "Coach it." is the orange line */
+  .hero .tagline > :nth-child(2) { color: var(--accent); }
+  .hero .tagline em { color: var(--text); }
+  .hero p { color: var(--sub); margin: 0; max-width: 46ch; font-size: 16px; }
+  .hero-art { background: var(--forest); border-radius: 16px; padding: 14px; margin: 0; min-width: 0; }
+  .hero-art svg { display: block; width: 100%; height: auto; max-width: 100%; }
+  .hero-art figcaption { color: #c9d3c3; font-size: 13px; padding: 10px 4px 0; }
+  .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+  .btn { border-radius: 999px; padding: 11px 20px; font-weight: 700; font-size: 15px; cursor: pointer; border: 1px solid var(--edge); background: var(--paper); text-decoration: none; color: var(--text); display: inline-block; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn:hover { border-color: var(--accent); }
+  .btn[aria-disabled="true"] { opacity: .55; cursor: default; }
+  /* mini pitch animation: arrows draw on, then the ball is passed along them */
+  .mp-arrow { stroke-dasharray: 6 6; animation: mp-draw 7s infinite; }
+  .mp-head { animation: mp-head 7s infinite; }
+  .mp-ball { offset-path: path("M80 186 L172 122 L264 168 L283 118 L271 56"); offset-rotate: 0deg; animation: mp-ball 7s infinite; }
+  .mp-run { offset-path: path("M262 150 L270 74"); offset-rotate: 0deg; animation: mp-run 7s infinite; }
+  @keyframes mp-draw { 0% { stroke-dashoffset: 120; opacity: 0 } 5% { opacity: 1 } 28% { stroke-dashoffset: 0 } 80% { opacity: 1 } 92%, 100% { opacity: 0; stroke-dashoffset: 0 } }
+  @keyframes mp-head { 0%, 22% { opacity: 0 } 28%, 80% { opacity: 1 } 92%, 100% { opacity: 0 } }
+  /* ball: pass (33.8% of path), pass (64.9%), then pushed ahead of the runner as they dribble (100%) */
+  @keyframes mp-ball { 0% { offset-distance: 0%; opacity: 0 } 4% { opacity: 1 } 34% { offset-distance: 0% } 48%, 54% { offset-distance: 33.8% }
+    68%, 70% { offset-distance: 64.9% } 84% { offset-distance: 100% } 90% { opacity: 1 } 96%, 100% { offset-distance: 100%; opacity: 0 } }
+  @keyframes mp-run { 0% { offset-distance: 0%; opacity: 0 } 4% { opacity: 1 } 70% { offset-distance: 0% } 84% { offset-distance: 100% }
+    90% { opacity: 1 } 96%, 100% { offset-distance: 100%; opacity: 0 } }
+  @media (prefers-reduced-motion: reduce) {
+    .mp-arrow, .mp-head, .mp-ball, .mp-run { animation: none; }
+    .mp-ball { offset-distance: 33.8%; }
+  }
+
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; }
+  .section-head h2 { margin: 0; font-size: 24px; }
+  .section-head p { margin: 0; color: var(--muted); font-size: 14px; }
+  .mains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 36px; }
+  .main-tile { background: var(--forest); color: var(--cream); border: 0; border-radius: 14px; padding: 18px; text-align: left; cursor: pointer;
+    display: grid; gap: 6px; align-content: start; min-width: 0; text-decoration: none; }
+  .main-tile svg { width: 30px; height: 30px; fill: none; stroke: var(--accent-soft); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .main-tile b { font-size: 20px; }
+  .main-tile small { color: #c9d3c3; font-size: 13.5px; line-height: 1.45; }
+  .main-tile .count { font-size: 12.5px; font-weight: 700; color: var(--accent-soft); margin-top: 6px; }
+  .main-tile:hover { background: var(--forest-2); }
+  .areas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px; }
+  .area-tile { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 4px; align-content: start;
+    text-decoration: none; color: var(--text); min-width: 0; }
+  .area-tile svg { width: 26px; height: 26px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .area-tile .tag { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--accent-ink); }
+  .area-tile b { font-size: 18px; }
+  .area-tile small { color: var(--sub); font-size: 13.5px; line-height: 1.45; }
+  .area-tile:hover { border-color: var(--accent); }
+
+  .popup { border: 0; border-radius: 18px; padding: 24px 22px 20px; max-width: min(520px, calc(100vw - 32px)); width: 100%;
+    background: var(--bg); color: var(--text); box-shadow: 0 20px 60px rgba(22,53,31,.35); }
+  .popup::backdrop { background: rgba(22,53,31,.55); }
+  .popup h2 { margin: 0 0 8px; font-size: 22px; padding-right: 36px; }
+  .popup p { margin: 0 0 14px; color: var(--sub); }
+  .popup .howto { grid-template-columns: 1fr 1fr; margin-bottom: 12px; }
+  .popup .note { margin: 0; }
+  .popup-close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--edge);
+    background: var(--paper); cursor: pointer; font-size: 15px; }
+  .popup .howto { gap: 8px; }
+  .popup .howto div { padding: 10px 12px; gap: 10px; }
+  .popup .howto span { font-size: 13.5px; }
+  @media (max-width: 480px) { .popup .howto { grid-template-columns: 1fr; } .popup { padding: 20px 18px 16px; } .popup p { font-size: 15px; } }
+  .howto { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+  .howto div { background: var(--forest); color: var(--cream); border-radius: 12px; padding: 14px; display: flex; gap: 12px; align-items: center; min-width: 0; }
+  .howto span { font-size: 14px; }
+  .dot { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 4px solid; flex: none; }
+  .pill { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; border-radius: 99px; padding: 3px 8px; flex: none; letter-spacing: .04em; }
+  .howto svg { flex: none; }
+
+  /* breadcrumbs */
+  .crumbs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; color: var(--muted); margin: 0 0 14px; }
+  .crumbs a { color: var(--sub); text-decoration: none; border-bottom: 1px solid var(--edge); }
+  .crumbs a:hover { color: var(--text); border-color: var(--accent); }
+  .crumbs span[aria-current] { color: var(--accent-ink); }
+
+  /* section + area pages */
+  .page-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 26px; }
+  .page-top svg { width: 44px; height: 44px; flex: none; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-top: 6px; }
+  .page-top h1 { margin: 0 0 6px; font-size: clamp(30px, 5vw, 44px); }
+  .page-top p { margin: 0; color: var(--sub); max-width: 60ch; }
+  .sessions-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-bottom: 30px; }
+  .scard { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; text-align: left; padding: 0;
+    cursor: pointer; display: grid; min-width: 0; }
+  .scard img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; max-width: 100%; }
+  .scard .meta { padding: 12px 14px 16px; display: grid; gap: 4px; }
+  .scard b { font-size: 18px; }
+  .scard p { margin: 0; color: var(--sub); font-size: 14px; }
+  .scard .tag { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
+  .scard ol { margin: 6px 0 0; padding-left: 20px; color: var(--muted); font-size: 13px; }
+  .scard:hover { border-color: var(--accent); }
+  .none { color: var(--sub); background: var(--paper); border: 1px dashed var(--edge); border-radius: 12px; padding: 22px; margin: 0 0 30px; }
+  .soon { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 30px; padding: 0; list-style: none; }
+  .soon li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; font-weight: 600; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+  .soon li span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; flex: none; }
+  .offers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 30px; }
+  .offer { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+  .offer.paid { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .offer h2 { margin: 0; font-size: 22px; }
+  .offer .price { font-weight: 800; font-size: 15px; color: var(--accent-ink); }
+  .offer.paid .price { color: var(--accent-soft); }
+  .offer p, .offer li { margin: 0; font-size: 14.5px; }
+  .offer.paid p, .offer.paid li { color: #d7dfd2; }
+  .offer ol, .offer ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+  .note { color: var(--muted); font-size: 13px; }
+
+  /* age filter + badges */
+  .filter { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 16px; font-weight: 600; font-size: 14px; color: var(--sub); }
+  .filter select { background: var(--paper); border: 1px solid var(--edge); border-radius: 8px; padding: 7px 10px; font-weight: 600; }
+  .age.type { background: var(--accent); }
+  .age { display: inline-block; background: var(--forest); color: var(--cream); font-size: 12px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
+
+  /* session view */
+  .s-head { display: grid; gap: 10px; margin-bottom: 22px; }
+  .s-head h1 { margin: 0; font-size: clamp(32px, 6vw, 50px); font-weight: 800; letter-spacing: -.01em; color: var(--text); }
+  .s-head .idea { margin: 0; font-size: clamp(17px, 2.4vw, 20px); color: var(--sub); max-width: 52ch; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .facts span { background: var(--paper); border: 1px solid var(--edge); border-radius: 999px; padding: 5px 12px; font-size: 13.5px; font-weight: 600; }
+  .facts .kp { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; font-size: 12.5px; }
+  .facts-note { margin: 0; color: var(--muted); font-size: 13px; }
+  .prog-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 0 0 10px; }
+  .prog-head h2 { margin: 0; font-size: 18px; }
+  .prog-head p { margin: 0; color: var(--muted); font-size: 13px; }
+  .progression { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .progression button { width: 100%; text-align: left; background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 0; overflow: hidden; cursor: pointer; display: grid; min-width: 0; }
+  .progression img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; background: var(--forest); }
+  .progression .pm { padding: 8px 10px 10px; display: grid; gap: 2px; }
+  .progression .num { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--accent-ink); text-transform: uppercase; }
+  .progression b { font-size: 15px; }
+  .progression small { color: var(--muted); font-size: 12.5px; }
+  .progression button[aria-current="true"] { border-color: var(--forest); box-shadow: inset 0 0 0 2px var(--forest); }
+  .progression button[aria-current="true"] .num { color: var(--forest); }
+  .controls .next-clip { margin-left: auto; }
+  .controls .next-clip.ready { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 26px 0 14px; border-bottom: 1px solid var(--edge); }
+  .tabs button { background: none; border: 0; border-bottom: 3px solid transparent; padding: 8px 4px; margin-right: 12px; font-weight: 700; font-size: 15px; color: var(--muted); cursor: pointer; }
+  .tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+  .words { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .words div { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; min-width: 0; }
+  .words b { display: block; font-size: 18px; color: var(--accent-ink); margin-bottom: 4px; }
+  .words span { color: var(--sub); font-size: 14.5px; }
+  .train { display: grid; grid-template-columns: 1fr 1.4fr; gap: 14px; }
+  .train dl { margin: 0; background: var(--forest); color: var(--cream); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+  .train dt { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-soft); }
+  .train dd { margin: 2px 0 0; font-size: 14.5px; }
+  .train ol, .qs { margin: 0; background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 16px 16px 16px 36px; display: grid; gap: 8px; font-size: 15px; }
+  .qs li::marker { color: var(--accent); font-weight: 800; }
+  .stage { background: var(--forest); border-radius: 14px; overflow: hidden; }
+  canvas { display: block; width: 100%; height: auto; cursor: pointer; }
+  .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px; background: var(--forest-2); color: var(--cream); }
+  .controls button, .controls select { background: var(--forest); border: 1px solid var(--forest-edge); border-radius: 8px; padding: 8px 12px;
+    font-size: 15px; cursor: pointer; min-width: 44px; color: var(--cream); }
+  .controls button.primary { background: var(--accent); border-color: var(--accent); font-weight: 700; min-width: 96px; color: #fff; }
+  .controls input[type=range] { flex: 1 1 160px; accent-color: var(--accent); min-width: 120px; }
+  .time { color: #c9d3c3; font-variant-numeric: tabular-nums; font-size: 14px; min-width: 88px; text-align: right; }
+  .dl { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 0; }
+  .dl a { color: var(--text); background: var(--paper); border: 1px solid var(--edge); border-radius: 8px; padding: 9px 14px; text-decoration: none; font-size: 15px; }
+  .dl a:hover { border-color: var(--accent); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 18px; min-width: 0; }
+  .card h2 { margin: 0 0 6px; color: var(--text); font-size: 22px; }
+  .card .lead { margin: 0 0 14px; }
+  .em { color: var(--accent-ink); font-weight: 700; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .col { border: 1px solid var(--edge); border-radius: 10px; padding: 12px; min-width: 0; }
+  .col h3 { margin: 0 0 6px; font-size: 14px; color: var(--accent-ink); text-transform: uppercase; letter-spacing: .03em; }
+  .col ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.55; }
+  .col .trig { border-top: 1px solid var(--edge); margin-top: 10px; padding-top: 8px; }
+  .col .trig h4 { margin: 0 0 4px; font-size: 12px; color: var(--accent-ink); letter-spacing: .1em; }
+  .col .trig ul { color: var(--sub); }
+  .phrase { margin-top: 14px; background: var(--forest); border-radius: 10px; padding: 12px; text-align: center; }
+  .phrase b { display: block; color: var(--accent-soft); font-size: 22px; }
+  .phrase span { color: #d7dfd2; font-size: 14px; }
+
+  footer { margin-top: 44px; background: var(--forest); color: #c9d3c3; border-radius: 16px; padding: 22px; display: grid; gap: 10px; font-size: 13px; }
+  footer img { height: 26px; width: auto; display: block; }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
+    .mains, .areas { grid-template-columns: 1fr; }
+    .offers { grid-template-columns: 1fr; }
+    .progression { grid-template-columns: 1fr 1fr; }
+    .train { grid-template-columns: 1fr; }
+  }
+  /* "More" holds the extra areas on phones; on desktop they show inline */
+  .more { display: contents; }
+  .more-btn { display: none; }
+  @media (max-width: 640px) {
+    /* phones: logo + audience on top, one slim row of sections underneath */
+    .top { margin-bottom: 20px; gap: 10px; justify-content: center; }
+    .brand { align-items: center; }
+    .brand img { height: 30px; }
+    .nav { width: 100%; justify-content: center; flex-wrap: nowrap; position: relative; }
+    .nav a { font-size: 13.5px; padding: 5px 7px; }
+    .nav > .sep { display: none; }
+    .more { display: block; margin-left: 4px; }
+    .more-btn { display: inline-flex; white-space: nowrap; align-items: center; gap: 4px; background: var(--paper); border: 1px solid var(--edge); border-radius: 999px;
+      padding: 5px 11px; font-weight: 700; font-size: 13.5px; cursor: pointer; }
+    .more-btn[aria-expanded="true"], .more-btn.current { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+    .more-list { display: none; position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; flex-direction: column;
+      background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 6px; min-width: 190px; box-shadow: 0 10px 30px rgba(22,53,31,.15); }
+    .more-list.open { display: flex; }
+    .more-list a { font-size: 15px; padding: 9px 12px; border-radius: 9px; }
+  }
+  @media (max-width: 360px) { .nav a { font-size: 13px; padding: 5px 6px; } }
+  @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } .brand img { height: 32px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#" id="home-link" aria-label="GRSS | RTS home">
+      <img src="assets/logo/grss-rts.svg" alt="GRSS | RTS">
+      <span class="audience" id="audience"><span>Coaches</span><i aria-hidden="true"></i><span>Players</span><i aria-hidden="true"></i><span>Parents</span></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Main"></nav>
+  </header>
+
+  <!-- HOME -->
+  <main id="home">
+    <section class="hero">
+      <div>
+        <h1 class="tagline"><span>Watch it.</span> <span>Coach it.</span> <em>Play it.</em></h1>
+        <div class="cta">
+          <button class="btn primary" id="go-sections">Choose a section</button>
+          <button class="btn" id="go-howto">How the clips work</button>
+        </div>
+      </div>
+      <figure class="hero-art">
+        <svg viewBox="0 0 340 240" role="img" aria-label="A mini pitch: arrows show two passes, then the ball moves along them">
+          <rect x="4" y="4" width="332" height="232" rx="12" fill="#eef0f2" stroke="#c9ced4" stroke-width="4"/>
+          <rect x="140" y="0" width="60" height="14" fill="#fff" stroke="#1f1f1f" stroke-width="2.5"/>
+          <rect x="140" y="226" width="60" height="14" fill="#fff" stroke="#1f1f1f" stroke-width="2.5"/>
+          <g fill="none" stroke-width="3" stroke-linecap="round">
+            <path class="mp-arrow" d="M92 158 L156 113" stroke="#2fbf7f"/>
+            <path class="mp-arrow" d="M186 112 L246 142" stroke="#2fbf7f"/>
+            <path class="mp-arrow" d="M263 132 L268 86" stroke="#2b2b2b"/>
+          </g>
+          <g class="mp-head"><path d="M163 108 l-12 1 6 9z" fill="#2fbf7f"/><path d="M253 146 l-6 -10 -5 9z" fill="#2fbf7f"/><path d="M269 78 l-6 10 10 1z" fill="#2b2b2b"/></g>
+          <g fill="#fff" stroke-width="5">
+            <circle cx="78" cy="168" r="13" stroke="#2fbf7f"/>
+            <circle cx="170" cy="104" r="13" stroke="#2fbf7f"/>
+            <circle class="mp-run" r="13" stroke="#2fbf7f"/>
+            <circle cx="120" cy="190" r="13" stroke="#3b9ae1"/>
+            <circle cx="214" cy="160" r="13" stroke="#3b9ae1"/>
+            <circle cx="232" cy="88" r="13" stroke="#3b9ae1"/>
+          </g>
+          <g class="mp-ball"><circle r="6.5" fill="#fff" stroke="#111" stroke-width="2"/><circle r="2.6" fill="#111"/></g>
+        </svg>
+        <figcaption>Arrows first, then the movement: that's how every clip works.</figcaption>
+      </figure>
+    </section>
+
+    <div class="section-head" id="sections"><h2>Sessions</h2><p>Choose a section to see its sessions.</p></div>
+    <div class="mains" id="mains"></div>
+
+    <div class="section-head"><h2>More from GRSS | RTS</h2></div>
+    <div class="areas" id="areas"></div>
+
+  </main>
+
+  <!-- SECTION (e.g. #defending) -->
+  <main id="section" hidden>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><span aria-current="page" id="sec-crumb"></span></nav>
+    <div class="page-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="sec-icon"></svg>
+      <div><p class="eyebrow">Sessions</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
+    <div class="section-head"><h2 id="sec-count"></h2></div>
+    <label class="filter" for="age">My team's age
+      <select id="age"><option value="">Any age</option></select></label>
+    <div class="sessions-list" id="list"></div>
+    <p class="none" id="sec-none" hidden></p>
+  </main>
+
+  <!-- AREA (e.g. #home-ground, #dugout, #kit-room) -->
+  <main id="area" hidden>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><span aria-current="page" id="area-crumb"></span></nav>
+    <div class="page-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="area-icon"></svg>
+      <div><p class="eyebrow" id="area-tag"></p><h1 id="area-title"></h1><p id="area-blurb"></p></div></div>
+    <div id="area-body"></div>
+  </main>
+
+  <!-- SESSION (e.g. #splash-and-ripple) -->
+  <main id="session" class="session" hidden>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><a href="#" id="s-cat"></a><span aria-hidden="true">›</span><span aria-current="page" id="s-crumb"></span></nav>
+    <header class="s-head">
+      <p class="eyebrow" id="s-eyebrow"></p>
+      <h1 id="title"></h1>
+      <p class="idea" id="s-idea"></p>
+      <div class="facts" id="s-facts"></div>
+      <p class="facts-note" id="s-note"></p>
+    </header>
+
+    <div class="prog-head"><h2>The progression</h2><p>Each clip builds on the one before.</p></div>
+    <ol class="progression" id="progression"></ol>
+
+    <div class="stage">
+      <canvas id="canvas" aria-label="Animated drill"></canvas>
+      <div class="controls">
+        <button id="restart" title="Restart" aria-label="Restart">⟲</button>
+        <button id="prev" title="Previous step" aria-label="Previous step">⏮</button>
+        <button id="play" class="primary">▶ Play</button>
+        <button id="next" title="Next step" aria-label="Next step">⏭</button>
+        <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position">
+        <select id="speed" aria-label="Speed">
+          <option value="0.5">0.5×</option>
+          <option value="0.75">0.75×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.5">1.5×</option>
+        </select>
+        <span class="time" id="time">0:00 / 0:00</span>
+        <button class="next-clip" id="next-clip" hidden>Next clip ›</button>
+      </div>
+    </div>
+    <div class="dl" id="downloads"></div>
+
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="tab-panel"></div>
+  </main>
+
+  <dialog class="popup" id="howto-dialog" aria-labelledby="howto-title">
+    <button class="popup-close" id="howto-close" aria-label="Close">✕</button>
+    <h2 id="howto-title">How the clips work</h2>
+    <p>Short animated clips of real training sessions, ready for you to coach and your players to practise. Each step shows the <b>runs first as arrows</b>, then the players move.</p>
+    <div class="howto">
+      <div><span class="dot" style="border-color:var(--attack)"></span><span>Green circles are attackers</span></div>
+      <div><span class="dot" style="border-color:var(--defend)"></span><span>Blue circles are defenders</span></div>
+      <div><svg width="44" height="14" viewBox="0 0 44 14" aria-hidden="true"><path d="M2 7h32" stroke="#f2e6cd" stroke-width="2.5" stroke-dasharray="5 5"/><path d="M42 7l-9-5v10z" fill="#f2e6cd"/></svg><span>Dashed arrows show runs and passes</span></div>
+      <div><span class="pill">SPLASH</span><span>Labels show each player's job</span></div>
+    </div>
+    <p class="note">Tap the pitch to play or pause, and use ⏮ ⏭ to go step by step.</p>
+  </dialog>
+
+  <footer>
+    <img src="assets/logo/grss-rts-on-dark.svg" alt="GRSS | RTS">
+    <span>Grassroots coaching clips for players, parents and coaches. Tap the pitch to play or pause; use ⏮ ⏭ to go step by step.</span>
+  </footer>
+</div>
+
+<script src="js/logo-data.js"></script>
+<script src="js/drill-engine.js"></script>
+<script src="js/categories.js"></script>
+<!-- Sessions: add one script tag per session file -->
+<script src="drills/splash-and-ripple.js"></script>
+<script src="drills/shoot-and-recover.js"></script>
+<script src="drills/build-out-rotations.js"></script>
+<script>
+(function () {
+  const SESSIONS = window.SESSIONS || [];
+  const CATS = window.CATEGORIES || [];
+  const AREAS = window.AREAS || [];
+  const LINKS = window.SITE_LINKS || {};
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
+  const catOf = s => CATS.find(c => c.id === s.category);
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+  const fmtLen = sec => sec < 60 ? `${Math.round(sec)}s` : `${Math.floor(sec / 60)}m ${String(Math.round(sec % 60)).padStart(2, '0')}s`;
+  const clipFormat = c => ((c.kicker || '').split('·')[1] || (/\d v \d/.test(c.title) ? c.title : '')).trim();
+  const clipAge = (s, c) => (c.ages && c.ages.from) || (s.ages && s.ages.from) || null;
+  const minAge = s => Math.min(...s.clips.map(c => clipAge(s, c) || 99), (s.ages && s.ages.from) || 99);
+  const maxAge = s => (s.ages && s.ages.to) || 99;
+  const ageLabel = s => `U${minAge(s)}${maxAge(s) < 99 ? '–U' + maxAge(s) : '+'}`;
+  const clipLen = c => DrillEngine.compile(c).duration;
+
+  // ---------- player ----------
+  const canvas = $('canvas');
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  let session = SESSIONS[0];
+  let clip = session.clips[0];
+  const player = new DrillEngine.DrillPlayer(canvas, session, clip, { scale: dpr });
+  window.__player = player; // used by tools/render-videos.js
+
+  let playing = false, last = 0;
+  const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  function setPlaying(p) {
+    playing = p;
+    $('play').textContent = p ? '❚❚ Pause' : '▶ Play';
+    if (p) { if (player.t >= player.duration) player.t = 0; last = performance.now(); requestAnimationFrame(tick); }
+  }
+  function tick(now) {
+    if (!playing) return;
+    const dt = (now - last) / 1000; last = now;
+    let t = player.t + dt * parseFloat($('speed').value);
+    if (t >= player.duration) { t = player.duration; setPlaying(false); $('next-clip').classList.add('ready'); }
+    player.renderAt(t); sync();
+    if (playing) requestAnimationFrame(tick);
+  }
+  function sync() {
+    $('scrub').value = Math.round((player.t / player.duration) * 1000);
+    $('time').textContent = `${fmt(player.t)} / ${fmt(player.duration)}`;
+  }
+  function seek(t) { player.renderAt(Math.max(0, Math.min(player.duration, t))); sync(); }
+
+  $('play').onclick = () => setPlaying(!playing);
+  canvas.onclick = () => setPlaying(!playing);
+  $('restart').onclick = () => { seek(0); setPlaying(true); };
+  $('scrub').oninput = e => seek((e.target.value / 1000) * player.duration);
+  $('next').onclick = () => { const n = player.stepStarts.find(s => s > player.t + 0.05); seek(n != null ? n : player.duration); };
+  $('prev').onclick = () => { const p = [0].concat(player.stepStarts).filter(s => s < player.t - 0.8).pop(); seek(p != null ? p : 0); };
+  document.addEventListener('keydown', e => {
+    if ($('session').hidden || ['INPUT', 'SELECT', 'BUTTON'].includes(e.target.tagName)) return;
+    if (e.code === 'Space') { e.preventDefault(); setPlaying(!playing); }
+    if (e.code === 'ArrowRight') $('next').click();
+    if (e.code === 'ArrowLeft') $('prev').click();
+  });
+
+  // small picture of each clip (end of its second step), made once per clip
+  const thumbCache = {};
+  function clipThumb(sess, c) {
+    const key = sess.id + '/' + c.id;
+    if (!thumbCache[key]) {
+      const cv = document.createElement('canvas');
+      const p = new DrillEngine.DrillPlayer(cv, sess, c, { scale: 0.3 });
+      const st = p.cp.steps[Math.min(1, p.cp.steps.length - 1)];
+      p.renderAt(st.start + st.total - 0.3);
+      thumbCache[key] = cv.toDataURL('image/jpeg', 0.8);
+    }
+    return thumbCache[key];
+  }
+
+  let tab = 'points';
+  function renderTabs() {
+    const T = [
+      ['points', 'Coaching points', (session.cards || []).length],
+      ['words', 'Key words', (session.keywords || []).length],
+      ['training', 'Try it at training', !!session.training],
+      ['questions', 'Questions to ask', (session.questions || []).length],
+    ].filter(t => t[2]);
+    if (!T.some(t => t[0] === tab)) tab = T.length ? T[0][0] : null;
+    $('tabs').innerHTML = T.map(([id, label]) => `<button role="tab" data-tab="${id}" aria-selected="${id === tab}">${esc(label)}</button>`).join('');
+    const tr = session.training || {};
+    const P = {
+      points: () => `<div class="cards">${(session.cards || []).map(card => `
+        <section class="card">
+          <h2>${esc(card.title)}</h2>
+          <p class="lead">${rich(card.lead || '')}</p>
+          <div class="cols">${(card.columns || []).map(col => `
+            <div class="col"><h3>${esc(col.heading)}</h3>
+              <ul>${col.items.map(i => `<li>${rich(i)}</li>`).join('')}</ul>
+              ${col.triggers ? `<div class="trig"><h4>TRIGGERS</h4><ul>${col.triggers.map(i => `<li>${rich(i)}</li>`).join('')}</ul></div>` : ''}
+            </div>`).join('')}
+          </div>
+          ${card.phrase ? `<div class="phrase"><b>${esc(card.phrase.big)}</b><span>${esc(card.phrase.small || '')}</span></div>` : ''}
+        </section>`).join('')}</div>`,
+      words: () => `<div class="words">${session.keywords.map(k => `<div><b>${esc(k.word)}</b><span>${esc(k.meaning)}</span></div>`).join('')}</div>`,
+      training: () => `<div class="train"><dl>
+          ${tr.area ? `<div><dt>Area</dt><dd>${esc(tr.area)}</dd></div>` : ''}
+          ${tr.players ? `<div><dt>Players</dt><dd>${esc(tr.players)}</dd></div>` : ''}
+          ${tr.equipment ? `<div><dt>Equipment</dt><dd>${esc(tr.equipment)}</dd></div>` : ''}
+          ${session.ages ? `<div><dt>Ages</dt><dd>${session.ages.to ? `U${session.ages.from}–U${session.ages.to}` : `U${session.ages.from}+`}${session.ages.note ? '. ' + esc(session.ages.note) : ''}</dd></div>` : ''}
+        </dl><ol>${(tr.setup || []).map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>`,
+      questions: () => `<ol class="qs">${session.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ol>`,
+    };
+    $('tab-panel').innerHTML = tab ? P[tab]() : '';
+  }
+  $('tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) { tab = b.dataset.tab; renderTabs(); } });
+
+  function renderSession() {
+    const cat = catOf(session);
+    $('s-cat').textContent = cat ? cat.name : 'Sessions';
+    $('s-cat').setAttribute('href', cat ? '#' + cat.id : '#');
+    $('s-crumb').textContent = session.title;
+    $('s-eyebrow').textContent = cat ? cat.name : '';
+    $('title').textContent = session.title;
+    $('s-idea').textContent = session.summary || session.subtitle || '';
+    const total = session.clips.reduce((a, c) => a + clipLen(c), 0);
+    const formats = [...new Set(session.clips.map(clipFormat).filter(Boolean))];
+    $('s-facts').innerHTML = [
+      session.ages ? `<span>${session.ages.to ? `U${session.ages.from}–U${session.ages.to}` : `U${session.ages.from}+`}</span>` : '',
+      `<span>${plural(session.clips.length, 'clip')} · about ${Math.ceil(total / 60)} min</span>`,
+      formats.length ? `<span>${esc(formats[0])}${formats.length > 1 ? ' → ' + esc(formats[formats.length - 1]) : ''}</span>` : '',
+      session.keyPhrase ? `<span class="kp">${esc(session.keyPhrase)}</span>` : '',
+    ].join('');
+    $('s-note').textContent = (session.ages && session.ages.note) || '';
+    $('progression').innerHTML = session.clips.map((c, i) => `<li><button data-clip="${esc(c.id)}" aria-current="${c.id === clip.id}">
+        <img src="${clipThumb(session, c)}" alt="">
+        <span class="pm"><span class="num">${i + 1} of ${session.clips.length}</span><b>${esc(c.title)}</b>
+        <small>${[clipFormat(c), fmtLen(clipLen(c)), clipAge(session, c) && clipAge(session, c) < (session.ages || {}).from ? 'from U' + clipAge(session, c) : ''].filter(Boolean).join(' · ')}</small></span>
+      </button></li>`).join('');
+    const i = session.clips.indexOf(clip);
+    $('next-clip').hidden = i >= session.clips.length - 1;
+    $('next-clip').classList.remove('ready');
+    $('downloads').innerHTML = clip.video && !window.NO_DOWNLOADS
+      ? `<a href="${esc(clip.video)}" download>⬇ Download this clip (MP4)</a>` : '';
+    renderTabs();
+  }
+  $('progression').addEventListener('click', e => {
+    const b = e.target.closest('[data-clip]');
+    if (b) { clip = session.clips.find(c => c.id === b.dataset.clip); loadClip(); }
+  });
+  $('next-clip').onclick = () => {
+    const i = session.clips.indexOf(clip);
+    if (i < session.clips.length - 1) { clip = session.clips[i + 1]; loadClip(); setPlaying(true); }
+  };
+  function loadClip() {
+    setPlaying(false);
+    player.session = session;
+    player.load(clip);
+    renderSession(); sync();
+  }
+
+  // ---------- navigation ----------
+  function renderNav(active) {
+    const inArea = AREAS.some(a => a.id === active);
+    $('nav').innerHTML = CATS.map(c => `<a href="#${c.id}"${active === c.id ? ' aria-current="page"' : ''}>${esc(c.name)}</a>`).join('') +
+      '<span class="sep" aria-hidden="true"></span>' +
+      `<div class="more"><button class="more-btn${inArea ? ' current' : ''}" id="more-btn" aria-expanded="false" aria-controls="more-list">More ▾</button>
+        <div class="more-list" id="more-list">${AREAS.map(a => `<a href="#${a.id}"${active === a.id ? ' aria-current="page"' : ''}>${esc(a.name)}</a>`).join('')}</div></div>`;
+  }
+
+  // ---------- home ----------
+  const clipRange = s => s.clips.map(c => (c.kicker || '').split('·')[1]).filter(Boolean).map(x => x.trim());
+  function renderHome() {
+    $('mains').innerHTML = CATS.map(c => {
+      const n = SESSIONS.filter(s => s.category === c.id).length;
+      return `<a class="main-tile" href="#${c.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg>
+        <b>${esc(c.name)}</b><small>${esc(c.blurb)}</small><span class="count">${n ? plural(n, 'session') : 'Coming soon'}</span></a>`;
+    }).join('');
+    $('areas').innerHTML = AREAS.map(a => `<a class="area-tile" href="#${a.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${a.icon}</svg>
+        <span class="tag">${esc(a.tag)}</span><b>${esc(a.name)}</b><small>${esc(a.blurb)}</small></a>`).join('');
+  }
+
+  // ---------- section pages ----------
+  function sessionCard(s) {
+    const formats = [...new Set(clipRange(s))];
+    return `<button class="scard" data-id="${esc(s.id)}">
+      ${s.thumb ? `<img src="${esc(s.thumb)}" alt="">` : ''}
+      <div class="meta"><span><span class="age">${ageLabel(s)}</span>${s.type ? ` <span class="age type">${esc(s.type)}</span>` : ''}</span><b>${esc(s.title)}</b>
+        <p>${esc(s.summary || s.subtitle || '')}</p>
+        <span class="tag">${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
+        <ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>
+      </div></button>`;
+  }
+  let teamAge = '';
+  (function fillAges() {
+    for (let a = 7; a <= 16; a++) $('age').insertAdjacentHTML('beforeend', `<option value="${a}">U${a}</option>`);
+  })();
+  function renderSection(cat) {
+    const all = SESSIONS.filter(s => s.category === cat.id);
+    const list = all.filter(s => !teamAge || (minAge(s) <= +teamAge && +teamAge <= maxAge(s)));
+    $('age').value = teamAge;
+    $('age').parentElement.hidden = !all.length;
+    $('sec-crumb').textContent = cat.name;
+    $('sec-icon').innerHTML = cat.icon;
+    $('sec-title').textContent = cat.name;
+    $('sec-blurb').textContent = cat.blurb;
+    $('sec-count').textContent = list.length ? plural(list.length, 'session') : 'Sessions';
+    $('list').hidden = !list.length;
+    $('list').innerHTML = list.map(sessionCard).join('');
+    $('sec-none').hidden = !!list.length;
+    $('sec-none').innerHTML = all.length
+      ? `No ${esc(cat.name.toLowerCase())} sessions for U${esc(teamAge)} yet. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`
+      : `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`;
+  }
+  $('age').onchange = e => {
+    teamAge = e.target.value;
+    const cat = CATS.find(c => c.id === location.hash.replace('#', ''));
+    if (cat) renderSection(cat);
+  }
+
+  // ---------- area pages ----------
+  const linkBtn = (url, label, primary) => url
+    ? `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`
+    : `<span class="btn${primary ? ' primary' : ''}" aria-disabled="true">Opening soon</span>`;
+  const soonList = items => `<ul class="soon">${items.map(i => `<li>${esc(i)}<span>Coming soon</span></li>`).join('')}</ul>`;
+  const AREA_BODY = {
+    'home-ground': a => `<div class="section-head"><h2>Coming soon</h2><p>Short drills you can do on your own, with a clip for each.</p></div>${soonList(a.plans)}
+      <p class="note">Tip for parents: five minutes a day with a ball against a wall does more than an hour once a week.</p>`,
+    'dugout': () => `<div class="offers">
+        <section class="offer"><p class="price">Free</p><h2>Suggest a topic</h2>
+          <p>Tell us what your team struggles with. Popular topics become new sessions in the library, free for everyone.</p>
+          <ul><li>Your club and age group</li><li>Which section: goalkeeping, defending or attacking</li><li>The problem, e.g. "we all chase the ball"</li></ul>
+          <div>${linkBtn(LINKS.suggestTopic, 'Suggest a topic', false)}</div></section>
+        <section class="offer paid"><p class="price">From £40</p><h2>Your session, animated</h2>
+          <p>Send us your own session plan or diagram and we'll turn it into animated clips for your players and parents.</p>
+          <ol><li>Send your plan, notes or a photo of your diagram</li><li>We animate it, step by step, arrows first</li><li>You get the clips for your team's WhatsApp group</li></ol>
+          <div>${linkBtn(LINKS.bespokeSession, 'Request a session', true)}</div></section>
+      </div>
+      <p class="note">Please only send plans that are your own work. We never ask for or publish children's names or photos.</p>`,
+    'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
+      <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
+  };
+  function renderArea(a) {
+    $('area-crumb').textContent = a.name;
+    $('area-icon').innerHTML = a.icon;
+    $('area-tag').textContent = a.tag;
+    $('area-title').textContent = a.name;
+    $('area-blurb').textContent = a.blurb;
+    $('area-body').innerHTML = (AREA_BODY[a.id] || (() => ''))(a);
+  }
+
+  document.addEventListener('click', e => {
+    const card = e.target.closest('[data-id]');
+    if (card) location.hash = card.dataset.id;
+  });
+  $('go-sections').onclick = () => $('sections').scrollIntoView({ behavior: 'smooth' });
+  const dlg = $('howto-dialog');
+  $('go-howto').onclick = () => { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); };
+  const closeDlg = () => { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); };
+  $('howto-close').onclick = closeDlg;
+  // tap outside the box (on the dimmed background) to close
+  document.addEventListener('pointerdown', e => {
+    if (!dlg.open) return;
+    const r = dlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeDlg();
+  });
+  $('home-link').onclick = e => { e.preventDefault(); location.hash = ''; };
+  const closeMenu = () => { const l = $('more-list'), b = $('more-btn'); if (l) l.classList.remove('open'); if (b) b.setAttribute('aria-expanded', 'false'); };
+  document.addEventListener('click', e => {
+    if (e.target.closest('#more-btn')) {
+      const open = !$('more-list').classList.contains('open');
+      $('more-list').classList.toggle('open', open);
+      $('more-btn').setAttribute('aria-expanded', String(open));
+      return;
+    }
+    if (!e.target.closest('#more-list')) closeMenu();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  window.addEventListener('hashchange', closeMenu);
+
+  // ---------- routing: '' home · #<section> · #<area> · #<session> ----------
+  const VIEWS = ['home', 'section', 'area', 'session'];
+  function show(view) { VIEWS.forEach(v => { $(v).hidden = v !== view; }); }
+  function route() {
+    const id = location.hash.replace('#', '');
+    const s = SESSIONS.find(x => x.id === id);
+    const cat = CATS.find(c => c.id === id);
+    const area = AREAS.find(a => a.id === id);
+    if (s) {
+      show('session');
+      if (s !== session) { session = s; clip = s.clips[0]; }
+      loadClip();
+      renderNav(s.category);
+      document.title = `${s.title} · GRSS | RTS`;
+    } else {
+      setPlaying(false);
+      if (cat) { show('section'); renderSection(cat); renderNav(cat.id); document.title = `${cat.name} · GRSS | RTS`; }
+      else if (area) { show('area'); renderArea(area); renderNav(area.id); document.title = `${area.name} · GRSS | RTS`; }
+      else { show('home'); renderHome(); renderNav(null); document.title = 'GRSS | RTS'; }
+    }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+  route();
+  // Size "Coaches | Players | Parents" so it spans exactly the width of the logo above it
+  function fitAudience() {
+    const aud = $('audience'), logo = document.querySelector('.brand img');
+    if (!aud || !logo || !logo.offsetWidth) return;
+    aud.style.fontSize = ''; aud.style.width = '';
+    const fs = parseFloat(getComputedStyle(aud).fontSize);
+    const w = aud.getBoundingClientRect().width;
+    aud.style.fontSize = (fs * logo.offsetWidth / w) + 'px';
+    aud.style.width = logo.offsetWidth + 'px';
+  }
+  window.addEventListener('resize', fitAudience);
+  document.querySelector('.brand img').addEventListener('load', fitAudience);
+  fitAudience();
+  if (document.fonts) document.fonts.ready.then(() => { player.draw(); fitAudience(); });
+})();
+</script>
+</body>
+</html>
