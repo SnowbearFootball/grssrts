@@ -18,7 +18,7 @@ window.SESSIONS.push({
   thumb: 'assets/thumbs/shoot-and-recover.jpg',
   summary: 'Dribble, shoot, touch the post, then sprint back to defend. Lots of shots, and a recovery run every time.',
   keyPhrase: 'Shoot → Touch → Recover',
-  ages: { from: 8, to: 12 },
+  ages: { from: 8 },
 
   cards: [
     {
