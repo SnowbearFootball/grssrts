@@ -46,10 +46,24 @@ Main sections (in `js/categories.js`): Goalkeeping, Defending, Attacking. Other 
 The Dugout (coach requests) and Kit Room (shop). Form links for The Dugout and Kit Room go in `SITE_LINKS` in the same file;
 until they're set the buttons show "Opening soon".
 
+## Home-page clip
+
+`js/home-clip.js` holds the short looping clip on the home page (a cut of Shoot & Recover). It's drawn in
+bare mode (just the pitch, no caption panel). The four pills under it (Labels · Arrows · Movement · Outcome)
+light up in time with each step's beats, and tapping one jumps to that beat. `tagFlash: true` rings a player
+when their label changes (ATTACKER → DEFENDER); `tagPlace: 'auto'` keeps labels on the pitch near the top goal.
+
+## Section pages
+
+Each section lists its sessions as compact rows, with search (titles, key words, coaching points), filter pills
+for age, type and players (behind a "Filter" button on phones), and ☆ to save a session on that device.
+
 ## Adding a new session
 
 1. Copy `drills/splash-and-ripple.js` to `drills/<new-session>.js` and edit it. Set `category`
    to one of the ids in `js/categories.js`, and give it a `summary` and `thumb` path.
+   For the section page's filters, also set `type` (Technical, Tactical, Rondo or Game) and
+   `squad: [min, max]` (players needed at training).
 2. Add `<script src="drills/<new-session>.js"></script>` to `index.html`.
 3. Render the videos and thumbnail: `node tools/render-videos.js` and `node tools/render-videos.js --thumbs`
    (requires Playwright and ffmpeg).

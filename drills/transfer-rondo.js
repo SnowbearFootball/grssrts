@@ -59,6 +59,7 @@
     subtitle: 'Possession',
     type: 'Rondo',
     category: 'attacking',
+    squad: [14, 14],
     thumb: 'assets/thumbs/transfer-rondo.jpg',
     summary: 'Keep the ball 5 v 2, then switch it to the other end. Everyone attacks, defends and transfers.',
     keyPhrase: 'Keep it, then transfer',
