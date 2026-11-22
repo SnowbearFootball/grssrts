@@ -1,7 +1,6 @@
 /*
- * TWO SESSIONS (DRAFTS): Long Range Shooting: Move Onto It, and Long Range Shooting: Up, Back, Shot (Attacking)
- * From a coach's own session plan. draft: true keeps them off the site's lists until approved
- * (open index.html?drafts#long-range-move-onto-it or ?drafts#long-range-up-back-shot to see them).
+ * TWO SESSIONS: Long Range Shooting: Move Onto It, and Long Range Shooting: Up, Back, Shot (Attacking)
+ * From a coach's own session plan.
  *
  * Pitches are laid sideways (x 0..100 left to right, y 0..75 top to bottom), goals on the left and right.
  * Green attacks the right-hand goal, blue the left. 'f' = strikers/floaters in the middle, 'k'/'k2' = keepers.
@@ -61,7 +60,6 @@
   });
   window.SESSIONS.push({
     id: 'long-range-move-onto-it',
-    draft: true,
     title: 'Long Range Shooting: Move Onto It',
     subtitle: 'Shooting game',
     type: 'Game',
@@ -278,7 +276,6 @@
   const B = Object.assign({}, common, { legendTeams: teamsLegend, keyPhrase: ubsKey, areas: wideMiddle, players: fourV4 });
   window.SESSIONS.push({
     id: 'long-range-up-back-shot',
-    draft: true,
     title: 'Long Range Shooting: Up, Back, Shot',
     subtitle: 'Shooting game',
     type: 'Game',

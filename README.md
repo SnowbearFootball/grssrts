@@ -20,6 +20,8 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | 5 v 2 Transfer Rondo (attacking, U14+) | One clip: keep it, transfer (wide / direct), defenders win it |
 | Set Position & Shot-Stopping (goalkeeping, U6+) | 1. Get Set · 2. Move With the Ball (3 servers) · 3. Save, Get Up, Set Again |
 | Ball Mastery: The Basics (Home Ground, solo, U6+) | 1. Toe Taps · 2. Sole Rolls · 3. Tic-Tacs · 4. Pull-Push |
+| Long Range Shooting: Move Onto It (attacking, U10+) | 1. Move It, Then Shoot · 2. Play Under Pressure · 3. Two Touch, First Time |
+| Long Range Shooting: Up, Back, Shot (attacking, U12+) | Idea 1: Follow Your Pass · Idea 2: Third-Player Run · Progression: Up, Back, Shot |
 
 ## Brand
 
@@ -59,6 +61,10 @@ when their label changes (ATTACKER → DEFENDER); `tagPlace: 'auto'` keeps label
 
 Each section lists its sessions as compact rows, with search (titles, key words, coaching points), filter pills
 for age, type and players (behind a "Filter" button on phones), and ☆ to save a session on that device.
+
+## Draft sessions
+
+Add `draft: true` to a session to keep it off the site while it's being checked. Open `index.html?drafts` to see drafts.
 
 ## Solo (ball mastery) clips
 
