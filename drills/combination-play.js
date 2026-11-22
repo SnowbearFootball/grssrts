@@ -4,8 +4,10 @@
  *
  * A 20 × 20-yard square split into four boxes (x 17.7–82.3, y 5.4–69.6; the middle lines at x 50 and y 37.5).
  * Four teams: black (bottom right), yellow (top right), green (top left), blue (bottom left).
- * Each team has 2 players in its box and 2 waiting at its outside corner. The ball goes round the square:
- * black → yellow → green → blue → black.
+ * Each team has 2 players in its box and 2 waiting at its outside corner.
+ * Two balls at once, both going the same way round: one starts with black (bottom right), one with green (top left).
+ * Black → yellow → green → blue → black. The steps are written for black's ball; green's ball does the same,
+ * turned half way round the square (see mirror() at the bottom).
  * Rotation: whoever plays the long pass to the next corner drops out to their corner,
  * and the player who passed the ball in takes their place in the box.
  */
@@ -26,16 +28,19 @@
     timing: { stepIn: 0.5, arrows: 1.3, read: 0.9, move: 2.3, hold: 1.2 },
     keyPhrase: { big: 'MOVE, TALK, PASS', small: 'Movement, communication, quality of pass' },
   };
-  const players = [
+  const half = [
     { id: 'n1', team: 'n', x: 62, y: 58 }, { id: 'n2', team: 'n', x: 73, y: 47 },
     { id: 'nq1', team: 'n', x: 85.5, y: 72.5 }, { id: 'nq2', team: 'n', x: 90, y: 74.5 },
     { id: 'y1', team: 'y', x: 61, y: 16 }, { id: 'y2', team: 'y', x: 67, y: 27 },
     { id: 'yq1', team: 'y', x: 85.5, y: 2.5 }, { id: 'yq2', team: 'y', x: 90, y: 0.5 },
-    { id: 'g1', team: 'g', x: 38, y: 16 }, { id: 'g2', team: 'g', x: 27, y: 27 },
-    { id: 'gq1', team: 'g', x: 14.5, y: 2.5 }, { id: 'gq2', team: 'g', x: 10, y: 0.5 },
-    { id: 'b1', team: 'b', x: 38, y: 58 }, { id: 'b2', team: 'b', x: 27, y: 47 },
-    { id: 'bq1', team: 'b', x: 14.5, y: 72.5 }, { id: 'bq2', team: 'b', x: 10, y: 74.5 },
   ];
+  // green and blue are black and yellow turned half way round the square
+  const M = { n1: 'g1', n2: 'g2', nq1: 'gq1', nq2: 'gq2', y1: 'b1', y2: 'b2', yq1: 'bq1', yq2: 'bq2' };
+  Object.keys(M).forEach(k => { M[M[k]] = k; });   // and back again
+  const TEAM = { n: 'g', y: 'b' };
+  const mir = p => [+(100 - p[0]).toFixed(1), +(75 - p[1]).toFixed(1)];
+  const players = half.concat(half.map(p => { const [x, y] = mir([p.x, p.y]); return { id: M[p.id], team: TEAM[p.team], x, y }; }));
+
   // the long passer drops out to the back of the corner; the player who passed in takes their place
   const rotateBlack = (out, inTo) => ({
     title: 'ROTATE',
@@ -94,13 +99,13 @@
       players: 'Four teams of 4: 2 in each box and 2 waiting at its outside corner (16). Teams of 3 also work.',
       equipment: 'Cones for the square and boxes, bibs in four colours, a few balls at each corner.',
       setup: [
-        'Each team has 2 players in its box and 2 at its outside corner. Play goes round the square, corner to corner.',
+        'Each team has 2 players in its box and 2 at its outside corner. Two balls at once: start one at the bottom-right corner and one at the top-left, both going the same way round.',
         'The corner player passes into their box. The box players combine, then play a longer pass to the next team\'s corner.',
         'Rotate: whoever plays the long pass drops out to the corner; the player who passed it in takes their place. Teams stay in their own box.',
         'Movement is free: don\'t always go to the same spot. Vary the movement and the passes.',
         'Part 1: set it to a teammate, then the long pass.',
         'Part 2: a one-two in the box before the long pass.',
-        'Part 3: one player shows short (dragging an opponent in a game), plays back out to the edge; the edge player passes to the second player, who sets it for the first player\'s second run to play long.',
+        'Part 3: one player shows short (dragging an opponent in a game) and bounces it back to the server, who stays put; the server passes to the second player, who sets it for the first player\'s second run to play long.',
         'Part 4: play around the corner to a player in the next box, who plays it back to the free player for the long pass. Can we play one touch?',
       ],
     },
@@ -121,13 +126,13 @@
         kicker: 'Part 1 · set, then long',
         title: 'Set and Play Long',
         tagline: 'Play in, set it, then a longer pass to the next corner.',
-        intro: ['Four teams round a *20-yard square*.', 'Play in, *set* it, then a *long pass* to the next corner.', 'The long passer drops out; the player who passed in replaces them.'],
+        intro: ['Four teams round a *20-yard square*, *two balls* at once.', 'Play in, *set* it, then a *long pass* to the next corner.', 'The long passer drops out; the player who passed in replaces them.'],
         players,
         ball: { owner: 'nq1' },
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['A 20-yard square, *four boxes*.', '2 players in each box, 2 at each corner.', 'The ball goes *round the square*.'],
+            text: ['A 20-yard square, *four boxes*.', '2 players in each box, 2 at each corner.', '*Two balls*: bottom right and top left, both going the same way round.'],
           },
           {
             title: 'PLAY IN',
@@ -151,8 +156,8 @@
           },
           rotateBlack('n1', [66, 62]),
           {
-            title: 'NEXT TEAM: PLAY IN AND SET',
-            text: ['Yellow go: play in and set.', 'Different spots this time: *movement is free*.'],
+            title: 'NEXT TEAMS: PLAY IN AND SET',
+            text: ['Yellow and blue go: play in and set.', 'Different spots this time: *movement is free*.'],
             tags: { y1: 'SET' },
             timing: { move: 3 },
             moves: [{ id: 'y1', to: [60, 11], end: 0.35 }, { id: 'y2', to: [71, 23], start: 0.3, end: 0.65 }],
@@ -163,7 +168,7 @@
             text: ['On to the *next corner*.'],
             tags: { y2: 'LONG PASS' },
             timing: { move: 2.4 },
-            passes: [{ to: 'gq1', start: 0, end: 0.75 }],
+            passes: [{ to: 'gq2', start: 0, end: 0.75 }],   // green's new front-of-corner player (gq1 went into the box)
           },
           {
             title: 'ROTATE',
@@ -217,10 +222,10 @@
       Object.assign({}, common, {
         id: 'show-short',
         video: 'videos/combination-play-3.mp4',
-        kicker: 'Part 3 · show short, back to the edge',
+        kicker: 'Part 3 · show short, back to the server',
         title: 'Show Short',
-        tagline: 'Show short, play back to the edge, then the set for your second run.',
-        intro: ['One player *shows short*, dragging an opponent in a game.', 'They play it *back out to the edge*.', 'The edge finds player 2, who *sets* it for the first player\'s *second run*.'],
+        tagline: 'Show short, back to the server, then set for the second run.',
+        intro: ['One player *shows short*, dragging an opponent in a game.', 'They bounce it *back to the server*, who stays put.', 'The server finds player 2, who *sets* it for the first player\'s *second run*.'],
         players,
         ball: { owner: 'nq1' },
         steps: [
@@ -232,14 +237,13 @@
             passes: [{ to: 'n1', start: 0.4, end: 0.8 }],
           },
           {
-            title: 'BACK OUT TO THE EDGE',
-            text: ['Play it *back out* to the edge of the square.'],
-            moves: [{ id: 'nq1', to: [86, 55], end: 0.45 }],
-            passes: [{ to: 'nq1', start: 0.4, end: 0.8 }],
+            title: 'BACK TO THE SERVER',
+            text: ['Bounce it *back out* to the server.', 'The server *stays where they are*.'],
+            passes: [{ to: 'nq1', start: 0.1, end: 0.5 }],
           },
           {
             title: 'IN TO PLAYER 2',
-            text: ['The edge plays it in to *player 2*.', 'The first player makes a *second run*.'],
+            text: ['The server plays it in to *player 2*.', 'The first player makes a *second run*.'],
             moves: [{ id: 'n2', to: [71, 45], end: 0.4 }, { id: 'n1', to: [62, 54], start: 0.15, end: 0.75 }],
             passes: [{ to: 'n2', start: 0.2, end: 0.6 }],
           },
@@ -259,7 +263,7 @@
           },
           rotateBlack('n1', [68, 61]),
         ],
-        summary: ['*Show short*, play back to the edge.', 'Edge to player 2, who *sets* it.', 'First player\'s *second run*, then long.'],
+        summary: ['*Show short*, bounce it back to the server.', 'Server to player 2, who *sets* it.', 'First player\'s *second run*, then long.'],
       }),
 
       // ------------------------------------------------------------------
@@ -306,4 +310,15 @@
       }),
     ],
   });
+
+  // Every step is written for black's ball; add green's ball doing the same, turned half way round the square
+  function mirror(def) {
+    const out = Object.assign({}, def);
+    if (def.moves) out.moves = def.moves.concat(def.moves.map(m => Object.assign({}, m, { id: M[m.id], to: m.to && mir(m.to), path: m.path && m.path.map(mir) })));
+    if (def.tags) { out.tags = Object.assign({}, def.tags); Object.keys(def.tags).forEach(id => { out.tags[M[id]] = def.tags[id]; }); }
+    if (def.passes) out.passes2 = def.passes.map(p => Object.assign({}, p, { to: M[p.to] }));
+    return out;
+  }
+  const session = window.SESSIONS[window.SESSIONS.length - 1];
+  session.clips.forEach(c => { c.ball2 = { owner: 'gq1' }; c.steps = c.steps.map(mirror); });
 })();
