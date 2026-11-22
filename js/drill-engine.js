@@ -118,6 +118,7 @@
       ball: clip.ball && clip.ball.owner ? { owner: clip.ball.owner } : { owner: null, at: clip.ball ? clip.ball.at : [50, 37] },
       used: clip.ball && clip.ball.owner ? [clip.ball.owner] : [],   // players whose own ball is in play / used
       spent: [],                                                      // finished balls left where they ended (e.g. in the net)
+      ball2: clip.ball2 ? { owner: clip.ball2.owner } : null,          // optional second ball: clip.ball2 = { owner }, moved by passes2
     };
 
     let t = timing.intro;
@@ -130,8 +131,8 @@
         state.ball = { owner: def.ball.give };
         if (!state.used.includes(def.ball.give)) state.used.push(def.ball.give);
       }
-      const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false) || !!(def.passes && def.passes.length);
-      const hasMotion = moves.length > 0 || !!def.ball || !!(def.passes && def.passes.length);
+      const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false) || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length);
+      const hasMotion = moves.length > 0 || !!def.ball || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length);
       const phases = {
         stepIn: d.stepIn,
         arrows: hasArrows ? d.arrows : 0,
@@ -144,6 +145,7 @@
       const endState = JSON.parse(JSON.stringify(state));
       moves.forEach(m => { const path = m.path || [m.to]; endState.pos[m.id] = path[path.length - 1].slice(); });
       if (def.passes && def.passes.length) endState.ball = { owner: def.passes[def.passes.length - 1].to };
+      if (def.passes2 && def.passes2.length) endState.ball2 = { owner: def.passes2[def.passes2.length - 1].to };
       if (def.ball) {
         if (def.ball.pass) endState.ball = { owner: def.ball.pass };
         else if (def.ball.to) endState.ball = { owner: null, at: def.ball.to.slice() };
@@ -195,6 +197,10 @@
       from = ps.to;
       return seg;
     });
+  }
+  // the second ball (clip.ball2): reuse the first ball's maths on a view of the step with passes2 as its passes
+  function ball2Step(step) {
+    return Object.assign({}, step, { def: Object.assign({}, step.def, { passes: step.def.passes2, ball: null }), startState: Object.assign({}, step.startState, { ball: step.startState.ball2 }) });
   }
   function ballPos(cp, step, u) {
     if (step.def.passes && step.def.passes.length) {
@@ -389,19 +395,20 @@
     ctx.setLineDash(style.dash);
     ctx.beginPath();
     ctx.moveTo(pts[0][0], pts[0][1]);
-    let tip = pts[0], prev = pts[0];
+    // the head points along the segment being drawn (not from a tiny last piece, which made it flicker)
+    let tip = pts[0], ang = null;
     for (let i = 0; i < segs.length && remaining > 0; i++) {
       const k = Math.min(1, remaining / (segs[i] || 1));
       const q = lerpP(pts[i], pts[i + 1], k);
       ctx.lineTo(q[0], q[1]);
-      prev = pts[i];
+      if (segs[i] > 0.5) ang = Math.atan2(pts[i + 1][1] - pts[i][1], pts[i + 1][0] - pts[i][0]);
       tip = q;
       remaining -= segs[i];
     }
+    if (ang === null) ang = Math.atan2(pts[pts.length - 1][1] - pts[0][1], pts[pts.length - 1][0] - pts[0][0]);
     ctx.stroke();
     ctx.setLineDash([]);
     // arrow head
-    const ang = Math.atan2(tip[1] - prev[1], tip[0] - prev[0]);
     const hs = style.head;
     ctx.beginPath();
     ctx.moveTo(tip[0] + Math.cos(ang) * 2, tip[1] + Math.sin(ang) * 2);
@@ -438,6 +445,10 @@
     'INSIDE': { bg: '#16351f', fg: '#fff' },
     'FREE MAN': { get bg() { return C.accent; }, fg: '#fff' },
     SCORE: { get bg() { return C.accent; }, fg: '#fff' },
+    SHOW: { bg: '#16351f', fg: '#fff' },
+    'LONG PASS': { get bg() { return C.accent; }, fg: '#fff' },
+    'ONE-TWO': { bg: '#16351f', fg: '#fff' },
+    'AROUND THE CORNER': { bg: '#16351f', fg: '#fff' },
     BACK: { bg: '#16351f', fg: '#fff' },
     'FIRST TIME': { get bg() { return C.accent; }, fg: '#fff' },
     OUT: { bg: '#16351f', fg: '#fff' },
@@ -1215,6 +1226,14 @@
         const from = step.startState.pos[m.id];
         arrows.push({ pts: trimPath([from].concat(m.path || [m.to]), R_U + 0.6, R_U + 0.6), style: ARROW_STYLE.run, order: m.start || 0 });
       });
+      if (def.passes2 && def.passes2.length && step.startState.ball2) {
+        const s2 = ball2Step(step);
+        passSeq(cp, s2).forEach((g, i) => {
+          if (!g.from) return;
+          const a = playerPos(step, g.from, g.s), b = playerPos(step, g.to, g.e);
+          arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: { color: teamColor(cp, cp.team[g.from]), width: 3, dash: [9, 7], head: 13 }, order: -1 + i * 0.01 });
+        });
+      }
       if (def.passes && def.passes.length) {
         passSeq(cp, step).forEach((g, i) => {
           if (!g.from) return;
@@ -1308,6 +1327,7 @@
     clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, dimOf(p) ? 0.4 : 1, p.label, teamColor(cp, p.team)));
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
+    if (clip.ball2 && step.startState.ball2) drawBall(ctx, ballPos(cp, ball2Step(step), u));
     // tags on top
     // labels sit below defenders, above everyone else; clip.tagPlace 'auto': above, unless near the top edge
     Object.keys(tags).forEach(id => {
