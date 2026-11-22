@@ -107,6 +107,7 @@
 
   // ---------- compile a clip into a timeline ----------
   function compile(clip) {
+    if (clip.kind === 'solo') return compileSolo(clip);
     setPlayerScale(clip.playerScale);
     const timing = Object.assign({}, DEFAULT_TIMING, clip.timing || {});
     const team = {};
@@ -209,7 +210,7 @@
       return attached(cp, step, segs[segs.length - 1].to, u);
     }
     const act = step.def.ball;
-    if (!act) return ballStartPos(cp, step, u);
+    if (!act || (!act.pass && !act.to)) return ballStartPos(cp, step, u);   // e.g. ball.give only
     const s = act.start != null ? act.start : 0;
     const e = act.end != null ? act.end : 0.4;
     const target = u2 => (act.pass ? attached(cp, step, act.pass, u2) : act.to.slice());
@@ -243,8 +244,10 @@
     }
   }
 
-  function drawGoal(ctx, cx, cy) {
-    const w = 64, h = 24;
+  // scale: clip.goalScale makes the goal bigger for close-ups (e.g. goalkeeping); depth grows less than width
+  function drawGoal(ctx, cx, cy, scale) {
+    const k = scale || 1;
+    const w = 64 * k, h = 24 * Math.min(k, 1.6);
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#1f1f1f';
@@ -266,7 +269,7 @@
   }
 
   // goals: optional list of [x, 'top'|'bottom'] in pitch units (default: one centred goal at each end)
-  function drawPitch(ctx, goals) {
+  function drawPitch(ctx, goals, goalScale, marks, arc) {
     ctx.save();
     roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
     ctx.clip();
@@ -284,8 +287,27 @@
     roundRect(ctx, PITCH.x + 3, PITCH.y + 3, PITCH.w - 6, PITCH.h - 6, 8);
     ctx.stroke();
     ctx.restore();
+    // pitch markings: clip.marks = [{ x, y, w, h }] in pitch units, drawn as solid lines (e.g. the 6-yard box), kept on the pitch
+    (marks || []).forEach(m => {
+      const [x1, y1] = toPx([m.x, m.y]), [x2, y2] = toPx([m.x + m.w, m.y + m.h]);
+      ctx.save();
+      roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
+      ctx.clip();
+      ctx.strokeStyle = C.pitchEdge; ctx.lineWidth = 3;
+      ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+      ctx.restore();
+    });
+    // positioning arc: clip.arc = { cx, cy, rx, ry } in pitch units, the half-ellipse in front of a goal at the bottom
+    if (arc) {
+      const [cx, cy] = toPx([arc.cx, arc.cy]);
+      const kx = (PITCH.w - 2 * PITCH.pad) / PITCH.uw, ky = (PITCH.h - 2 * PITCH.pad) / PITCH.uh;
+      ctx.save();
+      ctx.strokeStyle = C.accent; ctx.globalAlpha = 0.55; ctx.lineWidth = 3; ctx.setLineDash([10, 8]);
+      ctx.beginPath(); ctx.ellipse(cx, cy, arc.rx * kx, arc.ry * ky, 0, Math.PI, 2 * Math.PI); ctx.stroke();
+      ctx.restore();
+    }
     (goals || [[50, 'top'], [50, 'bottom']]).forEach(([gx, end]) => {
-      drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2);
+      drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2, goalScale);
     });
   }
 
@@ -398,6 +420,11 @@
     DEFEND: { bg: '#16351f', fg: '#fff' },
     'GO!': { get bg() { return C.accent; }, fg: '#fff' },
     ATTACKER: { get bg() { return C.accent; }, fg: '#fff' },
+    READY: { bg: '#16351f', fg: '#fff' },
+    SHUFFLE: { bg: '#16351f', fg: '#fff' },
+    SET: { get bg() { return C.accent; }, fg: '#fff' },
+    SAVE: { get bg() { return C.accent; }, fg: '#fff' },
+    'GET UP!': { get bg() { return C.accent; }, fg: '#fff' },
     DEFENDER: { bg: '#16351f', fg: '#fff' },
   };
 
@@ -592,7 +619,11 @@
     // legend (right)
     x = 1240;
     ctx.font = `500 15px ${FONT}`;
-    const items = [
+    const items = clip.kind === 'solo' ? [
+      { label: 'Ball', draw: (lx) => drawArrowPx(ctx, lx, 46, lx + 34, 46, { color: C.accent, width: 3, dash: [9, 7], head: 13 }) },
+      { label: 'Right foot', draw: (lx) => legendDot(ctx, lx + 10, 46, C.attack) },
+      { label: 'Left foot', draw: (lx) => legendDot(ctx, lx + 10, 46, C.defend) },
+    ] : [
       { label: 'Pass', draw: (lx) => drawArrowPx(ctx, lx, 46, lx + 34, 46, ARROW_STYLE.pass) },
       { label: 'Run', draw: (lx) => drawArrowPx(ctx, lx, 46, lx + 34, 46, ARROW_STYLE.run) },
     ].concat(clip.legendTeams
@@ -789,6 +820,237 @@
     ctx.restore();
   }
 
+  // ---------- SOLO (ball mastery) clips: a close-up of two feet and a ball ----------
+  // A solo clip has kind: 'solo'. Each step lists its touches, e.g. touches: ['R sole to -0.8,0', 'L sole to 0.8,0'], reps: 4.
+  // A touch is '<L|R> <sole|inside|outside|toe|laces> [to x,y]'. Units: 1 = one ball width; x right, y down (towards the player).
+  // The ball starts at [0, 0], the feet behind it. Optional per step: ball: [x, y] to place it, feet: { L: [x, y], R: [x, y] },
+  // speed (1 = 0.7s a touch), and touch (seconds a touch).
+  const SOLO = { unit: 118, r: 0.5, FL: 1.35, FW: 0.52 };
+  const SOLO_C = () => [PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h / 2 - 70];
+  const SOLO_HOME = { L: [-0.62, 1.35], R: [0.62, 1.35] };
+  const PART_NAME = { sole: 'SOLE', inside: 'INSIDE', outside: 'OUTSIDE', toe: 'TOE', laces: 'LACES' };
+  const soloPx = p => { const [cx, cy] = SOLO_C(); return [cx + p[0] * SOLO.unit, cy + p[1] * SOLO.unit]; };
+  const footColor = f => (f === 'L' ? C.defend : C.attack);
+
+  function parseTouch(tc) {
+    if (typeof tc !== 'string') return Object.assign({}, tc, { foot: (tc.foot || 'R').toUpperCase() });
+    const w = tc.trim().split(/\s+/);
+    const o = { foot: w[0].toUpperCase(), part: w[1] || 'sole' };
+    const i = w.indexOf('to');
+    if (i > 0 && w[i + 1]) o.to = w[i + 1].split(',').map(Number);
+    return o;
+  }
+  // where the foot's centre sits when it touches the ball with that part, and how it is turned
+  function contact(foot, part) {
+    const s = foot === 'L' ? -1 : 1;
+    switch (part) {
+      case 'sole': return { off: [0, 0.18], a: 0 };
+      case 'toe': return { off: [0, 0.62], a: 0 };
+      case 'inside': return { off: [s * 0.74, 0.18], a: s * 0.35 };
+      case 'outside': return { off: [-s * 0.74, 0.18], a: -s * 0.3 };
+      case 'laces': return { off: [0, 1.08], a: 0 };
+      default: return { off: [0, 0.6], a: 0 };
+    }
+  }
+
+  function compileSolo(clip) {
+    const timing = Object.assign({}, DEFAULT_TIMING, { arrows: 1.6, read: 1.0, hold: 1.4 }, clip.timing || {});
+    let t = timing.intro;
+    let ball = (clip.ball && clip.ball.slice ? clip.ball.slice() : [0, 0]);
+    const steps = clip.steps.map((def, index) => {
+      const d = Object.assign({}, timing, def.timing || {});
+      const td = (def.touch || clip.touch || 0.7) / (def.speed || 1);
+      const pattern = (def.touches || []).map(parseTouch);
+      const home = Object.assign({}, SOLO_HOME, clip.feet || {}, def.feet || {});
+      if (def.ball) ball = def.ball.slice();
+      const seq = [];
+      let b = ball.slice();
+      for (let r = 0; r < (def.reps || 1); r++) {
+        pattern.forEach(p => { const to = p.to ? p.to.slice() : b.slice(); seq.push(Object.assign({}, p, { from: b.slice(), to })); b = to; });
+      }
+      const ballStart = ball.slice();
+      ball = b;
+      const phases = { stepIn: d.stepIn, arrows: pattern.length ? d.arrows : 0, read: d.read, move: seq.length * td, hold: d.hold };
+      const total = phases.stepIn + phases.arrows + phases.read + phases.move + phases.hold;
+      const step = { def, index, start: t, total, phases, seq, td, home, ballStart, ballEnd: ball.slice(), pattern: pattern.length };
+      t += total;
+      return step;
+    });
+    const outro = clip.summary ? timing.outro : 1.0;
+    return { clip, timing, team: {}, steps, outroStart: t, duration: t + outro, solo: true };
+  }
+
+  // ball, feet and the active touch at a moment
+  function soloState(step, phase, pk) {
+    const feet = { L: { p: step.home.L.slice(), a: 0 }, R: { p: step.home.R.slice(), a: 0 } };
+    const st = { ball: (phase === 'hold' || phase === 'outro') ? step.ballEnd.slice() : step.ballStart.slice(), feet, active: null, count: 0 };
+    if (phase !== 'move' || !step.seq.length) return st;
+    const mt = pk * step.phases.move;
+    const i = Math.min(step.seq.length - 1, Math.floor(mt / step.td));
+    const k = clamp((mt - i * step.td) / step.td);
+    const tc = step.seq[i];
+    const c = contact(tc.foot, tc.part);
+    const moveK = EASE.inOut(clamp((k - 0.3) / 0.45));
+    const ballNow = lerpP(tc.from, tc.to, moveK);
+    st.ball = k < 0.3 ? tc.from.slice() : ballNow;
+    const home = step.home[tc.foot];
+    const c0 = [tc.from[0] + c.off[0], tc.from[1] + c.off[1]];
+    const carry = tc.part === 'sole' ? 1 : 0.3;                         // the sole rolls the ball; other parts push it away
+    const cMid = [c0[0] + (tc.to[0] - tc.from[0]) * carry * moveK, c0[1] + (tc.to[1] - tc.from[1]) * carry * moveK];
+    const cEnd = [c0[0] + (tc.to[0] - tc.from[0]) * carry, c0[1] + (tc.to[1] - tc.from[1]) * carry];
+    const f = feet[tc.foot];
+    if (k < 0.3) { const e = EASE.out(k / 0.3); f.p = lerpP(home, c0, e); f.a = c.a * e; }
+    else if (k < 0.78) { f.p = cMid; f.a = c.a; }
+    else { const e = EASE.inOut((k - 0.78) / 0.22); f.p = lerpP(cEnd, home, e); f.a = c.a * (1 - e); }
+    if (k >= 0.22 && k < 0.8) st.active = { foot: tc.foot, part: tc.part };
+    st.count = (i % step.pattern) + 1;
+    st.total = i + 1;
+    return st;
+  }
+
+  function drawFoot(ctx, foot, f, active) {
+    const [x, y] = soloPx(f.p);
+    const L = SOLO.FL * SOLO.unit, Wd = SOLO.FW * SOLO.unit, col = footColor(foot), s = foot === 'L' ? -1 : 1;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(f.a);
+    // shoe: rounded toe at the top (forward), narrower heel
+    const shoe = () => {
+      ctx.beginPath();
+      ctx.moveTo(0, -L / 2);
+      ctx.bezierCurveTo(Wd * 0.62, -L / 2, Wd * 0.58, -L * 0.05, Wd * 0.44, L * 0.22);
+      ctx.bezierCurveTo(Wd * 0.38, L * 0.42, Wd * 0.3, L / 2, 0, L / 2);
+      ctx.bezierCurveTo(-Wd * 0.3, L / 2, -Wd * 0.38, L * 0.42, -Wd * 0.44, L * 0.22);
+      ctx.bezierCurveTo(-Wd * 0.58, -L * 0.05, -Wd * 0.62, -L / 2, 0, -L / 2);
+      ctx.closePath();
+    };
+    shoe();
+    ctx.fillStyle = active && active.part === 'sole' ? '#fde3d4' : '#ffffff';
+    ctx.fill();
+    // highlight the part touching the ball
+    if (active) {
+      ctx.save(); shoe(); ctx.clip();
+      ctx.fillStyle = 'rgba(217,98,43,0.55)';
+      const inner = s * -1;   // inside of the foot faces the other foot
+      if (active.part === 'toe') ctx.fillRect(-Wd, -L / 2, 2 * Wd, L * 0.2);
+      if (active.part === 'laces') ctx.fillRect(-Wd * 0.22, -L * 0.36, Wd * 0.44, L * 0.42);
+      if (active.part === 'inside') ctx.fillRect(inner > 0 ? Wd * 0.18 : -Wd, -L * 0.3, Wd * 0.82, L * 0.5);
+      if (active.part === 'outside') ctx.fillRect(inner > 0 ? -Wd : Wd * 0.18, -L * 0.3, Wd * 0.82, L * 0.5);
+      ctx.restore();
+    }
+    shoe();
+    ctx.lineWidth = 5; ctx.strokeStyle = col; ctx.stroke();
+    ctx.fillStyle = col; ctx.font = `800 22px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.rotate(-f.a);
+    ctx.fillText(foot, 0, L * 0.2);
+    ctx.restore();
+  }
+
+  function drawSoloBall(ctx, p) {
+    const [x, y] = soloPx(p), r = SOLO.r * SOLO.unit;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x + 4, y + 6, r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(0,0,0,0.12)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = '#111'; ctx.stroke();
+    ctx.fillStyle = '#111'; ctx.beginPath();
+    for (let i = 0; i < 5; i++) { const a = -Math.PI / 2 + i * 2 * Math.PI / 5; const px = x + Math.cos(a) * r * 0.36, py = y + Math.sin(a) * r * 0.36; i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); }
+    ctx.closePath(); ctx.fill();
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 5; i++) { const a = -Math.PI / 2 + i * 2 * Math.PI / 5; ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r * 0.36, y + Math.sin(a) * r * 0.36); ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); ctx.stroke(); }
+    ctx.restore();
+  }
+
+  function soloArrow(ctx, a, b, progress, alpha, color, bend) {
+    if (progress <= 0 || alpha <= 0) return;
+    // a gentle curve from a to b, drawn in pixels
+    const [x1, y1] = soloPx(a), [x2, y2] = soloPx(b);
+    const mx = (x1 + x2) / 2 + (y2 - y1) * (bend || 0), my = (y1 + y2) / 2 - (x2 - x1) * (bend || 0);
+    const pts = [];
+    for (let i = 0; i <= 30; i++) { const k = (i / 30) * progress; pts.push([(1 - k) * (1 - k) * x1 + 2 * (1 - k) * k * mx + k * k * x2, (1 - k) * (1 - k) * y1 + 2 * (1 - k) * k * my + k * k * y2]); }
+    ctx.save();
+    ctx.globalAlpha = alpha; ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 4; ctx.setLineDash([10, 8]);
+    ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.stroke();
+    ctx.setLineDash([]);
+    const [px, py] = pts[pts.length - 1], [qx, qy] = pts[pts.length - 3];
+    const ang = Math.atan2(py - qy, px - qx);
+    ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px - 16 * Math.cos(ang - 0.45), py - 16 * Math.sin(ang - 0.45)); ctx.lineTo(px - 16 * Math.cos(ang + 0.45), py - 16 * Math.sin(ang + 0.45)); ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawSoloScene(ctx, cp, step, phase, pk) {
+    const st = soloState(step, phase, pk);
+    // arrows: the first round of touches, drawn one after another
+    const first = step.seq.slice(0, step.pattern);
+    const placed = [];   // label positions so far, so labels never sit on top of each other
+    if (first.length && phase !== 'intro' && phase !== 'outro') {
+      first.forEach((tc, i) => {
+        let prog = 1, alpha = 1;
+        if (phase === 'stepIn') prog = 0;
+        else if (phase === 'arrows') prog = clamp(pk * first.length * 1.15 - i);
+        else if (phase === 'move') alpha = 1 - 0.75 * clamp(pk * step.seq.length / Math.max(1, first.length) / 1.2);
+        else if (phase === 'hold') alpha = 0.25;
+        const moves = Math.hypot(tc.to[0] - tc.from[0], tc.to[1] - tc.from[1]) > 0.05;
+        // ball paths are drawn beside the ball, not under it: above for sideways moves, outside for forward/back moves
+        const dx = tc.to[0] - tc.from[0], dy = tc.to[1] - tc.from[1];
+        const off = Math.abs(dx) >= Math.abs(dy) ? [0, -0.85 - 0.3 * (i % 2)] : [(tc.from[0] >= 0 ? 1 : -1) * (0.85 + 0.3 * (i % 2)), 0];
+        let from, to, labelAt;
+        if (moves) {
+          from = [tc.from[0] + off[0], tc.from[1] + off[1]]; to = [tc.to[0] + off[0], tc.to[1] + off[1]];
+          soloArrow(ctx, from, to, prog, alpha, footColor(tc.foot), 0);
+          labelAt = [(from[0] + to[0]) / 2 + off[0] * 0.35, (from[1] + to[1]) / 2 + off[1] * 0.35];
+        } else {
+          // ball stays: arrow from the foot to where it touches the ball
+          const c = contact(tc.foot, tc.part), h = step.home[tc.foot];
+          from = [h[0], h[1] - 0.7]; to = [tc.from[0] + c.off[0] * 0.6, tc.from[1] + c.off[1] * 0.5 + 0.1];
+          soloArrow(ctx, from, to, prog, alpha, footColor(tc.foot), 0);
+          labelAt = [h[0] + (tc.foot === 'L' ? -1.15 : 1.15), h[1] - 0.2];
+        }
+        while (placed.some(q => Math.abs(q[0] - labelAt[0]) < 1.7 && Math.abs(q[1] - labelAt[1]) < 0.3)) labelAt = [labelAt[0], labelAt[1] + 0.32];
+        placed.push(labelAt);
+        // which foot and which part
+        if (prog > 0 && alpha > 0.5 && phase !== 'move') {
+          const [lx, ly] = soloPx(labelAt);
+          ctx.save(); ctx.globalAlpha = Math.min(1, prog * 2);
+          const label = `${i + 1}. ${tc.foot === 'L' ? 'LEFT' : 'RIGHT'} ${PART_NAME[tc.part] || tc.part.toUpperCase()}`;
+          ctx.font = `700 17px ${FONT}`;
+          const w = ctx.measureText(label).width + 20;
+          roundRect(ctx, lx - w / 2, ly - 15, w, 30, 15); ctx.fillStyle = footColor(tc.foot); ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, lx, ly + 1);
+          ctx.restore();
+        }
+      });
+    }
+    // feet (behind) then ball; a sole touch draws the foot on top of the ball
+    const order = ['L', 'R'];
+    const onTop = st.active && st.active.part === 'sole' ? st.active.foot : null;
+    order.filter(f => f !== onTop).forEach(f => drawFoot(ctx, f, st.feet[f], st.active && st.active.foot === f ? st.active : null));
+    drawSoloBall(ctx, st.ball);
+    if (onTop) {
+      ctx.save(); ctx.globalAlpha = 0.9;
+      drawFoot(ctx, onTop, st.feet[onTop], st.active);
+      ctx.restore();
+    }
+    // the touch being made, and the count
+    if (phase === 'move' && st.count) {
+      const [cx] = SOLO_C();
+      if (st.active) {
+        const label = `${st.active.foot === 'L' ? 'LEFT' : 'RIGHT'} ${PART_NAME[st.active.part] || st.active.part.toUpperCase()}`;
+        ctx.save(); ctx.font = `800 22px ${FONT}`;
+        const w = ctx.measureText(label).width + 30;
+        roundRect(ctx, cx - w / 2, PITCH.y + PITCH.h - 64, w, 40, 20); ctx.fillStyle = footColor(st.active.foot); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, cx, PITCH.y + PITCH.h - 43);
+        ctx.restore();
+      }
+      ctx.save();
+      ctx.textAlign = 'right'; ctx.fillStyle = C.forest || '#16351f';
+      ctx.font = `800 64px ${FONT}`; ctx.fillStyle = 'rgba(22,53,31,0.85)';
+      ctx.fillText(String(st.total), PITCH.x + PITCH.w - 34, PITCH.y + 86);
+      ctx.font = `700 14px ${FONT}`; ctx.fillStyle = 'rgba(22,53,31,0.55)';
+      ctx.fillText('TOUCHES', PITCH.x + PITCH.w - 36, PITCH.y + 110);
+      ctx.restore();
+    }
+  }
+
   // Where are we at time t? { step, phase, pk (0..1 within the phase), u (0..1 of the move) }
   function locate(cp, t) {
     let step = null, phase = 'intro', u = 0, pk = 0;
@@ -839,7 +1101,12 @@
     ctx.fillRect(0, 0, W, H);
     if (bare) ctx.translate(BARE.m - PITCH.x, BARE.m - PITCH.y);
     else drawHeader(ctx, session, clip);
-    drawPitch(ctx, clip.goals);
+    drawPitch(ctx, cp.solo ? [] : clip.goals, clip.goalScale, clip.marks, clip.arc);
+    // Which segment are we in?
+    const { step, phase, pk, u } = locate(cp, t);
+    const def = step.def;
+    if (cp.solo) drawSoloScene(ctx, cp, step, phase, pk);
+    else {
     // marked practice areas: clip.areas = [{ x, y, w, h }] in pitch units, cones at the corners
     (clip.areas || []).forEach(a => {
       const [x1, y1] = toPx([a.x, a.y]), [x2, y2] = toPx([a.x + a.w, a.y + a.h]);
@@ -856,10 +1123,7 @@
       ctx.restore();
     });
 
-    // Which segment are we in?
-    const { step, phase, pk, u } = locate(cp, t);
 
-    const def = step.def;
     const showStepFx = phase !== 'intro' && phase !== 'outro';
     const fxAlpha = phase === 'stepIn' ? pk : 1;
 
@@ -984,6 +1248,8 @@
       const kept = prevTags[id] === tags[id];   // with tagFlash, an unchanged label stays put instead of fading in again
       drawTag(ctx, p, tags[id], kept ? 1 : fxAlpha, clip.tagPlace === 'auto' ? p[1] < 10 : cp.team[id] === 'd');
     });
+
+    }   // end of the pitch scene
 
     if (bare) {
       // fade in from and out to the forest frame, so the loop restarts cleanly

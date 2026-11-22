@@ -18,6 +18,8 @@ players are circles (green = attackers, blue = defenders), each step shows the
 |---|---|
 | Splash & Ripple (defending) | 1. The Basics (2 v 2) · 2. 3 v 3 · 3. Hold or Press? (3 v 3) · 4. Outnumbered (3 v 4) |
 | 5 v 2 Transfer Rondo (attacking, U14+) | One clip: keep it, transfer (wide / direct), defenders win it |
+| Set Position & Shot-Stopping (goalkeeping, U6+) | 1. Get Set · 2. Move With the Ball (3 servers) · 3. Save, Get Up, Set Again |
+| Ball Mastery: The Basics (Home Ground, solo, U6+) | 1. Toe Taps · 2. Sole Rolls · 3. Tic-Tacs · 4. Pull-Push |
 
 ## Brand
 
@@ -57,6 +59,22 @@ when their label changes (ATTACKER → DEFENDER); `tagPlace: 'auto'` keeps label
 
 Each section lists its sessions as compact rows, with search (titles, key words, coaching points), filter pills
 for age, type and players (behind a "Filter" button on phones), and ☆ to save a session on that device.
+
+## Solo (ball mastery) clips
+
+Solo sessions go in Home Ground (`category: 'home-ground'`). A solo clip has `kind: 'solo'` and shows two feet and a ball
+from above. Each step is just a list of touches, repeated:
+
+```js
+{ title: 'SWAP FEET', text: ['Right sole rolls it across.', 'Left sole rolls it back.'],
+  touches: ['R sole to -0.5,0', 'L sole to 0.5,0'], reps: 3, speed: 0.8 }
+```
+
+A touch is `<L|R> <sole|inside|outside|toe|laces> [to x,y]` (leave out `to` and the ball stays put, e.g. toe taps).
+Units are ball widths: x left − / right +, y up the screen − / towards the player +; the ball starts at `[0, 0]`.
+Optional: `ball: [x, y]` to place the ball, `feet: { L: [x, y], R: [x, y] }` for where the feet rest, `speed` (1 = 0.7s a touch).
+The arrows, labels ("1. RIGHT SOLE"), touch counter and the highlighted part of the foot are drawn automatically.
+See `drills/ball-mastery.js`.
 
 ## Adding a new session
 
