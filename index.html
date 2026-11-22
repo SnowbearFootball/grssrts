@@ -507,9 +507,11 @@
 <script src="drills/transfer-rondo.js"></script>
 <script src="drills/set-position.js"></script>
 <script src="drills/ball-mastery.js"></script>
+<script src="drills/long-range-shooting.js"></script>
 <script>
 (function () {
-  const SESSIONS = window.SESSIONS || [];
+  // draft: true sessions stay off the site until approved; open index.html?drafts to see them
+  const SESSIONS = (window.SESSIONS || []).filter(s => !s.draft || /[?&]drafts\b/.test(location.search));
   const CATS = window.CATEGORIES || [];
   const AREAS = window.AREAS || [];
   const LINKS = window.SITE_LINKS || {};

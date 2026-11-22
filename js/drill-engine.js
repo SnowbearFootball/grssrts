@@ -170,6 +170,7 @@
   function ballOffset(cp, id) {
     // attackers face down the pitch, defenders face up it (a clip can override with facing: { a: -1 })
     const f = cp.clip.facing && cp.clip.facing[cp.team[id]];
+    if (f === 'right' || f === 'left') return [(f === 'right' ? 1 : -1) * (R_U + 1.3), 0];   // sideways pitches
     const dir = f != null ? f : cp.team[id] === 'a' ? 1 : -1;
     return [0, dir * (R_U + 1.3)];
   }
@@ -307,7 +308,14 @@
       ctx.restore();
     }
     (goals || [[50, 'top'], [50, 'bottom']]).forEach(([gx, end]) => {
-      drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2, goalScale);
+      // goals: [x, 'top'|'bottom'], or [y, 'left'|'right'] for a pitch laid sideways
+      if (end === 'left' || end === 'right') {
+        ctx.save();
+        ctx.translate(end === 'left' ? PITCH.x + 2 : PITCH.x + PITCH.w - 2, toPx([0, gx])[1]);
+        ctx.rotate(Math.PI / 2);
+        drawGoal(ctx, 0, 0, goalScale);
+        ctx.restore();
+      } else drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2, goalScale);
     });
   }
 
@@ -419,6 +427,14 @@
     SHOOT: { get bg() { return C.accent; }, fg: '#fff' },
     DEFEND: { bg: '#16351f', fg: '#fff' },
     'GO!': { get bg() { return C.accent; }, fg: '#fff' },
+    PRESS: { get bg() { return C.accent; }, fg: '#fff' },
+    'WON IT!': { get bg() { return C.accent; }, fg: '#fff' },
+    IN: { bg: '#16351f', fg: '#fff' },
+    UP: { bg: '#16351f', fg: '#fff' },
+    WAIT: { bg: '#6b7280', fg: '#fff' },
+    BACK: { bg: '#16351f', fg: '#fff' },
+    'FIRST TIME': { get bg() { return C.accent; }, fg: '#fff' },
+    OUT: { bg: '#16351f', fg: '#fff' },
     ATTACKER: { get bg() { return C.accent; }, fg: '#fff' },
     READY: { bg: '#16351f', fg: '#fff' },
     SHUFFLE: { bg: '#16351f', fg: '#fff' },
@@ -605,16 +621,7 @@
       ctx.fillRect(x, 33, 2, 22);
       x += 16;
     }
-    ctx.fillStyle = C.text;
-    ctx.font = `700 24px ${FONT}`;
-    ctx.fillText(session.title || '', x, 52);
-    x += ctx.measureText(session.title || '').width + 14;
-    const idx = (session.clips || []).indexOf(clip);
-    if (idx >= 0 && session.clips.length > 1) {
-      ctx.fillStyle = C.muted;
-      ctx.font = `600 16px ${FONT}`;
-      ctx.fillText(`Clip ${idx + 1} of ${session.clips.length}`, x, 51);
-    }
+    const titleX = x;
 
     // legend (right)
     x = 1240;
@@ -641,6 +648,20 @@
       it.draw(x);
       x -= 22;
     });
+
+    // title, then "Clip n of N" if there is room before the legend; a long title shrinks to fit
+    const room = x + 22 - 20 - titleX;
+    ctx.fillStyle = C.text;
+    fitFont(ctx, session.title || '', 700, 24, room);
+    ctx.fillText(session.title || '', titleX, 52);
+    const tx = titleX + ctx.measureText(session.title || '').width + 14;
+    const idx = (session.clips || []).indexOf(clip);
+    ctx.font = `600 16px ${FONT}`;
+    const clipLabel = `Clip ${idx + 1} of ${(session.clips || []).length}`;
+    if (idx >= 0 && session.clips.length > 1 && tx + ctx.measureText(clipLabel).width <= titleX + room) {
+      ctx.fillStyle = C.muted;
+      ctx.fillText(clipLabel, tx, 51);
+    }
     ctx.restore();
   }
 
@@ -1089,6 +1110,22 @@
   const BARE = { m: 12, gap: 20, strip: 34 };
   const BARE_W = PITCH.w + 2 * BARE.m, BARE_H = PITCH.h + BARE.m + BARE.gap + BARE.strip;
 
+  function drawDim(ctx, d) {
+    const [x1, y1] = toPx(d.a), [x2, y2] = toPx(d.b);
+    const ang = Math.atan2(y2 - y1, x2 - x1), nx = -Math.sin(ang) * 6, ny = Math.cos(ang) * 6;
+    ctx.save();
+    ctx.strokeStyle = 'rgba(22,53,31,0.45)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+    ctx.moveTo(x1 - nx, y1 - ny); ctx.lineTo(x1 + nx, y1 + ny); ctx.moveTo(x2 - nx, y2 - ny); ctx.lineTo(x2 + nx, y2 + ny);
+    ctx.stroke();
+    ctx.font = `700 14px ${FONT}`;
+    const w = ctx.measureText(d.label).width + 12, mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    roundRect(ctx, mx - w / 2, my - 10, w, 20, 10); ctx.fillStyle = C.pitch; ctx.fill();
+    ctx.fillStyle = 'rgba(22,53,31,0.75)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(d.label, mx, my + 1);
+    ctx.restore();
+  }
+
   // ---------- main frame render ----------
   function render(ctx, cp, session, t, opts) {
     const bare = !!(opts && opts.bare);
@@ -1102,6 +1139,8 @@
     if (bare) ctx.translate(BARE.m - PITCH.x, BARE.m - PITCH.y);
     else drawHeader(ctx, session, clip);
     drawPitch(ctx, cp.solo ? [] : clip.goals, clip.goalScale, clip.marks, clip.arc);
+    // measurements: clip.dims = [{ a: [x, y], b: [x, y], label: '20 yds' }] in pitch units
+    (clip.dims || []).forEach(d => drawDim(ctx, d));
     // Which segment are we in?
     const { step, phase, pk, u } = locate(cp, t);
     const def = step.def;
