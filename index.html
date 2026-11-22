@@ -724,7 +724,7 @@
   const squad = s => s.squad || null;   // [min, max] players at training
   const squadLabel = s => { const q = squad(s); return q ? (q[0] === q[1] ? `${q[0]} players` : `${q[0]}–${q[1]} players`) : ''; };
   const sessionLen = s => s.clips.reduce((a, c) => a + clipLen(c), 0);
-  const AGES = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+  const AGES = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   const PLAYER_BANDS = [{ id: '1-4', label: '1–4', min: 1, max: 4 }, { id: '5-8', label: '5–8', min: 5, max: 8 },
     { id: '9-12', label: '9–12', min: 9, max: 12 }, { id: '13+', label: '13+', min: 13, max: 99 }];
   const TYPE_ORDER = ['Technical', 'Tactical', 'Rondo', 'Game'];

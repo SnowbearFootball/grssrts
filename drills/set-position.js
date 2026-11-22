@@ -2,19 +2,24 @@
  * SESSION: Set Position & Shot-Stopping (Goalkeeping)
  *
  * A close-up of one goal (at the bottom) with the 6-yard box marked. Servers (green) shoot; the goalkeeper (GK) works.
- * Scale: the goal is 8 yards wide = about 44 pitch units, so 1 yard ≈ 5.5 units. Goal line ≈ y 75.7, posts ≈ x 28 and 72.
- * The top of the picture is about 14 yards out.
- * GK positions follow the "ball line": the line from the ball to the middle of the goal.
+ * Scale: the goal is 8 yards wide = about 35 pitch units, so 1 yard ≈ 4.4 units. Goal line ≈ y 75.7, posts ≈ x 32.4 and 67.6.
+ * The top of the picture is about 17 yards out.
+ * GK positions are where the "ball line" (ball → middle of the goal) crosses the positioning arc, which runs from post to post
+ * and bulges about 2.5 yards out in the middle: further out when the ball is central, back towards the post when it's wide.
  */
 (function () {
   const GOAL = [50, 75.7];
-  const GK_Y = 67;                                       // about 1.5 yards off the line
-  // where the keeper stands: on the ball line (ball → middle of the goal), GK_Y down the pitch
-  const onLine = (b, gy = GK_Y) => [+(b[0] + (GOAL[0] - b[0]) * (gy - b[1]) / (GOAL[1] - b[1])).toFixed(1), gy];
+  const ARC = { cx: 50, cy: 75.7, rx: 17.6, ry: 11 };   // post to post, 2.5 yards out in the middle
+  // where the keeper stands: where the ball line meets the arc
+  const onArc = b => {
+    const dx = b[0] - ARC.cx, dy = b[1] - ARC.cy, t = 1 / Math.hypot(dx / ARC.rx, dy / ARC.ry);
+    return [+(ARC.cx + t * dx).toFixed(1), +(ARC.cy + t * dy).toFixed(1)];
+  };
   const common = {
     goals: [[50, 'bottom']],
-    goalScale: 5,
-    marks: [{ x: -5, y: 42.7, w: 110, h: 33 }],          // 6-yard box (its sides are just off the picture)
+    goalScale: 4,
+    marks: [{ x: 6, y: 49.3, w: 88, h: 26.4 }],           // 6-yard box
+    arc: ARC,
     legendTeams: [{ label: 'Server', color: '#2fbf7f' }, { label: 'Goalkeeper', color: '#2b2b2b' }],
     keyPhrase: { big: 'READY → SET → SAVE', small: 'Be still as the ball is struck' },
   };
@@ -30,7 +35,7 @@
     thumb: 'assets/thumbs/set-position.jpg',
     summary: 'Get in line with the ball, be still as it is struck, then make the save. The basics every keeper builds on.',
     keyPhrase: 'Ready → Set → Save',
-    ages: { from: 8, note: 'Clips 2 and 3 suit U10 and above.' },
+    ages: { from: 6 },
 
     cards: [
       {
@@ -41,6 +46,15 @@
           { heading: 'Hands', items: ['Out in front, about waist height', 'Palms facing the ball', 'Relaxed, ready to move'] },
         ],
         phrase: { big: 'SET ON THE STRIKE', small: 'Stop moving just before the shot' },
+      },
+      {
+        title: 'Where to stand',
+        lead: 'On the *arc*, where the *ball line* meets it.',
+        columns: [
+          { heading: 'Ball central', items: ['Top of the arc, a couple of steps out', 'The goal looks *smaller* to the shooter', 'Still close enough to get back'] },
+          { heading: 'Ball wide', items: ['Drop back along the arc', '*Closer to the near post*', 'Don\'t leave a gap at the near post'] },
+        ],
+        phrase: { big: 'SMALLER GOAL', small: 'Good angles make the target smaller' },
       },
       {
         title: 'Making the save',
@@ -57,6 +71,7 @@
       { word: 'Ready position', meaning: 'Balanced, on your toes, hands in front. How a keeper stands while the ball is away.' },
       { word: 'Set', meaning: 'Being still and balanced just as the shot is struck, so you can move either way.' },
       { word: 'Ball line', meaning: 'An imaginary line from the ball to the middle of the goal. Stand on it.' },
+      { word: 'The arc', meaning: 'A curve from post to post. Ball central: stand further out. Ball wide: drop back towards the near post.' },
       { word: 'Shuffle', meaning: 'Small side-steps to move across the goal without crossing your feet.' },
       { word: 'W catch', meaning: 'Thumbs and fingers make a W shape behind the ball for shots at chest height or above.' },
       { word: 'Parry', meaning: "Pushing the ball away when you can't hold it: wide, away from the goal." },
@@ -65,9 +80,10 @@
     training: {
       area: 'One goal and the 6-yard box. Mark server spots 10 to 12 yards out.',
       players: '1 or 2 goalkeepers and 2 or 3 servers (or the coach).',
-      equipment: 'A goal, plenty of balls and cones for the server spots.',
+      equipment: 'A goal, plenty of balls, flat cones for the arc and cones for the server spots.',
       setup: [
-        'Start with one server in the middle. The keeper gets into the ready position, a step off the line.',
+        'Mark the arc with a few flat cones, post to post, about 2 to 3 steps out in the middle.',
+        'Start with one server in the middle. The keeper gets into the ready position at the top of the arc.',
         'The server dribbles left or right. The keeper shuffles to stay on the ball line.',
         'The server takes a touch to set the ball. The keeper sets, then the server shoots at the keeper.',
         'Add servers on the left and right. Pass between them; the keeper moves with every pass.',
@@ -77,7 +93,7 @@
     },
 
     questions: [
-      'Where is the ball line right now?',
+      'Where is the ball line right now? Where does it meet the arc?',
       'Were you still when the ball was struck?',
       'Where were your hands before the shot?',
       'Low shot or high shot: which catch did you use?',
@@ -94,11 +110,11 @@
         tagline: 'Ready, shuffle, set, save.',
         intro: [
           'One server, one keeper.',
-          'Stay on the *ball line* as the ball moves.',
+          'Move along the *arc* as the ball moves.',
           '*Set* as they shoot, then make the save.',
         ],
         players: [
-          { id: 'gk', team: 'k', label: 'GK', x: 50, y: GK_Y },
+          { id: 'gk', team: 'k', label: 'GK', x: onArc([50, 12])[0], y: onArc([50, 12])[1] },
           { id: 's1', team: 'a', x: 50, y: 12 },
         ],
         ball: { owner: 's1' },
@@ -106,7 +122,7 @@
           {
             title: 'READY POSITION',
             text: [
-              'A step off the line, in the *middle of the goal*.',
+              'Ball in the middle: keeper at the *top of the arc*, in the middle of the goal.',
               'Feet shoulder-width apart, on your toes, knees bent.',
               'Hands out in front, ready.',
             ],
@@ -116,15 +132,15 @@
             title: 'BALL MOVES: SHUFFLE ACROSS',
             text: [
               'The server dribbles to one side.',
-              '*Shuffle* across with small side-steps. Don\'t cross your feet.',
-              'Stay on the *ball line*: from the ball to the middle of the goal.',
+              '*Shuffle* along the *arc*. Small side-steps; don\'t cross your feet.',
+              'Stop where the *ball line* (ball to middle of the goal) meets the arc.',
             ],
             tags: { gk: 'SHUFFLE' },
             shot: GOAL,
             timing: { move: 2.8 },
             moves: [
               { id: 's1', to: [16, 16] },
-              { id: 'gk', to: onLine([16, 18]), start: 0.15 },
+              { id: 'gk', to: onArc([16, 18]), start: 0.15 },
             ],
           },
           {
@@ -138,7 +154,6 @@
             timing: { move: 1.6 },
             moves: [
               { id: 's1', to: [18, 19], arrow: false },
-              { id: 'gk', to: onLine([18, 21], GK_Y - 0.6), start: 0.4, arrow: false },
             ],
           },
           {
@@ -155,7 +170,7 @@
         ],
         summary: [
           'Ready position: *on your toes, hands in front*.',
-          'Ball moves: *shuffle* to stay on the ball line.',
+          'Ball moves: *shuffle* along the arc, on the ball line.',
           '*Set* as the ball is struck.',
           'Body behind the ball, then *hold on*.',
         ],
@@ -164,7 +179,6 @@
       // ------------------------------------------------------------------
       Object.assign({}, common, {
         id: 'angles',
-        ages: { from: 10 },
         video: 'videos/set-position-2-angles.mp4',
         kicker: 'Clip 2 · 3 servers',
         title: 'Move With the Ball',
@@ -175,7 +189,7 @@
           'Move with it, then *set* for the shot.',
         ],
         players: [
-          { id: 'gk', team: 'k', label: 'GK', x: 50, y: GK_Y },
+          { id: 'gk', team: 'k', label: 'GK', x: onArc([50, 10])[0], y: onArc([50, 10])[1] },
           { id: 'sL', team: 'a', x: 12, y: 22 },
           { id: 'sC', team: 'a', x: 50, y: 10 },
           { id: 'sR', team: 'a', x: 88, y: 22 },
@@ -185,8 +199,8 @@
           {
             title: 'BALL IN THE MIDDLE',
             text: [
-              'Ball in the middle: keeper in the *middle of the goal*.',
-              'A step off the line, in the *ready position*.',
+              'Ball in the middle: keeper at the *top of the arc*.',
+              'Further out makes the goal look *smaller* to the shooter.',
             ],
             tags: { gk: 'READY' },
           },
@@ -195,25 +209,25 @@
             text: [
               'The ball goes left, so the *ball line* moves.',
               '*Shuffle* across while the ball is travelling.',
-              'Be in position before it arrives.',
+              'Ball wide: drop back along the arc, *closer to the near post*.',
             ],
             tags: { gk: 'SHUFFLE' },
             shot: GOAL,
             ball: { pass: 'sL', start: 0, end: 0.4 },
-            moves: [{ id: 'gk', to: onLine([12, 24]), start: 0.2, ease: 'out' }],
+            moves: [{ id: 'gk', to: onArc([12, 24]), start: 0.2, ease: 'out' }],
           },
           {
             title: 'SWITCH: ALL THE WAY ACROSS',
             text: [
               'A long pass to the other side.',
               'Keep *shuffling*: small, quick steps.',
-              'Same rule: *stay on the ball line*.',
+              'Same rule: where the *ball line meets the arc*.',
             ],
             tags: { gk: 'SHUFFLE' },
             shot: GOAL,
             timing: { move: 3 },
             ball: { pass: 'sR', start: 0, end: 0.5 },
-            moves: [{ id: 'gk', to: onLine([88, 24]), start: 0.2, ease: 'out' }],
+            moves: [{ id: 'gk', to: onArc([88, 24]), start: 0.2, ease: 'out' }],
           },
           {
             title: 'SET',
@@ -223,7 +237,7 @@
             ],
             tags: { gk: 'SET' },
             timing: { move: 1.4 },
-            moves: [{ id: 'sR', to: [86, 25], arrow: false }, { id: 'gk', to: onLine([86, 27], GK_Y - 0.6), start: 0.4, arrow: false }],
+            moves: [{ id: 'sR', to: [86, 25], arrow: false }],
           },
           {
             title: 'SAVE',
@@ -238,6 +252,7 @@
         ],
         summary: [
           'Every pass moves the *ball line*.',
+          'Ball central: *further out*. Ball wide: *nearer the post*.',
           'Move *while the ball travels*, not after.',
           'Small, quick *shuffle* steps.',
           '*Set*, then save.',
@@ -247,7 +262,6 @@
       // ------------------------------------------------------------------
       Object.assign({}, common, {
         id: 'set-again',
-        ages: { from: 10 },
         video: 'videos/set-position-3-set-again.mp4',
         kicker: 'Clip 3 · 2 servers',
         title: 'Save, Get Up, Set Again',
@@ -258,7 +272,7 @@
           'Move to the new ball line and *set again*.',
         ],
         players: [
-          { id: 'gk', team: 'k', label: 'GK', x: onLine([34, 16])[0], y: GK_Y },
+          { id: 'gk', team: 'k', label: 'GK', x: onArc([34, 16])[0], y: onArc([34, 16])[1] },
           { id: 's1', team: 'a', x: 34, y: 14 },
           { id: 's2', team: 'a', x: 70, y: 12, ball: true },
         ],
@@ -274,7 +288,7 @@
             tags: { gk: 'SAVE' },
             timing: { move: 2 },
             ball: { pass: 'gk', start: 0.05, end: 0.5 },
-            moves: [{ id: 'gk', to: [34, 71], start: 0.15, end: 0.5, ease: 'out' }],
+            moves: [{ id: 'gk', to: [36, 72], start: 0.15, end: 0.5, ease: 'out' }],
           },
           {
             title: "CAN'T HOLD IT? PUSH IT WIDE",
@@ -296,7 +310,7 @@
             tags: { gk: 'GET UP!' },
             shot: GOAL,
             ball: { give: 's2' },
-            moves: [{ id: 'gk', to: onLine([70, 14]), start: 0.05, ease: 'out' }],
+            moves: [{ id: 'gk', to: onArc([70, 14]), start: 0.05, ease: 'out' }],
           },
           {
             title: 'SECOND SAVE',

@@ -268,7 +268,7 @@
   }
 
   // goals: optional list of [x, 'top'|'bottom'] in pitch units (default: one centred goal at each end)
-  function drawPitch(ctx, goals, goalScale, marks) {
+  function drawPitch(ctx, goals, goalScale, marks, arc) {
     ctx.save();
     roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
     ctx.clip();
@@ -296,6 +296,15 @@
       ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
       ctx.restore();
     });
+    // positioning arc: clip.arc = { cx, cy, rx, ry } in pitch units, the half-ellipse in front of a goal at the bottom
+    if (arc) {
+      const [cx, cy] = toPx([arc.cx, arc.cy]);
+      const kx = (PITCH.w - 2 * PITCH.pad) / PITCH.uw, ky = (PITCH.h - 2 * PITCH.pad) / PITCH.uh;
+      ctx.save();
+      ctx.strokeStyle = C.accent; ctx.globalAlpha = 0.55; ctx.lineWidth = 3; ctx.setLineDash([10, 8]);
+      ctx.beginPath(); ctx.ellipse(cx, cy, arc.rx * kx, arc.ry * ky, 0, Math.PI, 2 * Math.PI); ctx.stroke();
+      ctx.restore();
+    }
     (goals || [[50, 'top'], [50, 'bottom']]).forEach(([gx, end]) => {
       drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2, goalScale);
     });
@@ -856,7 +865,7 @@
     ctx.fillRect(0, 0, W, H);
     if (bare) ctx.translate(BARE.m - PITCH.x, BARE.m - PITCH.y);
     else drawHeader(ctx, session, clip);
-    drawPitch(ctx, clip.goals, clip.goalScale, clip.marks);
+    drawPitch(ctx, clip.goals, clip.goalScale, clip.marks, clip.arc);
     // marked practice areas: clip.areas = [{ x, y, w, h }] in pitch units, cones at the corners
     (clip.areas || []).forEach(a => {
       const [x1, y1] = toPx([a.x, a.y]), [x2, y2] = toPx([a.x + a.w, a.y + a.h]);

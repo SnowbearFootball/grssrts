@@ -18,7 +18,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 |---|---|
 | Splash & Ripple (defending) | 1. The Basics (2 v 2) · 2. 3 v 3 · 3. Hold or Press? (3 v 3) · 4. Outnumbered (3 v 4) |
 | 5 v 2 Transfer Rondo (attacking, U14+) | One clip: keep it, transfer (wide / direct), defenders win it |
-| Set Position & Shot-Stopping (goalkeeping, U8+) | 1. Get Set · 2. Move With the Ball (3 servers) · 3. Save, Get Up, Set Again |
+| Set Position & Shot-Stopping (goalkeeping, U6+) | 1. Get Set · 2. Move With the Ball (3 servers) · 3. Save, Get Up, Set Again |
 
 ## Brand
 
