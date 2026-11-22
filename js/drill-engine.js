@@ -431,6 +431,7 @@
     'WON IT!': { get bg() { return C.accent; }, fg: '#fff' },
     IN: { bg: '#16351f', fg: '#fff' },
     UP: { bg: '#16351f', fg: '#fff' },
+    WAIT: { bg: '#6b7280', fg: '#fff' },
     BACK: { bg: '#16351f', fg: '#fff' },
     'FIRST TIME': { get bg() { return C.accent; }, fg: '#fff' },
     OUT: { bg: '#16351f', fg: '#fff' },
