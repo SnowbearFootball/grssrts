@@ -68,7 +68,7 @@
     thumb: 'assets/thumbs/long-range-move-onto-it.jpg',
     summary: 'A zoned shooting game: a central striker sets it back for both teams; midfielders and defenders move onto it and shoot from the edge of the box.',
     keyPhrase: 'Move onto it',
-    ages: { from: 10 },
+    ages: { from: 14 },
 
     cards: [
       {
@@ -284,7 +284,7 @@
     thumb: 'assets/thumbs/long-range-up-back-shot.jpg',
     summary: 'Ways to create a long-range shot: follow your pass for the set back, or a third-player run onto it. Score only from the middle zone.',
     keyPhrase: 'Up, back, shot',
-    ages: { from: 12 },
+    ages: { from: 14 },
 
     cards: [
       {
