@@ -69,30 +69,30 @@
   .hero .tagline em { color: var(--text); }
   .hero p { color: var(--sub); margin: 0; max-width: 46ch; font-size: 16px; }
   .hero-art { background: var(--forest); border-radius: 16px; padding: 14px; margin: 0; min-width: 0; }
-  .hero-art svg { display: block; width: 100%; height: auto; max-width: 100%; }
-  .hero-art figcaption { color: #c9d3c3; font-size: 13px; padding: 10px 4px 0; }
+  .hero-art { padding: 8px; }
+  .hero-art canvas { border-radius: 10px; }
+  /* the four beats of every clip, lit in time with the home-page clip */
+  .beats { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .beats button { width: 100%; height: 100%; display: flex; align-items: center; gap: 7px; text-align: left; cursor: pointer;
+    background: var(--paper); border: 1px solid var(--edge); border-radius: 999px; padding: 5px 10px 5px 5px; color: var(--muted); transition: background .25s, color .25s; }
+  .beats .bn { flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 11.5px; font-weight: 800;
+    background: var(--edge); color: var(--sub); }
+  .beats .bt { display: grid; line-height: 1.15; min-width: 0; }
+  .beats b { font-size: 13px; }
+  .beats small { font-size: 11px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .beats .done button { color: var(--sub); }
+  .beats .done .bn { background: var(--cream); color: var(--forest); }
+  .beats .on button { background: var(--forest); border-color: var(--forest); color: var(--cream); }
+  .beats .on .bn { background: var(--accent); color: #fff; }
+  .beats .on small { color: #c9d3c3; }
+  .beats button:hover { border-color: var(--accent); }
+  .usp { margin: 10px 2px 0 !important; font-size: 13.5px !important; color: var(--sub); }
+  .usp a { font-weight: 700; white-space: nowrap; }
   .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
   .btn { border-radius: 999px; padding: 11px 20px; font-weight: 700; font-size: 15px; cursor: pointer; border: 1px solid var(--edge); background: var(--paper); text-decoration: none; color: var(--text); display: inline-block; }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
   .btn:hover { border-color: var(--accent); }
   .btn[aria-disabled="true"] { opacity: .55; cursor: default; }
-  /* mini pitch animation: arrows draw on, then the ball is passed along them */
-  .mp-arrow { stroke-dasharray: 6 6; animation: mp-draw 7s infinite; }
-  .mp-head { animation: mp-head 7s infinite; }
-  .mp-ball { offset-path: path("M80 186 L172 122 L264 168 L283 118 L271 56"); offset-rotate: 0deg; animation: mp-ball 7s infinite; }
-  .mp-run { offset-path: path("M262 150 L270 74"); offset-rotate: 0deg; animation: mp-run 7s infinite; }
-  @keyframes mp-draw { 0% { stroke-dashoffset: 120; opacity: 0 } 5% { opacity: 1 } 28% { stroke-dashoffset: 0 } 80% { opacity: 1 } 92%, 100% { opacity: 0; stroke-dashoffset: 0 } }
-  @keyframes mp-head { 0%, 22% { opacity: 0 } 28%, 80% { opacity: 1 } 92%, 100% { opacity: 0 } }
-  /* ball: pass (33.8% of path), pass (64.9%), then pushed ahead of the runner as they dribble (100%) */
-  @keyframes mp-ball { 0% { offset-distance: 0%; opacity: 0 } 4% { opacity: 1 } 34% { offset-distance: 0% } 48%, 54% { offset-distance: 33.8% }
-    68%, 70% { offset-distance: 64.9% } 84% { offset-distance: 100% } 90% { opacity: 1 } 96%, 100% { offset-distance: 100%; opacity: 0 } }
-  @keyframes mp-run { 0% { offset-distance: 0%; opacity: 0 } 4% { opacity: 1 } 70% { offset-distance: 0% } 84% { offset-distance: 100% }
-    90% { opacity: 1 } 96%, 100% { offset-distance: 100%; opacity: 0 } }
-  @media (prefers-reduced-motion: reduce) {
-    .mp-arrow, .mp-head, .mp-ball, .mp-run { animation: none; }
-    .mp-ball { offset-distance: 33.8%; }
-  }
-
   .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; }
   .section-head h2 { margin: 0; font-size: 24px; }
   .section-head p { margin: 0; color: var(--muted); font-size: 14px; }
@@ -144,16 +144,37 @@
   .page-top svg { width: 44px; height: 44px; flex: none; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-top: 6px; }
   .page-top h1 { margin: 0 0 6px; font-size: clamp(30px, 5vw, 44px); }
   .page-top p { margin: 0; color: var(--sub); max-width: 60ch; }
-  .sessions-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-bottom: 30px; }
-  .scard { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; overflow: hidden; text-align: left; padding: 0;
-    cursor: pointer; display: grid; min-width: 0; }
-  .scard img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; max-width: 100%; }
-  .scard .meta { padding: 12px 14px 16px; display: grid; gap: 4px; }
-  .scard b { font-size: 18px; }
-  .scard p { margin: 0; color: var(--sub); font-size: 14px; }
-  .scard .tag { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
-  .scard ol { margin: 6px 0 0; padding-left: 20px; color: var(--muted); font-size: 13px; }
-  .scard:hover { border-color: var(--accent); }
+  /* finder: search, filter pills, compact rows */
+  .find-bar { display: flex; gap: 8px; align-items: center; margin: 0 0 10px; }
+  .find-bar input { flex: 1 1 auto; min-width: 0; background: var(--paper); border: 1px solid var(--edge); border-radius: 999px; padding: 9px 16px; font-size: 15px; }
+  .find-bar input::placeholder { color: var(--muted); }
+  .chip, .filter-btn { flex: none; background: var(--paper); border: 1px solid var(--edge); border-radius: 999px; padding: 5px 12px; font-weight: 600; font-size: 13.5px;
+    cursor: pointer; color: var(--sub); white-space: nowrap; }
+  .chip:hover, .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .chip[aria-pressed="true"], .filter-btn.active { background: var(--forest); border-color: var(--forest); color: var(--cream); }
+  .find-bar .chip, .filter-btn { padding: 9px 14px; }
+  .filter-btn { display: none; }
+  .filters { display: grid; gap: 8px; margin: 0 0 18px; }
+  .frow { display: flex; gap: 6px 10px; align-items: baseline; }
+  .flabel { flex: none; width: 64px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--accent-ink); }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chips .chip { padding: 4px 11px; font-size: 13px; }
+  .count-line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .count-line button { background: none; border: 0; padding: 0; color: var(--accent-ink); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 13px; }
+  .srows { list-style: none; margin: 0 0 30px; padding: 0; display: grid; gap: 8px; }
+  .srow { position: relative; background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; min-width: 0; }
+  .srow:hover { border-color: var(--accent); }
+  .srow > a { display: flex; gap: 12px; align-items: center; padding: 8px 48px 8px 8px; text-decoration: none; color: var(--text); min-width: 0; border-radius: 12px; }
+  .srow img { flex: none; width: 128px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; display: block; background: var(--forest); }
+  .srow .sm { display: grid; gap: 3px; min-width: 0; }
+  .srow b { font-size: 16.5px; line-height: 1.2; }
+  .srow .sum { color: var(--sub); font-size: 13.5px; line-height: 1.35; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+  .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+  .badges .b { display: inline-block; font-size: 12px; font-weight: 600; color: var(--sub); border: 1px solid var(--edge); border-radius: 6px; padding: 1px 7px; background: var(--bg); }
+  .star { position: absolute; top: 6px; right: 6px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: none; cursor: pointer;
+    font-size: 20px; line-height: 1; color: var(--muted); }
+  .star[aria-pressed="true"] { color: var(--accent); }
+  .star:hover { background: var(--bg); color: var(--accent); }
   .none { color: var(--sub); background: var(--paper); border: 1px dashed var(--edge); border-radius: 12px; padding: 22px; margin: 0 0 30px; }
   .soon { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 30px; padding: 0; list-style: none; }
   .soon li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; font-weight: 600; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
@@ -170,8 +191,6 @@
   .note { color: var(--muted); font-size: 13px; }
 
   /* age filter + badges */
-  .filter { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 16px; font-weight: 600; font-size: 14px; color: var(--sub); }
-  .filter select { background: var(--paper); border: 1px solid var(--edge); border-radius: 8px; padding: 7px 10px; font-weight: 600; }
   .age.type { background: var(--accent); }
   .age { display: inline-block; background: var(--forest); color: var(--cream); font-size: 12px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
 
@@ -262,7 +281,7 @@
   footer .copy { opacity: .7; font-size: 12px; }
 
   @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; }
+    .hero { grid-template-columns: 1fr; gap: 18px; }
     .mains, .areas { grid-template-columns: 1fr; }
     .offers { grid-template-columns: 1fr; }
     .progression { grid-template-columns: 1fr 1fr; }
@@ -288,6 +307,17 @@
     .more-list.open { display: flex; }
     .more-list a { font-size: 15px; padding: 9px 12px; border-radius: 9px; }
   }
+  @media (max-width: 640px) {
+    .beats { grid-template-columns: 1fr 1fr; }
+    .filter-btn { display: inline-block; }
+    .filters { display: none; }
+    .filters.open { display: grid; }
+    .frow { flex-direction: column; gap: 5px; }
+    .srow img { width: 92px; }
+    .srow > a { gap: 10px; padding-right: 40px; }
+    .srow b { font-size: 15.5px; }
+    .star { right: 2px; }
+  }
   @media (max-width: 360px) { .nav a { font-size: 13px; padding: 5px 6px; } }
   @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } .brand img { height: 32px; } }
 </style>
@@ -312,29 +342,18 @@
           <button class="btn" id="go-howto">How the clips work</button>
         </div>
       </div>
-      <figure class="hero-art">
-        <svg viewBox="0 0 340 240" role="img" aria-label="A mini pitch: arrows show two passes, then the ball moves along them">
-          <rect x="4" y="4" width="332" height="232" rx="12" fill="#eef0f2" stroke="#c9ced4" stroke-width="4"/>
-          <rect x="140" y="0" width="60" height="14" fill="#fff" stroke="#1f1f1f" stroke-width="2.5"/>
-          <rect x="140" y="226" width="60" height="14" fill="#fff" stroke="#1f1f1f" stroke-width="2.5"/>
-          <g fill="none" stroke-width="3" stroke-linecap="round">
-            <path class="mp-arrow" d="M92 158 L156 113" stroke="#2fbf7f"/>
-            <path class="mp-arrow" d="M186 112 L246 142" stroke="#2fbf7f"/>
-            <path class="mp-arrow" d="M263 132 L268 86" stroke="#2b2b2b"/>
-          </g>
-          <g class="mp-head"><path d="M163 108 l-12 1 6 9z" fill="#2fbf7f"/><path d="M253 146 l-6 -10 -5 9z" fill="#2fbf7f"/><path d="M269 78 l-6 10 10 1z" fill="#2b2b2b"/></g>
-          <g fill="#fff" stroke-width="5">
-            <circle cx="78" cy="168" r="13" stroke="#2fbf7f"/>
-            <circle cx="170" cy="104" r="13" stroke="#2fbf7f"/>
-            <circle class="mp-run" r="13" stroke="#2fbf7f"/>
-            <circle cx="120" cy="190" r="13" stroke="#3b9ae1"/>
-            <circle cx="214" cy="160" r="13" stroke="#3b9ae1"/>
-            <circle cx="232" cy="88" r="13" stroke="#3b9ae1"/>
-          </g>
-          <g class="mp-ball"><circle r="6.5" fill="#fff" stroke="#111" stroke-width="2"/><circle r="2.6" fill="#111"/></g>
-        </svg>
-        <figcaption>Arrows first, then the movement: that's how every clip works.</figcaption>
-      </figure>
+      <div class="hero-clip">
+        <figure class="hero-art">
+          <canvas id="hero-canvas" aria-label="Shoot and Recover: the shooter is labelled attacker, touches the post and becomes the defender"></canvas>
+        </figure>
+        <ol class="beats" id="beats" aria-label="How every clip works">
+          <li><button data-beat="0"><span class="bn">1</span><span class="bt"><b>Labels</b><small>who's who</small></span></button></li>
+          <li><button data-beat="1"><span class="bn">2</span><span class="bt"><b>Arrows</b><small>the plan</small></span></button></li>
+          <li><button data-beat="2"><span class="bn">3</span><span class="bt"><b>Movement</b><small>watch it happen</small></span></button></li>
+          <li><button data-beat="3"><span class="bn">4</span><span class="bt"><b>Outcome</b><small>understand why</small></span></button></li>
+        </ol>
+        <p class="usp">Every session as a short animated clip: see the plan, watch it happen, understand why. <a href="#shoot-and-recover" id="hero-link">See the full session&nbsp;›</a></p>
+      </div>
     </section>
 
     <div class="section-head" id="sections"><h2>Sessions</h2><p>Choose a section to see its sessions.</p></div>
@@ -350,10 +369,16 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><span aria-current="page" id="sec-crumb"></span></nav>
     <div class="page-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="sec-icon"></svg>
       <div><p class="eyebrow">Sessions</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
-    <div class="section-head"><h2 id="sec-count"></h2></div>
-    <label class="filter" for="age">My team's age
-      <select id="age"><option value="">Any age</option></select></label>
-    <div class="sessions-list" id="list"></div>
+    <div class="finder" id="finder">
+      <div class="find-bar">
+        <input type="search" id="q" placeholder="Search sessions" aria-label="Search sessions" autocomplete="off">
+        <button class="chip" id="saved-btn" aria-pressed="false">☆ Saved</button>
+        <button class="filter-btn" id="filter-btn" aria-expanded="false" aria-controls="filters">Filter ▾</button>
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="count-line"><span id="sec-count"></span><button id="clear-filters" hidden>Clear filters</button></div>
+    <ul class="srows" id="list"></ul>
     <p class="none" id="sec-none" hidden></p>
   </main>
 
@@ -428,6 +453,7 @@
 <script src="js/logo-data.js"></script>
 <script src="js/drill-engine.js"></script>
 <script src="js/categories.js"></script>
+<script src="js/home-clip.js"></script>
 <!-- Sessions: add one script tag per session file -->
 <script src="drills/splash-and-ripple.js"></script>
 <script src="drills/shoot-and-recover.js"></script>
@@ -628,7 +654,6 @@
   }
 
   // ---------- home ----------
-  const clipRange = s => s.clips.map(c => (c.kicker || '').split('·')[1]).filter(Boolean).map(x => x.trim());
   function renderHome() {
     $('mains').innerHTML = CATS.map(c => {
       const n = SESSIONS.filter(s => s.category === c.id).length;
@@ -639,43 +664,174 @@
         <span class="tag">${esc(a.tag)}</span><b>${esc(a.name)}</b><small>${esc(a.blurb)}</small></a>`).join('');
   }
 
-  // ---------- section pages ----------
-  function sessionCard(s) {
-    const formats = [...new Set(clipRange(s))];
-    return `<button class="scard" data-id="${esc(s.id)}">
-      ${s.thumb ? `<img src="${esc(s.thumb)}" alt="">` : ''}
-      <div class="meta"><span><span class="age">${ageLabel(s)}</span>${s.type ? ` <span class="age type">${esc(s.type)}</span>` : ''}</span><b>${esc(s.title)}</b>
-        <p>${esc(s.summary || s.subtitle || '')}</p>
-        <span class="tag">${plural(s.clips.length, 'clip')}${formats.length ? ' · ' + esc(formats.join(', ')) : ''}</span>
-        <ol>${s.clips.map(c => `<li>${esc(c.title)}</li>`).join('')}</ol>
-      </div></button>`;
-  }
-  let teamAge = '';
-  (function fillAges() {
-    for (let a = 7; a <= 16; a++) $('age').insertAdjacentHTML('beforeend', `<option value="${a}">U${a}</option>`);
+  // ---------- home-page clip: loops while on screen; the four beat pills follow each step ----------
+  const HC = window.HOME_CLIP;
+  const hero = (function () {
+    if (!HC) return { start() {}, stop() {} };
+    const heroSession = SESSIONS.find(x => x.id === HC.session) || session;
+    if (heroSession) $('hero-link').setAttribute('href', '#' + heroSession.id);
+    const hp = new DrillEngine.DrillPlayer($('hero-canvas'), heroSession, HC.clip, { scale: dpr, bare: true });
+    const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let on = false, paused = reduce, visible = true, lastT = 0, shown = '';
+    const pills = [...document.querySelectorAll('#beats li')];
+    function lightPills() {
+      const { beat } = hp.beatAt();
+      const key = String(beat);
+      if (key === shown) return;
+      shown = key;
+      pills.forEach((li, i) => {
+        li.classList.toggle('on', i === beat);
+        li.classList.toggle('done', i < beat);
+        li.querySelector('.bn').textContent = i < beat ? '✓' : String(i + 1);
+        li.querySelector('button').setAttribute('aria-current', i === beat ? 'step' : 'false');
+      });
+    }
+    function frame(now) {
+      if (!on) return;
+      const dt = Math.min(0.1, (now - lastT) / 1000); lastT = now;
+      if (!paused && visible) {
+        let t = hp.t + dt;
+        if (t >= hp.duration) t = 0;
+        hp.renderAt(t);
+        lightPills();
+      }
+      requestAnimationFrame(frame);
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe($('hero-canvas'));
+    }
+    // reduced motion: stand still on the first step with its arrows drawn, until tapped
+    if (reduce) hp.renderAt(hp.beatStart(0, 2) - 0.01);
+    lightPills();
+    $('hero-canvas').onclick = () => { paused = !paused; };
+    $('beats').addEventListener('click', e => {
+      const b = e.target.closest('[data-beat]'); if (!b) return;
+      const { step } = hp.beatAt();
+      hp.renderAt(hp.beatStart(step, +b.dataset.beat) + 0.01);
+      shown = ''; lightPills();
+      paused = false;
+    });
+    return {
+      start() { if (on) return; on = true; lastT = performance.now(); requestAnimationFrame(frame); },
+      stop() { on = false; },
+      draw() { hp.draw(); },
+    };
   })();
+
+  // ---------- section pages: search, filter pills, compact rows ----------
+  const squad = s => s.squad || null;   // [min, max] players at training
+  const squadLabel = s => { const q = squad(s); return q ? (q[0] === q[1] ? `${q[0]} players` : `${q[0]}–${q[1]} players`) : ''; };
+  const sessionLen = s => s.clips.reduce((a, c) => a + clipLen(c), 0);
+  const AGES = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+  const PLAYER_BANDS = [{ id: '1-4', label: '1–4', min: 1, max: 4 }, { id: '5-8', label: '5–8', min: 5, max: 8 },
+    { id: '9-12', label: '9–12', min: 9, max: 12 }, { id: '13+', label: '13+', min: 13, max: 99 }];
+  const TYPE_ORDER = ['Technical', 'Tactical', 'Rondo', 'Game'];
+  const F = { age: '', type: '', players: '', saved: false, q: '' };
+
+  // favourites, saved on this phone or computer only
+  const SAVE_KEY = 'grssrts:saved';
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(SAVE_KEY) || '[]'); if (!Array.isArray(saved)) saved = []; } catch (e) { saved = []; }
+  const isSaved = id => saved.includes(id);
+  function toggleSaved(id) {
+    saved = isSaved(id) ? saved.filter(x => x !== id) : saved.concat(id);
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(saved)); } catch (e) { /* private window: keeps working for this visit */ }
+  }
+
+  // everything a coach might search for: titles, summary, key words, coaching points, clip and step titles
+  const hayCache = {};
+  function hay(s) {
+    if (!hayCache[s.id]) {
+      const bits = [s.title, s.subtitle, s.summary, s.keyPhrase, s.type,
+        ...(s.keywords || []).flatMap(k => [k.word, k.meaning]),
+        ...(s.cards || []).flatMap(c => [c.title, c.lead, ...(c.columns || []).flatMap(col => [col.heading, ...(col.items || [])])]),
+        ...s.clips.flatMap(c => [c.title, c.kicker, ...(c.steps || []).map(st => st.title)])];
+      hayCache[s.id] = bits.filter(Boolean).join(' ').replace(/\*/g, '').toLowerCase();
+    }
+    return hayCache[s.id];
+  }
+  function matches(s) {
+    if (F.age && !(minAge(s) <= +F.age && +F.age <= maxAge(s))) return false;
+    if (F.type && s.type !== F.type) return false;
+    if (F.players) {
+      const b = PLAYER_BANDS.find(x => x.id === F.players), q = squad(s);
+      if (!q || q[1] < b.min || q[0] > b.max) return false;
+    }
+    if (F.saved && !isSaved(s.id)) return false;
+    const words = F.q.toLowerCase().split(/\s+/).filter(Boolean);
+    return words.every(w => hay(s).includes(w));
+  }
+  const activeCount = () => ['age', 'type', 'players'].filter(k => F[k]).length;
+
+  function sessionRow(s) {
+    const len = sessionLen(s);
+    return `<li class="srow"><a href="#${esc(s.id)}">
+        ${s.thumb ? `<img src="${esc(s.thumb)}" alt="" loading="lazy">` : ''}
+        <span class="sm"><b>${esc(s.title)}</b>
+          <span class="sum">${esc(s.summary || s.subtitle || '')}</span>
+          <span class="badges"><span class="age">${ageLabel(s)}</span>${s.type ? `<span class="age type">${esc(s.type)}</span>` : ''}${squad(s) ? `<span class="b">${squadLabel(s)}</span>` : ''}<span class="b">${plural(s.clips.length, 'clip')} · ${Math.max(1, Math.round(len / 60))} min</span></span>
+        </span></a>
+      <button class="star" data-save="${esc(s.id)}" aria-pressed="${isSaved(s.id)}" aria-label="Save ${esc(s.title)}" title="${isSaved(s.id) ? 'Saved' : 'Save'}">${isSaved(s.id) ? '★' : '☆'}</button></li>`;
+  }
+
+  function renderFilters(all) {
+    const types = TYPE_ORDER.filter(t => all.some(s => s.type === t))
+      .concat([...new Set(all.map(s => s.type).filter(t => t && !TYPE_ORDER.includes(t)))]);
+    const bands = PLAYER_BANDS.filter(b => all.some(s => squad(s) && squad(s)[1] >= b.min && squad(s)[0] <= b.max));
+    const row = (key, label, opts) => opts.length < 2 && !F[key] ? '' : `<div class="frow"><span class="flabel">${label}</span><div class="chips" data-f="${key}">
+        <button class="chip" data-v="" aria-pressed="${!F[key]}">Any</button>${opts.map(([v, l]) => `<button class="chip" data-v="${esc(v)}" aria-pressed="${F[key] === String(v)}">${esc(l)}</button>`).join('')}</div></div>`;
+    $('filters').innerHTML = row('age', 'Age', AGES.map(a => [a, 'U' + a])) + row('type', 'Type', types.map(t => [t, t])) + row('players', 'Players', bands.map(b => [b.id, b.label]));
+    const n = activeCount();
+    $('filter-btn').textContent = n ? `Filter (${n}) ▾` : 'Filter ▾';
+    $('filter-btn').classList.toggle('active', !!n);
+  }
+
+  let currentCat = null;
   function renderSection(cat) {
+    currentCat = cat;
     const all = SESSIONS.filter(s => s.category === cat.id);
-    const list = all.filter(s => !teamAge || (minAge(s) <= +teamAge && +teamAge <= maxAge(s)));
-    $('age').value = teamAge;
-    $('age').parentElement.hidden = !all.length;
+    const list = all.filter(matches);
+    $('finder').hidden = !all.length;
     $('sec-crumb').textContent = cat.name;
     $('sec-icon').innerHTML = cat.icon;
     $('sec-title').textContent = cat.name;
     $('sec-blurb').textContent = cat.blurb;
-    $('sec-count').textContent = list.length ? plural(list.length, 'session') : 'Sessions';
+    if ($('q').value !== F.q) $('q').value = F.q;
+    $('saved-btn').setAttribute('aria-pressed', String(F.saved));
+    $('saved-btn').textContent = F.saved ? '★ Saved' : '☆ Saved';
+    renderFilters(all);
+    const filtered = list.length !== all.length;
+    $('sec-count').textContent = !all.length ? '' : filtered ? `${list.length} of ${plural(all.length, 'session')}` : plural(all.length, 'session');
+    $('clear-filters').hidden = !filtered;
     $('list').hidden = !list.length;
-    $('list').innerHTML = list.map(sessionCard).join('');
+    $('list').innerHTML = list.map(sessionRow).join('');
     $('sec-none').hidden = !!list.length;
-    $('sec-none').innerHTML = all.length
-      ? `No ${esc(cat.name.toLowerCase())} sessions for U${esc(teamAge)} yet. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`
-      : `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`;
+    $('sec-none').innerHTML = !all.length
+      ? `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`
+      : F.saved && !F.q && !activeCount()
+        ? `You haven't saved any ${esc(cat.name.toLowerCase())} sessions yet. Tap ☆ on a session to keep it here.`
+        : `No ${esc(cat.name.toLowerCase())} sessions match that yet. Try fewer filters, or <a href="#dugout">suggest a topic in The Dugout</a>.`;
   }
-  $('age').onchange = e => {
-    teamAge = e.target.value;
-    const cat = CATS.find(c => c.id === location.hash.replace('#', ''));
-    if (cat) renderSection(cat);
-  }
+  const rerender = () => { if (currentCat && !$('section').hidden) renderSection(currentCat); };
+  $('filters').addEventListener('click', e => {
+    const b = e.target.closest('[data-v]'); if (!b) return;
+    const key = b.parentElement.dataset.f;
+    F[key] = F[key] === b.dataset.v ? '' : b.dataset.v;
+    rerender();
+  });
+  $('q').addEventListener('input', e => { F.q = e.target.value; rerender(); });
+  $('saved-btn').onclick = () => { F.saved = !F.saved; rerender(); };
+  $('filter-btn').onclick = () => {
+    const open = !$('filters').classList.contains('open');
+    $('filters').classList.toggle('open', open);
+    $('filter-btn').setAttribute('aria-expanded', String(open));
+  };
+  $('clear-filters').onclick = () => { Object.assign(F, { age: '', type: '', players: '', saved: false, q: '' }); rerender(); };
+  $('list').addEventListener('click', e => {
+    const b = e.target.closest('[data-save]'); if (!b) return;
+    toggleSaved(b.dataset.save);
+    rerender();
+  });
 
   // ---------- area pages ----------
   const linkBtn = (url, label, primary) => url
@@ -708,10 +864,6 @@
     $('area-body').innerHTML = (AREA_BODY[a.id] || (() => ''))(a);
   }
 
-  document.addEventListener('click', e => {
-    const card = e.target.closest('[data-id]');
-    if (card) location.hash = card.dataset.id;
-  });
   $('go-sections').onclick = () => $('sections').scrollIntoView({ behavior: 'smooth' });
   const dlg = $('howto-dialog');
   $('go-howto').onclick = () => { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); };
@@ -739,7 +891,7 @@
 
   // ---------- routing: '' home · #<section> · #<area> · #<session> ----------
   const VIEWS = ['home', 'section', 'area', 'session'];
-  function show(view) { VIEWS.forEach(v => { $(v).hidden = v !== view; }); }
+  function show(view) { VIEWS.forEach(v => { $(v).hidden = v !== view; }); view === 'home' ? hero.start() : hero.stop(); }
   function route() {
     const id = location.hash.replace('#', '');
     const s = SESSIONS.find(x => x.id === id);
@@ -774,7 +926,7 @@
   window.addEventListener('resize', fitAudience);
   document.querySelector('.brand img').addEventListener('load', fitAudience);
   fitAudience();
-  if (document.fonts) document.fonts.ready.then(() => { player.draw(); fitAudience(); });
+  if (document.fonts) document.fonts.ready.then(() => { player.draw(); if (hero.draw) hero.draw(); fitAudience(); });
 })();
 </script>
 </body>

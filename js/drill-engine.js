@@ -397,6 +397,8 @@
     SHOOT: { get bg() { return C.accent; }, fg: '#fff' },
     DEFEND: { bg: '#16351f', fg: '#fff' },
     'GO!': { get bg() { return C.accent; }, fg: '#fff' },
+    ATTACKER: { get bg() { return C.accent; }, fg: '#fff' },
+    DEFENDER: { bg: '#16351f', fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
@@ -738,6 +740,19 @@
     drawLogo(ctx, 1240, y + h / 2, LOGO_H, 'right');
   }
 
+  function drawBareStrip(ctx, cp, t) {
+    const lw = logoWidth(18), y = BARE_H - BARE.strip / 2, x = BARE.m, w = BARE_W - 2 * BARE.m - lw - 20, h = 5;
+    ctx.save();
+    ctx.fillStyle = C.track;
+    roundRect(ctx, x, y - h / 2, w, h, 2.5); ctx.fill();
+    ctx.fillStyle = C.accent;
+    roundRect(ctx, x, y - h / 2, Math.max(5, w * clamp(t / cp.duration)), h, 2.5); ctx.fill();
+    ctx.fillStyle = C.bg;
+    cp.steps.forEach(s => ctx.fillRect(x + w * (s.start / cp.duration) - 1, y - h / 2, 2, h));
+    ctx.restore();
+    drawLogo(ctx, BARE_W - BARE.m, y, 18, 'right');
+  }
+
   // ---------- GRSS | RTS logo (outlines from js/logo-data.js) ----------
   const LOGO_H = 22;
   const LOGO = () => global.GRSS_LOGO;
@@ -774,8 +789,47 @@
     ctx.restore();
   }
 
+  // Where are we at time t? { step, phase, pk (0..1 within the phase), u (0..1 of the move) }
+  function locate(cp, t) {
+    let step = null, phase = 'intro', u = 0, pk = 0;
+    if (t >= cp.outroStart) {
+      phase = 'outro';
+      step = cp.steps[cp.steps.length - 1];
+      u = 1;
+    } else if (t >= cp.timing.intro) {
+      step = cp.steps.find(s => t >= s.start && t < s.start + s.total) || cp.steps[cp.steps.length - 1];
+      const local = t - step.start;
+      const P = step.phases;
+      const marks = [
+        ['stepIn', P.stepIn], ['arrows', P.arrows], ['read', P.read], ['move', P.move], ['hold', P.hold],
+      ];
+      let acc = 0;
+      for (const [name, dur] of marks) {
+        if (local < acc + dur || name === 'hold') { phase = name; pk = dur ? clamp((local - acc) / dur) : 1; break; }
+        acc += dur;
+      }
+      u = phase === 'move' ? pk : phase === 'hold' ? 1 : 0;
+    } else {
+      step = cp.steps[0];
+    }
+    return { step, phase, pk, u };
+  }
+
+  // The four beats of every step: 0 labels (who's who) · 1 arrows (the plan) · 2 movement · 3 outcome
+  const BEAT_OF = { intro: 0, stepIn: 0, arrows: 1, read: 2, move: 2, hold: 3, outro: 3 };
+  // start time of a beat within a step
+  function beatStart(step, beat) {
+    const P = step.phases;
+    return step.start + [0, P.stepIn, P.stepIn + P.arrows, P.stepIn + P.arrows + P.read + P.move][beat];
+  }
+
+  // Bare mode: just the pitch, with a slim strip underneath for the progress bar and the logo
+  const BARE = { m: 12, gap: 20, strip: 34 };
+  const BARE_W = PITCH.w + 2 * BARE.m, BARE_H = PITCH.h + BARE.m + BARE.gap + BARE.strip;
+
   // ---------- main frame render ----------
-  function render(ctx, cp, session, t) {
+  function render(ctx, cp, session, t, opts) {
+    const bare = !!(opts && opts.bare);
     setPlayerScale(cp.clip.playerScale);
     const clip = cp.clip;
     t = clamp(t, 0, cp.duration);
@@ -783,7 +837,8 @@
     ctx.save();
     ctx.fillStyle = C.bg;
     ctx.fillRect(0, 0, W, H);
-    drawHeader(ctx, session, clip);
+    if (bare) ctx.translate(BARE.m - PITCH.x, BARE.m - PITCH.y);
+    else drawHeader(ctx, session, clip);
     drawPitch(ctx, clip.goals);
     // marked practice areas: clip.areas = [{ x, y, w, h }] in pitch units, cones at the corners
     (clip.areas || []).forEach(a => {
@@ -802,28 +857,7 @@
     });
 
     // Which segment are we in?
-    let step = null, local = 0, phase = 'intro', u = 0, pk = 0;
-    if (t >= cp.outroStart) {
-      phase = 'outro';
-      step = cp.steps[cp.steps.length - 1];
-      u = 1;
-    } else if (t >= cp.timing.intro) {
-      step = cp.steps.find(s => t >= s.start && t < s.start + s.total) || cp.steps[cp.steps.length - 1];
-      local = t - step.start;
-      const P = step.phases;
-      const marks = [
-        ['stepIn', P.stepIn], ['arrows', P.arrows], ['read', P.read], ['move', P.move], ['hold', P.hold],
-      ];
-      let acc = 0;
-      for (const [name, dur] of marks) {
-        if (local < acc + dur || name === 'hold') { phase = name; pk = dur ? clamp((local - acc) / dur) : 1; break; }
-        acc += dur;
-      }
-      u = phase === 'move' ? pk : phase === 'hold' ? 1 : 0;
-    } else {
-      step = cp.steps[0];
-      u = 0;
-    }
+    const { step, phase, pk, u } = locate(cp, t);
 
     const def = step.def;
     const showStepFx = phase !== 'intro' && phase !== 'outro';
@@ -920,6 +954,20 @@
       if (tags[id] === 'SPLASH') drawSplashRings(ctx, p, time, fxAlpha);
       if (tags[id] === 'DANGER') drawDanger(ctx, p, time, fxAlpha);
     });
+    // clip.tagFlash: a quick ring when a player's label changes from the step before (e.g. ATTACKER → DEFENDER)
+    const prevTags = clip.tagFlash && step.index > 0 ? cp.steps[step.index - 1].def.tags || {} : {};
+    if (clip.tagFlash && (phase === 'stepIn' || phase === 'arrows')) {
+      const k = clamp((t - step.start) / 0.9);
+      Object.keys(tags).forEach(id => {
+        if (!prevTags[id] || prevTags[id] === tags[id] || k >= 1) return;
+        const [x, y] = toPx(playerPos(step, id, u));
+        ctx.save();
+        ctx.globalAlpha = 1 - k;
+        ctx.strokeStyle = C.accent; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(x, y, R_PX + 4 + k * 26, 0, Math.PI * 2); ctx.stroke();
+        ctx.restore();
+      });
+    }
 
     // players
     // balls waiting at players' feet, and finished balls (e.g. in the net)
@@ -930,7 +978,24 @@
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
     // tags on top
-    Object.keys(tags).forEach(id => drawTag(ctx, playerPos(step, id, u), tags[id], fxAlpha, cp.team[id] === 'd'));
+    // labels sit below defenders, above everyone else; clip.tagPlace 'auto': above, unless near the top edge
+    Object.keys(tags).forEach(id => {
+      const p = playerPos(step, id, u);
+      const kept = prevTags[id] === tags[id];   // with tagFlash, an unchanged label stays put instead of fading in again
+      drawTag(ctx, p, tags[id], kept ? 1 : fxAlpha, clip.tagPlace === 'auto' ? p[1] < 10 : cp.team[id] === 'd');
+    });
+
+    if (bare) {
+      // fade in from and out to the forest frame, so the loop restarts cleanly
+      const fade = Math.max(1 - clamp(t / 0.5), clamp((t - (cp.duration - 0.5)) / 0.5));
+      if (fade > 0) {
+        ctx.save(); ctx.globalAlpha = fade; ctx.fillStyle = C.bg;
+        ctx.fillRect(PITCH.x - BARE.m, PITCH.y - BARE.m, BARE_W, PITCH.h + BARE.m + BARE.gap); ctx.restore();
+      }
+      ctx.restore();
+      drawBareStrip(ctx, cp, t);
+      return;
+    }
 
     // intro overlay on the pitch
     if (phase === 'intro') {
@@ -984,8 +1049,9 @@
       this.canvas = canvas;
       this.session = session;
       this.scale = opts.scale || 1;
-      canvas.width = W * this.scale;
-      canvas.height = H * this.scale;
+      this.bare = !!opts.bare;
+      canvas.width = (this.bare ? BARE_W : W) * this.scale;
+      canvas.height = (this.bare ? BARE_H : H) * this.scale;
       this.ctx = canvas.getContext('2d');
       this.load(clip);
     }
@@ -998,10 +1064,13 @@
     }
     // start time of each step (useful for "next step" buttons)
     get stepStarts() { return this.cp.steps.map(s => s.start); }
+    // which of the four beats (0 labels · 1 arrows · 2 movement · 3 outcome) is showing, and in which step
+    beatAt(t = this.t) { const L = locate(this.cp, t); return { step: L.step.index, beat: BEAT_OF[L.phase], phase: L.phase }; }
+    beatStart(stepIndex, beat) { return beatStart(this.cp.steps[stepIndex], beat); }
     renderAt(t) { this.t = t; this.draw(); }
     draw() {
       this.ctx.setTransform(this.scale, 0, 0, this.scale, 0, 0);
-      render(this.ctx, this.cp, this.session, this.t);
+      render(this.ctx, this.cp, this.session, this.t, { bare: this.bare });
     }
   }
 

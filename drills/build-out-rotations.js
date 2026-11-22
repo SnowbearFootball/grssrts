@@ -39,6 +39,7 @@
     subtitle: 'Tactical',
     type: 'Tactical',
     category: 'attacking',
+    squad: [16, 21],
     thumb: 'assets/thumbs/build-out-rotations.jpg',
     summary: 'Two ways to rotate players when building from the back, so the opponents don\'t know who to press.',
     keyPhrase: 'Fill the space',
