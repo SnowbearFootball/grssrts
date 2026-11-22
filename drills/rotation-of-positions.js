@@ -152,13 +152,23 @@
             moves: [{ id: 'fb1', to: [22, 5] }],
           },
           {
-            title: 'SIX PASSES: INVITE PRESSURE',
-            text: ['Make *6 passes* before releasing a FB.', 'Draw the press in.'],
+            title: 'PASSES 1, 2, 3: INVITE PRESSURE',
+            text: ['Make *6 passes* before releasing a FB.', 'Draw the press in: *1, 2, 3*...'],
             timing: { move: 4 },
             passes: [{ to: 'cb2' }, { to: 'cm1' }, { to: 'cb1' }],
             moves: [
-              { id: 'r9', to: [56, 40], start: 0.2, arrow: false }, { id: 'r3', to: [58, 56], start: 0.1, arrow: false },
-              { id: 'r1', to: [56, 17], start: 0.6, arrow: false }, { id: 'r2', to: [48, 30], start: 0.4, arrow: false },
+              { id: 'r9', to: [56, 42], start: 0.2, arrow: false }, { id: 'r3', to: [59, 54], start: 0.1, arrow: false },
+              { id: 'r2', to: [50, 32], start: 0.4, arrow: false },
+            ],
+          },
+          {
+            title: 'PASSES 4, 5, 6',
+            text: ['...*4, 5, 6*.', 'Keep drawing them in.'],
+            timing: { move: 4 },
+            passes: [{ to: 'gk' }, { to: 'cb2' }, { to: 'cb1' }],
+            moves: [
+              { id: 'r9', to: [61, 42], start: 0.1, arrow: false }, { id: 'r3', to: [62, 53], start: 0.2, arrow: false },
+              { id: 'r1', to: [57, 18], start: 0.55, arrow: false }, { id: 'r2', to: [53, 30], start: 0.5, arrow: false },
             ],
           },
           {
@@ -219,13 +229,22 @@
             moves: [{ id: 'fb2', to: [22, 68] }],
           },
           {
-            title: 'SIX PASSES: INVITE PRESSURE',
-            text: ['Keep it: *6 passes*.', 'Draw the press across.'],
+            title: 'PASSES 1, 2, 3: INVITE PRESSURE',
+            text: ['Keep it: *6 passes*.', 'Draw the press across: *1, 2, 3*...'],
+            timing: { move: 4 },
+            passes: [{ to: 'cb1' }, { to: 'cb2' }, { to: 'gk' }],
+            moves: [
+              { id: 'r9', to: [51, 40], start: 0.1, arrow: false }, { id: 'r1', to: [50, 22], start: 0.1, arrow: false },
+            ],
+          },
+          {
+            title: 'PASSES 4, 5, 6',
+            text: ['...*4, 5, 6*.', 'The press shifts across.'],
             timing: { move: 4 },
             passes: [{ to: 'cb1' }, { to: 'cb2' }, { to: 'cm2' }],
             moves: [
-              { id: 'r9', to: [55, 44], start: 0.1, arrow: false }, { id: 'r1', to: [52, 24], start: 0.1, arrow: false },
-              { id: 'r3', to: [50, 62], start: 0.5, arrow: false },
+              { id: 'r1', to: [53, 27], start: 0.1, arrow: false }, { id: 'r9', to: [51, 46], start: 0.3, arrow: false },
+              { id: 'r3', to: [54, 57], start: 0.55, arrow: false },
             ],
           },
           {
