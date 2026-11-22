@@ -503,11 +503,11 @@
 <!-- Sessions: add one script tag per session file -->
 <script src="drills/splash-and-ripple.js"></script>
 <script src="drills/shoot-and-recover.js"></script>
-<script src="drills/build-out-rotations.js"></script>
 <script src="drills/transfer-rondo.js"></script>
 <script src="drills/set-position.js"></script>
 <script src="drills/ball-mastery.js"></script>
 <script src="drills/long-range-shooting.js"></script>
+<script src="drills/rotation-of-positions.js"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
@@ -988,7 +988,8 @@
   function show(view) { VIEWS.forEach(v => { $(v).hidden = v !== view; }); view === 'home' ? hero.start() : hero.stop(); }
   function route() {
     const id = location.hash.replace('#', '');
-    const s = SESSIONS.find(x => x.id === id);
+    const s = SESSIONS.find(x => x.id === id || (x.aliases || []).includes(id));
+    if (s && s.id !== id) { location.replace('#' + s.id); return; }   // an old address for a replaced session
     const cat = CATS.find(c => c.id === id);
     const area = AREAS.find(a => a.id === id);
     if (s) {

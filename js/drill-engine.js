@@ -270,12 +270,12 @@
   }
 
   // goals: optional list of [x, 'top'|'bottom'] in pitch units (default: one centred goal at each end)
-  function drawPitch(ctx, goals, goalScale, marks, arc) {
+  function drawPitch(ctx, goals, goalScale, marks, arc, plain) {
     ctx.save();
     roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
     ctx.clip();
     fillStripes(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, C.pitch, C.pitchStripe, PITCH.h / 10, false);
-    ctx.fillStyle = C.pitchDot;
+    ctx.fillStyle = plain ? 'rgba(0,0,0,0)' : C.pitchDot;   // clip.plain: no dots
     for (let x = PITCH.x + 10; x < PITCH.x + PITCH.w; x += 18) {
       for (let y = PITCH.y + 10; y < PITCH.y + PITCH.h; y += 18) {
         ctx.fillRect(x, y, 2, 2);
@@ -432,6 +432,12 @@
     IN: { bg: '#16351f', fg: '#fff' },
     UP: { bg: '#16351f', fg: '#fff' },
     WAIT: { bg: '#6b7280', fg: '#fff' },
+    DROP: { get bg() { return C.accent; }, fg: '#fff' },
+    SPLIT: { bg: '#16351f', fg: '#fff' },
+    'PUSH ON': { bg: '#16351f', fg: '#fff' },
+    'INSIDE': { bg: '#16351f', fg: '#fff' },
+    'FREE MAN': { get bg() { return C.accent; }, fg: '#fff' },
+    SCORE: { get bg() { return C.accent; }, fg: '#fff' },
     BACK: { bg: '#16351f', fg: '#fff' },
     'FIRST TIME': { get bg() { return C.accent; }, fg: '#fff' },
     OUT: { bg: '#16351f', fg: '#fff' },
@@ -793,7 +799,7 @@
   }
 
   function drawBareStrip(ctx, cp, t) {
-    const lw = logoWidth(18), y = BARE_H - BARE.strip / 2, x = BARE.m, w = BARE_W - 2 * BARE.m - lw - 20, h = 5;
+    const lw = logoWidth(18), y = bareH(cp.clip) - BARE.strip / 2, x = BARE.m, w = BARE_W - 2 * BARE.m - lw - 20, h = 5;
     ctx.save();
     ctx.fillStyle = C.track;
     roundRect(ctx, x, y - h / 2, w, h, 2.5); ctx.fill();
@@ -1108,7 +1114,8 @@
 
   // Bare mode: just the pitch, with a slim strip underneath for the progress bar and the logo
   const BARE = { m: 12, gap: 20, strip: 34 };
-  const BARE_W = PITCH.w + 2 * BARE.m, BARE_H = PITCH.h + BARE.m + BARE.gap + BARE.strip;
+  const BARE_W = PITCH.w + 2 * BARE.m;
+  const bareH = clip => (clip.pitchH || PITCH.h) + BARE.m + BARE.gap + BARE.strip;   // clip.pitchH: a shorter pitch
 
   function drawDim(ctx, d) {
     const [x1, y1] = toPx(d.a), [x2, y2] = toPx(d.b);
@@ -1127,7 +1134,13 @@
   }
 
   // ---------- main frame render ----------
+  // clip.pitchH (px, default 600) draws a shorter pitch; player positions keep the same 0..75 units
   function render(ctx, cp, session, t, opts) {
+    const h = PITCH.h;
+    if (cp.clip.pitchH) PITCH.h = cp.clip.pitchH;
+    try { renderFrame(ctx, cp, session, t, opts); } finally { PITCH.h = h; }
+  }
+  function renderFrame(ctx, cp, session, t, opts) {
     const bare = !!(opts && opts.bare);
     setPlayerScale(cp.clip.playerScale);
     const clip = cp.clip;
@@ -1138,7 +1151,20 @@
     ctx.fillRect(0, 0, W, H);
     if (bare) ctx.translate(BARE.m - PITCH.x, BARE.m - PITCH.y);
     else drawHeader(ctx, session, clip);
-    drawPitch(ctx, cp.solo ? [] : clip.goals, clip.goalScale, clip.marks, clip.arc);
+    drawPitch(ctx, cp.solo ? [] : clip.goals, clip.goalScale, clip.marks, clip.arc, clip.plain);
+    // a line of cones: clip.cones = [{ at: [x, y], color }]
+    (clip.cones || []).forEach(c => {
+      const [cx, cy] = toPx(c.at);
+      ctx.save(); ctx.beginPath(); ctx.moveTo(cx, cy - 8); ctx.lineTo(cx + 7, cy + 6); ctx.lineTo(cx - 7, cy + 6); ctx.closePath();
+      ctx.fillStyle = c.color || '#e5b52b'; ctx.fill(); ctx.restore();
+    });
+    // small goals anywhere on the pitch: clip.miniGoals = [{ at: [x, y], angle }] (angle in degrees, 0 = facing down the screen)
+    (clip.miniGoals || []).forEach(g => {
+      const [gx, gy] = toPx(g.at);
+      ctx.save(); ctx.translate(gx, gy); ctx.rotate((g.angle || 0) * Math.PI / 180);
+      drawGoal(ctx, 0, 0, g.scale || 0.75);
+      ctx.restore();
+    });
     // measurements: clip.dims = [{ a: [x, y], b: [x, y], label: '20 yds' }] in pitch units
     (clip.dims || []).forEach(d => drawDim(ctx, d));
     // Which segment are we in?
@@ -1150,9 +1176,9 @@
     (clip.areas || []).forEach(a => {
       const [x1, y1] = toPx([a.x, a.y]), [x2, y2] = toPx([a.x + a.w, a.y + a.h]);
       ctx.save();
-      ctx.fillStyle = 'rgba(22,53,31,0.06)';
+      ctx.fillStyle = a.fill || 'rgba(22,53,31,0.06)';   // e.g. fill: 'rgba(240,205,110,0.4)' for a coloured box
       ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
-      ctx.strokeStyle = 'rgba(22,53,31,0.25)'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 6]);
+      ctx.strokeStyle = 'rgba(22,53,31,0.25)'; ctx.lineWidth = 1.5; ctx.setLineDash(a.fill ? [] : [6, 6]);
       ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
       ctx.setLineDash([]);
       [[x1, y1], [x2, y1], [x1, y2], [x2, y2]].forEach(([cx, cy]) => {
@@ -1277,7 +1303,9 @@
     const st = phase === 'outro' ? cp.finalState : step.startState;
     (st.spent || []).forEach(b => drawBall(ctx, b));
     clip.players.forEach(p => { if (p.ball && !(st.used || []).includes(p.id)) drawBall(ctx, attached(cp, step, p.id, u)); });
-    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, p.dim ? 0.4 : 1, p.label, teamColor(cp, p.team)));
+    // faded players (p.dim); a step can change it from then on with dim: { id: true|false } (e.g. players rotating in)
+    const dimOf = p => cp.steps.reduce((d, st) => (st.index <= step.index && st.def.dim && p.id in st.def.dim ? st.def.dim[p.id] : d), !!p.dim);
+    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, dimOf(p) ? 0.4 : 1, p.label, teamColor(cp, p.team)));
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
     // tags on top
@@ -1356,7 +1384,7 @@
       this.scale = opts.scale || 1;
       this.bare = !!opts.bare;
       canvas.width = (this.bare ? BARE_W : W) * this.scale;
-      canvas.height = (this.bare ? BARE_H : H) * this.scale;
+      canvas.height = (this.bare ? bareH(clip) : H) * this.scale;
       this.ctx = canvas.getContext('2d');
       this.load(clip);
     }
