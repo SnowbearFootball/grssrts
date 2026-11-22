@@ -1,6 +1,6 @@
 /*
- * SESSION (DRAFT): Combination Play (Attacking · passing)
- * From a coach's own session plan. draft: true keeps it off the site until approved (index.html?drafts#combination-play).
+ * SESSION: Combination Play (Attacking · passing)
+ * From a coach's own session plan.
  *
  * A 20 × 20-yard square split into four boxes (x 17.7–82.3, y 5.4–69.6; the middle lines at x 50 and y 37.5).
  * Four teams: black (bottom right), yellow (top right), green (top left), blue (bottom left).
@@ -55,7 +55,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'combination-play',
-    draft: true,
     title: 'Combination Play',
     subtitle: 'Passing and movement',
     type: 'Technical',
