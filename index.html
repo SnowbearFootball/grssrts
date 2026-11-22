@@ -180,6 +180,38 @@
   .soon { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 30px; padding: 0; list-style: none; }
   .soon li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; font-weight: 600; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
   .soon li span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; flex: none; }
+  /* "Your session, animated": home-page band and the Dugout page */
+  .promo { background: var(--forest); color: var(--cream); border-radius: 16px; padding: 24px; display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: 24px; align-items: center; margin: 0 0 40px; }
+  .promo .eyebrow { color: var(--accent-soft); }
+  .promo h2 { margin: 0 0 8px; font-size: clamp(24px, 3.4vw, 32px); }
+  .promo p { margin: 0; color: #d7dfd2; max-width: 46ch; }
+  .promo .price { font-weight: 800; color: var(--accent-soft); margin-top: 10px; }
+  .promo .cta { margin-top: 16px; }
+  .promo .btn:not(.primary) { background: transparent; color: var(--cream); border-color: var(--forest-edge); }
+  .before-after { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; min-width: 0; }
+  .before-after figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
+  .before-after figcaption { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--accent-soft); text-align: center; }
+  .before-after svg, .before-after img { width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; display: block; object-fit: cover; }
+  .before-after .to { color: var(--accent-soft); font-size: 26px; font-weight: 800; }
+  .steps3 { list-style: none; margin: 0 0 22px; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; counter-reset: s; }
+  .steps3 li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+  .steps3 li::before { counter-increment: s; content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff;
+    display: grid; place-items: center; font-weight: 800; font-size: 14px; margin-bottom: 4px; }
+  .steps3 b { font-size: 16px; }
+  .steps3 span { color: var(--sub); font-size: 14px; }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 16px; }
+  .tier { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 16px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+  .tier.pick { background: var(--forest); border-color: var(--forest); color: var(--cream); }
+  .tier .amt { font-size: 26px; font-weight: 800; color: var(--accent-ink); margin: 0 0 4px; }
+  .tier.pick .amt { color: var(--accent-soft); }
+  .tier b { font-size: 16px; }
+  .tier span { font-size: 14px; color: var(--sub); }
+  .tier.pick span { color: #d7dfd2; }
+  .free-topic { background: var(--paper); border: 1px dashed var(--edge); border-radius: 14px; padding: 18px; display: grid; gap: 8px; margin: 26px 0 16px; }
+  .free-topic h2 { margin: 0; font-size: 20px; }
+  .free-topic .price { margin: 0; font-weight: 800; font-size: 14px; color: var(--accent-ink); }
+  .free-topic p { margin: 0; color: var(--sub); font-size: 14.5px; }
   .offers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 30px; }
   .offer { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
   .offer.paid { background: var(--forest); color: var(--cream); border-color: var(--forest); }
@@ -286,6 +318,8 @@
     .hero-clip { max-width: 520px; }
     .mains, .areas { grid-template-columns: 1fr; }
     .offers { grid-template-columns: 1fr; }
+    .promo { grid-template-columns: 1fr; }
+    .steps3, .tiers { grid-template-columns: 1fr; }
     .progression { grid-template-columns: 1fr 1fr; }
     .train { grid-template-columns: 1fr; }
   }
@@ -355,6 +389,17 @@
         </ol>
         <p class="usp">Every session as a short animated clip: see the plan, watch it happen, understand why. <a href="#shoot-and-recover" id="hero-link">See the full session&nbsp;›</a></p>
       </div>
+    </section>
+
+    <section class="promo" aria-labelledby="promo-title">
+      <div>
+        <p class="eyebrow">For coaches</p>
+        <h2 id="promo-title">Your session, animated.</h2>
+        <p>Send us your plan or a photo of your diagram. We animate it for you, arrows first, and you get clips to share in your team's WhatsApp group.</p>
+        <p class="price">From £40</p>
+        <div class="cta" id="promo-cta"></div>
+      </div>
+      <div class="before-after" id="promo-ba"></div>
     </section>
 
     <div class="section-head" id="sections"><h2>Sessions</h2><p>Choose a section to see its sessions.</p></div>
@@ -839,6 +884,32 @@
     rerender();
   });
 
+  // ---------- "Your session, animated" ----------
+  // A whiteboard-style coach's sketch of Shoot & Recover, shown next to the finished clip as a before-and-after example.
+  const SKETCH = `<svg viewBox="0 0 320 180" role="img" aria-label="A hand-drawn session diagram: two goals, two queues and dashed arrows">
+    <rect width="320" height="180" fill="#fbfaf6"/>
+    <g fill="none" stroke="#1d2a44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 18 C110 15 210 20 298 17 C300 70 296 120 299 163 C210 166 110 161 21 164 C24 120 19 70 22 18Z"/>
+      <path d="M138 17 l2 -9 l42 1 l-1 9"/><path d="M137 164 l1 9 l43 -1 l-1 -8"/>
+    </g>
+    <g fill="none" stroke="#c0392b" stroke-width="2.4" stroke-linecap="round">
+      <path d="M86 26 l9 9 M95 26 l-9 9"/><path d="M70 24 l9 9 M79 24 l-9 9"/><path d="M54 25 l9 9 M63 25 l-9 9"/>
+    </g>
+    <g fill="none" stroke="#1f5fbf" stroke-width="2.4"><circle cx="214" cy="150" r="6"/><circle cx="231" cy="152" r="6"/><circle cx="248" cy="151" r="6"/></g>
+    <g fill="none" stroke="#1d2a44" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 5">
+      <path d="M210 140 C196 112 192 80 186 46"/><path d="M188 40 C178 28 168 22 160 20"/><path d="M168 30 C150 60 120 90 112 130"/>
+    </g>
+    <g fill="#1d2a44"><path d="M186 40 l-5 9 l9 -1z"/><path d="M158 19 l9 -3 l-2 8z"/><path d="M111 137 l-3 -10 l9 4z"/></g>
+    <text x="196" y="96" font-family="Montserrat, Arial, sans-serif" font-style="italic" font-weight="600" font-size="12" fill="#1d2a44">shoot</text>
+    <text x="98" y="50" font-family="Montserrat, Arial, sans-serif" font-style="italic" font-weight="600" font-size="12" fill="#1d2a44">touch post</text>
+    <text x="70" y="100" font-family="Montserrat, Arial, sans-serif" font-style="italic" font-weight="600" font-size="12" fill="#c0392b">recover!</text>
+  </svg>`;
+  const beforeAfter = () => `<figure>${SKETCH}<figcaption>Your diagram</figcaption></figure><span class="to" aria-hidden="true">→</span>
+    <figure><img src="assets/thumbs/shoot-and-recover.jpg" alt="The same session as an animated clip" loading="lazy"><figcaption>Your clip</figcaption></figure>`;
+  $('promo-ba').innerHTML = beforeAfter();
+  $('promo-cta').innerHTML = (LINKS.bespokeSession ? `<a class="btn primary" href="${esc(LINKS.bespokeSession)}" target="_blank" rel="noopener">Send your session</a>` : '') +
+    `<a class="btn${LINKS.bespokeSession ? '' : ' primary'}" href="#dugout">See how it works</a>`;
+
   // ---------- area pages ----------
   const linkBtn = (url, label, primary) => url
     ? `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`
@@ -851,17 +922,28 @@
         `<div class="section-head"><h2>Coming soon</h2><p>More things to practise on your own, with a clip for each.</p></div>${soonList(a.plans)}
       <p class="note">Tip for parents: five minutes a day with a ball against a wall does more than an hour once a week.</p>`;
     },
-    'dugout': () => `<div class="offers">
-        <section class="offer"><p class="price">Free</p><h2>Suggest a topic</h2>
-          <p>Tell us what your team struggles with. Popular topics become new sessions in the library, free for everyone.</p>
-          <ul><li>Your club and age group</li><li>Which section: goalkeeping, defending or attacking</li><li>The problem, e.g. "we all chase the ball"</li></ul>
-          <div>${linkBtn(LINKS.suggestTopic, 'Suggest a topic', false)}</div></section>
-        <section class="offer paid"><p class="price">From £40</p><h2>Your session, animated</h2>
-          <p>Send us your own session plan or diagram and we'll turn it into animated clips for your players and parents.</p>
-          <ol><li>Send your plan, notes or a photo of your diagram</li><li>We animate it, step by step, arrows first</li><li>You get the clips for your team's WhatsApp group</li></ol>
-          <div>${linkBtn(LINKS.bespokeSession, 'Request a session', true)}</div></section>
+    'dugout': () => `<section class="promo">
+        <div><p class="eyebrow">Done for you</p><h2>Your session, animated</h2>
+          <p>Send us your own session plan, notes or a photo of your diagram. We animate it for you, step by step, arrows first, in the same style as every clip on this site.</p>
+          <div class="cta">${linkBtn(LINKS.bespokeSession, 'Send your session', true)}</div></div>
+        <div class="before-after">${beforeAfter()}</div>
+      </section>
+      <div class="section-head"><h2>How it works</h2><p>Usually ready within 5 days.</p></div>
+      <ol class="steps3">
+        <li><b>Send your plan</b><span>A photo of your diagram, a session plan or a few notes. Tell us the age group.</span></li>
+        <li><b>We animate it</b><span>Arrows first, then the movement, with your coaching points beside the pitch.</span></li>
+        <li><b>Share it with your team</b><span>You get the clips (MP4) to send to your players and parents.</span></li>
+      </ol>
+      <div class="section-head"><h2>Prices</h2></div>
+      <div class="tiers">
+        <div class="tier"><span>One clip</span><p class="amt">£40</p><b>A single practice</b><span>One animated clip, about 30–60 seconds.</span></div>
+        <div class="tier pick"><span>Full session</span><p class="amt">from £90</p><b>3 to 4 clips</b><span>A full progression, with coaching points and key words.</span></div>
+        <div class="tier"><span>Club pack</span><p class="amt">Ask us</p><b>Several sessions</b><span>For a club's coaching programme or curriculum.</span></div>
       </div>
-      <p class="note">Please only send plans that are your own work. We never ask for or publish children's names or photos.</p>`,
+      <p class="note">Please only send plans that are your own work. We never ask for or publish children's names or photos.</p>
+      <section class="free-topic"><p class="price">Free</p><h2>Suggest a topic</h2>
+        <p>Tell us what your team struggles with, for example "we all chase the ball". Popular topics become new sessions in the library, free for everyone.</p>
+        <div>${linkBtn(LINKS.suggestTopic, 'Suggest a topic', false)}</div></section>`,
     'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
       <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
   };
