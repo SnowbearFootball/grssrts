@@ -30,6 +30,9 @@
     { id: 'fb1', team: 'a', label: 'FB', x: 49, y: 5 }, { id: 'fb2', team: 'a', label: 'FB', x: 45, y: 66 },
     { id: 'cm1', team: 'a', label: 'CM', x: 25, y: 29 }, { id: 'cm2', team: 'a', label: 'CM', x: 25, y: 50 },
     { id: 'r9', team: 'd', x: 47, y: 44 }, { id: 'r1', team: 'd', x: 34, y: 10 }, { id: 'r2', team: 'd', x: 33, y: 38 }, { id: 'r3', team: 'd', x: 37, y: 65 },
+    // the rest of the pressing team wait by the mini goals and take turns to rotate in
+    { id: 'wa', team: 'd', x: 8, y: 19, dim: true }, { id: 'wb', team: 'd', x: 13, y: 22, dim: true },
+    { id: 'wc', team: 'd', x: 8, y: 50, dim: true }, { id: 'wd', team: 'd', x: 13, y: 53, dim: true }, { id: 'we', team: 'd', x: 8, y: 56, dim: true },
   ];
   const nineV5 = [
     { id: 'gk', team: 'k', label: 'GK', x: 94, y: 36 },
@@ -86,6 +89,7 @@
       { word: 'Drop in', meaning: 'A midfielder coming back to receive between or beside the defenders.' },
       { word: 'Split', meaning: 'The centre-backs moving wide to make room for the player dropping in.' },
       { word: 'Push on', meaning: 'A full-back moving higher up the pitch, above the yellow line.' },
+      { word: 'Rotate in', meaning: 'Players waiting by the mini goals take turns to come on and press.' },
       { word: 'Free player', meaning: 'The player the press can\'t get to. Find them with the right pass.' },
     ],
 
@@ -99,6 +103,7 @@
         'One CM drops in to receive: between the CBs (the CBs split and one FB goes above the yellow line), or between a CB and FB (they become the FB and the FB pushes on).',
         'The building team must make 6 passes before releasing a FB to score in a mini goal. Invite pressure, then play away to the free FB.',
         'If the pressing team win it, they try to score in the big goal.',
+        'The rest of the pressing team wait by the mini goals and take it in turns to rotate in and press.',
         'Progression, 9 v 5: add wingers. If the CB splits, the FB pushes higher and the winger comes inside to play CM.',
       ],
     },
@@ -125,7 +130,7 @@
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['An *18-yard box* in front of goal; the *yellow line* 10 yards out.', 'Blue build out; red press.', 'The 2 CMs stay *behind the yellow line*.'],
+            text: ['An *18-yard box* in front of goal; the *yellow line* 10 yards out.', 'Blue build out; red press.', 'The 2 CMs stay *behind the yellow line*.', 'The rest of red wait by the mini goals and *rotate in*.'],
           },
           longToKeeper(),
           {
@@ -170,6 +175,18 @@
             timing: { move: 2.4 },
             moves: [{ id: 'fb1', to: [12, 8], end: 0.6 }],
             ball: { to: [3.5, 3.5], start: 0.62, end: 0.9, arrow: false },
+          },
+          {
+            title: 'SWAP: NEXT PRESSERS IN',
+            text: ['The pressers come off.', 'The players waiting by the mini goals *rotate in* to press.', 'Take it *in turns*.'],
+            timing: { move: 3.4 },
+            dim: { r9: true, r1: true, r2: true, r3: true, wa: false, wb: false, wc: false, wd: false },
+            moves: [
+              { id: 'r1', to: [7, 25], arrow: false }, { id: 'r2', to: [12, 28], arrow: false },
+              { id: 'r9', to: [7, 44], arrow: false }, { id: 'r3', to: [12, 41], arrow: false },
+              { id: 'wa', to: [34, 10], start: 0.1 }, { id: 'wb', to: [33, 38], start: 0.1 },
+              { id: 'wc', to: [47, 44], start: 0.1 }, { id: 'wd', to: [37, 65], start: 0.1 },
+            ],
           },
         ],
         summary: ['CM drops *between the CBs*.', 'CBs *split*; a FB goes *above the yellow line*.', '*6 passes*, invite pressure.', 'Play away to the *free FB*.'],

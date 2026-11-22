@@ -1296,7 +1296,9 @@
     const st = phase === 'outro' ? cp.finalState : step.startState;
     (st.spent || []).forEach(b => drawBall(ctx, b));
     clip.players.forEach(p => { if (p.ball && !(st.used || []).includes(p.id)) drawBall(ctx, attached(cp, step, p.id, u)); });
-    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, p.dim ? 0.4 : 1, p.label, teamColor(cp, p.team)));
+    // faded players (p.dim); a step can change it from then on with dim: { id: true|false } (e.g. players rotating in)
+    const dimOf = p => cp.steps.reduce((d, st) => (st.index <= step.index && st.def.dim && p.id in st.def.dim ? st.def.dim[p.id] : d), !!p.dim);
+    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, dimOf(p) ? 0.4 : 1, p.label, teamColor(cp, p.team)));
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
     // tags on top
