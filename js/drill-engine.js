@@ -270,12 +270,12 @@
   }
 
   // goals: optional list of [x, 'top'|'bottom'] in pitch units (default: one centred goal at each end)
-  function drawPitch(ctx, goals, goalScale, marks, arc) {
+  function drawPitch(ctx, goals, goalScale, marks, arc, plain) {
     ctx.save();
     roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
     ctx.clip();
     fillStripes(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, C.pitch, C.pitchStripe, PITCH.h / 10, false);
-    ctx.fillStyle = C.pitchDot;
+    ctx.fillStyle = plain ? 'rgba(0,0,0,0)' : C.pitchDot;   // clip.plain: no dots
     for (let x = PITCH.x + 10; x < PITCH.x + PITCH.w; x += 18) {
       for (let y = PITCH.y + 10; y < PITCH.y + PITCH.h; y += 18) {
         ctx.fillRect(x, y, 2, 2);
@@ -432,6 +432,12 @@
     IN: { bg: '#16351f', fg: '#fff' },
     UP: { bg: '#16351f', fg: '#fff' },
     WAIT: { bg: '#6b7280', fg: '#fff' },
+    DROP: { get bg() { return C.accent; }, fg: '#fff' },
+    SPLIT: { bg: '#16351f', fg: '#fff' },
+    'PUSH ON': { bg: '#16351f', fg: '#fff' },
+    'INSIDE': { bg: '#16351f', fg: '#fff' },
+    'FREE MAN': { get bg() { return C.accent; }, fg: '#fff' },
+    SCORE: { get bg() { return C.accent; }, fg: '#fff' },
     BACK: { bg: '#16351f', fg: '#fff' },
     'FIRST TIME': { get bg() { return C.accent; }, fg: '#fff' },
     OUT: { bg: '#16351f', fg: '#fff' },
@@ -1138,7 +1144,20 @@
     ctx.fillRect(0, 0, W, H);
     if (bare) ctx.translate(BARE.m - PITCH.x, BARE.m - PITCH.y);
     else drawHeader(ctx, session, clip);
-    drawPitch(ctx, cp.solo ? [] : clip.goals, clip.goalScale, clip.marks, clip.arc);
+    drawPitch(ctx, cp.solo ? [] : clip.goals, clip.goalScale, clip.marks, clip.arc, clip.plain);
+    // a line of cones: clip.cones = [{ at: [x, y], color }]
+    (clip.cones || []).forEach(c => {
+      const [cx, cy] = toPx(c.at);
+      ctx.save(); ctx.beginPath(); ctx.moveTo(cx, cy - 8); ctx.lineTo(cx + 7, cy + 6); ctx.lineTo(cx - 7, cy + 6); ctx.closePath();
+      ctx.fillStyle = c.color || '#e5b52b'; ctx.fill(); ctx.restore();
+    });
+    // small goals anywhere on the pitch: clip.miniGoals = [{ at: [x, y], angle }] (angle in degrees, 0 = facing down the screen)
+    (clip.miniGoals || []).forEach(g => {
+      const [gx, gy] = toPx(g.at);
+      ctx.save(); ctx.translate(gx, gy); ctx.rotate((g.angle || 0) * Math.PI / 180);
+      drawGoal(ctx, 0, 0, g.scale || 0.75);
+      ctx.restore();
+    });
     // measurements: clip.dims = [{ a: [x, y], b: [x, y], label: '20 yds' }] in pitch units
     (clip.dims || []).forEach(d => drawDim(ctx, d));
     // Which segment are we in?
@@ -1150,9 +1169,9 @@
     (clip.areas || []).forEach(a => {
       const [x1, y1] = toPx([a.x, a.y]), [x2, y2] = toPx([a.x + a.w, a.y + a.h]);
       ctx.save();
-      ctx.fillStyle = 'rgba(22,53,31,0.06)';
+      ctx.fillStyle = a.fill || 'rgba(22,53,31,0.06)';   // e.g. fill: 'rgba(240,205,110,0.4)' for a coloured box
       ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
-      ctx.strokeStyle = 'rgba(22,53,31,0.25)'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 6]);
+      ctx.strokeStyle = 'rgba(22,53,31,0.25)'; ctx.lineWidth = 1.5; ctx.setLineDash(a.fill ? [] : [6, 6]);
       ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
       ctx.setLineDash([]);
       [[x1, y1], [x2, y1], [x1, y2], [x2, y2]].forEach(([cx, cy]) => {
