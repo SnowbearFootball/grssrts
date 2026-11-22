@@ -22,7 +22,7 @@ window.AREAS = [
   { id: 'home-ground', name: 'Home Ground', tag: 'Solo practice',
     blurb: 'Things to practise on your own: in the garden, at the park or against a wall.',
     icon: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2.5"/>',
-    plans: ['Wall passes: both feet', 'Ball mastery: sole rolls and drag-backs', 'First touch away from pressure',
+    plans: ['Wall passes: both feet', 'Ball mastery 2: drag-backs and turns', 'First touch away from pressure',
       'Shooting at a target', '1 v 1 moves: step-over, drag-back, Cruyff turn', 'Keepy-uppy challenges'] },
   { id: 'dugout', name: 'The Dugout', tag: 'For coaches',
     blurb: 'Ask for a topic you want covered, or have your own session plan turned into animated clips.',
