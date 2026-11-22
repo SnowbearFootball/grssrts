@@ -22,6 +22,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Ball Mastery: The Basics (Home Ground, solo, U6+) | 1. Toe Taps · 2. Sole Rolls · 3. Tic-Tacs · 4. Pull-Push |
 | Long Range Shooting: Move Onto It (attacking, U14+) | 1. Move It, Then Shoot · 2. Play Under Pressure · 3. Two Touch, First Time |
 | Long Range Shooting: Up, Back, Shot (attacking, U14+) | Idea 1: Follow Your Pass · Idea 2: Third-Player Run · Progression: Up, Back, Shot |
+| Rotation of Positions (attacking, tactical, U14+) | 1. Drop Between the CBs · 2. Drop Between CB and FB · 3. Press Wins It · 4. Rotation With Wingers (9 v 5) |
 
 ## Brand
 

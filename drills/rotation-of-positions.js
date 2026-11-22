@@ -1,6 +1,6 @@
 /*
- * SESSION (DRAFT): Rotation of Positions (Attacking · building out)
- * From a coach's own session plan. draft: true keeps it off the site until approved (index.html?drafts#rotation-of-positions).
+ * SESSION: Rotation of Positions (Attacking · building out)
+ * From a coach's own session plan. Replaces Building Out: Rotations (its old address still opens this session).
  *
  * Plain background, laid sideways: about 40 yards long (x 0..100, 2.5 units a yard) by 27 yards wide (y 0..75, 2.8 units a yard).
  * The big goal and keeper are on the right. Yellow box: 18 × 18 yards in front of the goal (x 55–100, y 12–62).
@@ -50,7 +50,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'rotation-of-positions',
-    draft: true,
+    aliases: ['build-out-rotations'],   // the session this one replaced
     title: 'Rotation of Positions',
     subtitle: 'Building out',
     type: 'Tactical',
