@@ -39,24 +39,24 @@
   // 1. MOVE ONTO IT
   // 45 × 30 yards: x 0..100 = 45 yards (2.22 units a yard), y 0..75 = 30 yards (2.5 units a yard).
   // 20-yard end zones (x 0–44.4 and 55.6–100: the far goal is about 20–25 yards away, the edge of the box)
-  // and a 5-yard middle zone. D = defenders and M = midfielders in the end zones; ST = strikers in the middle,
-  // who set the ball back for either team.
+  // and a 5-yard middle zone. D = defenders and M = midfielders in the end zones; ST = one central striker
+  // in the middle, who sets the ball back for both teams (two strikers also works).
   // ====================================================================
   const moveKey = { big: 'MOVE ONTO IT', small: "Shoot on the move. Don't turn and shoot" };
   const zone20 = [{ x: 44.4, y: 0, w: 11.2, h: 75 }];
   const dims45 = [
     { a: [0, 3], b: [44.4, 3], label: '20 yds' }, { a: [44.4, 3], b: [55.6, 3], label: '5' }, { a: [55.6, 3], b: [100, 3], label: '20 yds' },
-    { a: [50, 30], b: [50, 45], label: '30 yds wide' },
+    { a: [61, 8], b: [61, 72], label: '30 yds' },
   ];
   const zonePlayers = keepers.concat([
     { id: 'gD1', team: 'a', label: 'D', x: 10, y: 24 }, { id: 'gD2', team: 'a', label: 'D', x: 10, y: 51 },
     { id: 'gM1', team: 'a', label: 'M', x: 29, y: 13 }, { id: 'gM2', team: 'a', label: 'M', x: 32, y: 37.5 }, { id: 'gM3', team: 'a', label: 'M', x: 29, y: 62 },
     { id: 'bD1', team: 'd', label: 'D', x: 90, y: 24 }, { id: 'bD2', team: 'd', label: 'D', x: 90, y: 51 },
     { id: 'bM1', team: 'd', label: 'M', x: 70, y: 13 }, { id: 'bM2', team: 'd', label: 'M', x: 68, y: 37.5 }, { id: 'bM3', team: 'd', label: 'M', x: 70, y: 62 },
-    { id: 'st1', team: 'f', label: 'ST', x: 50, y: 18 }, { id: 'st2', team: 'f', label: 'ST', x: 50, y: 58 },
+    { id: 'st', team: 'f', label: 'ST', x: 50, y: 37.5 },
   ]);
   const A = Object.assign({}, common, {
-    legendTeams: [{ label: 'Green', color: '#2fbf7f' }, { label: 'Blue', color: '#3b9ae1' }, { label: 'Striker', color: FLOAT }],
+    legendTeams: [{ label: 'Green', color: '#2fbf7f' }, { label: 'Blue', color: '#3b9ae1' }, { label: 'Striker (both teams)', color: FLOAT }],
     keyPhrase: moveKey, areas: zone20, dims: dims45, players: zonePlayers, playerScale: 0.95,
   });
   window.SESSIONS.push({
@@ -66,9 +66,9 @@
     subtitle: 'Shooting game',
     type: 'Game',
     category: 'attacking',
-    squad: [10, 16],
+    squad: [9, 16],
     thumb: 'assets/thumbs/long-range-move-onto-it.jpg',
-    summary: 'A zoned shooting game: strikers set it back, midfielders and defenders move onto it and shoot from the edge of the box.',
+    summary: 'A zoned shooting game: a central striker sets it back for both teams; midfielders and defenders move onto it and shoot from the edge of the box.',
     keyPhrase: 'Move onto it',
     ages: { from: 10 },
 
@@ -87,7 +87,7 @@
         lead: 'Move it *with speed* so the shooter gets a chance.',
         columns: [
           { heading: 'Defenders and midfielders', items: ['*Energy and movement* to make passes', 'Play it into the striker', '*Arrive* for the set back'] },
-          { heading: 'Strikers (middle zone)', items: ['Be *"alive"*: always on the move', '*Demand the ball*', 'Set it back into a runner\'s path, like in a match'] },
+          { heading: 'Striker (middle zone)', items: ['Plays for *both teams*', 'Be *"alive"*: always on the move', '*Demand the ball*', 'Set it back into a runner\'s path, like in a match'] },
         ],
       },
     ],
@@ -102,11 +102,12 @@
 
     training: {
       area: '45 × 30 yards: two 20-yard end zones (the edge of the box) and a 5-yard middle zone, a goal at each end.',
-      players: 'Defenders and midfielders in each end zone, strikers in the middle, a keeper in each goal. For example 5 v 5 + 2 strikers + 2 keepers.',
+      players: 'Defenders and midfielders in each end zone, one striker in the middle for both teams, a keeper in each goal. For example 5 v 5 + 1 + 2 keepers (13). Vary the numbers to suit your group.',
       equipment: 'Two goals, cones to mark the zones, bibs in three colours, plenty of balls by each goal.',
       setup: [
-        'Each team\'s defenders and midfielders stay in their end zone. Strikers play in the middle zone for whichever team has the ball.',
-        'Vary the numbers: even one striker in the middle, setting the ball back for both teams, works.',
+        'Each team\'s defenders and midfielders stay in their end zone. One central striker plays in the middle zone for both teams.',
+        'Vary the numbers to suit your group, e.g. 4 v 4 + 1 or 6 v 6 + 2. Two strikers in the middle also works.',
+        'Rotate positions every few minutes, so everyone gets to shoot, set it back, defend and play in goal.',
         'Move the ball with speed, play it into a striker, and shoot from the set back: about 20 to 25 yards out.',
         'Shooters move onto the ball as they shoot. No stopping to turn.',
         'Progression: the closest opponent can cross the middle to press. If they win it, they play it back to their team or score.',
@@ -124,15 +125,15 @@
       Object.assign({}, A, {
         id: 'move-onto-it',
         video: 'videos/long-range-move-onto-it-1.mp4',
-        kicker: 'Clip 1 · 5 v 5 + 2 strikers',
+        kicker: 'Clip 1 · 5 v 5 + 1 central striker',
         title: 'Move It, Then Shoot',
         tagline: 'Into the striker, set it back, shoot on the move.',
-        intro: ['*20-yard* zones: shooting from the *edge of the box*.', 'Defenders and midfielders in the end zones, *strikers* in the middle.', 'Move the ball *with speed*, shoot *moving onto it*.'],
+        intro: ['*20-yard* zones: shooting from the *edge of the box*.', 'Defenders and midfielders in the end zones, *one striker* in the middle for *both teams*.', 'Move the ball *with speed*, shoot *moving onto it*.'],
         ball: { owner: 'gD1' },
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['45 × 30 yards: two *20-yard zones* and a 5-yard middle zone.', '*Defenders and midfielders* in each end zone.', '*Strikers* in the middle play for the team with the ball.'],
+            text: ['45 × 30 yards: two *20-yard zones* and a 5-yard middle zone.', '*Defenders and midfielders* in each end zone.', '*One striker* in the middle plays for *both teams*.', '*Rotate positions*, and vary the numbers.'],
           },
           {
             title: 'MOVE IT WITH SPEED',
@@ -143,14 +144,14 @@
           {
             title: 'UP TO THE STRIKER',
             text: ['Play it *into the striker*.'],
-            tags: { st1: 'UP' },
+            tags: { st: 'UP' },
             timing: { move: 1.8 },
-            passes: [{ to: 'st1', start: 0, end: 0.6 }],
+            passes: [{ to: 'st', start: 0, end: 0.6 }],
           },
           {
             title: 'SET BACK: MOVE ONTO IT',
             text: ['The striker *sets it back*, like in a match.', 'A midfielder *runs onto it*, facing the goal.'],
-            tags: { st1: 'BACK', gM2: 'GO!' },
+            tags: { st: 'BACK', gM2: 'GO!' },
             timing: { move: 2.4 },
             moves: [{ id: 'gM2', to: [44, 30], end: 0.75 }],
             passes: [{ to: 'gM2', start: 0.3, end: 0.75 }],
@@ -165,7 +166,7 @@
             moves: [{ id: 'gM2', to: [47, 30.5], end: 0.3, arrow: false }, { id: 'kR', to: [97.5, 36], start: 0.25, end: 0.55, arrow: false }],
           },
         ],
-        summary: ['Move the ball *with speed*.', 'Into the *striker*, who *sets it back*.', 'Run onto it and *shoot on the move*.', 'Don\'t turn and shoot.'],
+        summary: ['Move the ball *with speed*.', 'Into the *striker*, who *sets it back*.', 'Run onto it and *shoot on the move*.', '*Rotate positions*, so everyone shoots.'],
       }),
 
       Object.assign({}, A, {
@@ -230,16 +231,16 @@
           {
             title: 'UP TO THE STRIKER',
             text: ['Into the *striker*.'],
-            tags: { st2: 'UP' },
+            tags: { st: 'UP' },
             timing: { move: 1.8 },
-            passes: [{ to: 'st2', start: 0, end: 0.6 }],
+            passes: [{ to: 'st', start: 0, end: 0.6 }],
           },
           {
             title: 'SET BACK INTO THE RUN',
             text: ['*First-time* set back into a runner\'s path.'],
-            tags: { st2: 'BACK', gM3: 'GO!' },
+            tags: { st: 'BACK', gM3: 'GO!' },
             timing: { move: 2.2 },
-            moves: [{ id: 'gM3', to: [43, 50], end: 0.7 }],
+            moves: [{ id: 'gM3', to: [43, 47], end: 0.7 }],
             passes: [{ to: 'gM3', start: 0.25, end: 0.7 }],
           },
           {
