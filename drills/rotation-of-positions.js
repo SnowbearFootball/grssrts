@@ -40,14 +40,14 @@
     { id: 'fb1', team: 'a', label: 'FB', x: 48, y: 4 }, { id: 'fb2', team: 'a', label: 'FB', x: 44, y: 66 },
     { id: 'cm1', team: 'a', label: 'CM', x: 25, y: 28 }, { id: 'cm2', team: 'a', label: 'CM', x: 25, y: 50 },
     { id: 'wg1', team: 'a', label: 'W', x: 22, y: 7 }, { id: 'wg2', team: 'a', label: 'W', x: 25, y: 68 },
-    { id: 'r1', team: 'd', x: 34, y: 10 }, { id: 'rcm', team: 'd', x: 19, y: 25 }, { id: 'r9', team: 'd', x: 48, y: 40 },
-    { id: 'r4', team: 'd', x: 21, y: 44 }, { id: 'r3', team: 'd', x: 36, y: 64 },
+    { id: 'r1', team: 'd', x: 34, y: 10 }, { id: 'rcm', team: 'd', x: 19, y: 25 }, { id: 'r9', team: 'd', x: 47, y: 32 },
+    { id: 'r4', team: 'd', x: 15, y: 46 }, { id: 'r3', team: 'd', x: 36, y: 64 },
   ];
   const longToKeeper = () => ({
-    title: 'LONG TO THE KEEPER',
-    text: ['Play starts: the pressing team *plays it long* to the keeper.'],
-    timing: { move: 2 },
-    passes: [{ to: 'gk', start: 0, end: 0.8 }],
+    title: 'LONG BALL, OVER-HIT TO THE KEEPER',
+    text: ['Play starts with a *long ball* from red\'s furthest player.', 'It\'s *over-hit*, through to the keeper.', 'Now blue *play out from the back*.'],
+    timing: { move: 2.6 },
+    passes: [{ to: 'gk', start: 0, end: 0.85 }],
   });
 
   window.SESSIONS = window.SESSIONS || [];
@@ -98,7 +98,7 @@
       players: 'Building team: GK, 2 CBs, 2 FBs, 2 CMs against 4 pressers. Progression: add 2 wingers against 5 pressers (9 v 5).',
       equipment: 'A full-size goal, two mini goals, cones for the box and the yellow line, bibs, plenty of balls.',
       setup: [
-        'Play starts with the pressing team playing it long to the keeper.',
+        'Play starts with a long ball from the pressing team\'s furthest player, over-hit through to the keeper. Then the possession team play out from the back.',
         'The defenders drop in to play out from the back. The 2 CMs stay behind the yellow line.',
         'One CM drops in to receive: between the CBs (the CBs split and one FB goes above the yellow line), or between a CB and FB (they become the FB and the FB pushes on).',
         'The building team must make 6 passes before releasing a FB to score in a mini goal. Invite pressure, then play away to the free FB.',
@@ -126,7 +126,7 @@
         tagline: 'The CM drops in, the CBs split, the FB pushes on.',
         intro: ['Blue *play out from the back*, red press.', 'A CM drops in *between the CBs*.', 'The CBs *split*, and a FB goes *above the yellow line*.'],
         players: base,
-        ball: { owner: 'r2' },
+        ball: { owner: 'wb' },   // the long ball comes from red's furthest player
         steps: [
           {
             title: 'THE SET-UP',
@@ -211,7 +211,7 @@
         tagline: 'The CM drops in beside the CB and becomes the FB.',
         intro: ['Same set-up.', 'This time the CM drops in *between a CB and FB*.', 'They *become the FB*, so the FB *pushes on*.'],
         players: base,
-        ball: { owner: 'r2' },
+        ball: { owner: 'wb' },   // the long ball comes from red's furthest player
         steps: [
           longToKeeper(),
           {
@@ -275,7 +275,7 @@
         tagline: 'Win it back and score in the big goal.',
         intro: ['If the pressing team *win the ball*...', '...they try to *score in the big goal*.'],
         players: base,
-        ball: { owner: 'r2' },
+        ball: { owner: 'wb' },   // the long ball comes from red's furthest player
         steps: [
           longToKeeper(),
           {
@@ -308,7 +308,7 @@
         intro: ['Same, but now *with wingers*: 9 v 5.', 'The rotation includes *an extra player*.', 'Find the *free player* in the triangle.'],
         players: nineV5,
         legendTeams: [{ label: 'Building out', color: BLUE }, { label: 'Pressing', color: RED }],
-        ball: { owner: 'r4' },
+        ball: { owner: 'r4' },   // red's furthest player
         steps: [
           {
             title: 'THE SET-UP: 9 v 5',
