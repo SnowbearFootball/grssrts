@@ -4,16 +4,26 @@
  * A close-up of one goal (at the bottom) with the 6-yard box marked. Servers (green) shoot; the goalkeeper (GK) works.
  * Scale: the goal is 8 yards wide = about 35 pitch units, so 1 yard ≈ 4.4 units. Goal line ≈ y 75.7, posts ≈ x 32.4 and 67.6.
  * The top of the picture is about 17 yards out.
- * GK positions are where the "ball line" (ball → middle of the goal) crosses the positioning arc, which runs from post to post
- * and bulges about 2.5 yards out in the middle: further out when the ball is central, back towards the post when it's wide.
+ * GK positions are on the positioning arc, which runs from post to post and bulges about 2.5 yards out in the middle:
+ * further out when the ball is central, back towards the near post (and shifted a step towards it) when it's wide.
  */
 (function () {
   const GOAL = [50, 75.7];
   const ARC = { cx: 50, cy: 75.7, rx: 17.6, ry: 11 };   // post to post, 2.5 yards out in the middle
-  // where the keeper stands: where the ball line meets the arc
+  // Where the keeper stands: on the arc, on a line from the ball aimed a little towards the NEAR post.
+  // The wider the ball, the bigger the shift (NEAR_POST = 0.7: about one step for a wide ball, none when central),
+  // so the near post is covered. Ball central: top of the arc.
+  const NEAR_POST = 0.7;
+  // the point on the goal line the keeper lines up with (drawn as the orange ball line)
+  const aimFor = b => [+(ARC.cx + NEAR_POST * Math.sin(Math.atan2(b[0] - ARC.cx, ARC.cy - b[1])) * ARC.rx).toFixed(1), ARC.cy];
   const onArc = b => {
-    const dx = b[0] - ARC.cx, dy = b[1] - ARC.cy, t = 1 / Math.hypot(dx / ARC.rx, dy / ARC.ry);
-    return [+(ARC.cx + t * dx).toFixed(1), +(ARC.cy + t * dy).toFixed(1)];
+    const aim = aimFor(b);
+    let d = [aim[0] - b[0], aim[1] - b[1]];
+    const n = Math.hypot(d[0], d[1]); d = [d[0] / n, d[1] / n];
+    const ox = (b[0] - ARC.cx) / ARC.rx, oy = (b[1] - ARC.cy) / ARC.ry, ux = d[0] / ARC.rx, uy = d[1] / ARC.ry;
+    const A = ux * ux + uy * uy, B = 2 * (ox * ux + oy * uy), Cc = ox * ox + oy * oy - 1;
+    const t = (-B - Math.sqrt(B * B - 4 * A * Cc)) / (2 * A);   // first point where the line meets the arc
+    return [+(b[0] + t * d[0]).toFixed(1), +(b[1] + t * d[1]).toFixed(1)];
   };
   const common = {
     goals: [[50, 'bottom']],
@@ -49,10 +59,10 @@
       },
       {
         title: 'Where to stand',
-        lead: 'On the *arc*, where the *ball line* meets it.',
+        lead: 'On the *arc*, in line with the ball. When it\'s wide, *favour the near post*.',
         columns: [
           { heading: 'Ball central', items: ['Top of the arc, a couple of steps out', 'The goal looks *smaller* to the shooter', 'Still close enough to get back'] },
-          { heading: 'Ball wide', items: ['Drop back along the arc', '*Closer to the near post*', 'Don\'t leave a gap at the near post'] },
+          { heading: 'Ball wide', items: ['Drop back along the arc', 'Take *one extra step towards the near post*', 'Never leave a gap at the near post'] },
         ],
         phrase: { big: 'SMALLER GOAL', small: 'Good angles make the target smaller' },
       },
@@ -71,7 +81,7 @@
       { word: 'Ready position', meaning: 'Balanced, on your toes, hands in front. How a keeper stands while the ball is away.' },
       { word: 'Set', meaning: 'Being still and balanced just as the shot is struck, so you can move either way.' },
       { word: 'Ball line', meaning: 'An imaginary line from the ball to the middle of the goal. Stand on it.' },
-      { word: 'The arc', meaning: 'A curve from post to post. Ball central: stand further out. Ball wide: drop back towards the near post.' },
+      { word: 'The arc', meaning: 'A curve from post to post. Ball central: stand further out. Ball wide: drop back and take an extra step towards the near post.' },
       { word: 'Shuffle', meaning: 'Small side-steps to move across the goal without crossing your feet.' },
       { word: 'W catch', meaning: 'Thumbs and fingers make a W shape behind the ball for shots at chest height or above.' },
       { word: 'Parry', meaning: "Pushing the ball away when you can't hold it: wide, away from the goal." },
@@ -84,7 +94,7 @@
       setup: [
         'Mark the arc with a few flat cones, post to post, about 2 to 3 steps out in the middle.',
         'Start with one server in the middle. The keeper gets into the ready position at the top of the arc.',
-        'The server dribbles left or right. The keeper shuffles to stay on the ball line.',
+        'The server dribbles left or right. The keeper shuffles along the arc to stay in line with the ball.',
         'The server takes a touch to set the ball. The keeper sets, then the server shoots at the keeper.',
         'Add servers on the left and right. Pass between them; the keeper moves with every pass.',
         'Progress: shots to the corners, and a second shot straight after the first save.',
@@ -133,10 +143,10 @@
             text: [
               'The server dribbles to one side.',
               '*Shuffle* along the *arc*. Small side-steps; don\'t cross your feet.',
-              'Stop where the *ball line* (ball to middle of the goal) meets the arc.',
+              'Stop in line with the ball. Ball wide? *One extra step towards the near post*.',
             ],
             tags: { gk: 'SHUFFLE' },
-            shot: GOAL,
+            shot: aimFor([16, 18]),
             timing: { move: 2.8 },
             moves: [
               { id: 's1', to: [16, 16] },
@@ -209,10 +219,10 @@
             text: [
               'The ball goes left, so the *ball line* moves.',
               '*Shuffle* across while the ball is travelling.',
-              'Ball wide: drop back along the arc, *closer to the near post*.',
+              'Ball wide: drop back along the arc, *a step towards the near post*.',
             ],
             tags: { gk: 'SHUFFLE' },
-            shot: GOAL,
+            shot: aimFor([12, 24]),
             ball: { pass: 'sL', start: 0, end: 0.4 },
             moves: [{ id: 'gk', to: onArc([12, 24]), start: 0.2, ease: 'out' }],
           },
@@ -221,10 +231,10 @@
             text: [
               'A long pass to the other side.',
               'Keep *shuffling*: small, quick steps.',
-              'Same rule: where the *ball line meets the arc*.',
+              'Same rule: on the arc, *a step towards the near post*.',
             ],
             tags: { gk: 'SHUFFLE' },
-            shot: GOAL,
+            shot: aimFor([88, 24]),
             timing: { move: 3 },
             ball: { pass: 'sR', start: 0, end: 0.5 },
             moves: [{ id: 'gk', to: onArc([88, 24]), start: 0.2, ease: 'out' }],
@@ -308,7 +318,7 @@
               'Be set before they shoot.',
             ],
             tags: { gk: 'GET UP!' },
-            shot: GOAL,
+            shot: aimFor([70, 14]),
             ball: { give: 's2' },
             moves: [{ id: 'gk', to: onArc([70, 14]), start: 0.05, ease: 'out' }],
           },
