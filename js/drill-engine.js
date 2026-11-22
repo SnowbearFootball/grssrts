@@ -170,6 +170,7 @@
   function ballOffset(cp, id) {
     // attackers face down the pitch, defenders face up it (a clip can override with facing: { a: -1 })
     const f = cp.clip.facing && cp.clip.facing[cp.team[id]];
+    if (f === 'right' || f === 'left') return [(f === 'right' ? 1 : -1) * (R_U + 1.3), 0];   // sideways pitches
     const dir = f != null ? f : cp.team[id] === 'a' ? 1 : -1;
     return [0, dir * (R_U + 1.3)];
   }
@@ -307,7 +308,14 @@
       ctx.restore();
     }
     (goals || [[50, 'top'], [50, 'bottom']]).forEach(([gx, end]) => {
-      drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2, goalScale);
+      // goals: [x, 'top'|'bottom'], or [y, 'left'|'right'] for a pitch laid sideways
+      if (end === 'left' || end === 'right') {
+        ctx.save();
+        ctx.translate(end === 'left' ? PITCH.x + 2 : PITCH.x + PITCH.w - 2, toPx([0, gx])[1]);
+        ctx.rotate(Math.PI / 2);
+        drawGoal(ctx, 0, 0, goalScale);
+        ctx.restore();
+      } else drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2, goalScale);
     });
   }
 
@@ -419,6 +427,10 @@
     SHOOT: { get bg() { return C.accent; }, fg: '#fff' },
     DEFEND: { bg: '#16351f', fg: '#fff' },
     'GO!': { get bg() { return C.accent; }, fg: '#fff' },
+    PRESS: { get bg() { return C.accent; }, fg: '#fff' },
+    'WON IT!': { get bg() { return C.accent; }, fg: '#fff' },
+    IN: { bg: '#16351f', fg: '#fff' },
+    OUT: { bg: '#16351f', fg: '#fff' },
     ATTACKER: { get bg() { return C.accent; }, fg: '#fff' },
     READY: { bg: '#16351f', fg: '#fff' },
     SHUFFLE: { bg: '#16351f', fg: '#fff' },
