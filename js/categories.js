@@ -19,14 +19,14 @@ window.SITE_LINKS = {
 };
 
 window.AREAS = [
+  { id: 'dugout', name: 'The Dugout', tag: 'For coaches',
+    blurb: 'Ask for a topic you want covered, or have your own session plan turned into animated clips.',
+    icon: '<path d="M3 13a9 9 0 0 1 18 0v6H3z"/><path d="M7 19v-4h10v4"/>' },
   { id: 'home-ground', name: 'Home Ground', tag: 'Solo practice',
     blurb: 'Things to practise on your own: in the garden, at the park or against a wall.',
     icon: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2.5"/>',
     plans: ['Wall passes: both feet', 'Ball mastery 2: drag-backs and turns', 'First touch away from pressure',
       'Shooting at a target', '1 v 1 moves: step-over, drag-back, Cruyff turn', 'Keepy-uppy challenges'] },
-  { id: 'dugout', name: 'The Dugout', tag: 'For coaches',
-    blurb: 'Ask for a topic you want covered, or have your own session plan turned into animated clips.',
-    icon: '<path d="M3 13a9 9 0 0 1 18 0v6H3z"/><path d="M7 19v-4h10v4"/>' },
   { id: 'kit-room', name: 'Kit Room', tag: 'Shop',
     blurb: 'GRSS | RTS training wear and kit for players, parents and coaches.',
     icon: '<path d="M8 4l-5 3 2 4 3-1v10h8V10l3 1 2-4-5-3c-.5 1.7-2 3-4 3s-3.5-1.3-4-3z"/>',
