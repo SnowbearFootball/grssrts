@@ -11,6 +11,7 @@ window.HOME_CLIP = {
     title: 'Shoot & Recover',
     tagFlash: true,
     tagPlace: 'auto',
+    pitchH: 510,   // a little shorter than the full clips' pitch (600)
     timing: { intro: 0.5, stepIn: 1.1, arrows: 1.2, read: 0.4, move: 2.4, hold: 1.1 },
     goals: [[50, 'top'], [50, 'bottom']],
     players: [

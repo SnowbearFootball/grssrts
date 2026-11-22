@@ -799,7 +799,7 @@
   }
 
   function drawBareStrip(ctx, cp, t) {
-    const lw = logoWidth(18), y = BARE_H - BARE.strip / 2, x = BARE.m, w = BARE_W - 2 * BARE.m - lw - 20, h = 5;
+    const lw = logoWidth(18), y = bareH(cp.clip) - BARE.strip / 2, x = BARE.m, w = BARE_W - 2 * BARE.m - lw - 20, h = 5;
     ctx.save();
     ctx.fillStyle = C.track;
     roundRect(ctx, x, y - h / 2, w, h, 2.5); ctx.fill();
@@ -1114,7 +1114,8 @@
 
   // Bare mode: just the pitch, with a slim strip underneath for the progress bar and the logo
   const BARE = { m: 12, gap: 20, strip: 34 };
-  const BARE_W = PITCH.w + 2 * BARE.m, BARE_H = PITCH.h + BARE.m + BARE.gap + BARE.strip;
+  const BARE_W = PITCH.w + 2 * BARE.m;
+  const bareH = clip => (clip.pitchH || PITCH.h) + BARE.m + BARE.gap + BARE.strip;   // clip.pitchH: a shorter pitch
 
   function drawDim(ctx, d) {
     const [x1, y1] = toPx(d.a), [x2, y2] = toPx(d.b);
@@ -1133,7 +1134,13 @@
   }
 
   // ---------- main frame render ----------
+  // clip.pitchH (px, default 600) draws a shorter pitch; player positions keep the same 0..75 units
   function render(ctx, cp, session, t, opts) {
+    const h = PITCH.h;
+    if (cp.clip.pitchH) PITCH.h = cp.clip.pitchH;
+    try { renderFrame(ctx, cp, session, t, opts); } finally { PITCH.h = h; }
+  }
+  function renderFrame(ctx, cp, session, t, opts) {
     const bare = !!(opts && opts.bare);
     setPlayerScale(cp.clip.playerScale);
     const clip = cp.clip;
@@ -1377,7 +1384,7 @@
       this.scale = opts.scale || 1;
       this.bare = !!opts.bare;
       canvas.width = (this.bare ? BARE_W : W) * this.scale;
-      canvas.height = (this.bare ? BARE_H : H) * this.scale;
+      canvas.height = (this.bare ? bareH(clip) : H) * this.scale;
       this.ctx = canvas.getContext('2d');
       this.load(clip);
     }
