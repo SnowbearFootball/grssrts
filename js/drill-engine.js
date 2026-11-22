@@ -209,7 +209,7 @@
       return attached(cp, step, segs[segs.length - 1].to, u);
     }
     const act = step.def.ball;
-    if (!act) return ballStartPos(cp, step, u);
+    if (!act || (!act.pass && !act.to)) return ballStartPos(cp, step, u);   // e.g. ball.give only
     const s = act.start != null ? act.start : 0;
     const e = act.end != null ? act.end : 0.4;
     const target = u2 => (act.pass ? attached(cp, step, act.pass, u2) : act.to.slice());
@@ -243,8 +243,10 @@
     }
   }
 
-  function drawGoal(ctx, cx, cy) {
-    const w = 64, h = 24;
+  // scale: clip.goalScale makes the goal bigger for close-ups (e.g. goalkeeping); depth grows less than width
+  function drawGoal(ctx, cx, cy, scale) {
+    const k = scale || 1;
+    const w = 64 * k, h = 24 * Math.min(k, 1.6);
     ctx.save();
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#1f1f1f';
@@ -266,7 +268,7 @@
   }
 
   // goals: optional list of [x, 'top'|'bottom'] in pitch units (default: one centred goal at each end)
-  function drawPitch(ctx, goals) {
+  function drawPitch(ctx, goals, goalScale, marks) {
     ctx.save();
     roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
     ctx.clip();
@@ -284,8 +286,18 @@
     roundRect(ctx, PITCH.x + 3, PITCH.y + 3, PITCH.w - 6, PITCH.h - 6, 8);
     ctx.stroke();
     ctx.restore();
+    // pitch markings: clip.marks = [{ x, y, w, h }] in pitch units, drawn as solid lines (e.g. the 6-yard box), kept on the pitch
+    (marks || []).forEach(m => {
+      const [x1, y1] = toPx([m.x, m.y]), [x2, y2] = toPx([m.x + m.w, m.y + m.h]);
+      ctx.save();
+      roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10);
+      ctx.clip();
+      ctx.strokeStyle = C.pitchEdge; ctx.lineWidth = 3;
+      ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+      ctx.restore();
+    });
     (goals || [[50, 'top'], [50, 'bottom']]).forEach(([gx, end]) => {
-      drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2);
+      drawGoal(ctx, toPx([gx, 0])[0], end === 'top' ? PITCH.y + 2 : PITCH.y + PITCH.h - 2, goalScale);
     });
   }
 
@@ -398,6 +410,11 @@
     DEFEND: { bg: '#16351f', fg: '#fff' },
     'GO!': { get bg() { return C.accent; }, fg: '#fff' },
     ATTACKER: { get bg() { return C.accent; }, fg: '#fff' },
+    READY: { bg: '#16351f', fg: '#fff' },
+    SHUFFLE: { bg: '#16351f', fg: '#fff' },
+    SET: { get bg() { return C.accent; }, fg: '#fff' },
+    SAVE: { get bg() { return C.accent; }, fg: '#fff' },
+    'GET UP!': { get bg() { return C.accent; }, fg: '#fff' },
     DEFENDER: { bg: '#16351f', fg: '#fff' },
   };
 
@@ -839,7 +856,7 @@
     ctx.fillRect(0, 0, W, H);
     if (bare) ctx.translate(BARE.m - PITCH.x, BARE.m - PITCH.y);
     else drawHeader(ctx, session, clip);
-    drawPitch(ctx, clip.goals);
+    drawPitch(ctx, clip.goals, clip.goalScale, clip.marks);
     // marked practice areas: clip.areas = [{ x, y, w, h }] in pitch units, cones at the corners
     (clip.areas || []).forEach(a => {
       const [x1, y1] = toPx([a.x, a.y]), [x2, y2] = toPx([a.x + a.w, a.y + a.h]);
