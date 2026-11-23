@@ -132,6 +132,11 @@
         state.ball = { owner: def.ball.give };
         if (!state.used.includes(def.ball.give)) state.used.push(def.ball.give);
       }
+      // ball2.give: the same for the second ball (e.g. the next player in another lane)
+      if (def.ball2 && def.ball2.give && state.ball2) {
+        state.ball2 = { owner: def.ball2.give };
+        if (!state.used.includes(def.ball2.give)) state.used.push(def.ball2.give);
+      }
       const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false) || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length) || !!(def.passes3 && def.passes3.length);
       const hasMotion = moves.length > 0 || !!def.ball || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length) || !!(def.passes3 && def.passes3.length);
       const phases = {
@@ -488,6 +493,14 @@
     RUN: { bg: '#16351f', fg: '#fff' },
     FIRM: { bg: '#16351f', fg: '#fff' },
     'MOVE AWAY': { bg: '#16351f', fg: '#fff' },
+    'HEAD UP': { bg: '#16351f', fg: '#fff' },
+    'FACE UP': { get bg() { return C.accent; }, fg: '#fff' },
+    'STEP OVER': { bg: '#16351f', fg: '#fff' },
+    'SHOULDER DROP': { bg: '#16351f', fg: '#fff' },
+    'SOLE ROLL': { bg: '#16351f', fg: '#fff' },
+    'INSIDE-OUTSIDE': { bg: '#16351f', fg: '#fff' },
+    STOP: { bg: '#16351f', fg: '#fff' },
+    'CHANGE OF PACE': { get bg() { return C.accent; }, fg: '#fff' },
     SHIFT: { bg: '#16351f', fg: '#fff' },
     'TUCK IN': { bg: '#16351f', fg: '#fff' },
     'STEP UP': { get bg() { return C.accent; }, fg: '#fff' },
