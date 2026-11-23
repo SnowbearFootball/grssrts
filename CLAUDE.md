@@ -68,7 +68,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - Rejected along the way: animal players (fox, dog, hedgehog etc.), a cone (looked like Wizbit; hair never sat right),
   black panels or a panel in the middle of the forehead, seams across the face, hair floating above the ball.
 - **Minis area** (U8 and under, `minis` in AREAS): Grass and Roots clips + stars per move (1 slow, 2 faster, 3 challenge),
-  saved on the device only (no accounts, no children's data). Hidden until `SITE_FLAGS.minis = true` (`js/categories.js`);
+  saved on the device only (no accounts, no children's data). Live since the owner approved it (`SITE_FLAGS.minis = true` in `js/categories.js`);
   preview with `?drafts`. Sessions join with `minis: true`.
 
 ## Business decisions

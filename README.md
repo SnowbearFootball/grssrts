@@ -76,8 +76,8 @@ It opens the print dialog, where coaches choose "Save as PDF" or print it. QR co
 ## Minis: Grass and Roots
 
 The Minis area (U8 and under) shows solo clips with two characters beside the feet view: **Grass** (the coach) and
-**Roots** (the player, who copies each touch in time with the clip). It's switched off until `SITE_FLAGS.minis` is
-`true` in `js/categories.js`; add `?drafts` to the address to preview it. A session joins with `minis: true`; each
+**Roots** (the player, who copies each touch in time with the clip). It's switched on by `SITE_FLAGS.minis` in
+`js/categories.js` (set it to `false` to hide it again). A session joins with `minis: true`; each
 clip can have Grass's lines (`coach: { intro, steps: [[big, small], ...], outro }`) and a `minisVideo` path.
 Render those videos with `node tools/render-minis.js`. Stars for each move are saved on the device only.
 
