@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 /*
- * Builds the GRSS | RTS logo: "GRSS" then "RTS" standing in an angled goal.
- * The goal's left post is the divider; the back frame and net run back up and to the right,
- * with the net drawn in perspective on each panel (roof, side, back).
+ * Builds the GRSS | RTS logo: "GRSS" then "RTS" standing in a football goal.
+ * The goal's left post is the divider. Behind the crossbar a roof runs back (up and to the right),
+ * then the stanchions angle down to the ground, with the net drawn in perspective on each panel
+ * (roof, sides, sloping back).
  * Letters are converted to outlines, so the SVGs look identical everywhere.
  *
  *   npm i opentype.js@1.3.4   (once)
  *   node tools/build-logo.js
  *
  * Writes: assets/logo/*.svg and js/logo-data.js (used by the video engine).
+ * Then run  node tools/build-logo-png.js  to make the PNG versions (needs Playwright).
  */
 const opentype = require('opentype.js');
 const fs = require('fs');
@@ -34,7 +36,9 @@ const capH = (font.charToGlyph('H').getBoundingBox().y2 / font.unitsPerEm) * EM;
 // ---------- goal geometry (all in font units, EM = 100) ----------
 const G = {
   pw: 5.5,          // front post / crossbar thickness
-  ox: 22, oy: 16,   // back frame offset: right and up
+  ox: 26, oy: 12,   // depth direction: right and up (one unit of depth)
+  roof: 0.9,        // how far back the roof runs before the stanchions angle down
+  depth: 1.7,       // how far back the net meets the ground
   padL: 20, padR: 12, padTop: 18, below: 5,
   cell: 13,         // net mesh size
   net: 0.5, back: 0.28,
@@ -43,8 +47,10 @@ function goalGeometry(x0, rtsWidth) {
   const h = G.pw / 2;
   const W = G.padL + rtsWidth + G.padR;
   const L = x0 + h, R = x0 + W - h, T = BASE - capH - G.padTop + h, B = BASE + G.below;
-  const bL = L + G.ox, bR = R + G.ox, bT = T - G.oy, bB = B - G.oy;
-  return { L, R, T, B, bL, bR, bT, bB, rtsX: x0 + G.padL };
+  // roof back (top of the stanchions) and ground back (where the net meets the ground)
+  const rL = L + G.ox * G.roof, rR = R + G.ox * G.roof, rT = T - G.oy * G.roof;
+  const gL = L + G.ox * G.depth, gR = R + G.ox * G.depth, gB = B - G.oy * G.depth;
+  return { L, R, T, B, rL, rR, rT, gL, gR, gB, bT: rT, bR: gR, rtsX: x0 + G.padL };
 }
 const lerp = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
 const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
@@ -70,19 +76,22 @@ const line = (a, b) => `M${f2(a[0])} ${f2(a[1])}L${f2(b[0])} ${f2(b[1])}`;
 
 // Strokes making up the goal: [{ d, w, op }] (net layers first, front frame last)
 function goalStrokes(g, withNet) {
-  const { L, R, T, B, bL, bR, bT, bB } = g;
+  const { L, R, T, B, rL, rR, rT, gL, gR, gB } = g;
   const sw = EM / 64;
   const s = [];
   if (withNet) {
-    s.push({ d: mesh([bL, bT], [bR, bT], [bR, bB], [bL, bB]) + mesh([L, T], [L, B], [bL, bB], [bL, bT]), w: sw, op: G.net * G.back });
-    s.push({ d: mesh([L, T], [R, T], [bR, bT], [bL, bT]) + mesh([R, T], [R, B], [bR, bB], [bR, bT]), w: sw, op: G.net });
+    // far panels faint (the sloping back net, the left side); near panels stronger (the roof, the right side)
+    s.push({ d: mesh([rL, rT], [rR, rT], [gR, gB], [gL, gB]) + mesh([L, T], [rL, rT], [gL, gB], [L, B]), w: sw, op: G.net * G.back });
+    s.push({ d: mesh([L, T], [R, T], [rR, rT], [rL, rT]) + mesh([R, T], [rR, rT], [gR, gB], [R, B]), w: sw, op: G.net });
   }
-  s.push({ d: line([bL, bT], [bR, bT]) + line([bR, bT], [bR, bB]), w: sw * 1.8, op: 0.8 });
-  s.push({ d: line([bL, bT], [bL, bB]), w: sw * 1.4, op: 0.45 });
-  s.push({ d: line([L, T], [bL, bT]), w: sw * 1.6, op: 0.75 });
-  s.push({ d: line([R, T], [bR, bT]), w: sw * 1.8, op: 0.85 });
-  s.push({ d: line([R, B], [bR, bB]), w: sw * 1.4, op: 0.6 });
-  s.push({ d: line([bL, bB], [bR, bB]), w: sw * 1.2, op: 0.4 });
+  s.push({ d: line([rL, rT], [rR, rT]), w: sw * 1.8, op: 0.8 });                 // back of the roof
+  s.push({ d: line([L, T], [rL, rT]), w: sw * 1.6, op: 0.75 });                  // roof sides
+  s.push({ d: line([R, T], [rR, rT]), w: sw * 1.8, op: 0.85 });
+  s.push({ d: line([rR, rT], [gR, gB]), w: sw * 2.2, op: 0.9 });                 // angled stanchions
+  s.push({ d: line([rL, rT], [gL, gB]), w: sw * 1.6, op: 0.5 });
+  s.push({ d: line([R, B], [gR, gB]), w: sw * 1.4, op: 0.6 });                   // ground bars
+  s.push({ d: line([L, B], [gL, gB]), w: sw * 1.2, op: 0.4 });
+  s.push({ d: line([gL, gB], [gR, gB]), w: sw * 1.2, op: 0.4 });
   s.push({ d: `M${f2(L)} ${f2(B)}V${f2(T)}H${f2(R)}V${f2(B)}`, w: G.pw, op: 1, join: 'miter' });
   return s;
 }
@@ -114,7 +123,7 @@ ${strokesSvg(goalStrokes(goal, net), cGoal)}
 
 const out = path.join(ROOT, 'assets/logo');
 fs.mkdirSync(out, { recursive: true });
-for (const f of fs.readdirSync(out)) if (/\.(svg|png)$/.test(f)) fs.unlinkSync(path.join(out, f));
+for (const f of fs.readdirSync(out)) if (/\.svg$/.test(f)) fs.unlinkSync(path.join(out, f));   // PNGs: tools/build-logo-png.js
 const C = COLORS;
 fs.writeFileSync(path.join(out, 'grss-rts.svg'), wordmark({ grss: C.forest, goal: C.forest, rts: C.orange, label: 'main' }));
 fs.writeFileSync(path.join(out, 'grss-rts-on-dark.svg'), wordmark({ grss: C.cream, goal: C.cream, rts: C.orange, label: 'on dark' }));
@@ -123,15 +132,19 @@ fs.writeFileSync(path.join(out, 'grss-rts-white.svg'), wordmark({ grss: C.white,
 fs.writeFileSync(path.join(out, 'grss-rts-kit.svg'), wordmark({ grss: C.forest, goal: C.forest, rts: C.orange, net: false, label: 'simplified, for embroidery' }));
 fs.writeFileSync(path.join(out, 'grss-rts-kit-white.svg'), wordmark({ grss: C.white, goal: C.white, rts: C.white, net: false, label: 'simplified, white' }));
 
-// Square icon: RTS in the goal, cream on forest
+// Square app icon: GRSS stacked over RTS-in-the-goal, cream and orange on forest
 {
-  const gx0 = -3, gy0 = iconGoal.bT - 3, gw = iconGoal.bR + 6, gh = iconGoal.B - iconGoal.bT + 6;
-  const S = 512, inner = 380, scale = inner / Math.max(gw, gh);
-  const tx = (S - gw * scale) / 2 - gx0 * scale, ty = (S - gh * scale) / 2 - gy0 * scale;
+  const S = 512, maxW = 372, gap = 22;
+  const grssBox = { x: 0, y: BASE - capH, w: g1.end, h: capH };
+  const goalBox = { x: iconGoal.L - G.pw / 2, y: iconGoal.bT - 1, w: iconGoal.bR + 1 - (iconGoal.L - G.pw / 2), h: iconGoal.B + G.pw / 2 - iconGoal.bT + 1 };
+  const k = Math.min(maxW / grssBox.w, maxW / goalBox.w);
+  const top = (S - (grssBox.h + goalBox.h) * k - gap) / 2;
+  const place = (box, y) => `translate(${f2((S - box.w * k) / 2 - box.x * k)} ${f2(y - box.y * k)}) scale(${f2(k)})`;
   fs.writeFileSync(path.join(out, 'grss-rts-icon.svg'),
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${S} ${S}" role="img" aria-label="GRSS | RTS"><title>GRSS | RTS icon</title>
 <rect width="${S}" height="${S}" rx="112" fill="${C.forest}"/>
-<g transform="translate(${f2(tx)} ${f2(ty)}) scale(${f2(scale)})">
+<g transform="${place(grssBox, top)}"><path d="${g1.d}" fill="${C.cream}"/></g>
+<g transform="${place(goalBox, top + grssBox.h * k + gap)}">
 ${strokesSvg(goalStrokes(iconGoal, true), C.cream)}
 <path d="${iconRts.d}" fill="${C.orange}"/>
 </g></svg>\n`);

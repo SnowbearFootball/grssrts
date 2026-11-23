@@ -28,7 +28,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 ## Brand
 
 Colours: forest green `#16351F` · burnt orange `#D9622B` · cream `#F2E6CD`. Font: Montserrat (free, SIL Open Font License, in `assets/fonts`).
-The logo is GRSS followed by RTS standing in an angled goal: the left post is the divider, and the net runs back in perspective.
+The logo is GRSS followed by RTS standing in a football goal: the left post is the divider; behind the crossbar the net runs back, and the stanchions angle down to the ground.
 The website is cream-led; the video frame stays forest green.
 
 Logo files are in `assets/logo/`:
@@ -42,9 +42,10 @@ Logo files are in `assets/logo/`:
 | `grss-rts-forest.svg` | One colour |
 | `grss-rts-white.svg` | All white |
 | `grss-rts-transparent-2000.png` | Main logo, transparent background |
-| `grss-rts-icon.svg` / `grss-rts-icon-512.png` | Square icon: RTS in the goal (WhatsApp profile, home-screen shortcut) |
+| `grss-rts-icon.svg` / `grss-rts-icon-512.png` | Square app icon: GRSS stacked over RTS in the goal (WhatsApp profile, home-screen icon) |
+| `apple-touch-icon.png`, `icon-192.png`, `icon-512-maskable.png` | Home-screen icons (full squares; phones round the corners) |
 
-To change the logo, edit `tools/build-logo.js` and run `node tools/build-logo.js` (needs `npm i opentype.js@1.3.4`). It rebuilds the SVGs and `js/logo-data.js`, which the videos use.
+To change the logo, edit `tools/build-logo.js` and run `node tools/build-logo.js` (needs `npm i opentype.js@1.3.4`). It rebuilds the SVGs and `js/logo-data.js`, which the videos use. Then run `node tools/build-logo-png.js` for the PNGs, and re-render the videos.
 
 ## Site structure
 
