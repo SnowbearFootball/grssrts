@@ -90,6 +90,8 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   (to build up content, with permission to publish and credit).
 - Tool: **MailerLite** (free up to 1,000; owner is setting up the account). Sign-up asks: first name, email, role
   (coach / parent / player 16+), coaching qualification (optional, coaches only), age groups coached, club, email consent tick box. Never children's names or dates of birth.
+- Domain grssrts.co.uk is registered and managed in the owner's Cloudflare account (email and MailerLite settings go there).
+  Email: a hello@grssrts.co.uk inbox is needed (MailerLite won't send from Yahoo/Gmail). Suggested Google Workspace; Zoho free as the no-cost option. Owner deciding.
 - To build: a Join page and a privacy page (hidden until approved), a Starter Pack PDF, and better filtering as the library grows
   (section pages already have search, Saved, and Age / Type / Players filters).
 
