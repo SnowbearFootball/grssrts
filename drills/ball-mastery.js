@@ -21,6 +21,7 @@ window.SESSIONS.push({
   summary: 'Four moves to practise on your own: toe taps, sole rolls, tic-tacs and pull-push. Slow first, then faster.',
   keyPhrase: 'Little touches, lots of them',
   ages: { from: 6 },
+  minis: true,   // shown with Grass and Roots in the Minis area
 
   cards: [
     {
@@ -68,6 +69,12 @@ window.SESSIONS.push({
       id: 'toe-taps',
       kind: 'solo',
       video: 'videos/ball-mastery-1-toe-taps.mp4',
+      minisVideo: 'videos/ball-mastery-1-toe-taps-minis.mp4',
+      coach: {
+        intro: ['Hi Roots! Today: toe taps.', 'Tap the top of the ball with your toes'],
+        steps: [['Nice and slow first.', 'Right, left, right, left...'], ['Now faster!', 'Stay on your toes'], ['Challenge!', 'How many in 30 seconds?']],
+        outro: ['Great touches, Roots!', 'Same again tomorrow?'],
+      },
       kicker: 'Move 1',
       title: 'Toe Taps',
       tagline: 'Tap the top of the ball: right, left, right, left.',
@@ -99,6 +106,12 @@ window.SESSIONS.push({
       id: 'sole-rolls',
       kind: 'solo',
       video: 'videos/ball-mastery-2-sole-rolls.mp4',
+      minisVideo: 'videos/ball-mastery-2-sole-rolls-minis.mp4',
+      coach: {
+        intro: ['Sole rolls, Roots!', 'Bottom of your foot on top of the ball'],
+        steps: [['One foot first.', 'Roll it across, then back'], ['Now swap feet.', 'Right rolls it, left rolls it back'], ['Faster!', 'Little hops, foot to foot']],
+        outro: ['Lovely rolling!', 'Roll it, don\'t kick it'],
+      },
       kicker: 'Move 2',
       title: 'Sole Rolls',
       tagline: 'Roll the ball across with the bottom of your foot.',
@@ -130,6 +143,12 @@ window.SESSIONS.push({
       id: 'tic-tacs',
       kind: 'solo',
       video: 'videos/ball-mastery-3-tic-tacs.mp4',
+      minisVideo: 'videos/ball-mastery-3-tic-tacs-minis.mp4',
+      coach: {
+        intro: ['Tic-tacs time!', 'Ball between your feet'],
+        steps: [['Slow first.', 'Inside, inside'], ['Faster now!', 'Small touches, keep it close'], ['Head up, Roots!', 'Can you feel where the ball is?']],
+        outro: ['Brilliant, Roots!', 'Little touches, lots of them'],
+      },
       kicker: 'Move 3',
       title: 'Tic-Tacs',
       tagline: 'Pass the ball between your feet with the insides.',
@@ -162,6 +181,12 @@ window.SESSIONS.push({
       id: 'pull-push',
       kind: 'solo',
       video: 'videos/ball-mastery-4-pull-push.mp4',
+      minisVideo: 'videos/ball-mastery-4-pull-push-minis.mp4',
+      coach: {
+        intro: ['Pull-push, Roots!', 'Sole pulls it back, laces push it'],
+        steps: [['Right foot first.', 'Pull, push'], ['Now your left foot.', 'Pull, push'], ['Put it together!', 'Pull, push, pass it across']],
+        outro: ['Superstar, Roots!', 'Both feet, every day'],
+      },
       kicker: 'Move 4',
       title: 'Pull-Push',
       tagline: 'Pull it back with your sole, push it out with your laces.',

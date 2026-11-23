@@ -56,6 +56,21 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   Ball Mastery: The Basics (Home Ground, solo clips).
 - Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
 
+## Grass and Roots (the Minis characters)
+
+- **Grass** = the coach: cream ball, **green grass hair**, **orange panels**, green eyes, GRSS RTS badge, whistle and
+  clipboard, side-on boots. **Roots** = the young player: smaller cream ball, **orange hair**, **grass-green panels**,
+  bigger green eyes; does the moves. Only Roots's feet face forward (Roots does the exercise; Grass doesn't).
+- Say "Grass and Roots" (real words); the characters carry GRSS / RTS on their kit.
+- Shown on a light panel (`#eef0f2`) with a green border, an orange divider, beside the feet view. Dark boots on light.
+- Code: `js/mascots.js` (drawings + sync to solo clips). Coach lines per clip in `coach: { intro, steps, outro }`.
+- Minis videos: `tools/render-minis.js` (frame in `tools/minis-frame.html`) writes each clip's `minisVideo`.
+- Rejected along the way: animal players (fox, dog, hedgehog etc.), a cone (looked like Wizbit; hair never sat right),
+  black panels or a panel in the middle of the forehead, seams across the face, hair floating above the ball.
+- **Minis area** (U8 and under, `minis` in AREAS): Grass and Roots clips + stars per move (1 slow, 2 faster, 3 challenge),
+  saved on the device only (no accounts, no children's data). Hidden until `SITE_FLAGS.minis = true` (`js/categories.js`);
+  preview with `?drafts`. Sessions join with `minis: true`.
+
 ## Business decisions
 
 - **Your session, animated** (The Dugout): Share it = **free** (added to the library to help other grassroots coaches,
@@ -69,5 +84,4 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 ## Ideas agreed, not built yet
 
 - Installable web app (PWA) with clips saved for offline use at training; icons are ready. App stores later.
-- Mascot **"Roots"** for Home Ground / younger players (drafts under review).
 - Per-session link previews for WhatsApp.

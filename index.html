@@ -105,7 +105,35 @@
   .main-tile small { color: #c9d3c3; font-size: 13.5px; line-height: 1.45; }
   .main-tile .count { font-size: 12.5px; font-weight: 700; color: var(--accent-soft); margin-top: 6px; }
   .main-tile:hover { background: var(--forest-2); }
-  .areas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px; }
+  .areas { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-bottom: 40px; }
+  /* Minis: Grass and Roots next to the feet view */
+  .play-area.with-mascots { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 14px; align-items: start; }
+  .mascot-panel { position: relative; min-width: 0; }
+  .mascot-panel svg { display: block; width: 100%; height: auto; }
+  .mascot-bubble { position: absolute; left: 33%; top: 3%; width: 44%; background: #fffaf0; border: 2.5px solid var(--forest); border-radius: 16px;
+    padding: 7px 10px; text-align: center; line-height: 1.2; box-shadow: 0 4px 10px rgba(22,53,31,.12); }
+  .mascot-bubble::after { content: ""; position: absolute; left: 14%; bottom: -14px; border: 8px solid transparent; border-top: 10px solid #fffaf0; }
+  .mascot-bubble b { display: block; font-size: clamp(11px, 1.35vw, 16px); color: var(--forest); }
+  .mascot-bubble span { display: block; font-size: clamp(10px, 1.1vw, 13.5px); font-weight: 700; color: #a8641f; margin-top: 2px; }
+  .minis-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 22px; align-items: center; margin: 0 0 26px; }
+  .minis-hero h2 { margin: 0 0 8px; font-size: clamp(24px, 3.4vw, 32px); }
+  .minis-hero p { margin: 0 0 8px; color: var(--sub); }
+  .moves { list-style: none; margin: 0 0 18px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+  .move { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; overflow: hidden; display: grid; min-width: 0; }
+  .move a { display: grid; text-decoration: none; color: var(--text); }
+  .move img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; background: var(--forest); }
+  .move .mm { padding: 10px 12px 4px; display: grid; gap: 2px; }
+  .move .num { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--accent-ink); text-transform: uppercase; }
+  .move b { font-size: 17px; }
+  .stars { display: flex; gap: 6px; align-items: center; padding: 6px 12px 12px; }
+  .stars span { font-size: 12px; font-weight: 700; color: var(--muted); margin-right: 4px; }
+  .star-btn { border: 0; background: none; cursor: pointer; font-size: 26px; line-height: 1; padding: 2px; color: #d8cdb6; }
+  .star-btn[aria-pressed="true"] { color: var(--accent); }
+  .star-btn:hover { transform: scale(1.12); }
+  .medal { margin-left: auto; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--forest);
+    background: var(--cream); border-radius: 999px; padding: 3px 9px; }
+  .progress-line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 0 0 10px; font-weight: 700; }
+  .progress-line button { background: none; border: 0; padding: 0; color: var(--accent-ink); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 13px; }
   .area-tile { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 4px; align-content: start;
     text-decoration: none; color: var(--text); min-width: 0; }
   .area-tile svg { width: 26px; height: 26px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -331,6 +359,7 @@
     .hero { grid-template-columns: 1fr; gap: 18px; }
     .hero-clip { max-width: 520px; }
     .mains, .areas { grid-template-columns: 1fr; }
+    .play-area.with-mascots, .minis-hero { grid-template-columns: 1fr; }
     .offers { grid-template-columns: 1fr; }
     .promo { grid-template-columns: 1fr; }
     .steps3, .tiers { grid-template-columns: 1fr; }
@@ -492,6 +521,11 @@
     <div class="prog-head"><h2>The progression</h2><p>Each clip builds on the one before.</p></div>
     <ol class="progression" id="progression"></ol>
 
+    <div class="play-area" id="play-area">
+    <div class="mascot-panel" id="mascot-panel" hidden>
+      <div class="mascot-bubble" id="mascot-bubble"><b id="mascot-b1"></b><span id="mascot-b2"></span></div>
+      <div id="mascot-svg"></div>
+    </div>
     <div class="stage">
       <canvas id="canvas" aria-label="Animated drill"></canvas>
       <div class="controls">
@@ -511,6 +545,7 @@
         <button class="next-clip" id="next-clip" hidden>Next clip ›</button>
       </div>
       <p class="rotate-hint">Turn your phone sideways for a bigger view</p>
+    </div>
     </div>
     <div class="dl" id="downloads"></div>
 
@@ -543,6 +578,7 @@
 <script src="js/logo-data.js"></script>
 <script src="js/drill-engine.js"></script>
 <script src="js/categories.js"></script>
+<script src="js/mascots.js"></script>
 <script src="js/home-clip.js"></script>
 <!-- Sessions: add one script tag per session file -->
 <script src="drills/splash-and-ripple.js"></script>
@@ -558,12 +594,15 @@
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
   const SESSIONS = (window.SESSIONS || []).filter(s => !s.draft || /[?&]drafts\b/.test(location.search));
   const CATS = window.CATEGORIES || [];
-  const AREAS = window.AREAS || [];
+  const DRAFTS = /[?&]drafts\b/.test(location.search);
+  const FLAGS = window.SITE_FLAGS || {};
+  const MINIS = !!FLAGS.minis || DRAFTS;   // Minis area + Grass and Roots, hidden until switched on
+  const AREAS = (window.AREAS || []).filter(a => !a.draft || (a.id === 'minis' ? MINIS : DRAFTS));
+  const catOf = s => (s.minis && MINIS && AREAS.find(a => a.id === 'minis')) || CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground; Minis ones in Minis
   const LINKS = window.SITE_LINKS || {};
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
-  const catOf = s => CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground
   const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
   const fmtLen = sec => sec < 60 ? `${Math.round(sec)}s` : `${Math.floor(sec / 60)}m ${String(Math.round(sec % 60)).padStart(2, '0')}s`;
   const clipFormat = c => ((c.kicker || '').split('·')[1] || (/\d v \d/.test(c.title) ? c.title : '')).trim();
@@ -599,6 +638,20 @@
   function sync() {
     $('scrub').value = Math.round((player.t / player.duration) * 1000);
     $('time').textContent = `${fmt(player.t)} / ${fmt(player.duration)}`;
+    if (mascotsOn) {
+      Mascots.update($('mascot-svg').firstElementChild, player.cp, player.t);
+      const [a, b] = Mascots.line(clip, player.cp, player.t);
+      if ($('mascot-b1').textContent !== a) { $('mascot-b1').textContent = a; $('mascot-b2').textContent = b; }
+    }
+  }
+  // Grass and Roots alongside Minis clips
+  let mascotsOn = false;
+  const useMascots = () => MINIS && window.Mascots && session.minis && clip.kind === 'solo';
+  function setupMascots() {
+    mascotsOn = useMascots();
+    $('mascot-panel').hidden = !mascotsOn;
+    $('play-area').classList.toggle('with-mascots', mascotsOn);
+    if (mascotsOn && !$('mascot-svg').firstElementChild) $('mascot-svg').innerHTML = Mascots.svg();
   }
   function seek(t) { player.renderAt(Math.max(0, Math.min(player.duration, t))); sync(); }
 
@@ -721,7 +774,7 @@
     $('next-clip').hidden = i >= session.clips.length - 1;
     $('next-clip').classList.remove('ready');
     $('downloads').innerHTML = `<button class="share-btn" id="share-btn">↗ Share with your squad</button>` +
-      (clip.video && !window.NO_DOWNLOADS ? `<a href="${esc(clip.video)}" download>⬇ Download this clip (MP4)</a>` : '') +
+      (clip.video && !window.NO_DOWNLOADS ? `<a href="${esc(mascotsOn && clip.minisVideo ? clip.minisVideo : clip.video)}" download>⬇ Download this clip (MP4)</a>` : '') +
       (!window.NO_DOWNLOADS ? `<button id="plan-btn">⬇ Download the session plan (PDF)</button>` : '');
     renderTabs();
   }
@@ -736,6 +789,7 @@
   function loadClip() {
     setPlaying(false);
     player.session = session;
+    setupMascots();
     player.load(clip);
     renderSession(); sync();
   }
@@ -1031,7 +1085,53 @@
     ? `<a class="btn${primary ? ' primary' : ''}" href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`
     : `<span class="btn${primary ? ' primary' : ''}" aria-disabled="true">Opening soon</span>`;
   const soonList = items => `<ul class="soon">${items.map(i => `<li>${esc(i)}<span>Coming soon</span></li>`).join('')}</ul>`;
+  // Minis progress: stars per move, saved on this device only
+  const STAR_KEY = 'grssrts:minis-stars';
+  let stars = {};
+  try { stars = JSON.parse(localStorage.getItem(STAR_KEY) || '{}') || {}; } catch (e) { stars = {}; }
+  const saveStars = () => { try { localStorage.setItem(STAR_KEY, JSON.stringify(stars)); } catch (e) { /* private window */ } };
+  const MEDALS = ['', 'Bronze', 'Silver', 'Gold'];
+  function minisBody(a) {
+    const minis = SESSIONS.filter(s => s.minis);
+    const all = minis.flatMap(s => s.clips.map(c => ({ s, c })));
+    const total = all.reduce((n, x) => n + (stars[x.s.id + ':' + x.c.id] || 0), 0);
+    const tile = ({ s, c }, i) => {
+      const key = s.id + ':' + c.id, n = stars[key] || 0;
+      return `<li class="move"><a href="#${esc(s.id)}:${esc(c.id)}"><img src="${clipThumb(s, c)}" alt="" loading="lazy">
+          <span class="mm"><span class="num">Move ${i + 1}</span><b>${esc(c.title)}</b></span></a>
+        <div class="stars" role="group" aria-label="Stars for ${esc(c.title)}"><span>My stars</span>
+          ${[1, 2, 3].map(k => `<button class="star-btn" data-star="${esc(key)}" data-n="${k}" aria-pressed="${k <= n}" aria-label="${k} star${k > 1 ? 's' : ''}">★</button>`).join('')}
+          ${n ? `<span class="medal">${MEDALS[n]}</span>` : ''}</div></li>`;
+    };
+    return `<section class="minis-hero">
+        <div><p class="eyebrow">Meet Grass and Roots</p><h2>Learn the basics with your new teammates</h2>
+          <p><b>Grass</b> is the coach. <b>Roots</b> is learning, just like you. Watch Roots, then have a go yourself.</p>
+          <p class="note">Each move has three levels: slow, faster, then a challenge. Give yourself a star each time you get better.</p></div>
+        <div class="mascot-panel">${window.Mascots ? Mascots.svg() : ''}</div>
+      </section>
+      <div class="progress-line"><span>My stars: ${total} of ${all.length * 3}</span>${total ? '<button id="stars-reset">Start again</button>' : ''}</div>
+      <ul class="moves">${all.map(tile).join('')}</ul>
+      <p class="note">For parents: stars are saved on this phone or computer only. Nothing is sent to us, and no account or name is needed.
+        One star for slow, two for faster, three for the challenge.</p>`;
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-star]');
+    if (b) {
+      const key = b.dataset.star, n = +b.dataset.n;
+      stars[key] = stars[key] === n ? n - 1 : n;   // tap the top star again to take it back
+      saveStars();
+      const area = AREAS.find(a => a.id === 'minis');
+      if (area && !$('area').hidden) { $('area-body').innerHTML = minisBody(area); }
+      return;
+    }
+    if (e.target.closest('#stars-reset')) {
+      stars = {}; saveStars();
+      const area = AREAS.find(a => a.id === 'minis');
+      if (area) $('area-body').innerHTML = minisBody(area);
+    }
+  });
   const AREA_BODY = {
+    'minis': a => minisBody(a),
     'home-ground': a => {
       const solo = SESSIONS.filter(s => s.category === a.id);
       return (solo.length ? `<div class="count-line"><span>${plural(solo.length, 'session')}</span></div><ul class="srows">${solo.map(sessionRow).join('')}</ul>` : '') +
@@ -1113,7 +1213,7 @@
   const VIEWS = ['home', 'section', 'area', 'session'];
   function show(view) { VIEWS.forEach(v => { $(v).hidden = v !== view; }); view === 'home' ? hero.start() : hero.stop(); }
   function route() {
-    const id = location.hash.replace('#', '');
+    const [id, wantClip] = location.hash.replace('#', '').split(':');
     const s = SESSIONS.find(x => x.id === id || (x.aliases || []).includes(id));
     if (s && s.id !== id) { location.replace('#' + s.id); return; }   // an old address for a replaced session
     const cat = CATS.find(c => c.id === id);
@@ -1121,6 +1221,7 @@
     if (s) {
       show('session');
       if (s !== session) { session = s; clip = s.clips[0]; }
+      if (wantClip) clip = s.clips.find(c => c.id === wantClip) || clip;
       loadClip();
       renderNav(s.category);
       document.title = `${s.title} · GRSS | RTS`;
