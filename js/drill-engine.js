@@ -119,6 +119,7 @@
       used: clip.ball && clip.ball.owner ? [clip.ball.owner] : [],   // players whose own ball is in play / used
       spent: [],                                                      // finished balls left where they ended (e.g. in the net)
       ball2: clip.ball2 ? { owner: clip.ball2.owner } : null,          // optional second ball: clip.ball2 = { owner }, moved by passes2
+      ball3: clip.ball3 ? { owner: clip.ball3.owner } : null,          // optional third ball: clip.ball3, moved by passes3
     };
 
     let t = timing.intro;
@@ -131,8 +132,8 @@
         state.ball = { owner: def.ball.give };
         if (!state.used.includes(def.ball.give)) state.used.push(def.ball.give);
       }
-      const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false) || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length);
-      const hasMotion = moves.length > 0 || !!def.ball || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length);
+      const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false) || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length) || !!(def.passes3 && def.passes3.length);
+      const hasMotion = moves.length > 0 || !!def.ball || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length) || !!(def.passes3 && def.passes3.length);
       const phases = {
         stepIn: d.stepIn,
         arrows: hasArrows ? d.arrows : 0,
@@ -146,6 +147,7 @@
       moves.forEach(m => { const path = m.path || [m.to]; endState.pos[m.id] = path[path.length - 1].slice(); });
       if (def.passes && def.passes.length) endState.ball = { owner: def.passes[def.passes.length - 1].to };
       if (def.passes2 && def.passes2.length) endState.ball2 = { owner: def.passes2[def.passes2.length - 1].to };
+      if (def.passes3 && def.passes3.length) endState.ball3 = { owner: def.passes3[def.passes3.length - 1].to };
       if (def.ball) {
         if (def.ball.pass) endState.ball = { owner: def.ball.pass };
         else if (def.ball.to) endState.ball = { owner: null, at: def.ball.to.slice() };
@@ -199,8 +201,8 @@
     });
   }
   // the second ball (clip.ball2): reuse the first ball's maths on a view of the step with passes2 as its passes
-  function ball2Step(step) {
-    return Object.assign({}, step, { def: Object.assign({}, step.def, { passes: step.def.passes2, ball: null }), startState: Object.assign({}, step.startState, { ball: step.startState.ball2 }) });
+  function ball2Step(step, n = 2) {
+    return Object.assign({}, step, { def: Object.assign({}, step.def, { passes: step.def['passes' + n], ball: null }), startState: Object.assign({}, step.startState, { ball: step.startState['ball' + n] }) });
   }
   function ballPos(cp, step, u) {
     if (step.def.passes && step.def.passes.length) {
@@ -439,6 +441,16 @@
     IN: { bg: '#16351f', fg: '#fff' },
     UP: { bg: '#16351f', fg: '#fff' },
     WAIT: { bg: '#6b7280', fg: '#fff' },
+    SCAN: { bg: '#16351f', fg: '#fff' },
+    SWITCH: { get bg() { return C.accent; }, fg: '#fff' },
+    UNDERLAP: { get bg() { return C.accent; }, fg: '#fff' },
+    OVERLAP: { get bg() { return C.accent; }, fg: '#fff' },
+    'STAY WIDE': { bg: '#16351f', fg: '#fff' },
+    'COME INSIDE': { bg: '#16351f', fg: '#fff' },
+    'COME SHORT': { bg: '#16351f', fg: '#fff' },
+    CROSS: { get bg() { return C.accent; }, fg: '#fff' },
+    'NEAR POST': { bg: '#16351f', fg: '#fff' },
+    'FAR POST': { bg: '#16351f', fg: '#fff' },
     DROP: { get bg() { return C.accent; }, fg: '#fff' },
     SPLIT: { bg: '#16351f', fg: '#fff' },
     'PUSH ON': { bg: '#16351f', fg: '#fff' },
@@ -1234,6 +1246,14 @@
           arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: { color: teamColor(cp, cp.team[g.from]), width: 3, dash: [9, 7], head: 13 }, order: -1 + i * 0.01 });
         });
       }
+      if (def.passes3 && def.passes3.length && step.startState.ball3) {
+        const s3 = ball2Step(step, 3);
+        passSeq(cp, s3).forEach((g, i) => {
+          if (!g.from) return;
+          const a = playerPos(step, g.from, g.s), b = playerPos(step, g.to, g.e);
+          arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: { color: teamColor(cp, cp.team[g.from]), width: 3, dash: [9, 7], head: 13 }, order: -1 + i * 0.01 });
+        });
+      }
       if (def.passes && def.passes.length) {
         passSeq(cp, step).forEach((g, i) => {
           if (!g.from) return;
@@ -1328,6 +1348,7 @@
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
     if (clip.ball2 && step.startState.ball2) drawBall(ctx, ballPos(cp, ball2Step(step), u));
+    if (clip.ball3 && step.startState.ball3) drawBall(ctx, ballPos(cp, ball2Step(step, 3), u));
     // tags on top
     // labels sit below defenders, above everyone else; clip.tagPlace 'auto': above, unless near the top edge
     Object.keys(tags).forEach(id => {
