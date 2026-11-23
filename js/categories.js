@@ -13,7 +13,7 @@ window.CATEGORIES = [
 
 // Switches for parts of the site still being checked. While false, they only show with ?drafts in the address.
 window.SITE_FLAGS = {
-  minis: false,   // the Minis area and Grass and Roots on the Minis clips
+  minis: true,    // the Minis area and Grass and Roots on the Minis clips
 };
 
 // Sign-up / request form links. Leave null until the forms exist; the buttons then show "Opening soon".
