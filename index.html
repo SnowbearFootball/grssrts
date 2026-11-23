@@ -279,6 +279,7 @@
   .join-form label, .join-form legend { font-size: 13px; font-weight: 700; color: var(--text); display: block; margin: 0 0 5px; padding: 0; }
   .join-form .opt { font-weight: 500; color: var(--muted); }
   .join-form input[type=text], .join-form input[type=email] { width: 100%; border: 1px solid var(--edge); border-radius: 10px; padding: 11px 12px; background: #fff; font-size: 16px; }
+  .join-form select { width: 100%; border: 1px solid var(--edge); border-radius: 10px; padding: 11px 12px; background: #fff; font-size: 16px; }
   .join-form input:focus { outline: 3px solid var(--accent); outline-offset: 1px; }
   .join-form fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
   .ticks { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -1218,8 +1219,12 @@
           <div><label for="j-name">First name</label><input type="text" id="j-name" name="name" autocomplete="given-name" required></div>
           <div><label for="j-email">Email</label><input type="email" id="j-email" name="email" autocomplete="email" required></div>
           <fieldset><legend>I am a…</legend><div class="ticks">
-            ${['Coach', 'Parent', 'Player (16+)'].map((r, i) => `<label><input type="radio" name="role" value="${esc(r)}"${i ? '' : ' checked'}> ${esc(r)}</label>`).join('')}
+            ${['Coach', 'Parent', 'Player (16+)'].map((r, i) => `<label><input type="radio" name="role" value="${esc(r)}"${i ? '' : ' checked id="j-role-coach"'}> ${esc(r)}</label>`).join('')}
           </div></fieldset>
+          <div id="j-qual-row"><label for="j-qual">Coaching qualification <span class="opt">(optional)</span></label>
+            <select id="j-qual" name="qualification">
+              ${['', 'None yet', 'Playmaker / Introduction to Coaching Football', 'FA Level 1', 'UEFA C (was FA Level 2)', 'UEFA B', 'UEFA A', 'UEFA Pro', 'Other'].map(q => `<option value="${esc(q)}">${q ? esc(q) : 'Choose…'}</option>`).join('')}
+            </select></div>
           <fieldset><legend>Age groups <span class="opt">(tick any)</span></legend><div class="ticks">
             ${AGE_TICKS.map(a => `<label><input type="checkbox" name="ages" value="${a}"> ${a}</label>`).join('')}
           </div></fieldset>
@@ -1232,6 +1237,9 @@
         </form>
       </div>`;
   }
+  document.addEventListener('change', e => {
+    if (e.target.name === 'role' && $('j-qual-row')) $('j-qual-row').hidden = !$('j-role-coach').checked;
+  });
   // Join form: checks the boxes, then sends to MailerLite (SITE_LINKS.joinForm). Until that's set, it says sign-up opens soon.
   document.addEventListener('submit', e => {
     if (e.target.id !== 'join-form') return;
@@ -1247,6 +1255,7 @@
     data.set('fields[name]', name); data.set('fields[email]', email);
     data.set('fields[role]', (f.querySelector('[name=role]:checked') || {}).value || '');
     data.set('fields[age_groups]', [...f.querySelectorAll('[name=ages]:checked')].map(x => x.value).join(', '));
+    data.set('fields[qualification]', $('j-role-coach').checked ? $('j-qual').value : '');
     data.set('fields[club]', $('j-club').value.trim());
     data.set('ml-submit', '1'); data.set('anticsrf', 'true');
     f.querySelector('[type=submit]').disabled = true;
@@ -1260,7 +1269,7 @@
     return `<div class="privacy">
       <section><h2>Who we are</h2><p>GRSS | RTS (grssrts.co.uk) makes animated coaching clips for grassroots football. Questions about your details: ${contact}.</p></section>
       <section><h2>What we keep</h2><p>Only what you give us when you join:</p>
-        <ul><li>Your first name and email address</li><li>Whether you're a coach, parent or player (16+)</li><li>The age groups you work with, and your club if you add it</li><li>That you agreed to our emails, and when</li></ul></section>
+        <ul><li>Your first name and email address</li><li>Whether you're a coach, parent or player (16+)</li><li>The age groups you work with, and your club and coaching qualification if you add them</li><li>That you agreed to our emails, and when</li></ul></section>
       <section><h2>Why</h2><ul><li>To email you new sessions and news, because you asked us to</li><li>To understand which ages and topics to make next</li><li>To run trials with clubs</li></ul></section>
       <section><h2>Children</h2><p>Sign-up is for adults and players aged 16 or over. We never ask for or publish children's names, photos or dates of birth. Players of any age can use the site without signing up.</p></section>
       <section><h2>Where it's kept</h2><p>Your details are kept by our email service, MailerLite, which stores data securely within the EU. We never sell or share your details with anyone else.</p></section>
