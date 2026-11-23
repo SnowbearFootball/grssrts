@@ -13,7 +13,7 @@ window.CATEGORIES = [
 
 // Switches for parts of the site still being checked. While false, they only show with ?drafts in the address.
 window.SITE_FLAGS = {
-  minis: true,    // the Minis area and Grass and Roots on the Minis clips
+  minis: true,    // the Minis part of Home Ground, and Grass and Roots on the Minis clips
 };
 
 // Sign-up / request form links. Leave null until the forms exist; the buttons then show "Opening soon".
@@ -27,11 +27,8 @@ window.AREAS = [
   { id: 'dugout', name: 'The Dugout', tag: 'For coaches',
     blurb: 'Ask for a topic you want covered, or have your own session plan turned into animated clips.',
     icon: '<path d="M3 13a9 9 0 0 1 18 0v6H3z"/><path d="M7 19v-4h10v4"/>' },
-  { id: 'minis', name: 'Minis', tag: 'U8 and under', draft: true,
-    blurb: 'Learn the basics with Grass and Roots: short, fun clips to copy at home, and stars to collect as you get better.',
-    icon: '<circle cx="12" cy="13" r="7"/><path d="M8.5 6.5l1-3 1.5 2 1-3 1 3 1.5-2 1 3"/><circle cx="10" cy="12.5" r=".8"/><circle cx="14" cy="12.5" r=".8"/><path d="M10 15.5q2 1.5 4 0"/>' },
-  { id: 'home-ground', name: 'Home Ground', tag: 'Solo practice',
-    blurb: 'Things to practise on your own: in the garden, at the park or against a wall.',
+  { id: 'home-ground', name: 'Home Ground', tag: 'Practise at home', aliases: ['minis'],
+    blurb: 'Things to practise on your own: in the garden, at the park or against a wall. Minis (U8 and under) learn with Grass and Roots.',
     icon: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2.5"/>',
     plans: ['Wall passes: both feet', 'Ball mastery 2: drag-backs and turns', 'First touch away from pressure',
       'Shooting at a target', '1 v 1 moves: step-over, drag-back, Cruyff turn', 'Keepy-uppy challenges'] },
