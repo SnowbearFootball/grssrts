@@ -208,6 +208,20 @@
   .tier b { font-size: 16px; }
   .tier span { font-size: 14px; color: var(--sub); }
   .tier.pick span { color: #d7dfd2; }
+  .get-list { list-style: none; margin: 0 0 22px; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .get-list li { grid-column: span 2; align-content: start; }
+  .get-list li:nth-child(n+4) { grid-column: span 3; }
+  @media (max-width: 860px) { .get-list { grid-template-columns: 1fr; } .get-list li, .get-list li:nth-child(n+4) { grid-column: auto; } }
+  .get-list li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+  .get-list b { font-size: 15px; }
+  .get-list b::before { content: "✓ "; color: var(--accent); }
+  .get-list span { color: var(--sub); font-size: 14px; }
+  .dl button { color: var(--text); background: var(--paper); border: 1px solid var(--edge); border-radius: 8px; padding: 9px 14px; font-size: 15px; cursor: pointer; }
+  .dl button:hover { border-color: var(--accent); }
+  .dl .share-btn { background: var(--forest); border-color: var(--forest); color: var(--cream); font-weight: 700; }
+  .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--forest); color: var(--cream);
+    padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 8px 24px rgba(22,53,31,.3); }
+  #print-plan { display: none; }
   .free-topic { background: var(--paper); border: 1px dashed var(--edge); border-radius: 14px; padding: 18px; display: grid; gap: 8px; margin: 26px 0 16px; }
   .free-topic h2 { margin: 0; font-size: 20px; }
   .free-topic .price { margin: 0; font-weight: 800; font-size: 14px; color: var(--accent-ink); }
@@ -355,6 +369,34 @@
   }
   @media (max-width: 360px) { .nav a { font-size: 13px; padding: 5px 6px; } }
   @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } .brand img { height: 32px; } }
+  /* one-page session plan: shown only when printing / saving as PDF */
+  @media print {
+    @page { size: A4; margin: 11mm; }
+    html, body { background: #fff !important; }
+    body > .wrap, .toast, dialog { display: none !important; }
+    #print-plan { display: block !important; color: #16351f; font-size: 9.2pt; line-height: 1.28; zoom: var(--pp-zoom, 1); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  .pp-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 2.5pt solid #d9622b; padding-bottom: 6pt; margin-bottom: 8pt; }
+  .pp-head img { height: 26pt; }
+  .pp-head small { font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #a8461a; font-size: 8pt; }
+  .pp-title { display: grid; grid-template-columns: 1fr auto; gap: 12pt; align-items: start; margin-bottom: 8pt; }
+  .pp-title h1 { margin: 0 0 3pt; font-size: 20pt; line-height: 1.1; }
+  .pp-title p { margin: 0 0 4pt; color: #3d5a44; }
+  .pp-facts { font-weight: 700; font-size: 9pt; color: #a8461a; }
+  .pp-qr { text-align: center; font-size: 7.5pt; font-weight: 700; width: 92pt; }
+  .pp-qr svg { width: 86pt; height: 86pt; display: block; margin: 0 auto 3pt; }
+  .pp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt 14pt; margin-bottom: 8pt; }
+  .pp-cols3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8pt 12pt; }
+  .pp-box { break-inside: avoid; }
+  .pp-box h2 { font-size: 10pt; letter-spacing: .1em; text-transform: uppercase; color: #a8461a; margin: 0 0 3pt; }
+  .pp-box ul, .pp-box ol { margin: 0; padding-left: 13pt; }
+  .pp-box li { margin: 0 0 1.5pt; }
+  .pp-box dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 1pt 6pt; }
+  .pp-box dl.stack { display: block; } .pp-box dl.stack dd { margin: 0 0 3pt; }
+  .pp-box dt { font-weight: 700; }
+  .pp-box dd { margin: 0; }
+  .pp-kp { background: #16351f; color: #f2e6cd; border-radius: 6pt; padding: 5pt 8pt; text-align: center; font-weight: 800; letter-spacing: .04em; margin: 2pt 0 8pt; }
+  .pp-foot { margin-top: 8pt; border-top: 1pt solid #e3d6ba; padding-top: 4pt; font-size: 8pt; color: #677a68; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
@@ -395,8 +437,8 @@
       <div>
         <p class="eyebrow">For coaches</p>
         <h2 id="promo-title">Your session, animated.</h2>
-        <p>Send us your plan or a photo of your diagram. We animate it for you, arrows first, and you get clips to share in your team's WhatsApp group.</p>
-        <p class="price">From £40</p>
+        <p>Send us your plan or a photo of your diagram. We animate it for you, arrows first, and you get clips to <b>share with your squad and parents, before or after training</b>.</p>
+        <p class="price">Free if we can add it to our library · £25 to keep it private</p>
         <div class="cta" id="promo-cta"></div>
       </div>
       <div class="before-after" id="promo-ba"></div>
@@ -496,6 +538,8 @@
   </footer>
 </div>
 
+<div id="print-plan" aria-hidden="true"></div>
+<script src="js/vendor/qrcode.js"></script>
 <script src="js/logo-data.js"></script>
 <script src="js/drill-engine.js"></script>
 <script src="js/categories.js"></script>
@@ -676,8 +720,9 @@
     const i = session.clips.indexOf(clip);
     $('next-clip').hidden = i >= session.clips.length - 1;
     $('next-clip').classList.remove('ready');
-    $('downloads').innerHTML = clip.video && !window.NO_DOWNLOADS
-      ? `<a href="${esc(clip.video)}" download>⬇ Download this clip (MP4)</a>` : '';
+    $('downloads').innerHTML = `<button class="share-btn" id="share-btn">↗ Share with your squad</button>` +
+      (clip.video && !window.NO_DOWNLOADS ? `<a href="${esc(clip.video)}" download>⬇ Download this clip (MP4)</a>` : '') +
+      (!window.NO_DOWNLOADS ? `<button id="plan-btn">⬇ Download the session plan (PDF)</button>` : '');
     renderTabs();
   }
   $('progression').addEventListener('click', e => {
@@ -694,6 +739,74 @@
     player.load(clip);
     renderSession(); sync();
   }
+
+  // ---------- share with your squad, and the one-page plan ----------
+  const SITE = 'https://grssrts.co.uk/';
+  const sessionUrl = s => SITE + '#' + s.id;
+  function toast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2400);
+  }
+  async function shareSession() {
+    const url = sessionUrl(session);
+    const text = `${session.title}: ${session.summary || ''} Watch the clips before training:`;
+    if (navigator.share) {
+      try { await navigator.share({ title: `${session.title} · GRSS | RTS`, text, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    try { await navigator.clipboard.writeText(url); toast('Link copied: paste it into your team chat'); }
+    catch (e) { window.prompt ? window.prompt('Copy this link:', url) : toast(url); }
+  }
+  function qrSvg(text) {
+    if (typeof qrcode !== 'function') return '';
+    const q = qrcode(0, 'M'); q.addData(text); q.make();
+    return q.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+  }
+  const plain = t => esc(String(t || '').replace(/\*/g, ''));
+  function buildPlan(s) {
+    const cat = catOf(s), tr = s.training || {};
+    const ages = s.ages ? (s.ages.to ? `U${s.ages.from}–U${s.ages.to}` : `U${s.ages.from}+`) : '';
+    const facts = [cat && cat.name, s.type, ages, squadLabel(s), plural(s.clips.length, 'clip')].filter(Boolean).join(' · ');
+    const list = (items, tag = 'ul') => `<${tag}>${items.map(i => `<li>${plain(i)}</li>`).join('')}</${tag}>`;
+    const points = (s.cards || []).map(c => `<div class="pp-box"><h2>${plain(c.title)}</h2>${c.lead ? `<p style="margin:0 0 2pt">${plain(c.lead)}</p>` : ''}
+      ${(c.columns || []).map(col => `<b>${plain(col.heading)}</b>${list(col.items)}`).join('')}</div>`).join('');
+    return `<div class="pp-head"><img src="assets/logo/grss-rts.svg" alt="GRSS | RTS"><small>Session plan</small></div>
+      <div class="pp-title"><div><h1>${plain(s.title)}</h1><p>${plain(s.summary)}</p><div class="pp-facts">${esc(facts)}</div></div>
+        <div class="pp-qr">${qrSvg(sessionUrl(s))}Scan to watch the clips</div></div>
+      ${s.keyPhrase ? `<div class="pp-kp">${plain(s.keyPhrase).toUpperCase()}</div>` : ''}
+      <div class="pp-cols">
+        <div class="pp-box"><h2>Set-up</h2><dl>${tr.area ? `<dt>Area</dt><dd>${plain(tr.area)}</dd>` : ''}${tr.players ? `<dt>Players</dt><dd>${plain(tr.players)}</dd>` : ''}${tr.equipment ? `<dt>Kit</dt><dd>${plain(tr.equipment)}</dd>` : ''}</dl></div>
+        <div class="pp-box"><h2>The clips</h2>${list(s.clips.map(c => c.title + (c.tagline ? ': ' + c.tagline : '')), 'ol')}</div>
+        <div class="pp-box" style="grid-column:1 / -1"><h2>How it runs</h2>${list(tr.setup || [], 'ol')}</div>
+        ${points}
+      </div>
+      <div class="pp-cols3">
+        ${(s.keywords || []).length ? `<div class="pp-box" style="grid-column:span 2"><h2>Key words</h2><dl>${s.keywords.map(k => `<dt>${plain(k.word)}</dt><dd>${plain(k.meaning)}</dd>`).join('')}</dl></div>` : ''}
+        ${(s.questions || []).length ? `<div class="pp-box"><h2>Questions to ask</h2>${list(s.questions)}</div>` : ''}
+      </div>
+      <div class="pp-foot"><span>${esc(sessionUrl(s))}</span><span>© 2026 GRSS | RTS · grssrts.co.uk</span></div>`;
+  }
+  // fit the plan on one A4 page: measure it at the printed width and zoom out if it is too tall
+  function fitPlan() {
+    const el = $('print-plan');
+    const PAGE_W = 718, PAGE_H = 1000;                       // A4 minus the margins, in CSS px
+    el.style.cssText = `display:block;position:absolute;left:-9999px;top:0;width:${PAGE_W}px;font-size:9.2pt;line-height:1.28`;
+    const h = el.scrollHeight;
+    el.style.cssText = '';
+    el.style.setProperty('--pp-zoom', h > PAGE_H ? (PAGE_H / h).toFixed(3) : '1');
+  }
+  function printPlan() {
+    $('print-plan').innerHTML = buildPlan(session);
+    fitPlan();
+    const img = $('print-plan').querySelector('img');
+    const go = () => setTimeout(() => window.print(), 50);
+    if (img && !img.complete) { img.onload = go; img.onerror = go; } else go();
+  }
+  document.addEventListener('click', e => {
+    if (e.target.closest('#share-btn')) shareSession();
+    if (e.target.closest('#plan-btn')) printPlan();
+  });
 
   // ---------- navigation ----------
   function renderNav(active) {
@@ -931,18 +1044,27 @@
           <div class="cta">${linkBtn(LINKS.bespokeSession, 'Send your session', true)}</div></div>
         <div class="before-after">${beforeAfter()}</div>
       </section>
-      <div class="section-head"><h2>How it works</h2><p>Usually ready within 5 days.</p></div>
+      <div class="section-head"><h2>How it works</h2><p>Usually ready within 2 weeks.</p></div>
       <ol class="steps3">
         <li><b>Send your plan</b><span>A photo of your diagram, a session plan or a few notes. Tell us the age group.</span></li>
         <li><b>We animate it</b><span>Arrows first, then the movement, with your coaching points beside the pitch.</span></li>
-        <li><b>Share it with your team</b><span>You get the clips (MP4) to send to your players and parents.</span></li>
+        <li><b>Share it with your squad</b><span>Send the clips to your players and parents, before or after training.</span></li>
       </ol>
-      <div class="section-head"><h2>Prices</h2></div>
+      <div class="section-head"><h2>What you get</h2></div>
+      <ul class="get-list">
+        <li><b>Animated clips (MP4)</b><span>Ready to drop into your team's WhatsApp group.</span></li>
+        <li><b>Your session page</b><span>The clips, coaching points and set-up, on one link for players and parents.</span></li>
+        <li><b>A one-page plan</b><span>Set-up, coaching points and a QR code to the clips. Print it for the touchline or send it as a PDF.</span></li>
+        <li><b>Before training</b><span>Players watch it first, so you spend less time explaining and more time playing.</span></li>
+        <li><b>After training</b><span>A recap for players, and parents can see what was worked on. Homework for the garden.</span></li>
+      </ul>
+      <div class="section-head"><h2>Prices</h2><p>We'd rather grow the library than charge coaches.</p></div>
       <div class="tiers">
-        <div class="tier"><span>One clip</span><p class="amt">£40</p><b>A single practice</b><span>One animated clip, about 30–60 seconds.</span></div>
-        <div class="tier pick"><span>Full session</span><p class="amt">from £90</p><b>3 to 4 clips</b><span>A full progression, with coaching points and key words.</span></div>
-        <div class="tier"><span>Club pack</span><p class="amt">Ask us</p><b>Several sessions</b><span>For a club's coaching programme or curriculum.</span></div>
+        <div class="tier pick"><span>Shared</span><p class="amt">Free</p><b>Added to our library</b><span>If we pick your session, we animate it free. You get the clips first, and a credit if you'd like one.</span></div>
+        <div class="tier"><span>Private</span><p class="amt">£25</p><b>Your team only</b><span>A full session (up to 4 clips), just for your team. £10 for a single clip.</span></div>
+        <div class="tier"><span>Priority</span><p class="amt">+£10</p><b>Ready in 48 hours</b><span>Need it for Saturday? Add priority to a shared or private session.</span></div>
       </div>
+      <p class="note">Shared sessions: we choose which to animate, usually within 2 weeks, with one round of changes included. Clubs: ask us about animating your coaching programme.</p>
       <p class="note">Please only send plans that are your own work. We never ask for or publish children's names or photos.</p>
       <section class="free-topic"><p class="price">Free</p><h2>Suggest a topic</h2>
         <p>Tell us what your team struggles with, for example "we all chase the ball". Popular topics become new sessions in the library, free for everyone.</p>

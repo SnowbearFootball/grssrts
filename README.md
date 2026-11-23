@@ -65,6 +65,14 @@ when their label changes (ATTACKER → DEFENDER); `tagPlace: 'auto'` keeps label
 Each section lists its sessions as compact rows, with search (titles, key words, coaching points), filter pills
 for age, type and players (behind a "Filter" button on phones), and ☆ to save a session on that device.
 
+## Sharing and the one-page plan
+
+Every session page has **Share with your squad** (the phone's share menu, or copies the link on a computer),
+**Download this clip (MP4)** and **Download the session plan (PDF)**. The plan is built from the session data
+(set-up, how it runs, coaching points, key words, questions) with a QR code to the clips, and is shrunk to fit one A4 page.
+It opens the print dialog, where coaches choose "Save as PDF" or print it. QR codes use `js/vendor/qrcode.js`
+(qrcode-generator 1.4.4, MIT licence).
+
 ## Draft sessions
 
 Add `draft: true` to a session to keep it off the site while it's being checked. Open `index.html?drafts` to see drafts.
