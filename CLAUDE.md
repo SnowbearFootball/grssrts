@@ -48,8 +48,8 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 
 ## Content
 
-- Sections: Goalkeeping, Defending, Attacking; areas: The Dugout (coach requests), Home Ground (solo), Kit Room (shop).
-  The Dugout comes before Home Ground.
+- Sections: Goalkeeping, Defending, Attacking; areas: The Dugout (coach requests), Home Ground (practise at home), Kit Room (shop).
+  The Dugout comes before Home Ground. Home Ground opens with an explanation and two pills side by side (no big cards; Minis orange, Juniors green): Minis (U8 and under, Grass and Roots, `#minis`) and Juniors (U9 and up, `#juniors`); each has its own page.
 - Sessions: Splash & Ripple (defending), Shoot & Recover, 5 v 2 Transfer Rondo, Long Range Shooting: Move Onto It (U14+),
   Long Range Shooting: Up, Back, Shot (U14+), Rotation of Positions (U14+, replaced Building Out: Rotations; old address
   redirects via `aliases`), Combination Play (U12+, two balls at once), Set Position & Shot-Stopping (GK, U6+),
@@ -67,7 +67,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - Minis videos: `tools/render-minis.js` (frame in `tools/minis-frame.html`) writes each clip's `minisVideo`.
 - Rejected along the way: animal players (fox, dog, hedgehog etc.), a cone (looked like Wizbit; hair never sat right),
   black panels or a panel in the middle of the forehead, seams across the face, hair floating above the ball.
-- **Minis area** (U8 and under, `minis` in AREAS): Grass and Roots clips + stars per move (1 slow, 2 faster, 3 challenge),
+- **Minis** (U8 and under) is one of Home Ground's two parts (`parts` in `js/categories.js`), page `#minis`: Grass and Roots clips + stars per move (1 slow, 2 faster, 3 challenge),
   saved on the device only (no accounts, no children's data). Live since the owner approved it (`SITE_FLAGS.minis = true` in `js/categories.js`);
   preview with `?drafts`. Sessions join with `minis: true`.
 

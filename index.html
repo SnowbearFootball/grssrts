@@ -132,6 +132,16 @@
   .star-btn:hover { transform: scale(1.12); }
   .medal { margin-left: auto; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--forest);
     background: var(--cream); border-radius: 999px; padding: 3px 9px; }
+  .hg-pills { display: grid; grid-template-columns: repeat(2, minmax(0, 240px)); gap: 14px; margin: -4px 0 26px 60px; }
+  .hg-pill { display: grid; gap: 2px; justify-items: center; text-align: center; padding: 16px 20px; border-radius: 999px; text-decoration: none;
+    color: #fff; box-shadow: 0 6px 16px rgba(22,53,31,.18); transition: transform .15s; }
+  .hg-pill b { font-size: 22px; line-height: 1.1; }
+  .hg-pill span { font-size: 13px; font-weight: 700; letter-spacing: .04em; opacity: .95; }
+  .hg-pill:hover { transform: translateY(-2px); }
+  .hg-pill.minis { background: linear-gradient(180deg, #f07a3d, #d9622b); }
+  .hg-pill.juniors { background: linear-gradient(180deg, #2b6a3a, #16351f); }
+  .hg-pill.juniors span { color: var(--accent-soft); }
+  @media (max-width: 640px) { .hg-pills { margin-left: 0; grid-template-columns: 1fr 1fr; gap: 10px; } .hg-pill { padding: 14px 10px; } .hg-pill b { font-size: 20px; } }
   .progress-line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 0 0 10px; font-weight: 700; }
   .progress-line button { background: none; border: 0; padding: 0; color: var(--accent-ink); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 13px; }
   .area-tile { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 4px; align-content: start;
@@ -596,9 +606,9 @@
   const CATS = window.CATEGORIES || [];
   const DRAFTS = /[?&]drafts\b/.test(location.search);
   const FLAGS = window.SITE_FLAGS || {};
-  const MINIS = !!FLAGS.minis || DRAFTS;   // Minis area + Grass and Roots, hidden until switched on
-  const AREAS = (window.AREAS || []).filter(a => !a.draft || (a.id === 'minis' ? MINIS : DRAFTS));
-  const catOf = s => (s.minis && MINIS && AREAS.find(a => a.id === 'minis')) || CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground; Minis ones in Minis
+  const MINIS = !!FLAGS.minis || DRAFTS;   // Minis (in Home Ground) + Grass and Roots
+  const AREAS = (window.AREAS || []).filter(a => !a.draft || DRAFTS);
+  const catOf = s => (s.minis && MINIS && { id: 'minis', name: 'Minis' }) || CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground (Minis or Juniors)
   const LINKS = window.SITE_LINKS || {};
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1091,7 +1101,7 @@
   try { stars = JSON.parse(localStorage.getItem(STAR_KEY) || '{}') || {}; } catch (e) { stars = {}; }
   const saveStars = () => { try { localStorage.setItem(STAR_KEY, JSON.stringify(stars)); } catch (e) { /* private window */ } };
   const MEDALS = ['', 'Bronze', 'Silver', 'Gold'];
-  function minisBody(a) {
+  function minisBody() {
     const minis = SESSIONS.filter(s => s.minis);
     const all = minis.flatMap(s => s.clips.map(c => ({ s, c })));
     const total = all.reduce((n, x) => n + (stars[x.s.id + ':' + x.c.id] || 0), 0);
@@ -1120,22 +1130,27 @@
       const key = b.dataset.star, n = +b.dataset.n;
       stars[key] = stars[key] === n ? n - 1 : n;   // tap the top star again to take it back
       saveStars();
-      const area = AREAS.find(a => a.id === 'minis');
-      if (area && !$('area').hidden) { $('area-body').innerHTML = minisBody(area); }
+      if (!$('area').hidden) { const y = scrollY; route(); scrollTo(0, y); }
       return;
     }
     if (e.target.closest('#stars-reset')) {
       stars = {}; saveStars();
-      const area = AREAS.find(a => a.id === 'minis');
-      if (area) $('area-body').innerHTML = minisBody(area);
+      if (!$('area').hidden) { const y = scrollY; route(); scrollTo(0, y); }
     }
   });
   const AREA_BODY = {
-    'minis': a => minisBody(a),
     'home-ground': a => {
-      const solo = SESSIONS.filter(s => s.category === a.id);
-      return (solo.length ? `<div class="count-line"><span>${plural(solo.length, 'session')}</span></div><ul class="srows">${solo.map(sessionRow).join('')}</ul>` : '') +
-        `<div class="section-head"><h2>Coming soon</h2><p>More things to practise on your own, with a clip for each.</p></div>${soonList(a.plans)}
+      // the explanation (above), then one pill per group: Minis and Juniors
+      const parts = (a.parts || []).filter(p => p.id !== 'minis' || MINIS);
+      return `<div class="hg-pills">${parts.map(p => `<a class="hg-pill ${esc(p.id)}" href="#${p.id}"><b>${esc(p.name)}</b><span>${esc(p.ages)}</span></a>`).join('')}</div>
+      <p class="note">Tip for parents: five minutes a day with a ball against a wall does more than an hour once a week.</p>`;
+    },
+    'minis': () => minisBody(),
+    'juniors': a => {
+      const hg = AREAS.find(x => x.id === 'home-ground');
+      const juniors = SESSIONS.filter(s => s.category === 'home-ground' && !(MINIS && s.minis));
+      return (juniors.length ? `<div class="count-line"><span>${plural(juniors.length, 'session')}</span></div><ul class="srows">${juniors.map(sessionRow).join('')}</ul>` : '') +
+        `<div class="section-head"><h2>Coming soon</h2><p>More things to practise on your own, with a clip for each.</p></div>${soonList(hg.plans)}
       <p class="note">Tip for parents: five minutes a day with a ball against a wall does more than an hour once a week.</p>`;
     },
     'dugout': () => `<section class="promo">
@@ -1175,8 +1190,8 @@
     'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
       <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
   };
-  function renderArea(a) {
-    $('area-crumb').textContent = a.name;
+  function renderArea(a, parent) {
+    $('area-crumb').innerHTML = parent ? `<a href="#${esc(parent.id)}">${esc(parent.name)}</a> <span aria-hidden="true">›</span> ${esc(a.name)}` : esc(a.name);
     $('area-icon').innerHTML = a.icon;
     $('area-tag').textContent = a.tag;
     $('area-title').textContent = a.name;
@@ -1218,6 +1233,9 @@
     if (s && s.id !== id) { location.replace('#' + s.id); return; }   // an old address for a replaced session
     const cat = CATS.find(c => c.id === id);
     const area = AREAS.find(a => a.id === id);
+    // parts of an area (e.g. Home Ground: #minis, #juniors) have their own pages
+    const parent = !area && AREAS.find(a => (a.parts || []).some(p => p.id === id && (p.id !== 'minis' || MINIS)));
+    const part = parent && parent.parts.find(p => p.id === id);
     if (s) {
       show('session');
       if (s !== session) { session = s; clip = s.clips[0]; }
@@ -1229,6 +1247,11 @@
       setPlaying(false);
       if (cat) { show('section'); renderSection(cat); renderNav(cat.id); document.title = `${cat.name} · GRSS | RTS`; }
       else if (area) { show('area'); renderArea(area); renderNav(area.id); document.title = `${area.name} · GRSS | RTS`; }
+      else if (part) {
+        show('area');
+        renderArea({ id: part.id, name: part.name, tag: `${parent.name} · ${part.ages}`, blurb: part.blurb, icon: parent.icon }, parent);
+        renderNav(parent.id); document.title = `${part.name} · ${parent.name} · GRSS | RTS`;
+      }
       else { show('home'); renderHome(); renderNav(null); document.title = 'GRSS | RTS'; }
     }
     window.scrollTo(0, 0);
