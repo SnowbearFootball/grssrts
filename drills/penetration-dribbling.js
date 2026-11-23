@@ -1,7 +1,6 @@
 /*
- * SESSION (DRAFT): Penetration via Dribbling (Attacking · principle of play)
- * From a coach's own session plan (sent in as a test). draft: true keeps it off the site until approved
- * (index.html?drafts#penetration-dribbling).
+ * SESSION: Penetration via Dribbling (Attacking · principle of play)
+ * From a coach's own session plan.
  *
  * Drill 1 (ball mastery): two lanes, players at both ends. Dribble to the middle, beat it with a move, change pace to the far
  * end. Cones first (unopposed), then a half-pace defender in the middle (semi-opposed).
@@ -53,9 +52,8 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'penetration-dribbling',
-    draft: true,
     title: 'Penetration via Dribbling',
-    subtitle: 'Principle of play: attacking',
+    subtitle: 'Principle of Play: Attacking',
     type: 'Technical',
     category: 'attacking',
     squad: [8, 10],
@@ -66,7 +64,7 @@
 
     cards: [
       {
-        title: 'Ball mastery',
+        title: 'Drill 1: Ball Mastery: Beat Your Player',
         lead: 'Use *different parts of your foot*. *Small* touches, then a *big* one.',
         columns: [
           { heading: 'Moves', items: ['Sole roll', 'Inside / outside', 'Step over', 'Stop', 'Shoulder drop'] },
@@ -75,7 +73,7 @@
         phrase: { big: 'HEAD UP, CHANGE OF PACE', small: 'Small touches in, big touch out' },
       },
       {
-        title: 'Penetrate',
+        title: 'Drill 2: Penetration Overload: 4 v 3 to End Zones',
         lead: '*Face up* your defender and *go past them*.',
         columns: [
           { heading: 'Before', items: ['*Head up, scan*: where is the space?', '*Face up*: turn and run at them', 'Use the extra player: 4 v 3'] },
@@ -118,8 +116,8 @@
       Object.assign({}, drill1, {
         id: 'beat-the-cone',
         video: 'videos/penetration-dribbling-1.mp4',
-        kicker: 'Drill 1 · unopposed',
-        title: 'Beat the Cone',
+        kicker: 'Drill 1 · Ball mastery · unopposed',
+        title: 'Beat Your Player',
         tagline: 'Small touches in, a move, then change of pace.',
         intro: ['Two lanes, players at *both ends*.', 'Dribble to the middle and *beat the cone* with a move.', '*Change of pace* to the far end.'],
         cones: laneCones.concat(mid),
@@ -168,8 +166,8 @@
       Object.assign({}, drill1, {
         id: 'semi-opposed',
         video: 'videos/penetration-dribbling-2.mp4',
-        kicker: 'Drill 1 · semi-opposed',
-        title: 'Beat the Defender',
+        kicker: 'Drill 1 · Ball mastery · semi-opposed',
+        title: 'Semi-Opposed',
         tagline: 'A half-pace defender in the middle. Face up and go past.',
         intro: ['Now a *defender* in the middle.', 'Half pace: they make it real, but let you try.', '*Face up*, do a move, *change of pace*.'],
         cones: laneCones,
@@ -225,8 +223,8 @@
       Object.assign({}, drill2, {
         id: 'end-zones',
         video: 'videos/penetration-dribbling-3.mp4',
-        kicker: 'Drill 2 · opposed',
-        title: '4 v 3 to the End Zone',
+        kicker: 'Drill 2 · Penetration overload',
+        title: '4 v 3 to End Zones',
         tagline: 'Use the overload, face up, dribble in to score.',
         intro: ['Attackers\' half, defenders\' half, an *end zone* at each end.', '*4 v 3*, plus a keeper or defender in the end zone.', 'Score by *dribbling into the end zone*.'],
         steps: [
@@ -275,7 +273,7 @@
       Object.assign({}, drill2, {
         id: 'other-way',
         video: 'videos/penetration-dribbling-4.mp4',
-        kicker: 'Drill 2 · both ways',
+        kicker: 'Drill 2 · Penetration overload · both ways',
         title: 'Win It and Go',
         tagline: 'Defenders win it: dribble into the other end zone.',
         intro: ['The game goes *both ways*.', 'Defenders win it...', '...and dribble into the *other end zone*.'],

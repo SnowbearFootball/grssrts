@@ -37,6 +37,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - Arrows first, then movement. Labels (pills) show each player's job; examples use generic words (ATTACKER, not SPLASH).
 - Coaches' own diagrams: plain background (`plain: true`) when they don't need pitch markings; add measurements (`dims`)
   and label players by position (GK, CB, FB, CM, W, ST, D, M) when it helps.
+- Naming a coach's session: keep the coach's own terms (principle of play, penetration, overload); put numbers (4 v 3) in the title.
 - Copy the coach's intent, not a rigid pattern: e.g. "ideas to create a shot, not a set move"; movement is free.
 - Coaching detail the owner has corrected before: in passing patterns (5 Y's, draft) the middle player moves away from the cone first (separation, like losing a defender), back-foot control, and the pass up is always to the opposite side (same side gets tight); alternate direction each go; shots must go on target; pass and follow needs one more player than boxes (never an empty box); a middle player only bounces it back (one-two), never the longer pass; crosses are attacked as a team (strikers cross over, opposite winger sweeps the back post, one CM in the box, one on the edge); runner times the run and keeps space to move onto the ball; pressing as a
   comment means "send one in to apply pressure", not a win-it-and-score drill; a long ball to the keeper comes from the
@@ -52,11 +53,11 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   The Dugout comes before Home Ground. Home Ground opens with an explanation and two pills side by side (no big cards; Minis orange, Juniors green): Minis (U8 and under, Grass and Roots, `#minis`) and Juniors (U9 and up, `#juniors`); each has its own page.
 - Sessions: Splash & Ripple (defending), Shoot & Recover, 5 v 2 Transfer Rondo, Long Range Shooting: Move Onto It (U14+),
   Long Range Shooting: Up, Back, Shot (U14+), Rotation of Positions (U14+, replaced Building Out: Rotations; old address
-  redirects via `aliases`), Combination Play (U12+, two balls at once), Switching Play: Pass and Follow (U12+, square of 4 boxes: one team then two, 3 or 4 teams OK; progression bounce off one or two middle players, who only bounce it back, talk), Switch of Play: Game Like (U14+, 6 mannequins, double movements, switch into space, underlap / overlap, every clip ends with a team attack on the cross; mix up which CM gets the set-back), Set Position & Shot-Stopping (GK, U6+),
+  redirects via `aliases`), Combination Play (U12+, two balls at once), Switching Play: Pass and Follow (U12+, square of 4 boxes: one team then two, 3 or 4 teams OK; progression bounce off one or two middle players, who only bounce it back, talk), Switch of Play: Game Like (U14+, 6 mannequins, double movements, switch into space, underlap / overlap, every clip ends with a team attack on the cross; mix up which CM gets the set-back), Penetration via Dribbling (U9+, from another coach's plan: Drill 1 Ball Mastery: Beat Your Player, unopposed then semi-opposed; Drill 2 Penetration Overload: 4 v 3 to End Zones; titles use the coach's own terms), Set Position & Shot-Stopping (GK, U6+),
   Ball Mastery: The Basics (Home Ground, solo clips).
 - Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
 - Defending attempts: Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
-  Intercepting Passes and Blocking Shots are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.
+  Intercepting Passes, Blocking Shots and The 5 Y's (waiting for better drawings) are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.
 
 ## Grass and Roots (the Minis characters)
 
