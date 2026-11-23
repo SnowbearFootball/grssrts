@@ -1,6 +1,6 @@
 /*
- * SESSION (DRAFT): Defending in a 4-4-2 Against a Wide 4-3-3 (Defending · tactical)
- * From a coach's own session plan. draft: true keeps it off the site until approved (index.html?drafts#defending-442).
+ * SESSION: Defending in a 4-4-2 Against a Wide 4-3-3 (Defending · tactical)
+ * From a coach's own session plan.
  *
  * Primary player: the winger. Primary unit: midfield 4. Secondary unit: back 4.
  * One side of the pitch, goal at the top (the far side marked by blue cones). Reds attack the goal in a 3-3-2;
@@ -41,7 +41,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'defending-442',
-    draft: true,
     title: 'Defending in a 4-4-2 Against a Wide 4-3-3',
     subtitle: 'Primary player: winger · Primary unit: midfield 4',
     type: 'Tactical',

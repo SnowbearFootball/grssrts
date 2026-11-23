@@ -1,6 +1,6 @@
 /*
- * SESSION (DRAFT): Utilising the Midfield 3 to Penetrate Against a 4-4-2 (Attacking · tactical)
- * From a coach's own session plan. draft: true keeps it off the site until approved (index.html?drafts#midfield-three).
+ * SESSION: Utilising the Midfield 3 to Penetrate Against a 4-4-2 (Attacking · tactical)
+ * From a coach's own session plan.
  *
  * Primary player: the pivot. Primary unit: midfield. Secondary unit: defence.
  * Greens attack up in a 2-1-2 (two CBs, the pivot, two 8s); reds defend in a 2-2-2. The coach feeds the ball into a green CB.
@@ -48,7 +48,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'midfield-three',
-    draft: true,
     title: 'Utilising the Midfield 3 to Penetrate Against a 4-4-2',
     subtitle: 'Primary player: pivot · Primary unit: midfield',
     type: 'Tactical',
