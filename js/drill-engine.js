@@ -132,6 +132,11 @@
         state.ball = { owner: def.ball.give };
         if (!state.used.includes(def.ball.give)) state.used.push(def.ball.give);
       }
+      // ball2.give: the same for the second ball (e.g. the next player in another lane)
+      if (def.ball2 && def.ball2.give && state.ball2) {
+        state.ball2 = { owner: def.ball2.give };
+        if (!state.used.includes(def.ball2.give)) state.used.push(def.ball2.give);
+      }
       const hasArrows = moves.some(m => m.arrow !== false) || (def.ball && def.ball.arrow !== false) || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length) || !!(def.passes3 && def.passes3.length);
       const hasMotion = moves.length > 0 || !!def.ball || !!(def.passes && def.passes.length) || !!(def.passes2 && def.passes2.length) || !!(def.passes3 && def.passes3.length);
       const phases = {
@@ -470,6 +475,37 @@
     'BACK POST': { bg: '#16351f', fg: '#fff' },
     'IN THE BOX': { bg: '#16351f', fg: '#fff' },
     'EDGE OF BOX': { bg: '#16351f', fg: '#fff' },
+    COVER: { bg: '#16351f', fg: '#fff' },
+    'SEE BOTH': { bg: '#16351f', fg: '#fff' },
+    'NICK IT': { get bg() { return C.accent; }, fg: '#fff' },
+    TIGHT: { bg: '#16351f', fg: '#fff' },
+    'NO TURN': { bg: '#16351f', fg: '#fff' },
+    BLOCK: { get bg() { return C.accent; }, fg: '#fff' },
+    'CLOSE DOWN': { bg: '#16351f', fg: '#fff' },
+    'CLEAR IT': { get bg() { return C.accent; }, fg: '#fff' },
+    TALK: { bg: '#16351f', fg: '#fff' },
+    'OPEN UP': { bg: '#16351f', fg: '#fff' },
+    'BACK FOOT': { bg: '#16351f', fg: '#fff' },
+    'SHOW SHORT': { bg: '#16351f', fg: '#fff' },
+    UNDER: { bg: '#16351f', fg: '#fff' },
+    OUTSIDE: { bg: '#16351f', fg: '#fff' },
+    'THROUGH BALL': { get bg() { return C.accent; }, fg: '#fff' },
+    RUN: { bg: '#16351f', fg: '#fff' },
+    FIRM: { bg: '#16351f', fg: '#fff' },
+    'MOVE AWAY': { bg: '#16351f', fg: '#fff' },
+    'HEAD UP': { bg: '#16351f', fg: '#fff' },
+    'FACE UP': { get bg() { return C.accent; }, fg: '#fff' },
+    'STEP OVER': { bg: '#16351f', fg: '#fff' },
+    'SHOULDER DROP': { bg: '#16351f', fg: '#fff' },
+    'SOLE ROLL': { bg: '#16351f', fg: '#fff' },
+    'INSIDE-OUTSIDE': { bg: '#16351f', fg: '#fff' },
+    STOP: { bg: '#16351f', fg: '#fff' },
+    'CHANGE OF PACE': { get bg() { return C.accent; }, fg: '#fff' },
+    SHIFT: { bg: '#16351f', fg: '#fff' },
+    'TUCK IN': { bg: '#16351f', fg: '#fff' },
+    'STEP UP': { get bg() { return C.accent; }, fg: '#fff' },
+    RECOVER: { get bg() { return C.accent; }, fg: '#fff' },
+    'GOAL-SIDE': { bg: '#16351f', fg: '#fff' },
     'ONE-TWO': { bg: '#16351f', fg: '#fff' },
     'AROUND THE CORNER': { bg: '#16351f', fg: '#fff' },
     BACK: { bg: '#16351f', fg: '#fff' },
