@@ -6,17 +6,18 @@
  * waits at the bottom. CM1 plays to LW, LW to ATT, ATT sets back to CM1, who switches play to RW.
  * Underlap: RW stays wide and plays forward to CM2 running inside; CM2 crosses for the two ATT (LW and CM1 arrive).
  * Overlap: RW comes inside, plays to ATT, who plays forward to CM2 overlapping round the outside.
+ * Each player starts beside a mannequin and plays off it, around it or through it.
  * Pitch: x 0..100, y 0..75 (goal at the top).
  */
 (function () {
   const RED = '#e5484d', YEL = '#e5b52b';
   const reds = [
-    { id: 'LW', team: 'a', label: 'LW', x: 14, y: 42 },
-    { id: 'A1', team: 'a', label: 'ST', x: 40, y: 31 },
-    { id: 'A2', team: 'a', label: 'ST', x: 60, y: 33 },
-    { id: 'CM1', team: 'a', label: 'CM', x: 37, y: 57 },
-    { id: 'CM2', team: 'a', label: 'CM', x: 58, y: 59 },
-    { id: 'RW', team: 'a', label: 'RW', x: 86, y: 44 },
+    { id: 'LW', team: 'a', label: 'LW', x: 11, y: 48 },
+    { id: 'A1', team: 'a', label: 'ST', x: 39, y: 42 },
+    { id: 'A2', team: 'a', label: 'ST', x: 58, y: 45 },
+    { id: 'CM1', team: 'a', label: 'CM', x: 37, y: 63 },
+    { id: 'CM2', team: 'a', label: 'CM', x: 59, y: 64 },
+    { id: 'RW', team: 'a', label: 'RW', x: 86, y: 50 },
   ];
   const yellows = [[18, 71], [34, 71], [37, 74], [55, 71], [58, 74], [80, 71]].map(([x, y], i) => ({ id: 'y' + i, team: 'w', x, y, dim: true }));
   const players = [{ id: 'gk', team: 'k', label: 'GK', x: 50, y: 4 }].concat(reds, yellows);
@@ -26,6 +27,8 @@
     goals: [[50, 'top']],
     goalScale: 1.3,
     marks: [{ x: 18, y: 0, w: 64, h: 22 }, { x: 36, y: 0, w: 28, h: 8 }],
+    // a mannequin beside each player: play off it, around it and through it
+    mannequins: [[7, 43], [35, 37], [55, 40], [34, 57], [56, 58], [91, 45]],
     teamColors: { a: RED, w: YEL },
     facing: { a: -1, w: -1 },
     legendTeams: [{ label: 'This wave', color: RED }, { label: 'Next wave', color: YEL }],
@@ -38,25 +41,25 @@
     {
       title: 'CM TO LW', text: ['The CM plays out to the *LW*.', 'LW: *take it away, come back* to receive.'],
       tags: { LW: 'COME SHORT' }, timing: { move: 2.6 },
-      moves: [{ id: 'LW', path: [[10, 36], [17, 46]], end: 0.6 }],
+      moves: [{ id: 'LW', path: [[6, 52], [15, 45]], end: 0.6 }],
       passes: [{ to: 'LW', start: 0.45, end: 0.85 }],
     },
     {
       title: 'LW TO ATT', text: ['LW finds the *ATT*, who comes short.'],
       timing: { move: 2.4 },
-      moves: [{ id: 'A1', to: [36, 37], end: 0.5 }],
+      moves: [{ id: 'A1', to: [34, 46], end: 0.5 }],
       passes: [{ to: 'A1', start: 0.35, end: 0.8 }],
     },
     {
       title: 'SET BACK', text: ['The ATT *sets it back* to the CM.'],
       tags: { A1: 'SET' }, timing: { move: 2.2 },
-      moves: [{ id: 'CM1', to: [38, 50], end: 0.45 }],
+      moves: [{ id: 'CM1', to: [40, 55], end: 0.45 }],
       passes: [{ to: 'CM1', start: 0.3, end: 0.75 }],
     },
     {
       title: 'SWITCH THE PLAY', text: ['The CM *switches play quickly* to the RW.', 'Energy!'],
       tags: { CM1: 'SWITCH' }, timing: { move: 2.6 },
-      moves: [{ id: 'RW', to: [88, 46], start: 0.2, end: 0.6, arrow: false }],
+      moves: [{ id: 'RW', to: [87, 52], start: 0.2, end: 0.6, arrow: false }],
       passes: [{ to: 'RW', start: 0.05, end: 0.7 }],
     },
   ];
@@ -65,7 +68,7 @@
       title: 'CROSS', text: ['Cross for the *two ATT*.', 'They cross over: one *near post*, one *far post*.', 'LW and CM arrive at the edge of the box.'],
       tags: { [crosser]: 'CROSS', A1: 'NEAR POST', A2: 'FAR POST' }, timing: { move: 3 },
       moves: [
-        { id: 'A1', path: [[46, 24], [60, 9]], end: 0.7 }, { id: 'A2', path: [[56, 24], [43, 9]], end: 0.7 },
+        { id: 'A1', path: [[44, 26], [60, 9]], end: 0.7 }, { id: 'A2', path: [[57, 26], [43, 9]], end: 0.7 },
         { id: 'LW', to: [30, 26], start: 0.1, end: 0.9 }, { id: 'CM1', to: [50, 28], start: 0.15, end: 0.9 },
       ],
       passes: [{ to: target, start: 0.55, end: 0.95 }],
@@ -106,7 +109,7 @@
         lead: 'Draw them one way, then *switch play quickly*.',
         columns: [
           { heading: 'Build-up', items: ['CM to LW, LW to ATT', 'ATT *sets back* to the CM', 'CM switches to the RW'] },
-          { heading: 'Timing', items: ['*Game-like* timing of movement', '*Take it away, come back* to receive', 'Switch it with *energy*'] },
+          { heading: 'Timing', items: ['*Game-like* timing of movement', '*Take it away, come back*: off your mannequin to receive', 'Switch it with *energy*'] },
         ],
         phrase: { big: 'SWITCH IT QUICKLY', small: 'Game-like timing: take it away, come back' },
       },
@@ -131,7 +134,7 @@
     training: {
       area: 'Half a pitch, with a goal and a keeper.',
       players: 'Waves of 6 (LW, two CMs, RW, two ATT) plus a keeper. The next wave waits at the halfway line.',
-      equipment: 'A goal, cones, bibs, plenty of balls with the waiting wave.',
+      equipment: 'A goal, 6 mannequins (one beside each starting position), cones, bibs, plenty of balls with the waiting wave.',
       setup: [
         'CM plays to LW. LW plays to ATT. ATT sets back to CM, who switches play quickly to the RW.',
         'Underlap: RW stays wide and plays a forward pass to the underlapping CM, who crosses for the two ATT (and LW / CM arriving).',
@@ -157,7 +160,7 @@
         title: 'Build Up and Switch',
         tagline: 'Draw them one way, then switch play quickly.',
         intro: ['A wave of 6 plays; the *next wave* waits.', 'Build up on the left...', '...then *switch play quickly* to the right.'],
-        steps: [{ title: 'THE SET-UP', text: ['LW, two CMs, RW and two ATT.', 'The *next wave of 6* waits at the bottom.'] }].concat(build),
+        steps: [{ title: 'THE SET-UP', text: ['LW, two CMs, RW and two ATT, each beside a *mannequin*.', 'Play off them, around them and through them.', 'The *next wave of 6* waits at the bottom.'] }].concat(build),
         summary: ['CM to LW, LW to ATT.', 'ATT *sets back* to the CM.', 'CM *switches play quickly* to the RW.'],
       }),
 
@@ -172,7 +175,7 @@
           {
             title: 'UNDERLAP', text: ['The RW *stays wide* to give the underlap space.', 'The CM runs *inside* the RW.', 'RW plays the *forward pass* into the run.'],
             tags: { RW: 'STAY WIDE', CM2: 'UNDERLAP' }, timing: { move: 3 },
-            moves: [{ id: 'CM2', path: [[70, 44], [80, 18]], end: 0.8 }],
+            moves: [{ id: 'CM2', path: [[70, 52], [78, 36], [80, 18]], end: 0.8 }],
             passes: [{ to: 'CM2', start: 0.35, end: 0.8 }],
           },
         ], finish('CM2', 'A1'), [nextWave]),
@@ -190,13 +193,13 @@
           {
             title: 'WINGER COMES INSIDE', text: ['The RW *comes inside* to make space for the overlap.', 'RW plays to the *ATT*.'],
             tags: { RW: 'COME INSIDE' }, timing: { move: 2.8 },
-            moves: [{ id: 'RW', to: [76, 38], end: 0.5 }, { id: 'A2', to: [64, 30], end: 0.5 }],
+            moves: [{ id: 'RW', to: [76, 44], end: 0.5 }, { id: 'A2', to: [64, 34], end: 0.5 }],
             passes: [{ to: 'A2', start: 0.4, end: 0.8 }],
           },
           {
             title: 'OVERLAP', text: ['The CM runs *round the outside*.', 'ATT plays the *forward pass* to the overlapping runner.'],
             tags: { CM2: 'OVERLAP' }, timing: { move: 3 },
-            moves: [{ id: 'CM2', path: [[86, 52], [92, 18]], end: 0.8 }],
+            moves: [{ id: 'CM2', path: [[78, 62], [95, 54], [95, 30], [91, 18]], end: 0.8 }],
             passes: [{ to: 'CM2', start: 0.45, end: 0.85 }],
           },
         ], finish('CM2', 'A1')),

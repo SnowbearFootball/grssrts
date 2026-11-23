@@ -1181,6 +1181,17 @@
       ctx.save(); ctx.beginPath(); ctx.moveTo(cx, cy - 8); ctx.lineTo(cx + 7, cy + 6); ctx.lineTo(cx - 7, cy + 6); ctx.closePath();
       ctx.fillStyle = c.color || '#e5b52b'; ctx.fill(); ctx.restore();
     });
+    // mannequins (training dummies) to play around or through: clip.mannequins = [[x, y], ...]
+    (clip.mannequins || []).forEach(([mx, my]) => {
+      const [x, y] = toPx([mx, my]);
+      ctx.save();
+      ctx.fillStyle = '#e5b52b'; ctx.strokeStyle = '#8a6a12'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.ellipse(x, y + 9, 9, 3.5, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(22,53,31,0.18)'; ctx.fill();
+      ctx.fillStyle = '#e5b52b';
+      roundRect(ctx, x - 6, y - 8, 12, 17, 5); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(x, y - 13, 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.restore();
+    });
     // small goals anywhere on the pitch: clip.miniGoals = [{ at: [x, y], angle }] (angle in degrees, 0 = facing down the screen)
     (clip.miniGoals || []).forEach(g => {
       const [gx, gy] = toPx(g.at);
