@@ -55,6 +55,8 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   redirects via `aliases`), Combination Play (U12+, two balls at once), Switching Play: Pass and Follow (U12+, square of 4 boxes: one team then two, 3 or 4 teams OK; progression bounce off one or two middle players, who only bounce it back, talk), Switch of Play: Game Like (U14+, 6 mannequins, double movements, switch into space, underlap / overlap, every clip ends with a team attack on the cross; mix up which CM gets the set-back), Set Position & Shot-Stopping (GK, U6+),
   Ball Mastery: The Basics (Home Ground, solo clips).
 - Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
+- Defending attempts: Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
+  Intercepting Passes and Blocking Shots are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.
 
 ## Grass and Roots (the Minis characters)
 
