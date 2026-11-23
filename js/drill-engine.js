@@ -487,6 +487,7 @@
     'THROUGH BALL': { get bg() { return C.accent; }, fg: '#fff' },
     RUN: { bg: '#16351f', fg: '#fff' },
     FIRM: { bg: '#16351f', fg: '#fff' },
+    'MOVE AWAY': { bg: '#16351f', fg: '#fff' },
     SHIFT: { bg: '#16351f', fg: '#fff' },
     'TUCK IN': { bg: '#16351f', fg: '#fff' },
     'STEP UP': { get bg() { return C.accent; }, fg: '#fff' },
