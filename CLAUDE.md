@@ -84,6 +84,15 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - Every session has Share with your squad and a one-page PDF plan with a QR code.
 - Later: membership at ~12–15 sessions (~£4/month or ~£29/year; club licence), club packs, Kit Room.
 
+## Registration (planned, club trial)
+
+- First trial: coaches at **Burgess Hill Town F.C.**, free sign-up. Trial coaches get their sessions **animated free**
+  (to build up content, with permission to publish and credit).
+- Tool: **MailerLite** (free up to 1,000; owner is setting up the account). Sign-up asks: first name, email, role
+  (coach / parent / player 16+), age groups coached, club, email consent tick box. Never children's names or dates of birth.
+- To build: a Join page and a privacy page (hidden until approved), a Starter Pack PDF, and better filtering as the library grows
+  (section pages already have search, Saved, and Age / Type / Players filters).
+
 ## Ideas agreed, not built yet
 
 - Installable web app (PWA) with clips saved for offline use at training; icons are ready. App stores later.
