@@ -4,7 +4,7 @@
  *
  * A square (about 20 x 20 yards) with a small coned box at each corner. A team has one player in every box and two in its
  * first box, so there is always someone to pass to. Pass to the next box and follow your pass. Start with one team, then a
- * second going the opposite way (3 or 4 teams also work). Progression: one or two in the middle (coach or players): one-two, or they turn and play on.
+ * second going the opposite way (3 or 4 teams also work). Progression: one or two in the middle (coach or players) who only bounce it back.
  * The steps are generated below from who has each ball, so the passes and runs always line up.
  */
 (function () {
@@ -48,18 +48,14 @@
       },
       // inward = a touch towards the middle of the square, away from the cones
       inward() { const [x, y] = spot(t, corner); const d = Math.hypot(50 - x, 37.5 - y); return this.touch((50 - x) / d * 5, (37.5 - y) / d * 5); },
-      // one-two with a middle player: pass in, step inside, get it back
-      oneTwo(mid) {
+      // the middle player the ball is bounced off stands here: in front of the box, towards the middle
+      bounceSpot() { const [x, y] = spot(t, corner), d = Math.hypot(50 - x, 37.5 - y); return [x + (50 - x) / d * 15, y + (37.5 - y) / d * 15]; },
+      // bounce (one-two) with a middle player: they come to this corner, it goes in and straight back to the passer
+      bounce(mid) {
         const h = q[corner][0], [x, y] = spot(t, corner), d = Math.hypot(50 - x, 37.5 - y);
-        return { passes: [{ to: mid, start: 0.05, end: 0.35 }, { to: h, start: 0.55, end: 0.85 }],
-          moves: [{ id: h, to: [x + (50 - x) / d * 6, y + (37.5 - y) / d * 6], start: 0.15, end: 0.55 }] };
-      },
-      // pass in to a middle player, who turns and plays it on to the next box; the passer still follows
-      turn(mid) {
-        const r = this.round();
-        r.moves[0].start = 0.2;
-        r.passes = [{ to: mid, start: 0.05, end: 0.32 }, { to: r.receiver, start: 0.55, end: 0.9 }];
-        return r;
+        return { passes: [{ to: mid, start: 0.4, end: 0.6 }, { to: h, start: 0.68, end: 0.9 }],
+          moves: [{ id: mid, to: this.bounceSpot(), start: 0, end: 0.4 },
+            { id: h, to: [x + (50 - x) / d * 4, y + (37.5 - y) / d * 4], start: 0.45, end: 0.75 }], caller: h };
       },
     };
   }
@@ -145,7 +141,8 @@
         'With more than one team: control the ball into space. Make it game like: if it is congested or someone is blocking the passing lane, delay the pass or move the ball so you can play it.',
         'Once warm, get between the boxes quickly and join in play. Watch out for balls and players running round.',
         'Check your shoulders and scan for position, then scan again as the ball travels: the picture may have changed.',
-        'Progression: one or two in the middle (a coach, or players if the numbers work). One-two off them before passing to the next box, or they turn and play on.',
+        'Progression: a player (or coach) in the middle. They go to any corner to bounce it straight back (a one-two), then the passer plays the longer pass to the next box. Talk: call for the bounce.',
+        'Then two in the middle: same job, but communication matters even more.',
       ],
     },
 
@@ -153,7 +150,7 @@
       'How many touches did you need? Could it be two?',
       'Did you check your shoulder before the ball arrived?',
       'What changed while the ball was travelling?',
-      'When is the middle player available?',
+      'Did you call for the bounce? Did the middle player hear you?',
       'Was the passing lane clear? If not, did you delay or move the ball?',
     ],
 
@@ -224,29 +221,40 @@
       Object.assign({}, twoTeams, {
         id: 'coach',
         video: 'videos/switching-play-square-4.mp4',
-        kicker: 'Progression · players in the middle',
-        title: 'Play Off the Middle',
-        tagline: 'One or two in the middle: a coach, or players if the numbers work.',
+        kicker: 'Progression · bounce off the middle',
+        title: 'Bounce Off the Middle',
+        tagline: 'A player in the middle: a bounce, then the longer pass. Talk!',
         legendTeams: [{ label: 'Green', color: C.g }, { label: 'Red', color: C.r }, { label: 'Middle', color: C.c }],
-        players: twoTeams.players.concat({ id: 'm1', team: 'c', label: 'M', x: 41, y: 31 }, { id: 'm2', team: 'c', label: 'M', x: 59, y: 44 }),
-        intro: ['Progression: *one or two in the middle*.', 'A coach, or players if the numbers work.', '*One-two* off them, or they *turn* and play on.'],
+        players: twoTeams.players.concat({ id: 'm1', team: 'c', label: 'M', x: 50, y: 37.5 }, { id: 'm2', team: 'c', label: 'M', x: 50, y: 37.5, dim: true }),
+        intro: ['Progression: a *player in the middle* (or a coach).', 'Bounce it off them, then play the *longer pass*.', '*Talk*: call for the bounce.'],
         steps: (function () {
           const G = team('g', +1, 0), R = team('r', -1, 2);
-          const s = [{ title: 'ONE OR TWO IN THE MIDDLE', text: ['A *coach* or a *player* in the middle.', 'Use *two* if the numbers work.', 'Use them when they are available.'] }];
-          // green: one-two off m1, then pass on. red: in to m2, who turns and plays on to the next box.
-          const add = (title, text, tags, gx, rx) => s.push(Object.assign({ title, text, tags, timing: { move: 3.2 }, moves: [...gx.moves, ...rx.moves] },
-            gx.passes ? { passes: gx.passes } : {}, rx.passes ? { passes2: rx.passes } : {}));
-          let g = G.oneTwo('m1'), r = R.round();
-          add('ONE-TWO', ['Green: *one-two* with the middle player...', '...step inside and get it back.'], { m1: 'ONE-TWO' }, g, r);
-          g = G.round(); r = R.turn('m2');
-          add('THEN THE NEXT BOX', ['Green: now pass on to the next box and follow.', 'Red: in to the middle, who *turns* and plays on.'], { m2: 'TURN' }, g, r);
-          g = G.round(); r = R.oneTwo('m1');
-          add('MIX IT UP', ['Red: *one-two* off the middle this time.', 'Green: pass and follow.'], { m1: 'ONE-TWO' }, g, r);
-          g = G.turn('m2'); r = R.round();
-          add('TURN AND PLAY ON', ['Green: in to the middle, who *turns*...', '...and plays it on to the next box.', 'Red: pass on and follow.'], { m2: 'TURN' }, g, r);
+          const s = [{ title: 'ONE IN THE MIDDLE', text: ['A *player* (or coach) in the middle.', 'They can go to *any corner* to bounce it.', 'Their job: *a bounce, nothing more*.'] }];
+          const step = (title, text, tags, gx, rx, extra) => s.push(Object.assign({ title, text, tags, timing: { move: 3.4 }, moves: [...gx.moves, ...rx.moves] },
+            gx.passes ? { passes: gx.passes } : {}, rx.passes ? { passes2: rx.passes } : {}, extra || {}));
+          // one middle player: green call and bounce, then the long pass while red call and bounce, and so on
+          let g = G.bounce('m1'), r = R.round();
+          step('CALL, THEN BOUNCE', ['Green *calls*: the middle player comes over.', 'Pass in, *bounced straight back*.'], { [g.caller]: 'CALL', m1: 'BOUNCE' }, g, r);
+          g = G.round(); r = R.bounce('m1');
+          step('THEN THE LONGER PASS', ['Green play the *longer pass* to the next box.', 'Red *call*: the middle player goes to them.'], { [r.caller]: 'CALL', m1: 'BOUNCE' }, g, r);
+          g = G.bounce('m1'); r = R.round();
+          step('TALK TO EACH OTHER', ['*Communication*: who wants it next?', 'Call early, call loud.'], { [g.caller]: 'CALL', m1: 'BOUNCE' }, g, r);
+          g = G.round(); r = R.round();
+          step('PASS AND FOLLOW', ['Longer pass, then *follow your pass*.'], {}, g, r);
+          // a second middle player
+          s.push({ title: 'TWO IN THE MIDDLE', text: ['Add a *second* middle player.', 'Same job: a bounce, nothing more.', '*Communication* matters even more now.'],
+            dim: { m2: false }, moves: [{ id: 'm1', to: G.bounceSpot(), end: 0.8 }, { id: 'm2', to: R.bounceSpot(), end: 0.8 }], timing: { move: 2 } });
+          g = G.bounce('m1'); r = R.bounce('m2');
+          step('BOTH BOUNCE', ['Each team *calls* a middle player...', '...and gets the bounce back.'], { [g.caller]: 'CALL', [r.caller]: 'CALL', m1: 'BOUNCE', m2: 'BOUNCE' }, g, r);
+          g = G.round(); r = R.round();
+          step('LONGER PASS', ['Then the *longer pass* to the next box.', 'Middle players: *talk*, who goes where?'], {}, g, r);
+          g = G.bounce('m2'); r = R.bounce('m1');
+          step('SWAP OVER', ['Middle players go to *whoever calls*.', 'Talk so you don\'t both go to the same corner.'], { [g.caller]: 'CALL', [r.caller]: 'CALL', m1: 'BOUNCE', m2: 'BOUNCE' }, g, r);
+          g = G.round(); r = R.round();
+          step('KEEP IT GOING', ['Longer pass, follow your pass.'], {}, g, r);
           return s;
         })(),
-        summary: ['A coach or players in the middle: *one or two*.', '*One-two*, then on to the next box.', 'Or the middle player *turns* and plays on.'],
+        summary: ['Middle player: *a bounce*, nothing more.', 'Bounce, then the *longer pass* to the next box.', '*Talk*: call for it. Even more with two in the middle.'],
       }),
     ],
   });

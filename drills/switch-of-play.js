@@ -63,32 +63,26 @@
       passes: [{ to: 'RW', start: 0.3, end: 0.85 }],
     },
   ];
-  const finish = (crosser, target) => [
+  // attack the cross as a team: strikers cross over (near and far post), the opposite winger sweeps round the back of the
+  // box for an over-hit cross, one CM gets into the box and one waits just outside it to back up.
+  const finish = (crosser, inBox, edge) => [
     {
-      title: 'CROSS', text: ['Cross for the *two ATT*.', 'They cross over: one *near post*, one *far post*.', 'LW and CM arrive at the edge of the box.'],
-      tags: { [crosser]: 'CROSS', A1: 'NEAR POST', A2: 'FAR POST' }, timing: { move: 3 },
+      title: 'ATTACK THE CROSS', text: ['Attack it *as a team*.', 'Strikers *cross over*: near post and far post.', 'LW sweeps the *back post* for an over-hit cross.'],
+      tags: { [crosser]: 'CROSS', A1: 'NEAR POST', A2: 'FAR POST', LW: 'BACK POST' }, timing: { move: 3.4 },
       moves: [
-        { id: 'A1', path: [[44, 26], [60, 9]], end: 0.7 }, { id: 'A2', path: [[57, 26], [43, 9]], end: 0.7 },
-        { id: 'LW', to: [30, 26], start: 0.1, end: 0.9 }, { id: 'CM1', to: [50, 28], start: 0.15, end: 0.9 },
+        { id: 'A1', path: [[46, 26], [60, 9]], end: 0.7 }, { id: 'A2', path: [[56, 26], [42, 9]], end: 0.7 },
+        { id: 'LW', path: [[16, 30], [27, 13]], start: 0.05, end: 0.9 },
+        { id: inBox, to: [50, 17], start: 0.1, end: 0.9 }, { id: edge, to: [56, 28], start: 0.15, end: 0.9 },
       ],
-      passes: [{ to: target, start: 0.55, end: 0.95 }],
+      passes: [{ to: 'A1', start: 0.6, end: 0.95 }],
     },
     {
-      title: 'FINISH', text: ['*Attack the ball* and finish.'],
-      tags: { [target]: 'SHOOT' }, shot: GOAL, timing: { move: 1.8 },
+      title: 'FINISH', text: ['*Attack the ball* and finish.', 'One CM *in the box*, one *on the edge* to back up.'],
+      tags: { A1: 'SHOOT', [inBox]: 'IN THE BOX', [edge]: 'EDGE OF BOX' }, shot: GOAL, timing: { move: 2 },
       ball: { to: [47, -2.5], start: 0.05, end: 0.45 },
       moves: [{ id: 'gk', to: [47, 4], start: 0.15, end: 0.45, arrow: false }],
     },
   ];
-  const nextWave = {
-    title: 'NEXT WAVE OF 6', text: ['This wave comes off.', 'The *next wave of 6* steps on and plays the same pattern.'],
-    timing: { move: 3 },
-    dim: Object.assign({}, ...reds.map(r => ({ [r.id]: true })), ...yellows.map(y => ({ [y.id]: false }))),
-    // the yellow wave takes the starting spots (LW, CM, ST, CM, ST, RW); the red wave goes to the back
-    moves: [0, 3, 1, 4, 2, 5].map((r, i) => ({ id: yellows[i].id, to: [reds[r].x, reds[r].y], start: 0.15, end: 0.95, arrow: false }))
-      .concat(reds.map((r, i) => ({ id: r.id, to: [yellows[[0, 2, 4, 1, 3, 5][i]].x, yellows[[0, 2, 4, 1, 3, 5][i]].y], start: 0, end: 0.8, arrow: false }))),
-  };
-
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'switch-of-play',
@@ -139,6 +133,7 @@
         'CM plays to LW. LW plays to ATT. ATT sets back to CM, who switches play quickly to the RW.',
         'Underlap: RW stays wide and plays a forward pass to the underlapping CM, who crosses for the two ATT (and LW / CM arriving).',
         'Overlap: after the switch, the RW comes inside and plays to ATT, who plays a forward pass to the overlapping runner.',
+        'Attack the cross as a team: strikers cross over (near post and far post), the opposite winger sweeps the back post for an over-hit cross, one CM gets into the box and one waits just outside to back up.',
         'Then the next wave of 6 plays the same pattern.',
         'Key points: game-like timing of movement. Double movements: take your marker away from the space, then come back into it.',
         'The switch goes into space in front of the RW, so they run onto it.',
@@ -162,8 +157,14 @@
         title: 'Build Up and Switch',
         tagline: 'Draw them one way, then switch play quickly.',
         intro: ['A wave of 6 plays; the *next wave* waits.', 'Build up on the left...', '...then *switch play quickly* to the right.'],
-        steps: [{ title: 'THE SET-UP', text: ['LW, two CMs, RW and two ATT, each beside a *mannequin*.', 'Play off them, around them and through them.', 'The *next wave of 6* waits at the bottom.'] }].concat(build),
-        summary: ['CM to LW, LW to ATT.', 'ATT *sets back* to the CM.', 'CM *switches play quickly* to the RW.'],
+        steps: [{ title: 'THE SET-UP', text: ['LW, two CMs, RW and two ATT, each beside a *mannequin*.', 'Play off them, around them and through them.', 'The *next wave of 6* waits at the bottom.'] }].concat(build, [
+          {
+            title: 'DRIVE ON', text: ['RW *drives on* down the line.', 'Everyone gets ready to attack the cross.'],
+            timing: { move: 2.4 },
+            moves: [{ id: 'RW', to: [93, 20], end: 0.9 }],
+          },
+        ], finish('RW', 'CM2', 'CM1')),
+        summary: ['CM to LW, LW to ATT, *set back*.', 'CM *switches play quickly* to the RW.', 'Cross, and *attack it as a team*.'],
       }),
 
       Object.assign({}, common, {
@@ -180,8 +181,8 @@
             moves: [{ id: 'RW', to: [96, 34], end: 0.4 }, { id: 'CM2', path: [[70, 52], [80, 36], [82, 18]], end: 0.85 }],
             passes: [{ to: 'CM2', start: 0.45, end: 0.85 }],
           },
-        ], finish('CM2', 'A1'), [nextWave]),
-        summary: ['Switch play quickly.', 'Winger *stays wide*; CM *underlaps*.', 'Cross for the two ATT.', 'Next wave goes.'],
+        ], finish('CM2', 'CM1', 'RW')),
+        summary: ['Switch play quickly.', 'Winger goes *wide*; CM *underlaps*.', 'Cross and *attack it as a team*.'],
       }),
 
       Object.assign({}, common, {
@@ -204,8 +205,8 @@
             moves: [{ id: 'CM2', path: [[96, 46], [96, 30], [91, 18]], end: 0.8 }],
             passes: [{ to: 'CM2', start: 0.45, end: 0.85 }],
           },
-        ], finish('CM2', 'A1')),
-        summary: ['Switch play quickly.', 'Winger *comes inside*; CM *overlaps*.', 'ATT plays the runner in; cross and finish.'],
+        ], finish('CM2', 'CM1', 'RW')),
+        summary: ['Switch play quickly.', 'Winger *comes inside*; CM *overlaps*.', 'Cross and *attack it as a team*.'],
       }),
     ],
   });
