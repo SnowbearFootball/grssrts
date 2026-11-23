@@ -49,7 +49,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 ## Content
 
 - Sections: Goalkeeping, Defending, Attacking; areas: The Dugout (coach requests), Home Ground (practise at home), Kit Room (shop).
-  The Dugout comes before Home Ground. Home Ground opens with an explanation and two pills (no big cards): Minis (U8 and under, Grass and Roots, `#minis`) and Juniors (U9 and up, `#juniors`); each has its own page.
+  The Dugout comes before Home Ground. Home Ground opens with an explanation and two pills side by side (no big cards; Minis orange, Juniors green): Minis (U8 and under, Grass and Roots, `#minis`) and Juniors (U9 and up, `#juniors`); each has its own page.
 - Sessions: Splash & Ripple (defending), Shoot & Recover, 5 v 2 Transfer Rondo, Long Range Shooting: Move Onto It (U14+),
   Long Range Shooting: Up, Back, Shot (U14+), Rotation of Positions (U14+, replaced Building Out: Rotations; old address
   redirects via `aliases`), Combination Play (U12+, two balls at once), Set Position & Shot-Stopping (GK, U6+),
