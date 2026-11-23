@@ -1,6 +1,6 @@
 /*
- * SESSION (DRAFT): Switch of Play: Game Like (Attacking · build-up and crossing)
- * From a coach's own session plan. draft: true keeps it off the site until approved (index.html?drafts#switch-of-play).
+ * SESSION: Switch of Play: Game Like (Attacking · build-up and crossing)
+ * From a coach's own session plan.
  *
  * Half a pitch, goal at the top with a keeper. A wave of 6 (red): LW, CM1, CM2, RW and two ATT; the next wave (yellow)
  * waits at the bottom. CM1 plays to LW, LW to ATT, ATT sets back to CM1, who switches play to RW.
@@ -86,7 +86,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'switch-of-play',
-    draft: true,
     title: 'Switch of Play: Game Like',
     subtitle: 'Build-up, switch and cross',
     type: 'Tactical',

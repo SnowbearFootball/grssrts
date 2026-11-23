@@ -24,6 +24,8 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Long Range Shooting: Up, Back, Shot (attacking, U14+) | Idea 1: Follow Your Pass · Idea 2: Third-Player Run · Progression: Up, Back, Shot |
 | Rotation of Positions (attacking, tactical, U14+) | 1. Drop Between the CBs · 2. Drop Between CB and FB · 3. Press Wins It · 4. Rotation With Wingers (9 v 5) |
 | Combination Play (attacking, U12+) | 1. Set and Play Long · 2. One-Two in the Box · 3. Show Short · 4. Around the Corner (two balls at once) |
+| Switching Play: Pass and Follow (attacking, U12+) | 1. Pass and Follow · 2. Add a Second Team · 3. Scan and Join In · 4. Bounce Off the Middle |
+| Switch of Play: Game Like (attacking, U14+) | 1. Build Up and Switch · 2. Switch and Underlap · 3. Switch and Overlap |
 
 ## Brand
 

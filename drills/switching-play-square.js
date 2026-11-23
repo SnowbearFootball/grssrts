@@ -1,6 +1,6 @@
 /*
- * SESSION (DRAFT): Switching Play: Pass and Follow (Attacking · passing)
- * From a coach's own session plan. draft: true keeps it off the site until approved (index.html?drafts#switching-play-square).
+ * SESSION: Switching Play: Pass and Follow (Attacking · passing)
+ * From a coach's own session plan.
  *
  * A square (about 20 x 20 yards) with a small coned box at each corner. A team has one player in every box and two in its
  * first box, so there is always someone to pass to. Pass to the next box and follow your pass. Start with one team, then a
@@ -91,7 +91,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'switching-play-square',
-    draft: true,
     title: 'Switching Play: Pass and Follow',
     subtitle: 'Passing and movement',
     type: 'Technical',
