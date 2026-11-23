@@ -39,15 +39,15 @@
   // the build-up and switch, shared by all three clips
   const build = [
     {
-      title: 'CM TO LW', text: ['The CM plays out to the *LW*.', 'LW: *take it away, come back* to receive.'],
-      tags: { LW: 'COME SHORT' }, timing: { move: 2.6 },
-      moves: [{ id: 'LW', path: [[6, 52], [15, 45]], end: 0.6 }],
+      title: 'CM TO LW', text: ['The CM plays out to the *LW*.', '*Double movement*: take your marker away...', '...then come back into the space you made.'],
+      tags: { LW: 'DOUBLE MOVE' }, timing: { move: 2.8 },
+      moves: [{ id: 'LW', path: [[5, 36], [15, 46]], end: 0.62 }],
       passes: [{ to: 'LW', start: 0.45, end: 0.85 }],
     },
     {
-      title: 'LW TO ATT', text: ['LW finds the *ATT*, who comes short.'],
-      timing: { move: 2.4 },
-      moves: [{ id: 'A1', to: [34, 46], end: 0.5 }],
+      title: 'LW TO ATT', text: ['ATT: *double movement*. Go away first...', '...then come short to receive.'],
+      tags: { A1: 'DOUBLE MOVE' }, timing: { move: 2.8 },
+      moves: [{ id: 'A1', path: [[43, 32], [34, 46]], end: 0.6 }],
       passes: [{ to: 'A1', start: 0.35, end: 0.8 }],
     },
     {
@@ -57,10 +57,10 @@
       passes: [{ to: 'CM1', start: 0.3, end: 0.75 }],
     },
     {
-      title: 'SWITCH THE PLAY', text: ['The CM *switches play quickly* to the RW.', 'Energy!'],
-      tags: { CM1: 'SWITCH' }, timing: { move: 2.6 },
-      moves: [{ id: 'RW', to: [87, 52], start: 0.2, end: 0.6, arrow: false }],
-      passes: [{ to: 'RW', start: 0.05, end: 0.7 }],
+      title: 'SWITCH THE PLAY', text: ['The CM *switches play quickly*.', 'RW checks in, then spins out wide.', 'Pass *into space* for the RW to *run onto*.'],
+      tags: { CM1: 'SWITCH', RW: 'RUN ONTO IT' }, timing: { move: 3 },
+      moves: [{ id: 'RW', path: [[81, 55], [95, 40]], start: 0, end: 0.85 }],
+      passes: [{ to: 'RW', start: 0.3, end: 0.85 }],
     },
   ];
   const finish = (crosser, target) => [
@@ -109,7 +109,7 @@
         lead: 'Draw them one way, then *switch play quickly*.',
         columns: [
           { heading: 'Build-up', items: ['CM to LW, LW to ATT', 'ATT *sets back* to the CM', 'CM switches to the RW'] },
-          { heading: 'Timing', items: ['*Game-like* timing of movement', '*Take it away, come back*: off your mannequin to receive', 'Switch it with *energy*'] },
+          { heading: 'Movement', items: ['*Double movements*: take your marker away from the space, then come back into it', 'Switch *into space* for the RW to run onto', 'Switch it with *energy*'] },
         ],
         phrase: { big: 'SWITCH IT QUICKLY', small: 'Game-like timing: take it away, come back' },
       },
@@ -117,8 +117,8 @@
         title: 'Underlap or overlap',
         lead: 'Get round or inside the winger, then *cross*.',
         columns: [
-          { heading: 'Underlap', items: ['The CM runs *inside* the winger', 'Winger *stays wide* to give the underlap space', 'Winger plays the forward pass'] },
-          { heading: 'Overlap', items: ['The CM runs *round the outside*', 'Winger *comes inside* to give the overlap space', 'Winger plays to ATT, who plays the runner in'] },
+          { heading: 'Underlap', items: ['The CM runs *inside* the winger', 'Winger goes *wide to the touchline* to open the gap inside', 'Winger plays the forward pass'] },
+          { heading: 'Overlap', items: ['Winger *comes inside* to leave space outside', 'The deeper CM *times the run* round the outside', 'Winger plays to ATT, who plays the runner in'] },
         ],
       },
     ],
@@ -140,12 +140,14 @@
         'Underlap: RW stays wide and plays a forward pass to the underlapping CM, who crosses for the two ATT (and LW / CM arriving).',
         'Overlap: after the switch, the RW comes inside and plays to ATT, who plays a forward pass to the overlapping runner.',
         'Then the next wave of 6 plays the same pattern.',
-        'Key points: game-like timing of movement. Take it away, come back.',
+        'Key points: game-like timing of movement. Double movements: take your marker away from the space, then come back into it.',
+        'The switch goes into space in front of the RW, so they run onto it.',
         'When underlapping, the winger must stay wide to give the underlap space. When overlapping, the winger must come inside to allow space for the overlap.',
       ],
     },
 
     questions: [
+      'Did your first movement take your marker away from the space?',
       'When did you start your run to receive?',
       'How quickly did we switch the play?',
       'Underlap or overlap: where did the winger need to be?',
@@ -173,10 +175,10 @@
         intro: ['Build up, then switch.', 'The RW *stays wide*; the CM *underlaps*.', 'Cross for the two ATT.'],
         steps: build.concat([
           {
-            title: 'UNDERLAP', text: ['The RW *stays wide* to give the underlap space.', 'The CM runs *inside* the RW.', 'RW plays the *forward pass* into the run.'],
-            tags: { RW: 'STAY WIDE', CM2: 'UNDERLAP' }, timing: { move: 3 },
-            moves: [{ id: 'CM2', path: [[70, 52], [78, 36], [80, 18]], end: 0.8 }],
-            passes: [{ to: 'CM2', start: 0.35, end: 0.8 }],
+            title: 'UNDERLAP', text: ['The RW goes *wide to the touchline*.', 'That opens the gap *inside* for the CM.', 'RW plays the *forward pass* into the run.'],
+            tags: { RW: 'STAY WIDE', CM2: 'UNDERLAP' }, timing: { move: 3.2 },
+            moves: [{ id: 'RW', to: [96, 34], end: 0.4 }, { id: 'CM2', path: [[70, 52], [80, 36], [82, 18]], end: 0.85 }],
+            passes: [{ to: 'CM2', start: 0.45, end: 0.85 }],
           },
         ], finish('CM2', 'A1'), [nextWave]),
         summary: ['Switch play quickly.', 'Winger *stays wide*; CM *underlaps*.', 'Cross for the two ATT.', 'Next wave goes.'],
@@ -191,15 +193,15 @@
         intro: ['Build up, then switch.', 'The RW *comes inside*; the CM *overlaps*.', 'ATT plays the overlapping runner in.'],
         steps: build.concat([
           {
-            title: 'WINGER COMES INSIDE', text: ['The RW *comes inside* to make space for the overlap.', 'RW plays to the *ATT*.'],
-            tags: { RW: 'COME INSIDE' }, timing: { move: 2.8 },
-            moves: [{ id: 'RW', to: [76, 44], end: 0.5 }, { id: 'A2', to: [64, 34], end: 0.5 }],
-            passes: [{ to: 'A2', start: 0.4, end: 0.8 }],
+            title: 'WINGER COMES INSIDE', text: ['The RW *comes inside* with the ball.', 'That leaves space outside for the overlap.', 'The deeper CM *times the run*: go as the RW comes inside.'],
+            tags: { RW: 'COME INSIDE', CM2: 'TIME IT' }, timing: { move: 3.2 },
+            moves: [{ id: 'RW', to: [80, 44], end: 0.5 }, { id: 'A2', to: [65, 34], end: 0.5 }, { id: 'CM2', path: [[74, 62], [88, 56]], start: 0.35, end: 1 }],
+            passes: [{ to: 'A2', start: 0.55, end: 0.85 }],
           },
           {
-            title: 'OVERLAP', text: ['The CM runs *round the outside*.', 'ATT plays the *forward pass* to the overlapping runner.'],
+            title: 'OVERLAP', text: ['The CM runs *round the outside*: arrive as the pass is played.', 'Too early and you wait; too late and the chance has gone.', 'ATT plays the *forward pass* into the run.'],
             tags: { CM2: 'OVERLAP' }, timing: { move: 3 },
-            moves: [{ id: 'CM2', path: [[78, 62], [95, 54], [95, 30], [91, 18]], end: 0.8 }],
+            moves: [{ id: 'CM2', path: [[96, 46], [96, 30], [91, 18]], end: 0.8 }],
             passes: [{ to: 'CM2', start: 0.45, end: 0.85 }],
           },
         ], finish('CM2', 'A1')),
