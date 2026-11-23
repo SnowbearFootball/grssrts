@@ -51,7 +51,7 @@
       passes: [{ to: 'A1', start: 0.35, end: 0.8 }],
     },
     {
-      title: 'SET BACK', text: ['The ATT *sets it back* to the CM.'],
+      title: 'SET BACK', text: ['The ATT *sets it back* to a CM.', '*Mix it up*: either CM can play the switch.'],
       tags: { A1: 'SET' }, timing: { move: 2.2 },
       moves: [{ id: 'CM1', to: [40, 55], end: 0.45 }],
       passes: [{ to: 'CM1', start: 0.3, end: 0.75 }],
@@ -102,7 +102,7 @@
         title: 'The switch',
         lead: 'Draw them one way, then *switch play quickly*.',
         columns: [
-          { heading: 'Build-up', items: ['CM to LW, LW to ATT', 'ATT *sets back* to the CM', 'CM switches to the RW'] },
+          { heading: 'Build-up', items: ['CM to LW, LW to ATT', 'ATT *sets back* to a CM: *mix up which one*', 'Either CM can switch it to the RW'] },
           { heading: 'Movement', items: ['*Double movements*: take your marker away from the space, then come back into it', 'Switch *into space* for the RW to run onto', 'Switch it with *energy*'] },
         ],
         phrase: { big: 'SWITCH IT QUICKLY', small: 'Game-like timing: take it away, come back' },
@@ -135,6 +135,7 @@
         'Overlap: after the switch, the RW comes inside and plays to ATT, who plays a forward pass to the overlapping runner.',
         'Attack the cross as a team: strikers cross over (near post and far post), the opposite winger sweeps the back post for an over-hit cross, one CM gets into the box and one waits just outside to back up.',
         'Then the next wave of 6 plays the same pattern.',
+        'Mix up which CM the ATT sets back to: either one can play the switch of play pass.',
         'Key points: game-like timing of movement. Double movements: take your marker away from the space, then come back into it.',
         'The switch goes into space in front of the RW, so they run onto it.',
         'When underlapping, the winger must stay wide to give the underlap space. When overlapping, the winger must come inside to allow space for the overlap.',
