@@ -73,6 +73,14 @@ Every session page has **Share with your squad** (the phone's share menu, or cop
 It opens the print dialog, where coaches choose "Save as PDF" or print it. QR codes use `js/vendor/qrcode.js`
 (qrcode-generator 1.4.4, MIT licence).
 
+## Minis: Grass and Roots
+
+The Minis area (U8 and under) shows solo clips with two characters beside the feet view: **Grass** (the coach) and
+**Roots** (the player, who copies each touch in time with the clip). It's switched off until `SITE_FLAGS.minis` is
+`true` in `js/categories.js`; add `?drafts` to the address to preview it. A session joins with `minis: true`; each
+clip can have Grass's lines (`coach: { intro, steps: [[big, small], ...], outro }`) and a `minisVideo` path.
+Render those videos with `node tools/render-minis.js`. Stars for each move are saved on the device only.
+
 ## Draft sessions
 
 Add `draft: true` to a session to keep it off the site while it's being checked. Open `index.html?drafts` to see drafts.

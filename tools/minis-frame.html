@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Video frame for Minis clips: Grass and Roots (left) beside the feet view (right), 1920 x 1080. Used by tools/render-minis.js -->
+<style>
+  @font-face { font-family: Montserrat; src: url(../assets/fonts/montserrat-600.woff) format("woff"); font-weight: 500 600; }
+  @font-face { font-family: Montserrat; src: url(../assets/fonts/montserrat-700.woff) format("woff"); font-weight: 700 800; }
+  body { margin: 0; width: 1920px; height: 1080px; background: #16351f; font-family: Montserrat, Arial; overflow: hidden; }
+  .top { position: absolute; left: 60px; top: 90px; color: #f2e6cd; font-weight: 800; font-size: 40px; }
+  .top span { color: #d9622b; }
+  .sub { position: absolute; left: 62px; top: 148px; color: #b4c2ae; font-weight: 600; font-size: 22px; }
+  .lab { position: absolute; top: 262px; color: #d9622b; font-weight: 700; font-size: 16px; letter-spacing: .14em; }
+  #m { position: absolute; left: 40px; top: 300px; width: 900px; }
+  #m svg { display: block; width: 100%; height: auto; }
+  #bubble { position: absolute; left: 330px; top: 318px; width: 330px; background: #fffaf0; border: 3px solid #16351f; border-radius: 22px; padding: 14px 18px; text-align: center; }
+  #bubble:after { content: ""; position: absolute; left: 46px; bottom: -22px; border: 12px solid transparent; border-top: 14px solid #fffaf0; }
+  #b1 { font-weight: 800; font-size: 22px; color: #16351f; } #b2 { font-weight: 700; font-size: 17px; color: #a8641f; margin-top: 4px; }
+  #divider { position: absolute; left: 949px; top: 300px; width: 4px; height: 520px; border-radius: 2px; background: #d9622b; }
+  #cv { position: absolute; left: 960px; top: 302px; width: 920px; height: auto; border-radius: 14px; }
+  .foot { position: absolute; left: 0; right: 0; bottom: 36px; text-align: center; color: #b4c2ae; font-weight: 600; font-size: 20px; }
+</style></head><body>
+<div class="top" id="title"></div><div class="sub">Grass coaches, Roots plays: copy Roots at home!</div>
+<div class="lab" style="left:62px">GRASS COACHES, ROOTS PLAYS</div><div class="lab" style="left:982px">THE FEET, FROM ABOVE</div>
+<div id="m"></div><div id="bubble"><div id="b1"></div><div id="b2"></div></div>
+<div id="divider"></div><canvas id="cv"></canvas><div class="foot">grssrts.co.uk</div>
+<script src="../js/logo-data.js"></script><script src="../js/drill-engine.js"></script><script src="../js/categories.js"></script>
+<script src="../js/mascots.js"></script><script src="../drills/ball-mastery.js"></script>
+<script>
+  const q = new URLSearchParams(location.search);
+  const session = SESSIONS.find(s => s.id === q.get('s')), clip = session.clips.find(c => c.id === q.get('c'));
+  const player = new DrillEngine.DrillPlayer(document.getElementById('cv'), session, clip, { scale: 1 });
+  document.getElementById('title').innerHTML = `${clip.title} with <span>Grass</span> &amp; <span>Roots</span>`;
+  document.getElementById('m').innerHTML = Mascots.svg();
+  const svg = document.querySelector('#m svg');
+  window.DUR = player.duration;
+  window.frame = t => {
+    player.renderAt(t);
+    Mascots.update(svg, player.cp, t);
+    const [a, b] = Mascots.line(clip, player.cp, t);
+    document.getElementById('b1').textContent = a; document.getElementById('b2').textContent = b;
+  };
+  document.fonts.ready.then(() => { window.READY = true; });
+</script></body></html>
