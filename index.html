@@ -260,6 +260,44 @@
   .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--forest); color: var(--cream);
     padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 8px 24px rgba(22,53,31,.3); }
   #print-plan { display: none; }
+  .srow .type[data-type] { cursor: pointer; }
+  .srow .type[data-type]:hover { filter: brightness(1.08); text-decoration: underline; }
+  /* join + privacy */
+  .join { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 26px; align-items: start; margin: 0 0 26px; }
+  .join-why { display: grid; gap: 10px; }
+  .join-why h2 { margin: 0 0 4px; font-size: 22px; }
+  .join-why ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .join-why li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; }
+  .join-why li b { font-size: 15.5px; }
+  .join-why li span { color: var(--sub); font-size: 14px; }
+  .trial { background: var(--forest); color: var(--cream); border-radius: 14px; padding: 16px 18px; display: grid; gap: 6px; }
+  .trial .eyebrow { color: var(--accent-soft); margin: 0; }
+  .trial b { font-size: 18px; }
+  .trial span { font-size: 14px; color: #ddd3be; }
+  .join-form { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 18px; display: grid; gap: 14px; }
+  .join-form h2 { margin: 0; font-size: 22px; }
+  .join-form label, .join-form legend { font-size: 13px; font-weight: 700; color: var(--text); display: block; margin: 0 0 5px; padding: 0; }
+  .join-form .opt { font-weight: 500; color: var(--muted); }
+  .join-form input[type=text], .join-form input[type=email] { width: 100%; border: 1px solid var(--edge); border-radius: 10px; padding: 11px 12px; background: #fff; font-size: 16px; }
+  .join-form input:focus { outline: 3px solid var(--accent); outline-offset: 1px; }
+  .join-form fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .ticks { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ticks label { margin: 0; font-weight: 600; font-size: 14px; border: 1px solid var(--edge); border-radius: 999px; padding: 6px 12px; background: var(--bg); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .ticks input { accent-color: var(--accent); margin: 0; }
+  .ticks label:has(input:checked) { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .consent { display: flex !important; gap: 10px; align-items: flex-start; font-weight: 500 !important; font-size: 14px !important; color: var(--sub) !important; }
+  .consent input { accent-color: var(--accent); width: 20px; height: 20px; flex: none; margin: 1px 0 0; }
+  .join-form .small { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .join-msg { margin: 0; font-weight: 700; font-size: 14.5px; }
+  .join-msg.ok { color: var(--forest); }
+  .join-msg.err { color: var(--accent-ink); }
+  .privacy { display: grid; gap: 12px; max-width: 760px; }
+  .privacy section { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px 16px; }
+  .privacy h2 { margin: 0 0 6px; font-size: 18px; }
+  .privacy p, .privacy li { margin: 0 0 6px; color: var(--sub); font-size: 14.5px; }
+  .privacy ul { margin: 0; padding-left: 20px; }
+  .todo { background: #fde8dc; color: var(--accent-ink); font-weight: 700; border-radius: 4px; padding: 0 4px; }
+  @media (max-width: 760px) { .join { grid-template-columns: 1fr; } }
   .free-topic { background: var(--paper); border: 1px dashed var(--edge); border-radius: 14px; padding: 18px; display: grid; gap: 8px; margin: 26px 0 16px; }
   .free-topic h2 { margin: 0; font-size: 20px; }
   .free-topic .price { margin: 0; font-weight: 800; font-size: 14px; color: var(--accent-ink); }
@@ -886,7 +924,7 @@
     $('nav').innerHTML = CATS.map(c => `<a href="#${c.id}"${active === c.id ? ' aria-current="page"' : ''}>${esc(c.name)}</a>`).join('') +
       '<span class="sep" aria-hidden="true"></span>' +
       `<div class="more"><button class="more-btn${inArea ? ' current' : ''}" id="more-btn" aria-expanded="false" aria-controls="more-list">More ▾</button>
-        <div class="more-list" id="more-list">${AREAS.map(a => `<a href="#${a.id}"${active === a.id ? ' aria-current="page"' : ''}>${esc(a.name)}</a>`).join('')}</div></div>`;
+        <div class="more-list" id="more-list">${AREAS.filter(a => !a.unlisted).map(a => `<a href="#${a.id}"${active === a.id ? ' aria-current="page"' : ''}>${esc(a.name)}</a>`).join('')}</div></div>`;
   }
 
   // ---------- home ----------
@@ -896,7 +934,7 @@
       return `<a class="main-tile" href="#${c.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg>
         <b>${esc(c.name)}</b><small>${esc(c.blurb)}</small><span class="count">${n ? plural(n, 'session') : 'Coming soon'}</span></a>`;
     }).join('');
-    $('areas').innerHTML = AREAS.map(a => `<a class="area-tile" href="#${a.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${a.icon}</svg>
+    $('areas').innerHTML = AREAS.filter(a => !a.unlisted).map(a => `<a class="area-tile" href="#${a.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${a.icon}</svg>
         <span class="tag">${esc(a.tag)}</span><b>${esc(a.name)}</b><small>${esc(a.blurb)}</small></a>`).join('');
   }
 
@@ -1005,7 +1043,7 @@
         ${s.thumb ? `<img src="${esc(s.thumb)}" alt="" loading="lazy">` : ''}
         <span class="sm"><b>${esc(s.title)}</b>
           <span class="sum">${esc(s.summary || s.subtitle || '')}</span>
-          <span class="badges"><span class="age">${ageLabel(s)}</span>${s.type ? `<span class="age type">${esc(s.type)}</span>` : ''}${squad(s) ? `<span class="b">${squadLabel(s)}</span>` : ''}<span class="b">${plural(s.clips.length, 'clip')} · ${Math.max(1, Math.round(len / 60))} min</span></span>
+          <span class="badges"><span class="age">${ageLabel(s)}</span>${s.type ? `<span class="age type" data-type="${esc(s.type)}" role="button" tabindex="0" title="Show all ${esc(s.type)} sessions">${esc(s.type)}</span>` : ''}${squad(s) ? `<span class="b">${squadLabel(s)}</span>` : ''}<span class="b">${plural(s.clips.length, 'clip')} · ${Math.max(1, Math.round(len / 60))} min</span></span>
         </span></a>
       <button class="star" data-save="${esc(s.id)}" aria-pressed="${isSaved(s.id)}" aria-label="Save ${esc(s.title)}" title="${isSaved(s.id) ? 'Saved' : 'Save'}">${isSaved(s.id) ? '★' : '☆'}</button></li>`;
   }
@@ -1063,6 +1101,17 @@
     $('filter-btn').setAttribute('aria-expanded', String(open));
   };
   $('clear-filters').onclick = () => { Object.assign(F, { age: '', type: '', players: '', saved: false, q: '' }); rerender(); };
+  // tap the orange type label on a session (e.g. Tactical) to show only that type
+  function typeTap(e) {
+    const t = e.target.closest('.srow [data-type]'); if (!t || $('section').hidden) return;
+    if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault(); e.stopPropagation();
+    F.type = F.type === t.dataset.type ? '' : t.dataset.type;
+    rerender();
+    $('finder').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.addEventListener('click', typeTap, true);
+  document.addEventListener('keydown', typeTap, true);
   // ☆ on any session row (section pages and Home Ground)
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-save]'); if (!b) return;
@@ -1146,6 +1195,81 @@
       if (!$('area').hidden) { const y = scrollY; route(); scrollTo(0, y); }
     }
   });
+  // ---------- join (sign-up) and privacy ----------
+  const CLUBS = window.CLUBS || {};
+  const clubCode = () => (new URLSearchParams(location.search).get('club') || '').toLowerCase();
+  const AGE_TICKS = ['U6', 'U7', 'U8', 'U9', 'U10', 'U11', 'U12', 'U13', 'U14', 'U15', 'U16', 'U17', 'U18', 'Adults'];
+  function joinBody() {
+    const club = CLUBS[clubCode()] || '';
+    return `<div class="join">
+        <div class="join-why">
+          ${club ? `<div class="trial"><p class="eyebrow">${esc(club)} coaches</p><b>You're on the free trial</b>
+            <span>Sign up and send us your own sessions: we'll animate them for free and add them to the library, with credit to you and ${esc(club.replace(/\.$/, ''))}.</span></div>` : ''}
+          <h2>Why join?</h2>
+          <ul>
+            <li><b>New sessions by email</b><span>A short email when new clips go up. No spam, unsubscribe any time.</span></li>
+            <li><b>Your sessions, animated</b><span>Send us your session plans and we'll turn them into clips like these.</span></li>
+            <li><b>Help shape the site</b><span>Tell us which ages and topics you need, and we'll make them next.</span></li>
+          </ul>
+          <p class="note">Free. We only ask for what we need, and we never ask for children's names, photos or dates of birth.</p>
+        </div>
+        <form class="join-form" id="join-form" novalidate>
+          <h2>Join the squad</h2>
+          <div><label for="j-name">First name</label><input type="text" id="j-name" name="name" autocomplete="given-name" required></div>
+          <div><label for="j-email">Email</label><input type="email" id="j-email" name="email" autocomplete="email" required></div>
+          <fieldset><legend>I am a…</legend><div class="ticks">
+            ${['Coach', 'Parent', 'Player (16+)'].map((r, i) => `<label><input type="radio" name="role" value="${esc(r)}"${i ? '' : ' checked'}> ${esc(r)}</label>`).join('')}
+          </div></fieldset>
+          <fieldset><legend>Age groups <span class="opt">(tick any)</span></legend><div class="ticks">
+            ${AGE_TICKS.map(a => `<label><input type="checkbox" name="ages" value="${a}"> ${a}</label>`).join('')}
+          </div></fieldset>
+          <div><label for="j-club">Club <span class="opt">(optional)</span></label><input type="text" id="j-club" name="club" autocomplete="organization" value="${esc(club)}"></div>
+          <label class="consent"><input type="checkbox" id="j-consent" name="consent" required>
+            <span>Yes, email me new sessions and news from GRSS | RTS. I can unsubscribe any time.</span></label>
+          <button class="btn primary" type="submit">Join the squad</button>
+          <p class="join-msg" id="join-msg" role="status" aria-live="polite"></p>
+          <p class="small">We keep your details safe and never sell them. See our <a href="#privacy">privacy page</a>.</p>
+        </form>
+      </div>`;
+  }
+  // Join form: checks the boxes, then sends to MailerLite (SITE_LINKS.joinForm). Until that's set, it says sign-up opens soon.
+  document.addEventListener('submit', e => {
+    if (e.target.id !== 'join-form') return;
+    e.preventDefault();
+    const f = e.target, msg = $('join-msg');
+    const say = (t, ok) => { msg.textContent = t; msg.className = 'join-msg ' + (ok ? 'ok' : 'err'); };
+    const name = $('j-name').value.trim(), email = $('j-email').value.trim();
+    if (!name) return say('Please add your first name.'), $('j-name').focus();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Please check your email address.'), $('j-email').focus();
+    if (!$('j-consent').checked) return say('Please tick the box so we can email you.');
+    if (!LINKS.joinForm) return say('Thanks! Sign-up opens very soon. This is a preview, so nothing was sent.', true);
+    const data = new URLSearchParams();
+    data.set('fields[name]', name); data.set('fields[email]', email);
+    data.set('fields[role]', (f.querySelector('[name=role]:checked') || {}).value || '');
+    data.set('fields[age_groups]', [...f.querySelectorAll('[name=ages]:checked')].map(x => x.value).join(', '));
+    data.set('fields[club]', $('j-club').value.trim());
+    data.set('ml-submit', '1'); data.set('anticsrf', 'true');
+    f.querySelector('[type=submit]').disabled = true;
+    fetch(LINKS.joinForm, { method: 'POST', mode: 'no-cors', body: data })
+      .then(() => { say('Nearly there: check your inbox and tap the link to confirm.', true); f.reset(); })
+      .catch(() => say('Sorry, that didn\'t send. Please try again.'))
+      .finally(() => { f.querySelector('[type=submit]').disabled = false; });
+  });
+  function privacyBody() {
+    const contact = LINKS.contactEmail ? `<a href="mailto:${esc(LINKS.contactEmail)}">${esc(LINKS.contactEmail)}</a>` : '<span class="todo">contact email to add</span>';
+    return `<div class="privacy">
+      <section><h2>Who we are</h2><p>GRSS | RTS (grssrts.co.uk) makes animated coaching clips for grassroots football. Questions about your details: ${contact}.</p></section>
+      <section><h2>What we keep</h2><p>Only what you give us when you join:</p>
+        <ul><li>Your first name and email address</li><li>Whether you're a coach, parent or player (16+)</li><li>The age groups you work with, and your club if you add it</li><li>That you agreed to our emails, and when</li></ul></section>
+      <section><h2>Why</h2><ul><li>To email you new sessions and news, because you asked us to</li><li>To understand which ages and topics to make next</li><li>To run trials with clubs</li></ul></section>
+      <section><h2>Children</h2><p>Sign-up is for adults and players aged 16 or over. We never ask for or publish children's names, photos or dates of birth. Players of any age can use the site without signing up.</p></section>
+      <section><h2>Where it's kept</h2><p>Your details are kept by our email service, MailerLite, which stores data securely within the EU. We never sell or share your details with anyone else.</p></section>
+      <section><h2>On your device</h2><p>Saved sessions and Minis stars are kept only on your own phone or computer, never sent to us. We don't use tracking cookies or advertising.</p></section>
+      <section><h2>How long</h2><p>Until you unsubscribe or ask us to delete them. Every email has an unsubscribe link, and we'll delete your details within 30 days of you asking.</p></section>
+      <section><h2>Your rights</h2><p>You can ask to see, correct or delete your details at any time. If you're unhappy with how we've used them, you can complain to the Information Commissioner's Office (ico.org.uk).</p></section>
+      <p class="note">Last updated: <span class="todo">date it goes live</span></p>
+    </div>`;
+  }
   const AREA_BODY = {
     'home-ground': a => {
       // the explanation (above), then one pill per group: Minis and Juniors
@@ -1195,6 +1319,8 @@
       <section class="free-topic"><p class="price">Free</p><h2>Suggest a topic</h2>
         <p>Tell us what your team struggles with, for example "we all chase the ball". Popular topics become new sessions in the library, free for everyone.</p>
         <div>${linkBtn(LINKS.suggestTopic, 'Suggest a topic', false)}</div></section>`,
+    'join': () => joinBody(),
+    'privacy': () => privacyBody(),
     'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
       <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
   };

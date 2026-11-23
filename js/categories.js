@@ -21,6 +21,15 @@ window.SITE_LINKS = {
   suggestTopic: null,     // e.g. 'https://tally.so/r/xxxx'
   bespokeSession: null,
   kitRoomInterest: null,
+  // Join page: the MailerLite form's address (from MailerLite: Forms > Embedded form > HTML code, the form "action").
+  // Leave null until MailerLite is set up; the Join button then says sign-up opens soon.
+  joinForm: null,
+  contactEmail: null,     // shown on the privacy page, e.g. 'hello@grssrts.co.uk'
+};
+
+// Clubs on a trial: grssrts.co.uk/?club=<code>#join fills in the club and shows the trial offer.
+window.CLUBS = {
+  bhtfc: 'Burgess Hill Town F.C.',
 };
 
 window.AREAS = [
@@ -37,6 +46,12 @@ window.AREAS = [
     icon: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2.5"/>',
     plans: ['Wall passes: both feet', 'Ball mastery 2: drag-backs and turns', 'First touch away from pressure',
       'Shooting at a target', '1 v 1 moves: step-over, drag-back, Cruyff turn', 'Keepy-uppy challenges'] },
+  { id: 'join', name: 'Join', tag: 'Free sign-up', draft: true,
+    blurb: 'Join the GRSS | RTS squad: new sessions in your inbox, and your own sessions animated.',
+    icon: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>' },
+  { id: 'privacy', name: 'Privacy', tag: 'Your details', draft: true, unlisted: true,
+    blurb: 'What we keep, why, and how to have it removed. In plain English.',
+    icon: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>' },
   { id: 'kit-room', name: 'Kit Room', tag: 'Shop',
     blurb: 'GRSS | RTS training wear and kit for players, parents and coaches.',
     icon: '<path d="M8 4l-5 3 2 4 3-1v10h8V10l3 1 2-4-5-3c-.5 1.7-2 3-4 3s-3.5-1.3-4-3z"/>',
