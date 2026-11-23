@@ -38,7 +38,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - Coaches' own diagrams: plain background (`plain: true`) when they don't need pitch markings; add measurements (`dims`)
   and label players by position (GK, CB, FB, CM, W, ST, D, M) when it helps.
 - Copy the coach's intent, not a rigid pattern: e.g. "ideas to create a shot, not a set move"; movement is free.
-- Coaching detail the owner has corrected before: pass and follow needs one more player than boxes (never an empty box); a middle player only bounces it back (one-two), never the longer pass; crosses are attacked as a team (strikers cross over, opposite winger sweeps the back post, one CM in the box, one on the edge); runner times the run and keeps space to move onto the ball; pressing as a
+- Coaching detail the owner has corrected before: in passing patterns (5 Y's, draft) the middle player moves away from the cone first (separation, like losing a defender), back-foot control, and the pass up is always to the opposite side (same side gets tight); alternate direction each go; shots must go on target; pass and follow needs one more player than boxes (never an empty box); a middle player only bounces it back (one-two), never the longer pass; crosses are attacked as a team (strikers cross over, opposite winger sweeps the back post, one CM in the box, one on the edge); runner times the run and keeps space to move onto the ball; pressing as a
   comment means "send one in to apply pressure", not a win-it-and-score drill; a long ball to the keeper comes from the
   furthest opponent and is over-hit; waiting players rotate in; GK stands on an arc post to post, an extra step towards
   the near post when the ball is wide.
