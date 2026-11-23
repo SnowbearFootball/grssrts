@@ -27,8 +27,13 @@ window.AREAS = [
   { id: 'dugout', name: 'The Dugout', tag: 'For coaches',
     blurb: 'Ask for a topic you want covered, or have your own session plan turned into animated clips.',
     icon: '<path d="M3 13a9 9 0 0 1 18 0v6H3z"/><path d="M7 19v-4h10v4"/>' },
-  { id: 'home-ground', name: 'Home Ground', tag: 'Practise at home', aliases: ['minis'],
-    blurb: 'Things to practise on your own: in the garden, at the park or against a wall. Minis (U8 and under) learn with Grass and Roots.',
+  { id: 'home-ground', name: 'Home Ground', tag: 'Practise at home',
+    blurb: 'Things to practise on your own: in the garden, at the park or against a wall. A few minutes every day makes a big difference. Choose your group below.',
+    // two parts, each with its own page (#minis, #juniors)
+    parts: [
+      { id: 'minis', name: 'Minis', ages: 'U8 and under', blurb: 'Learn the basics with Grass and Roots: short, fun clips to copy, and stars to collect as you get better.' },
+      { id: 'juniors', name: 'Juniors', ages: 'U9 and up', blurb: 'Solo drills to sharpen your skills: first touch, turns, passing and shooting, with a clip for each.' },
+    ],
     icon: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2.5"/>',
     plans: ['Wall passes: both feet', 'Ball mastery 2: drag-backs and turns', 'First touch away from pressure',
       'Shooting at a target', '1 v 1 moves: step-over, drag-back, Cruyff turn', 'Keepy-uppy challenges'] },

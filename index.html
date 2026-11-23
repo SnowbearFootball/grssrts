@@ -132,6 +132,20 @@
   .star-btn:hover { transform: scale(1.12); }
   .medal { margin-left: auto; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--forest);
     background: var(--cream); border-radius: 999px; padding: 3px 9px; }
+  .hg-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0 0 26px; }
+  .hg-choice { display: grid; grid-template-rows: auto 1fr; background: var(--paper); border: 1px solid var(--edge); border-radius: 18px; overflow: hidden;
+    text-decoration: none; color: var(--text); min-width: 0; }
+  .hg-choice:hover { border-color: var(--accent); }
+  .hg-choice .art { background: #eef0f2; border-bottom: 1px solid var(--edge); aspect-ratio: 760 / 470; display: grid; place-items: center; overflow: hidden; }
+  .hg-choice .art svg { width: 100%; height: 100%; display: block; }
+  .hg-choice .art.dark { background: var(--forest); }
+  .hg-choice .art.dark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hg-choice .txt { padding: 16px 18px 18px; display: grid; gap: 6px; align-content: start; }
+  .hg-choice .ages { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
+  .hg-choice h2 { margin: 0; font-size: 26px; }
+  .hg-choice p { margin: 0; color: var(--sub); font-size: 15px; }
+  .hg-choice .go { margin-top: 8px; justify-self: start; }
+  @media (max-width: 760px) { .hg-choices { grid-template-columns: 1fr; } }
   .progress-line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin: 0 0 10px; font-weight: 700; }
   .progress-line button { background: none; border: 0; padding: 0; color: var(--accent-ink); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 13px; }
   .area-tile { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 4px; align-content: start;
@@ -598,7 +612,7 @@
   const FLAGS = window.SITE_FLAGS || {};
   const MINIS = !!FLAGS.minis || DRAFTS;   // Minis (in Home Ground) + Grass and Roots
   const AREAS = (window.AREAS || []).filter(a => !a.draft || DRAFTS);
-  const catOf = s => CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground
+  const catOf = s => (s.minis && MINIS && { id: 'minis', name: 'Minis' }) || CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground (Minis or Juniors)
   const LINKS = window.SITE_LINKS || {};
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1103,8 +1117,7 @@
           ${[1, 2, 3].map(k => `<button class="star-btn" data-star="${esc(key)}" data-n="${k}" aria-pressed="${k <= n}" aria-label="${k} star${k > 1 ? 's' : ''}">★</button>`).join('')}
           ${n ? `<span class="medal">${MEDALS[n]}</span>` : ''}</div></li>`;
     };
-    return `<div class="section-head" id="minis"><h2>Minis</h2><p>U8 and under</p></div>
-      <section class="minis-hero">
+    return `<section class="minis-hero">
         <div><p class="eyebrow">Meet Grass and Roots</p><h2>Learn the basics with your new teammates</h2>
           <p><b>Grass</b> is the coach. <b>Roots</b> is learning, just like you. Watch Roots, then have a go yourself.</p>
           <p class="note">Each move has three levels: slow, faster, then a challenge. Give yourself a star each time you get better.</p></div>
@@ -1121,24 +1134,36 @@
       const key = b.dataset.star, n = +b.dataset.n;
       stars[key] = stars[key] === n ? n - 1 : n;   // tap the top star again to take it back
       saveStars();
-      const area = AREAS.find(a => a.id === 'home-ground');
-      if (area && !$('area').hidden) { const y = scrollY; renderArea(area); scrollTo(0, y); }
+      if (!$('area').hidden) { const y = scrollY; route(); scrollTo(0, y); }
       return;
     }
     if (e.target.closest('#stars-reset')) {
       stars = {}; saveStars();
-      const area = AREAS.find(a => a.id === 'home-ground');
-      if (area && !$('area').hidden) { const y = scrollY; renderArea(area); scrollTo(0, y); }
+      if (!$('area').hidden) { const y = scrollY; route(); scrollTo(0, y); }
     }
   });
   const AREA_BODY = {
     'home-ground': a => {
-      // Minis (U8 and under) with Grass and Roots first; then sessions for older players
-      const older = SESSIONS.filter(s => s.category === a.id && !(MINIS && s.minis));
-      return (MINIS ? minisBody() : '') +
-        `<div class="section-head" id="older"><h2>Older players</h2><p>U9 and up</p></div>` +
-        (older.length ? `<div class="count-line"><span>${plural(older.length, 'session')}</span></div><ul class="srows">${older.map(sessionRow).join('')}</ul>` : '') +
-        `<div class="section-head"><h3 style="margin:0">Coming soon</h3><p>More things to practise on your own, with a clip for each.</p></div>${soonList(a.plans)}
+      // two choices side by side: Minis (Grass and Roots) and Juniors
+      const parts = (a.parts || []).filter(p => p.id !== 'minis' || MINIS);
+      const juniors = SESSIONS.filter(s => s.category === a.id && !(MINIS && s.minis));
+      const art = p => p.id === 'minis'
+        ? `<div class="art">${window.Mascots ? Mascots.svg() : ''}</div>`
+        : `<div class="art dark">${juniors[0] && juniors[0].thumb ? `<img src="${esc(juniors[0].thumb)}" alt="" loading="lazy">` : '<img src="assets/thumbs/ball-mastery.jpg" alt="" loading="lazy">'}</div>`;
+      const count = p => p.id === 'minis'
+        ? `${SESSIONS.filter(s => s.minis).reduce((n, s) => n + s.clips.length, 0)} moves to learn, with stars to collect`
+        : (juniors.length ? plural(juniors.length, 'session') : `Coming soon: ${a.plans.slice(0, 3).map(x => x.split(':')[0].toLowerCase()).join(', ')} and more`);
+      return `<div class="hg-choices">${parts.map(p => `<a class="hg-choice" href="#${p.id}">${art(p)}
+          <span class="txt"><span class="ages">${esc(p.ages)}</span><h2>${esc(p.name)}</h2><p>${esc(p.blurb)}</p>
+            <p class="note">${esc(count(p))}</p><span class="btn primary go">Go to ${esc(p.name)} ›</span></span></a>`).join('')}</div>
+      <p class="note">Tip for parents: five minutes a day with a ball against a wall does more than an hour once a week.</p>`;
+    },
+    'minis': () => minisBody(),
+    'juniors': a => {
+      const hg = AREAS.find(x => x.id === 'home-ground');
+      const juniors = SESSIONS.filter(s => s.category === 'home-ground' && !(MINIS && s.minis));
+      return (juniors.length ? `<div class="count-line"><span>${plural(juniors.length, 'session')}</span></div><ul class="srows">${juniors.map(sessionRow).join('')}</ul>` : '') +
+        `<div class="section-head"><h2>Coming soon</h2><p>More things to practise on your own, with a clip for each.</p></div>${soonList(hg.plans)}
       <p class="note">Tip for parents: five minutes a day with a ball against a wall does more than an hour once a week.</p>`;
     },
     'dugout': () => `<section class="promo">
@@ -1178,8 +1203,8 @@
     'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
       <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
   };
-  function renderArea(a) {
-    $('area-crumb').textContent = a.name;
+  function renderArea(a, parent) {
+    $('area-crumb').innerHTML = parent ? `<a href="#${esc(parent.id)}">${esc(parent.name)}</a> <span aria-hidden="true">›</span> ${esc(a.name)}` : esc(a.name);
     $('area-icon').innerHTML = a.icon;
     $('area-tag').textContent = a.tag;
     $('area-title').textContent = a.name;
@@ -1220,8 +1245,10 @@
     const s = SESSIONS.find(x => x.id === id || (x.aliases || []).includes(id));
     if (s && s.id !== id) { location.replace('#' + s.id); return; }   // an old address for a replaced session
     const cat = CATS.find(c => c.id === id);
-    const area = AREAS.find(a => a.id === id || (a.aliases || []).includes(id));
-    if (!s && area && area.id !== id) { location.replace('#' + area.id); return; }   // e.g. #minis now lives in Home Ground
+    const area = AREAS.find(a => a.id === id);
+    // parts of an area (e.g. Home Ground: #minis, #juniors) have their own pages
+    const parent = !area && AREAS.find(a => (a.parts || []).some(p => p.id === id && (p.id !== 'minis' || MINIS)));
+    const part = parent && parent.parts.find(p => p.id === id);
     if (s) {
       show('session');
       if (s !== session) { session = s; clip = s.clips[0]; }
@@ -1233,6 +1260,11 @@
       setPlaying(false);
       if (cat) { show('section'); renderSection(cat); renderNav(cat.id); document.title = `${cat.name} · GRSS | RTS`; }
       else if (area) { show('area'); renderArea(area); renderNav(area.id); document.title = `${area.name} · GRSS | RTS`; }
+      else if (part) {
+        show('area');
+        renderArea({ id: part.id, name: part.name, tag: `${parent.name} · ${part.ages}`, blurb: part.blurb, icon: parent.icon }, parent);
+        renderNav(parent.id); document.title = `${part.name} · ${parent.name} · GRSS | RTS`;
+      }
       else { show('home'); renderHome(); renderNav(null); document.title = 'GRSS | RTS'; }
     }
     window.scrollTo(0, 0);
