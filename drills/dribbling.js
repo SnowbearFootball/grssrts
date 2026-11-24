@@ -1,5 +1,5 @@
 /*
- * SESSION: Dribbling (Attacking · dribbling) (DRAFT)
+ * SESSION: Dribbling (Attacking · dribbling)
  * From the owner's own plan ("Dribbling - Part 1", U16).
  *
  * A 35 x 35 yard square.
@@ -43,7 +43,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'dribbling',
-    draft: true,
     title: 'Dribbling',
     subtitle: 'Head up, change of direction and pace',
     type: 'Technical',

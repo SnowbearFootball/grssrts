@@ -30,6 +30,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Midfield Three: Playing Through (attacking, U14+) | 1. Through the Pivot · 2. Rotate and Be Patient · 3. Reds Win It |
 | Defending the Wide Areas (defending, U14+) | 1. Compact: Show It Wide · 2. Press, Cover, Balance · 3. Shift Together |
 | Shape: 5-a-Side (defending, U8–U9) | 1. Your Half · 2. Ball Goes Wide · 3. Connected by String |
+| Dribbling (attacking, U12+) | 1. Ball Each · 2. Pass and Swap · 3. Beat the Cones |
 
 ## Brand
 
@@ -131,6 +132,7 @@ steps: [{
   ball: { pass: 'g3', start: 0, end: 0.35 },       // or { to: [x, y] } for a loose ball / bad touch
   lanes: [{ from: 'g2', to: 'g1', blocked: true }],
   timing: { move: 3 },                             // seconds; optional per-step override
+  team: { i1: 'o' },                               // change a player's colour from this step (fades over their move), e.g. swapping roles
   halves: [{ x: 20, y: 0, w: 60, h: 37.5, color: '#2fbf7f', label: 'ATTACKER’S HALF', soft: false }], // shaded area per player
   lines: [{ a: [50, 0], b: [50, 75], label: 'THE MIDDLE' }],  // dashed guide line with a label
 }]
