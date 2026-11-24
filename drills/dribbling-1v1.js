@@ -8,6 +8,7 @@
  * Progression: dribble out to a cone outside the square, a turn, then dribble back in.
  * 1 v 1: an area 10 yards wide, a small goal at the defender's end. The defender passes to the attacker,
  *   who receives into space and tries to beat them. Double movement: make the defender move away from the space, then attack it.
+ *   Queues at each end; after a go, each player joins the other end's queue (roles swap).
  * Pitch units: x 0..100, y 0..75 (1 unit is about the same across and down).
  */
 (function () {
@@ -90,15 +91,16 @@
 
     training: {
       area: 'Warm up: a 35 × 35 yard square. 1 v 1: areas about 10 yards wide and 15 long, a small goal at one end.',
-      players: '10: a ball each for the warm up, then pairs (attacker and defender) for the 1 v 1.',
+      players: '10: a ball each for the warm up, then a queue at each end of the 1 v 1 area (more areas for more players).',
       equipment: 'A ball each, cones for the square, cones inside and 6 outside, small goals (or two cones), bibs.',
       setup: [
         'Quick explanation first (2 minutes): receive out of your feet, head up, change of direction and pace, explode away. Be positive.',
         'Warm up (8 minutes): a ball each in the square. Cones inside are passive defenders. Head up, dribble into space, beat a cone with a trick and explode away.',
         'Progression (8 minutes): dribble out to a cone outside the square, a turn, then dribble back in.',
-        '1 v 1 (20 minutes): the defender stands by the small goal and passes to the attacker at the far end.',
+        '1 v 1 (20 minutes): a queue at each end. Defenders by the small goal with the balls, attackers at the far end. The next defender passes to the next attacker.',
         'The attacker receives into space and tries to beat the defender and score in the small goal. Look for where the space is.',
-        'Double movement: show the defender one way so they move, then attack the space they left. Swap roles each go.',
+        'Double movement: show the defender one way so they move, then attack the space they left.',
+        'After a go, both join the queue at the other end, so the attacker becomes a defender and the defender becomes an attacker. Next two in.',
         'Before this: Dribbling (Part 1). Next: 2 v 2, using other players to make dribbling chances.',
       ],
     },
@@ -213,21 +215,25 @@
         summary: ['Out to a cone with your *head up*.', 'A *turn*: drag back or hook.', '*Change of pace* back into space.'],
       }),
 
-      // ---------------- 1 v 1 ----------------
+      // ---------------- 1 v 1 with a double movement ----------------
       Object.assign({}, one, {
         id: 'one-v-one',
         video: 'videos/dribbling-1v1-3.mp4',
-        kicker: '1 v 1 · Small goal',
+        kicker: '1 v 1 · Double movement',
         title: 'Beat Your Defender',
-        tagline: 'Receive into space, head up, go past and score.',
-        intro: ['The *defender* passes to the attacker.', 'Attacker: receive *into space*...', '...beat the defender and *score*.'],
-        players: [{ id: 'A', team: 'a', x: 36, y: 12 }, { id: 'D', team: 'd', x: 62, y: 60 }],
+        tagline: 'Move the defender away from the space, then attack it.',
+        intro: ['The *defender* passes to the attacker.', '*Double movement*: make the defender move...', '...then *attack the space* and score.'],
+        players: [
+          { id: 'A', team: 'a', x: 36, y: 12 }, { id: 'D', team: 'd', x: 64, y: 59 },
+          { id: 'qa1', team: 'a', x: 26, y: 12 }, { id: 'qa2', team: 'a', x: 20, y: 12 },
+          { id: 'qd1', team: 'd', x: 74, y: 59, ball: true }, { id: 'qd2', team: 'd', x: 80, y: 59, ball: true },
+        ],
         ball: { owner: 'D' },
-        keyPhrase: { big: 'BE POSITIVE', small: 'Receive into space, then go past' },
+        keyPhrase: { big: 'MOVE THE DEFENDER, ATTACK THE SPACE', small: 'Be positive, be confident' },
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['An area *10 yards* wide.', 'A *small goal* at the defender\'s end.'],
+            text: ['An area *10 yards* wide, a *small goal*.', 'A queue at *each end*.', 'The defenders have the balls.'],
             tags: { A: 'ATTACKER', D: 'DEFENDER' },
           },
           {
@@ -243,42 +249,6 @@
           {
             title: 'HEAD UP, GO AT THEM',
             text: ['*Head up*: where is the space?', 'Dribble *at* the defender.'],
-            tags: { A: 'FACE UP' }, timing: { move: 2.6 },
-            moves: [{ id: 'A', to: [48, 32], end: 0.9 }, { id: 'D', to: [50, 42], end: 0.9, ease: 'out' }],
-          },
-          {
-            title: 'TRICK, THEN EXPLODE',
-            text: ['*Change of direction*...', '...then *explode* away from the defender.'],
-            tags: { A: 'CHANGE OF PACE' }, timing: { move: 3 },
-            moves: [
-              { id: 'A', path: [[45, 36], [39, 40], [38, 52]], end: 0.95 },
-              { id: 'D', to: [49, 44], start: 0.25, end: 0.8, arrow: false },
-            ],
-          },
-          {
-            title: 'SCORE',
-            text: ['Past them: *score* in the small goal.', 'Then *swap roles*.'],
-            tags: { A: 'SCORE' }, timing: { move: 2.2 },
-            ball: { to: [50, 61], start: 0.05, end: 0.5 },
-          },
-        ],
-        summary: ['Receive *into space*.', '*Head up*, go at them.', '*Change of direction*, *explode* away.'],
-      }),
-
-      Object.assign({}, one, {
-        id: 'double-movement',
-        video: 'videos/dribbling-1v1-4.mp4',
-        kicker: '1 v 1 · Double movement',
-        title: 'Double Movement',
-        tagline: 'Make the defender move away from the space, then attack it.',
-        intro: ['Same *1 v 1*.', 'Show them *one way*: they move.', 'Then *attack the space* they left.'],
-        players: [{ id: 'A', team: 'a', x: 44, y: 20 }, { id: 'D', team: 'd', x: 53, y: 44 }],
-        ball: { owner: 'A' },
-        keyPhrase: { big: 'MOVE THE DEFENDER, ATTACK THE SPACE', small: 'Be positive, be confident' },
-        steps: [
-          {
-            title: 'GO AT THEM',
-            text: ['Ball received *into space*.', '*Head up*, dribble at the defender.'],
             tags: { A: 'FACE UP' }, timing: { move: 2.6 },
             moves: [{ id: 'A', to: [50, 32], end: 0.9 }, { id: 'D', to: [50, 44], end: 0.9, ease: 'out' }],
           },
@@ -304,12 +274,25 @@
           },
           {
             title: 'SCORE',
-            text: ['*Score* in the small goal.', '*Be positive*: try it again!'],
+            text: ['*Score* in the small goal.', '*Be positive*: want to go past them.'],
             tags: { A: 'SCORE' }, timing: { move: 2.2 },
             ball: { to: [51, 61], start: 0.05, end: 0.5 },
           },
+          {
+            title: 'SWAP ENDS',
+            text: ['Join the queue at the *other end*.', 'Attacker becomes a *defender*, and the other way round.', 'Next two in.'],
+            tags: { A: 'DEFENDER', D: 'ATTACKER' }, timing: { move: 3.4 },
+            team: { A: 'd', D: 'a' },
+            ball: { give: 'qd1' },
+            moves: [
+              { id: 'A', path: [[62, 67], [86, 67], [86, 59]], end: 0.95 },
+              { id: 'D', path: [[40, 34], [24, 20], [24, 12]], end: 0.95 },
+              { id: 'qa1', to: [36, 12], start: 0.2, end: 0.8 }, { id: 'qa2', to: [30, 12], start: 0.3, end: 0.9, arrow: false },
+              { id: 'qd1', to: [64, 59], start: 0.2, end: 0.8 }, { id: 'qd2', to: [74, 59], start: 0.3, end: 0.9, arrow: false },
+            ],
+          },
         ],
-        summary: ['*Show them one way*.', 'They move: the *space* opens.', '*Attack the space*, explode away.'],
+        summary: ['Receive *into space*, *head up*.', '*Double movement*: make them move.', '*Attack the space*, then swap ends.'],
       }),
     ],
   });
