@@ -540,6 +540,8 @@
     DECOY: { bg: '#16351f', fg: '#fff' },
     FOLLOWS: { bg: '#16351f', fg: '#fff' },
     STAYS: { bg: '#16351f', fg: '#fff' },
+    'CROSS OVER': { bg: '#16351f', fg: '#fff' },
+    'WHO?': { bg: '#6b7280', fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
