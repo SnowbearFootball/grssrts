@@ -40,7 +40,7 @@ window.SITE_LINKS = {
   // Join page: the MailerLite form's address (from MailerLite: Forms > Embedded form > HTML code, the form "action").
   // Leave null until MailerLite is set up; the Join button then says sign-up opens soon.
   joinForm: null,
-  contactEmail: null,     // shown on the privacy page, e.g. 'hello@grssrts.co.uk'
+  contactEmail: 'hello@grssrts.co.uk',     // shown on the privacy page
 };
 
 // Clubs on a trial: grssrts.co.uk/?club=<code>#join fills in the club and shows the trial offer.
