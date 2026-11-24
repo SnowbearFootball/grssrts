@@ -1,6 +1,9 @@
 /*
- * SESSION (DRAFT): Dribbling: 1 v 1 (Attacking · dribbling)
- * From the owner's own plan ("Dribbling - Part 2"). Follows Dribbling (Part 1); next is 2 v 2.
+ * SESSION (DRAFT): Dribbling: 1 v 1 to 2 v 2 (Attacking · dribbling)
+ * From the owner's own plans ("Dribbling - Part 2" and "Part 3"). Follows Dribbling (Part 1).
+ * 2 v 1: small goal, queues (more attackers); the run is a decoy (defender follows: dribble) or the spare player (defender stays: pass).
+ * 2 v 2: isolate (feint towards the run, attack away from it); underlap = run behind the dribbler and down the other wing
+ *   (attackers cross over): both press the dribbler = pass, both follow the runner = dribble.
  * draft: true keeps it off the site until approved (index.html?drafts#dribbling-1v1).
  *
  * Warm up: 35 x 35 yard square, a ball each, cones inside (passive defenders) and 6 outside.
@@ -66,14 +69,14 @@
   window.SESSIONS.push({
     id: 'dribbling-1v1',
     draft: true,
-    title: 'Dribbling: 1 v 1',
-    subtitle: 'Double movements: move the defender, attack the space',
+    title: 'Dribbling: 1 v 1 to 2 v 2',
+    subtitle: 'Move the defender, attack the space',
     type: 'Technical',
     category: 'attacking',
     topics: ['Dribbling', 'Warm-ups'],
     squad: [10, 12],
     thumb: 'assets/thumbs/dribbling-1v1.jpg',
-    summary: 'A ball each with cones as defenders, then turns at the outside cones, then 1 v 1 to a small goal, then 2 v 1 and 2 v 2. Receive into space, head up, move the defender (with a double movement or a run off the ball), then attack the space.',
+    summary: 'A ball each with cones as defenders and turns at the outside cones, then 1 v 1, 2 v 1 and 2 v 2 to a small goal. Receive into space, head up, move the defender with a double movement or a run off the ball, then attack the space.',
     keyPhrase: 'Move the defender, attack the space',
     ages: { from: 11 },
 
@@ -100,12 +103,15 @@
       { word: 'Double movement', meaning: 'Show the defender one way, so they move, then go the other way into the space they left.' },
       { word: 'Out of your feet', meaning: 'A first touch that pushes the ball into space, so you can run with it straight away.' },
       { word: 'Passive defender', meaning: 'A cone or player in your way that doesn\'t try to win the ball. You still have to get past it.' },
+      { word: 'Decoy run', meaning: 'A run that drags a defender away, so a team-mate gets space.' },
+      { word: 'Isolate', meaning: 'Leave a defender on their own, so it\'s 1 v 1.' },
+      { word: 'Underlap', meaning: 'Here: run behind the player on the ball and down the other wing, so the attackers cross over.' },
       { word: 'Explode', meaning: 'A sudden burst of speed away from the defender after your trick.' },
     ],
 
     training: {
-      area: 'Warm up: a 35 × 35 yard square. 1 v 1: areas about 10 yards wide and 15 long, a small goal at one end.',
-      players: '10: a ball each for the warm up, then a queue at each end of the 1 v 1 area (more areas for more players).',
+      area: 'Warm up: a 35 × 35 yard square. 1 v 1: 10 × 15 yards. 2 v 1: 10 × 25 yards. 2 v 2: 15 × 25 yards. A small goal at one end of each.',
+      players: '10 to 12. Warm up: a ball each. 1 v 1: queues at each end. 2 v 1: queues with more attackers than defenders (about 2 to 1). 2 v 2: groups of 4, the rest wait and rotate in.',
       equipment: 'A ball each, cones for the square, cones inside and 6 outside, small goals (or two cones), bibs.',
       setup: [
         'Quick explanation first (2 minutes): receive out of your feet, head up, change of direction and pace, explode away. Be positive.',
@@ -432,20 +438,20 @@
         summary: ['Defender *follows the run*: it\'s a *decoy*, dribble.', 'Defender *stays*: pass to the *spare player*.', 'Watch the defender, then decide.'],
       }),
 
-      // ---------------- progression: 2 v 2, isolate and the underlap ----------------
+      // ---------------- progression: 2 v 2, isolate ----------------
       Object.assign({}, twoArea(39, '15 yds'), {
         id: 'two-v-two',
         video: 'videos/dribbling-1v1-5.mp4',
-        kicker: '2 v 2 · Runs off the ball',
+        kicker: '2 v 2 · Run away from the ball',
         title: 'Isolate the Defender',
-        tagline: 'Use the runner to move defenders, then attack the space.',
-        intro: ['*2 v 2*: use the player *off the ball*.', 'A run away *isolates* a defender: attack *away from the run*.', 'An *underlap* confuses them: *pass* or *dribble*.'],
+        tagline: 'Feint towards the run, then attack away from it.',
+        intro: ['*2 v 2*: use the player *off the ball*.', 'Their run takes a defender away: the other is *isolated*.', 'Show them towards the run, then attack the space *away from it*.'],
         players: [
           { id: 'A1', team: 'a', x: 57, y: 15 }, { id: 'A2', team: 'a', x: 42, y: 15 },
           { id: 'D1', team: 'd', x: 56, y: 34 }, { id: 'D2', team: 'd', x: 41, y: 44 },
         ],
         ball: { owner: 'A1' },
-        keyPhrase: { big: 'MOVE THE DEFENDERS, ATTACK THE SPACE', small: 'Pressed? Pass. Free? Dribble.' },
+        keyPhrase: { big: 'ISOLATE, THEN BEAT THEM', small: 'Attack away from the run' },
         steps: [
           {
             title: 'THE SET-UP',
@@ -489,15 +495,29 @@
             tags: { A1: 'SCORE' }, timing: { move: 1.8 },
             ball: { to: [50.5, 67.5], start: 0.05, end: 0.5 },
           },
+        ],
+        summary: ['A *run off the ball* takes a defender away.', '*Feint* towards the run: don\'t go that way.', 'Attack the space *away from it*.'],
+      }),
+
+      // ---------------- progression: 2 v 2, the underlap ----------------
+      Object.assign({}, twoArea(39, '15 yds'), {
+        id: 'underlap',
+        video: 'videos/dribbling-1v1-6.mp4',
+        kicker: '2 v 2 · The underlap',
+        title: 'The Underlap',
+        tagline: 'Cross over and confuse them. Then pass or dribble.',
+        intro: ['The free player runs *behind* the dribbler and down the *other wing*.', 'Both defenders *press you*? *Pass* to the runner.', 'Both *follow the runner*? *Dribble*.'],
+        players: [
+          { id: 'A1', team: 'a', x: 58, y: 18 }, { id: 'A2', team: 'a', x: 42, y: 16 },
+          { id: 'D1', team: 'd', x: 57, y: 34 }, { id: 'D2', team: 'd', x: 43, y: 37 },
+        ],
+        ball: { owner: 'A1' },
+        keyPhrase: { big: 'PRESSED? PASS. FREE? DRIBBLE.', small: 'Who marks who? Make them decide.' },
+        steps: [
           {
-            title: 'GO AGAIN',
-            text: ['Back to the start.', 'This time, an *underlap*.'],
-            timing: { move: 2.2 },
-            ball: { give: 'A1' },
-            moves: [
-              { id: 'A1', to: [58, 18], end: 0.9, arrow: false }, { id: 'A2', to: [42, 16], end: 0.9, arrow: false },
-              { id: 'D1', to: [57, 34], end: 0.9, arrow: false }, { id: 'D2', to: [43, 37], end: 0.9, arrow: false },
-            ],
+            title: 'THE SET-UP',
+            text: ['*2 v 2*, a *small goal*.', 'Make the defenders decide: *who marks who*?'],
+            tags: { A1: 'ATTACKER', A2: 'ATTACKER', D1: 'DEFENDER', D2: 'DEFENDER' },
           },
           {
             title: 'THE UNDERLAP',
@@ -528,7 +548,7 @@
           },
           {
             title: 'GO AGAIN',
-            text: ['Back to the start.', 'This time, an *underlap*.'],
+            text: ['Back to the start.', 'Same *underlap* again: watch the defenders.'],
             timing: { move: 2.2 },
             ball: { give: 'A1' },
             moves: [
@@ -564,7 +584,7 @@
             ball: { to: [49.5, 67.5], start: 0.05, end: 0.5 },
           },
         ],
-        summary: ['A run away *isolates* a defender: attack *away from it*.', '*Underlap*: who marks who?', 'Both press you: *pass*. Both follow the run: *dribble*.'],
+        summary: ['*Underlap*: run behind, down the other wing.', 'Both press you: *pass* to the runner.', 'Both follow the run: *dribble*.'],
       }),
     ],
   });
