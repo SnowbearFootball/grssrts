@@ -1,5 +1,5 @@
 /*
- * SESSION (DRAFT): Dribbling: Where Is the Space / Overload? (Attacking · dribbling)
+ * SESSION: Dribbling: Where Is the Space / Overload? (Attacking · dribbling)
  * From the owner's own plan "Dribbling - Part 4". Follows Dribbling (Part 1) and Dribbling: 1 v 1 to 2 v 2 (Parts 2 and 3).
  *
  * Numbers game: 35 x 35 yard square, a goal and keeper at each end. Two teams of 5, numbered 1 to 5 (each player has
@@ -49,7 +49,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'dribbling-space-overload',
-    draft: true,
     title: 'Dribbling: Where Is the Space / Overload?',
     subtitle: '1 v 1, 2 v 2, then the game',
     type: 'Game',
