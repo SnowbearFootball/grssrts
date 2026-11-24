@@ -10,6 +10,9 @@ exactly like the existing sessions. Never write a separate HTML page, artifact o
 site's look, has no MP4s, no Share link, no PDF plan and can't go in the library. Output = draft session file + rendered
 MP4s sent with SendUserFile. Use the existing look: plain light pitch, team colours, arrows first, step text in the side panel.
 
+**Start here to save time:** read `CHEATSHEET.md` (in this skill's folder) instead of the engine code, and copy
+`starter.js` (same folder) as the new `drills/<id>.js`. Only open `js/drill-engine.js` if something isn't covered.
+
 The owner (non-technical, usually on a phone) sends a picture of a session plan with a short note. Turn it into a draft
 session on grssrts.co.uk, show them the clips, and fix it until they approve. Follow CLAUDE.md (style, coaching corrections,
 brand, plain UK English replies). The README explains the engine and clip format.
@@ -27,7 +30,7 @@ brand, plain UK English replies). The README explains the engine and clip format
 
 ## 2. Build it as a hidden draft
 
-1. Copy the shape of the closest existing file in `drills/` (e.g. `switch-of-play.js`, `midfield-three.js`,
+1. Copy `starter.js` from this skill's folder, or the closest existing file in `drills/` (e.g. `switch-of-play.js`, `midfield-three.js`,
    `penetration-dribbling.js`, `switching-play-square.js`).
 2. New file `drills/<id>.js` with `draft: true`, `category`, `type` (Technical / Tactical / Game / Rondo), `ages`, `squad`,
    `topics` (from `TOPICS` in `js/categories.js` only: generic words like "Passing", not "Passing and receiving"),
