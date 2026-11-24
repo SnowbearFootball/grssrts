@@ -97,6 +97,9 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   stays free with no sign-up. Shared ("Share with your squad") links open that one session without login. Taster: the first clip of each session is free
   by default; a session can name a different free clip (owner's or the sending coach's choice). Login service: suggested Clerk
   (passwords, reset emails, Google sign-in); MailerLite stays for emails only. Owner to confirm and create accounts.
+- Section page design (mock-up shown, owner reviewing): orange Type pills across the top (All / Technical / Tactical / Game / Rondo,
+  with counts), rows of up to 3 sessions per type, padlock "Join to watch" on cards, and one featured session first on All with an
+  orange "Free to watch" speech bubble (no sign-up). Topics to be picked at upload from a fixed list (stored as `topics` on each session).
 - To build: a Join page and a privacy page (hidden until approved), a Starter Pack PDF, and better filtering as the library grows
   (section pages already have search, Saved, and Age / Type / Players filters).
 
