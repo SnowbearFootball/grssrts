@@ -123,7 +123,9 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   age_groups, club: check via API). Group "Club trial: Burgess Hill" made (group ID 205014604942673731).
 - MailerLite API key saved by the owner as Cloudflare secret MAILERLITE_API_KEY. `functions/api/join.js` (Pages Function, /api/join)
   adds sign-ups to MailerLite as unconfirmed (double opt-in), Burgess Hill club link → the trial group; hidden trap box against bots.
-- Next: test a real sign-up on ?drafts#join after merging, then Clerk; connect them, test, switch on
+- Sign-up tested for real (owner's own email): confirm email arrives from GRSS RTS. Secrets only apply after a redeploy
+  (grssrts-site > Deployments > Retry deployment).
+- Next: Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
