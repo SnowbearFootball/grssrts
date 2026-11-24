@@ -522,6 +522,11 @@
     SAVE: { get bg() { return C.accent; }, fg: '#fff' },
     'GET UP!': { get bg() { return C.accent; }, fg: '#fff' },
     DEFENDER: { bg: '#16351f', fg: '#fff' },
+    'GO HIGH': { get bg() { return C.accent; }, fg: '#fff' },
+    'TO HALFWAY': { bg: '#16351f', fg: '#fff' },
+    'GO WIDE': { get bg() { return C.accent; }, fg: '#fff' },
+    'NOT PAST THE MIDDLE': { bg: '#16351f', fg: '#fff' },
+    BUNCHED: { get bg() { return C.danger; }, fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
@@ -1276,6 +1281,50 @@
 
     const showStepFx = phase !== 'intro' && phase !== 'outro';
     const fxAlpha = phase === 'stepIn' ? pk : 1;
+
+    // each player's area, in their colour: def.halves = [{ x, y, w, h, color, label, labelAt: [x, y], soft }] in pitch units
+    if (showStepFx && def.halves) {
+      def.halves.forEach(z => {
+        const [x1, y1] = toPx([z.x, z.y]), [x2, y2] = toPx([z.x + z.w, z.y + z.h]);
+        ctx.save();
+        roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10); ctx.clip();
+        ctx.globalAlpha = fxAlpha * (z.soft ? 0.12 : 0.22);
+        ctx.fillStyle = z.color; ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+        ctx.globalAlpha = fxAlpha * (z.soft ? 0.5 : 0.9);
+        ctx.strokeStyle = z.color; ctx.lineWidth = z.soft ? 2 : 3.5; ctx.setLineDash([10, 7]);
+        ctx.strokeRect(x1 + 2, y1 + 2, x2 - x1 - 4, y2 - y1 - 4);
+        ctx.restore();
+        if (z.label) {
+          const [lx, ly] = toPx(z.labelAt || [z.x + z.w / 2, z.y + 5]);
+          ctx.save(); ctx.globalAlpha = fxAlpha;
+          ctx.font = `800 15px ${FONT}`;
+          const w = ctx.measureText(z.label).width + 18;
+          roundRect(ctx, lx - w / 2, ly - 12, w, 24, 12); ctx.fillStyle = z.color; ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(z.label, lx, ly + 1);
+          ctx.restore();
+        }
+      });
+    }
+    // guide lines, e.g. the middle line a winger shouldn't cross: def.lines = [{ a: [x, y], b: [x, y], label, labelAt: [x, y] }]
+    if (showStepFx && def.lines) {
+      def.lines.forEach(l => {
+        const a = toPx(l.a), b = toPx(l.b);
+        ctx.save(); ctx.globalAlpha = fxAlpha;
+        ctx.strokeStyle = l.color || C.accent; ctx.lineWidth = 4; ctx.setLineDash([14, 9]);
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        ctx.setLineDash([]);
+        if (l.label) {
+          const [lx, ly] = toPx(l.labelAt || lerpP(l.a, l.b, 0.5));
+          ctx.font = `800 14px ${FONT}`;
+          const w = ctx.measureText(l.label).width + 18;
+          roundRect(ctx, lx - w / 2, ly - 12, w, 24, 12); ctx.fillStyle = l.color || C.accent; ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(l.label, lx, ly + 1);
+        }
+        ctx.restore();
+      });
+    }
 
     // string between defenders
     const stringIds = def.string !== undefined ? def.string : clip.string;
