@@ -1,25 +1,27 @@
 /*
- * SESSION: Dribbling: Week 1 (Attacking · dribbling) (DRAFT)
+ * SESSION: Dribbling (Attacking · dribbling) (DRAFT)
  * From the owner's own plan ("Dribbling - Part 1", U16).
  *
  * A 35 x 35 yard square.
  * Drill 1: every player in the area with a ball. Start slow, head up, use the other players as passive defenders.
  * Drill 2: 8 inside with a ball, 4 on the outside without. Look up, pass to a free outside player and swap places.
  *          The outside player receives, touch out of the feet, dribbles into space.
- * Drill 3: same set-up, 5 balls, cones in the area as passive defenders. Outside players don't come in. Receive into space,
+* Outside players are a different colour; a step's team: { id } swaps it when they swap places.
+ * Drill 3: same set-up, 5 balls (all start inside), cones in the area as passive defenders. Outside players don't come in. Receive into space,
  *          trick past a cone (change of direction / pace), play it out. Rotate the outside players.
  * Pitch units: x 0..100, y 0..75 (1 unit is about the same across and down, so the square is 56 x 56 units).
  */
 (function () {
-  const G = '#2fbf7f';
+  const G = '#2fbf7f', O = '#9b6fe0';
   const SQ = { x: 22, y: 9.5, w: 56, h: 56 };
   const base = {
     plain: true, goals: [],
     areas: [{ x: SQ.x, y: SQ.y, w: SQ.w, h: SQ.h }],
     dims: [{ a: [SQ.x, 4], b: [SQ.x + SQ.w, 4], label: '35 yds' }],
-    teamColors: { a: G },
+    teamColors: { a: G, o: O },
+    facing: { a: 1, o: 1 },
     tagPlace: 'auto',
-    legendTeams: [{ label: 'Players', color: G }],
+    legendTeams: [{ label: 'Dribblers', color: G }, { label: 'Outside', color: O }],
   };
 
   // ---------- drill 1: a ball each ----------
@@ -36,22 +38,22 @@
   // ---------- drills 2 and 3: 8 inside, 4 outside ----------
   // outside spots: top, right, bottom, left
   const OUT = { oT: [64, 4.5], oR: [84, 36], oB: [40, 71], oL: [16, 38] };
-  const outside = Object.keys(OUT).map(id => ({ id, team: 'a', x: OUT[id][0], y: OUT[id][1] }));
+  const outside = Object.keys(OUT).map(id => ({ id, team: 'o', x: OUT[id][0], y: OUT[id][1] }));
 
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
-    id: 'dribbling-week-1',
+    id: 'dribbling',
     draft: true,
-    title: 'Dribbling: Week 1',
+    title: 'Dribbling',
     subtitle: 'Head up, change of direction and pace',
     type: 'Technical',
     category: 'attacking',
     topics: ['Dribbling'],
     squad: [10, 14],
-    thumb: 'assets/thumbs/dribbling-week-1.jpg',
+    thumb: 'assets/thumbs/dribbling.jpg',
     summary: 'A ball each in a 35 yard square, then players on the outside to pass to and swap with, then cones to beat. Head up, ball out of your feet, change of direction and pace.',
     keyPhrase: 'Head up, ball out of your feet',
-    ages: { from: 16 },
+    ages: { from: 12 },
 
     cards: [
       {
@@ -88,9 +90,9 @@
         'Drill 1 (10 minutes): every player in the area with a ball. Start slow. Head up, and use the other players as passive defenders.',
         'Drill 2 (10 minutes): 4 players on the outside without a ball, 8 balls inside. Dribblers look up for a free outside player, pass to them and swap places.',
         'The outside player receives, takes it out of their feet and dribbles into space.',
-        'Drill 3 (15 minutes): same set-up, 5 balls, cones in the area as passive defenders. Outside players don\'t come in.',
-        'Receive into space (away from other players), then a trick to go past a cone: change of direction and pace. Rotate the outside players.',
-        'Before this: receiving priorities. Next: Dribbling Week 2 (1 v 1).',
+        'Drill 3 (15 minutes): same set-up, 5 balls (all inside), cones in the area as passive defenders. Outside players don\'t come in.',
+        'Dribblers pass out to a free outside player; players without a ball move into space to receive it back. Then a trick to go past a cone: change of direction and pace. Rotate the outside players.',
+        'Before this: receiving priorities. Next: dribbling 1 v 1.',
       ],
     },
 
@@ -105,11 +107,12 @@
       // ---------------- drill 1 ----------------
       Object.assign({}, base, {
         id: 'ball-each',
-        video: 'videos/dribbling-week-1-1.mp4',
+        video: 'videos/dribbling-1.mp4',
         kicker: 'Drill 1 · A ball each',
         title: 'Ball Each',
         tagline: 'Start slow, head up, the other players are your defenders.',
         intro: ['Every player in the square *with a ball*.', 'Start *slow*, *head up*.', 'Other players are *passive defenders*.'],
+        legendTeams: [{ label: 'Players', color: G }],
         players: ids.map((id, i) => ({ id, team: 'a', x: S[0][i][0], y: S[0][i][1], ball: true })),
         keyPhrase: { big: 'HEAD UP', small: 'Small touches, see the space' },
         steps: [
@@ -146,7 +149,7 @@
       // ---------------- drill 2 ----------------
       Object.assign({}, base, {
         id: 'pass-and-swap',
-        video: 'videos/dribbling-week-1-2.mp4',
+        video: 'videos/dribbling-2.mp4',
         kicker: 'Drill 2 · 8 balls',
         title: 'Pass and Swap',
         tagline: 'Look up, find a free outside player, swap places.',
@@ -179,7 +182,7 @@
           {
             title: 'PASS AND SWAP',
             text: ['*Pass* to the free player...', '...and *swap places* with them.', 'They take it *out of their feet* and go.'],
-            tags: { oT: 'TOUCH OUT' }, timing: { move: 3.4 },
+            tags: { oT: 'TOUCH OUT' }, timing: { move: 3.4 }, team: { i1: 'o', oT: 'a' },
             passes: [{ to: 'oT', start: 0.05, end: 0.3 }],
             moves: [
               { id: 'oT', path: [[60, 11], [54, 20]], start: 0.32, end: 0.95 },
@@ -192,7 +195,7 @@
           {
             title: 'AGAIN, OTHER SIDE',
             text: ['Look up: *who is free*?', 'Pass, swap, *touch out of your feet*.'],
-            tags: { oR: 'TOUCH OUT' }, timing: { move: 3.4 },
+            tags: { oR: 'TOUCH OUT' }, timing: { move: 3.4 }, team: { i2: 'o', oR: 'a' },
             passes2: [{ to: 'oR', start: 0.05, end: 0.3 }],
             moves: [
               { id: 'oR', path: [[78, 28], [66, 28]], start: 0.32, end: 0.95 },
@@ -205,7 +208,7 @@
           {
             title: 'KEEP IT GOING',
             text: ['The new dribblers *look up* too.', 'Pass, swap, go: keep it moving.'],
-            tags: { oL: 'TOUCH OUT', oT: 'HEAD UP' }, timing: { move: 3.4 },
+            tags: { oL: 'TOUCH OUT', oT: 'HEAD UP' }, timing: { move: 3.4 }, team: { i3: 'o', oL: 'a' },
             passes3: [{ to: 'oL', start: 0.05, end: 0.3 }],
             moves: [
               { id: 'i3', to: [16, 30], start: 0.3, end: 0.95 },
@@ -222,71 +225,69 @@
       // ---------------- drill 3 ----------------
       Object.assign({}, base, {
         id: 'beat-the-cones',
-        video: 'videos/dribbling-week-1-3.mp4',
+        video: 'videos/dribbling-3.mp4',
         kicker: 'Drill 3 · 5 balls · cones as defenders',
         title: 'Beat the Cones',
         tagline: 'Receive into space, a trick past a cone, change of pace.',
-        intro: ['Same set-up, *5 balls*.', '*Cones* are passive defenders.', 'Outside players *stay out*.'],
+        intro: ['Same set-up, *5 balls*, all inside.', '*Cones* are passive defenders.', 'Outside players *stay out*.'],
         cones: [[38, 22], [62, 20], [50, 36], [32, 48], [68, 46], [52, 56]].map(at => ({ at, color: '#d9622b' })),
         players: [
-          { id: 'i1', team: 'a', x: 70, y: 32 }, { id: 'i2', team: 'a', x: 28, y: 18, ball: true },
-          { id: 'i3', team: 'a', x: 60, y: 60, ball: true },
-          { id: 'i4', team: 'a', x: 50, y: 15 }, { id: 'i5', team: 'a', x: 72, y: 54 },
-          { id: 'i6', team: 'a', x: 40, y: 32 }, { id: 'i7', team: 'a', x: 28, y: 36 }, { id: 'i8', team: 'a', x: 42, y: 52 },
+          { id: 'i1', team: 'a', x: 72, y: 28 }, { id: 'i2', team: 'a', x: 46, y: 16 }, { id: 'i3', team: 'a', x: 60, y: 61 },
+          { id: 'i4', team: 'a', x: 28, y: 18, ball: true }, { id: 'i5', team: 'a', x: 74, y: 56, ball: true },
+          { id: 'i6', team: 'a', x: 40, y: 31 }, { id: 'i7', team: 'a', x: 27, y: 36 }, { id: 'i8', team: 'a', x: 58, y: 44 },
         ].concat(outside),
-        ball: { owner: 'oT' }, ball2: { owner: 'oR' }, ball3: { owner: 'i1' },
+        ball: { owner: 'i2' }, ball2: { owner: 'i1' }, ball3: { owner: 'i3' },
         keyPhrase: { big: 'RECEIVE INTO SPACE', small: 'Then a trick, change of direction, change of pace' },
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['*Cones* in the square: passive defenders.', '*5 balls*. Outside players *don\'t come in*.'],
+            text: ['*5 balls*, all inside.', '*Cones* in the square: passive defenders.', 'Outside players *don\'t come in*.'],
             tags: { oT: 'OUT', oR: 'OUT', oB: 'OUT', oL: 'OUT' },
           },
           {
-            title: 'RECEIVE INTO SPACE',
-            text: ['Move *away from other players*.', 'First touch *into space*.'],
-            tags: { i4: 'INTO SPACE', i5: 'INTO SPACE' }, timing: { move: 3.4 },
-            passes: [{ to: 'i4', start: 0.35, end: 0.6 }],
-            passes2: [{ to: 'i5', start: 0.35, end: 0.6 }],
+            title: 'PLAY IT OUT',
+            text: ['*Head up*: is an outside player free?', 'Pass it out to them.'],
+            tags: { oT: 'FREE', oR: 'FREE' }, timing: { move: 3 },
+            passes: [{ to: 'oT', start: 0.05, end: 0.35 }],
+            passes2: [{ to: 'oR', start: 0.1, end: 0.4 }],
             moves: [
-              { id: 'i4', to: [58, 13], end: 0.35 }, { id: 'i5', to: [74, 44], end: 0.35 },
-              { id: 'i1', path: [[72, 26], [70, 22]], end: 0.95, arrow: false },
-              { id: 'i2', to: [26, 26], end: 0.95, arrow: false }, { id: 'i3', to: [62, 66 - 4], end: 0.95, arrow: false },
+              { id: 'i2', to: [52, 26], start: 0.35, end: 0.95, arrow: false }, { id: 'i1', to: [76, 20], start: 0.4, end: 0.95, arrow: false },
+              { id: 'i4', to: [26, 26], end: 0.95, arrow: false }, { id: 'i3', to: [44, 62], end: 0.95, arrow: false },
+              { id: 'i5', to: [74, 62], end: 0.95, arrow: false },
+            ],
+          },
+          {
+            title: 'RECEIVE INTO SPACE',
+            text: ['No ball? Move *away from other players*.', 'First touch *into space*.'],
+            tags: { i6: 'INTO SPACE', i8: 'INTO SPACE' }, timing: { move: 3.4 },
+            passes: [{ to: 'i6', start: 0.4, end: 0.65 }],
+            passes2: [{ to: 'i8', start: 0.4, end: 0.65 }],
+            moves: [
+              { id: 'i6', to: [50, 15], end: 0.4 }, { id: 'i8', to: [72, 36], end: 0.4 },
+              { id: 'i2', to: [58, 30], end: 0.95, arrow: false },
+              { id: 'i3', to: [40, 56], end: 0.95, arrow: false },
             ],
           },
           {
             title: 'A TRICK PAST A CONE',
             text: ['Dribble *at* a cone.', 'A trick, then *change of direction*...', '...and *change of pace* past it.'],
-            tags: { i4: 'STEP OVER', i5: 'CHANGE OF PACE' }, timing: { move: 3.4 },
+            tags: { i6: 'STEP OVER', i8: 'CHANGE OF PACE' }, timing: { move: 3.4 },
             moves: [
-              { id: 'i4', path: [[60, 15], [66, 18], [66, 26]], end: 0.95 },
-              { id: 'i5', path: [[70, 50], [62, 48], [58, 42]], end: 0.95 },
-              { id: 'i1', path: [[74, 28], [70, 34]], end: 0.95, arrow: false },
-              { id: 'i2', path: [[30, 30], [36, 27], [44, 25]], end: 0.95, arrow: false },
-              { id: 'i3', to: [44, 60], end: 0.95, arrow: false },
-            ],
-          },
-          {
-            title: 'PLAY IT OUT',
-            text: ['*Head up*: find a free outside player.', 'Pass it out, then find *space* again.'],
-            tags: { i4: 'HEAD UP', oR: 'FREE', oT: 'FREE' }, timing: { move: 3 },
-            passes: [{ to: 'oT', start: 0.05, end: 0.4 }],
-            passes3: [{ to: 'oR', start: 0.1, end: 0.45 }],
-            moves: [
-              { id: 'i4', to: [74, 18], start: 0.4, end: 0.95 },
-              { id: 'i5', path: [[54, 40], [56, 30]], end: 0.95, arrow: false },
+              { id: 'i6', path: [[45, 19], [40, 16], [36, 14]], end: 0.95 },
+              { id: 'i8', path: [[70, 42], [63, 44], [60, 52]], end: 0.95 },
+              { id: 'i2', to: [52, 44], end: 0.95, arrow: false }, { id: 'i5', to: [66, 62], end: 0.95, arrow: false },
             ],
           },
           {
             title: 'ROTATE THE OUTSIDE',
             text: ['Every few minutes, *swap* the outside players.', 'Everyone gets *time on the ball*.'],
-            tags: { oL: 'IN', i7: 'OUT' }, timing: { move: 3 },
+            tags: { oL: 'IN', i7: 'OUT' }, timing: { move: 3 }, team: { i7: 'o', oL: 'a' },
             moves: [
-              { id: 'i7', to: [16, 28], end: 0.6 }, { id: 'oL', to: [27, 42], start: 0.35, end: 0.95 },
+              { id: 'i7', to: [16, 29], end: 0.6 }, { id: 'oL', to: [26, 46], start: 0.35, end: 0.95 },
             ],
           },
         ],
-        summary: ['Receive *into space*, away from players.', 'A *trick*, change of *direction*...', '...then change of *pace*.'],
+        summary: ['Pass out, then *move into space*.', 'Receive *into space*, away from players.', 'A *trick*, change of *direction*, change of *pace*.'],
       }),
     ],
   });
