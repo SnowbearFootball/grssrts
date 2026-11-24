@@ -551,6 +551,8 @@
     DELAY: { bg: '#16351f', fg: '#fff' },
     STALL: { bg: '#16351f', fg: '#fff' },
     FLOATER: { bg: '#6b7280', fg: '#fff' },
+    MOVE: { bg: '#16351f', fg: '#fff' },
+    'IN LINE': { bg: '#16351f', fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
@@ -1302,6 +1304,24 @@
       ctx.restore();
     });
 
+
+    // straight cone lines in any shape (e.g. hexagons): clip.edges = [{ a: [x, y], b: [x, y], dash }] in pitch units;
+    // a cone sits at every corner
+    if (clip.edges) {
+      const corners = {};
+      clip.edges.forEach(e => {
+        const a = toPx(e.a), b = toPx(e.b);
+        ctx.save();
+        ctx.strokeStyle = 'rgba(22,53,31,0.4)'; ctx.lineWidth = 2.5; ctx.setLineDash(e.dash ? [10, 8] : []);
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        ctx.restore();
+        [a, b].forEach(p => { corners[Math.round(p[0]) + ',' + Math.round(p[1])] = p; });
+      });
+      Object.values(corners).forEach(([cx, cy]) => {
+        ctx.beginPath(); ctx.moveTo(cx, cy - 7); ctx.lineTo(cx + 6, cy + 5); ctx.lineTo(cx - 6, cy + 5); ctx.closePath();
+        ctx.fillStyle = '#e5b52b'; ctx.fill();
+      });
+    }
 
     const showStepFx = phase !== 'intro' && phase !== 'outro';
     const fxAlpha = phase === 'stepIn' ? pk : 1;
