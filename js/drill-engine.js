@@ -533,6 +533,15 @@
     'TO HALFWAY': { bg: '#16351f', fg: '#fff' },
     'GO WIDE': { get bg() { return C.accent; }, fg: '#fff' },
     'NOT PAST THE MIDDLE': { bg: '#16351f', fg: '#fff' },
+    EXPLODE: { get bg() { return C.accent; }, fg: '#fff' },
+    'ATTACK THE SPACE': { get bg() { return C.accent; }, fg: '#fff' },
+    DRAG: { bg: '#16351f', fg: '#fff' },
+    ISOLATED: { get bg() { return C.accent; }, fg: '#fff' },
+    DECOY: { bg: '#16351f', fg: '#fff' },
+    FOLLOWS: { bg: '#16351f', fg: '#fff' },
+    STAYS: { bg: '#16351f', fg: '#fff' },
+    'CROSS OVER': { bg: '#16351f', fg: '#fff' },
+    'WHO?': { bg: '#6b7280', fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
