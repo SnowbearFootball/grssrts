@@ -96,7 +96,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - Tool: **MailerLite** (free up to 1,000; owner is setting up the account). Sign-up asks: first name, email, role
   (coach / parent / player 16+), coaching qualification (optional, coaches only), age groups coached, club, email consent tick box. Never children's names or dates of birth.
 - Domain grssrts.co.uk is registered and managed in the owner's Cloudflare account (email and MailerLite settings go there).
-  Email: a hello@grssrts.co.uk inbox is needed (MailerLite won't send from Yahoo/Gmail). Suggested Google Workspace; Zoho free as the no-cost option. Owner deciding.
+  Email: a hello@grssrts.co.uk inbox is needed (MailerLite won't send from Yahoo/Gmail). Owner chose **Google Workspace** (Business Starter, business name "GRSS RTS") and linked it to Cloudflare (DNS changes authorised); hello@ being set up.
 - Access (agreed direction): anyone can browse the home page and section lists; opening a session (clips, coaching points, downloads)
   needs an account. Header buttons Log in + Join free; tapping a session shows a join / log in pop-up. Home Ground (Minis and Juniors)
   stays free with no sign-up. Shared ("Share with your squad") links open that one session without login (`?squad` in the link). No first-clip taster:
@@ -115,7 +115,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   Privacy page (contact email and date still to fill in), the accounts preview above.
 - Emails: one monthly round-up (new sessions, the free session of the month, a tip or coach shout-out), drafted by Claude for the
   owner to send; an automatic welcome email. No per-video or weekly emails.
-- Next: owner picks email (Google or Zoho) for hello@grssrts.co.uk, then MailerLite, then Clerk; connect them, test, switch on
+- Next: finish hello@grssrts.co.uk (Google Workspace, test send/receive), then MailerLite, then Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
