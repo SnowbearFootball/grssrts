@@ -537,6 +537,9 @@
     'ATTACK THE SPACE': { get bg() { return C.accent; }, fg: '#fff' },
     DRAG: { bg: '#16351f', fg: '#fff' },
     ISOLATED: { get bg() { return C.accent; }, fg: '#fff' },
+    DECOY: { bg: '#16351f', fg: '#fff' },
+    FOLLOWS: { bg: '#16351f', fg: '#fff' },
+    STAYS: { bg: '#16351f', fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {

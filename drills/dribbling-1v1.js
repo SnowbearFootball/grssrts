@@ -48,14 +48,19 @@
   };
   const SPACE = { x: 53, y: 34, w: 15, h: 22, color: ORANGE, label: 'THE SPACE', labelAt: [60.5, 31.5], soft: true };
 
-  // ---------- progressions: 2 v 1 and 2 v 2 (attackers score by dribbling over the bottom line) ----------
+  // ---------- progressions: 2 v 1 and 2 v 2 (small goal at the bottom) ----------
   const twoArea = (w, label) => ({
     plain: true, goals: [],
     areas: [{ x: 50 - w / 2, y: 8, w, h: 60, fill: 'rgba(240,205,110,0.10)' }],
+    miniGoals: [{ at: [50, 68], angle: 180 }],
     dims: [{ a: [50 - w / 2, 4], b: [50 + w / 2, 4], label }],
     legend: { a: 'Attackers', d: 'Defenders' },
     tagPlace: 'auto',
   });
+
+  const zone = (x, w, lx) => ({ x, y: 38, w, h: 22, color: ORANGE, label: 'THE SPACE', labelAt: [lx, 62.5], soft: true });
+  const ZONE_L = zone(37, 10, 42), ZONE_R = zone(53, 10, 58);   // 2 v 1 (area x 37..63)
+  const ZONE_2R = zone(56, 13.5, 62.75);                           // 2 v 2 (area x 30.5..69.5)
 
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
@@ -110,9 +115,11 @@
         'The attacker receives into space and tries to beat the defender and score in the small goal. Look for where the space is.',
         'Double movement: show the defender one way so they move, then attack the space they left.',
         'After a go, both join the queue at the other end, so the attacker becomes a defender and the defender becomes an attacker. Next two in.',
-        'Progression, 2 v 1 (10 minutes): an area 10 × 25 yards. The player on the ball must take the defender on. The player off the ball makes a run to drag the defender one way, so the dribbler can go past into the space.',
-        'Progression, 2 v 2 (20 minutes): an area 15 × 25 yards. A run off the ball takes a defender away and leaves the other one on their own (isolated). The dribbler beats them with a trick and a change of pace or direction. Passing is allowed, but the focus is dribbling.',
-        'In the 2 v 1 and 2 v 2, attackers score by dribbling over the end line. Swap roles every few goes.',
+        'Progression, 2 v 1 (10 minutes): an area 10 × 25 yards with a small goal. Queues at each end, with more attackers than defenders. The defender passes in to two attackers.',
+        'The player on the ball must take the defender on. The other attacker makes a run. If the defender follows the run, it was a decoy: dribble into the space. If the defender stays, pass to the free player.',
+        'Back to the end of your queue after each go; next group in. Swap jobs every few goes.',
+        'Progression, 2 v 2 (20 minutes): an area 15 × 25 yards with a small goal. A run off the ball takes a defender away and isolates the other one. Feint towards the run, then attack the space away from it (don\'t dribble towards the run: you close your own space and meet two defenders).',
+        'Then the underlap: the free player runs inside the dribbler. Both defenders press you? Pass to the runner. Both follow the runner? Dribble. Passing is allowed, but the focus is dribbling.',
         'Before this: Dribbling (Part 1).',
       ],
     },
@@ -307,121 +314,268 @@
         ],
         summary: ['Receive *into space*, *head up*.', '*Double movement*: make them move.', '*Attack the space*, then swap ends.'],
       }),
-      // ---------------- progression: 2 v 1 ----------------
+      // ---------------- progression: 2 v 1 (queues, two examples) ----------------
       Object.assign({}, twoArea(26, '10 yds'), {
         id: 'two-v-one',
         video: 'videos/dribbling-1v1-4.mp4',
-        kicker: 'Progression · 2 v 1',
-        title: 'Drag the Defender',
-        tagline: 'A run off the ball drags the defender away. The dribbler goes past.',
-        intro: ['*2 v 1*: the player on the ball *must take the defender on*.', 'The other attacker makes a *run* to drag the defender one way...', '...so the dribbler can go past *into space*.'],
+        kicker: '2 v 1 · Queues at each end',
+        title: 'Decoy or Spare Player',
+        tagline: 'The run off the ball: a decoy, or the player who uses the space.',
+        intro: ['*2 v 1*: the defender passes in.', 'Defender *follows the run*? It was a *decoy*: dribble past.', 'Defender *stays*? *Pass* to the free player.'],
         players: [
-          { id: 'A1', team: 'a', x: 43, y: 15 }, { id: 'A2', team: 'a', x: 57, y: 15 }, { id: 'D', team: 'd', x: 50, y: 58 },
+          { id: 'A1', team: 'a', x: 43, y: 13 }, { id: 'A2', team: 'a', x: 57, y: 13 }, { id: 'D', team: 'd', x: 57, y: 64 },
+          { id: 'qa1', team: 'a', x: 31, y: 12 }, { id: 'qa2', team: 'a', x: 31, y: 18 },
+          { id: 'qa3', team: 'a', x: 31, y: 24 }, { id: 'qa4', team: 'a', x: 31, y: 30 },
+          { id: 'qd1', team: 'd', x: 69, y: 64, ball: true }, { id: 'qd2', team: 'd', x: 75, y: 64, ball: true },
         ],
-        ball: { owner: 'A1' },
-        keyPhrase: { big: 'DRAG THE DEFENDER', small: 'Then dribble into the space' },
+        ball: { owner: 'D' },
+        keyPhrase: { big: 'WATCH THE DEFENDER', small: 'Follows the run? Dribble. Stays? Pass.' },
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['An area *10 × 25* yards.', '*2 attackers* v *1 defender*.', 'Dribble over the end line to *score*.'],
+            text: ['An area *10 × 25* yards, a *small goal*.', '*More attackers* than defenders in the queues.', 'Attackers come in *two at a time*.'],
             tags: { A1: 'ATTACKER', A2: 'ATTACKER', D: 'DEFENDER' },
           },
           {
-            title: 'GO AT THEM',
-            text: ['On the ball: *head up*, dribble at the defender.', 'You *must* take them on.'],
-            tags: { A1: 'FACE UP' }, timing: { move: 2.8 },
+            title: 'PASS IN',
+            text: ['The defender *passes in*, then closes down.', 'First touch *into space*, head up.'],
+            tags: { A1: 'INTO SPACE', D: 'CLOSE DOWN' }, timing: { move: 3.2 },
+            passes: [{ to: 'A1', start: 0.02, end: 0.36 }],
             moves: [
-              { id: 'A1', to: [45, 30], end: 0.9 }, { id: 'A2', to: [57, 24], end: 0.9, arrow: false },
-              { id: 'D', to: [49, 46], end: 0.9, ease: 'out' },
+              { id: 'A1', to: [44, 21], start: 0.38, end: 0.95 },
+              { id: 'D', to: [50, 44], start: 0.3, end: 0.95, ease: 'out' },
+              { id: 'A2', to: [57, 20], start: 0.3, end: 0.95, arrow: false },
             ],
           },
           {
-            title: 'RUN TO DRAG THEM',
-            text: ['Off the ball: make a *run*.', 'The defender *follows* it...', '...and the *space* opens for the dribbler.'],
-            tags: { A2: 'DRAG', D: 'SHIFT' }, timing: { move: 3 },
+            title: 'A RUN TO DRAG THEM',
+            text: ['Off the ball: make a *run*.', 'The defender *follows* it...', '...so the run was a *decoy*.'],
+            tags: { A2: 'DECOY', D: 'FOLLOWS' }, timing: { move: 3 },
             moves: [
               { id: 'A2', path: [[60, 32], [60, 52]], end: 0.85 },
               { id: 'D', to: [53, 45], start: 0.35, end: 0.9 },
-              { id: 'A1', to: [44, 33], end: 0.8, arrow: false },
+              { id: 'A1', to: [44, 31], end: 0.8, arrow: false },
             ],
-            halves: [{ x: 37, y: 40, w: 10, h: 20, color: ORANGE, label: 'THE SPACE', labelAt: [42, 62.5], soft: true }],
+            halves: [ZONE_L],
           },
           {
-            title: 'ATTACK THE SPACE',
-            text: ['Now *go past* into the space.', '*Change of pace*: explode away.'],
-            tags: { A1: 'ATTACK THE SPACE' }, timing: { move: 3 },
+            title: 'DRIBBLE INTO THE SPACE',
+            text: ['The space is *yours*.', '*Change of pace*: explode into it.'],
+            tags: { A1: 'ATTACK THE SPACE' }, timing: { move: 2.8 },
             moves: [
-              { id: 'A1', path: [[41, 42], [42, 56], [44, 66]], end: 0.95 },
-              { id: 'D', to: [51, 53], start: 0.3, end: 0.9, arrow: false },
-              { id: 'A2', to: [60, 62], end: 0.9, arrow: false },
+              { id: 'A1', path: [[41, 42], [43, 54]], end: 0.95 },
+              { id: 'D', to: [51, 52], start: 0.3, end: 0.9, arrow: false },
+              { id: 'A2', to: [60, 58], end: 0.9, arrow: false },
             ],
-            halves: [{ x: 37, y: 40, w: 10, h: 20, color: ORANGE, label: 'THE SPACE', labelAt: [42, 62.5], soft: true }],
+            halves: [ZONE_L],
           },
           {
             title: 'SCORE',
-            text: ['Dribble *over the line* to score.', 'Next time, *swap* jobs.'],
+            text: ['*Score* in the small goal.'],
             tags: { A1: 'SCORE' }, timing: { move: 1.8 },
-            moves: [{ id: 'A1', to: [45, 72], end: 0.8 }],
+            ball: { to: [50, 67.5], start: 0.05, end: 0.5 },
+          },
+          {
+            title: 'NEXT GROUP IN',
+            text: ['Back to the *end of your queue*.', 'Next *two attackers* and next *defender* in.', 'Swap jobs every few goes.'],
+            timing: { move: 3.4 },
+            ball: { give: 'qd1' },
+            moves: [
+              { id: 'qa1', to: [43, 13], start: 0.05, end: 0.5 }, { id: 'qa2', to: [57, 13], start: 0.05, end: 0.5 },
+              { id: 'qa3', to: [31, 12], start: 0.1, end: 0.5, arrow: false }, { id: 'qa4', to: [31, 18], start: 0.1, end: 0.5, arrow: false },
+              { id: 'A1', path: [[34, 44], [31, 24]], start: 0.35, end: 0.95, arrow: false },
+              { id: 'A2', path: [[60, 42], [40, 31], [31, 30]], start: 0.35, end: 0.95, arrow: false },
+              { id: 'qd1', to: [57, 64], start: 0.05, end: 0.5 }, { id: 'qd2', to: [69, 64], start: 0.1, end: 0.5, arrow: false },
+              { id: 'D', path: [[58, 71], [75, 71], [75, 64]], start: 0.3, end: 0.95, arrow: false },
+            ],
+          },
+          {
+            title: 'PASS IN AGAIN',
+            text: ['Same start: pass in, *first touch into space*.'],
+            tags: { qa1: 'INTO SPACE', qd1: 'CLOSE DOWN' }, timing: { move: 3.2 },
+            passes: [{ to: 'qa1', start: 0.02, end: 0.36 }],
+            moves: [
+              { id: 'qa1', to: [44, 21], start: 0.38, end: 0.95 },
+              { id: 'qd1', to: [50, 44], start: 0.3, end: 0.95, ease: 'out' },
+              { id: 'qa2', to: [57, 20], start: 0.3, end: 0.95, arrow: false },
+            ],
+          },
+          {
+            title: 'THIS TIME THEY STAY',
+            text: ['Same run, but the defender *stays* on the ball.', 'Now the runner is *free*.'],
+            tags: { qa2: 'FREE MAN', qd1: 'STAYS' }, timing: { move: 3 },
+            moves: [
+              { id: 'qa2', path: [[60, 32], [60, 46]], end: 0.85 },
+              { id: 'qd1', to: [45, 38], start: 0.3, end: 0.9, ease: 'out' },
+              { id: 'qa1', to: [45, 29], end: 0.8, arrow: false },
+            ],
+            halves: [ZONE_R],
+          },
+          {
+            title: 'USE THE SPARE PLAYER',
+            text: ['*Pass* to the free player...', '...who takes it *into the space*.'],
+            tags: { qa2: 'ATTACK THE SPACE' }, timing: { move: 3 },
+            passes: [{ to: 'qa2', start: 0.02, end: 0.35 }],
+            moves: [
+              { id: 'qa2', to: [57, 56], start: 0.38, end: 0.95 },
+              { id: 'qd1', to: [50, 50], start: 0.3, end: 0.95, arrow: false },
+            ],
+            halves: [ZONE_R],
+          },
+          {
+            title: 'SCORE',
+            text: ['*Score* in the small goal.', 'Watch the defender: *dribble or pass*.'],
+            tags: { qa2: 'SCORE' }, timing: { move: 1.8 },
+            ball: { to: [50, 67.5], start: 0.05, end: 0.5 },
           },
         ],
-        summary: ['On the ball: *take them on*.', 'Off the ball: a *run to drag* the defender.', '*Attack the space* they leave.'],
+        summary: ['Defender *follows the run*: it\'s a *decoy*, dribble.', 'Defender *stays*: pass to the *spare player*.', 'Watch the defender, then decide.'],
       }),
 
-      // ---------------- progression: 2 v 2 ----------------
+      // ---------------- progression: 2 v 2, isolate ----------------
       Object.assign({}, twoArea(39, '15 yds'), {
         id: 'two-v-two',
         video: 'videos/dribbling-1v1-5.mp4',
-        kicker: 'Progression · 2 v 2',
+        kicker: '2 v 2 · Run away from the ball',
         title: 'Isolate the Defender',
-        tagline: 'A run takes one defender away. Now it\'s 1 v 1: beat them.',
-        intro: ['*2 v 2*: use the player *off the ball*.', 'Their run takes a defender away: the other one is *isolated*.', 'Then a *trick* and *change of pace* past them.'],
+        tagline: 'Feint towards the run, then attack away from it.',
+        intro: ['*2 v 2*: use the player *off the ball*.', 'Their run takes a defender away: the other is *isolated*.', 'Show them towards the run, then attack the space *away from it*.'],
         players: [
           { id: 'A1', team: 'a', x: 57, y: 15 }, { id: 'A2', team: 'a', x: 42, y: 15 },
-          { id: 'D1', team: 'd', x: 56, y: 34 }, { id: 'D2', team: 'd', x: 41, y: 44 },
+          { id: 'D1', team: 'd', x: 56, y: 34 }, { id: 'D2', team: 'd', x: 41, y: 40 },
         ],
         ball: { owner: 'A1' },
-        keyPhrase: { big: 'ISOLATE, THEN BEAT THEM', small: 'Passing allowed, but dribble when you can' },
+        keyPhrase: { big: 'ISOLATE, THEN BEAT THEM', small: 'Attack away from the run' },
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['An area *15 × 25* yards.', '*2 v 2*. Dribble over the end line to *score*.', 'You can pass, but the focus is *dribbling*.'],
+            text: ['An area *15 × 25* yards, a *small goal*.', '*2 v 2*. You can pass, but the focus is *dribbling*.'],
             tags: { A1: 'ATTACKER', A2: 'ATTACKER', D1: 'DEFENDER', D2: 'DEFENDER' },
           },
           {
             title: 'RUN OFF THE BALL',
             text: ['Off the ball: a *curved run* round the outside.', 'Their defender has to *go with them*.'],
-            tags: { A2: 'RUN', D2: 'SHIFT' }, timing: { move: 3.4 },
+            tags: { A2: 'RUN', D2: 'FOLLOWS' }, timing: { move: 3.4 },
             moves: [
               { id: 'A2', path: [[35, 24], [33, 40], [34, 58]], end: 0.95 },
               { id: 'D2', to: [40, 55], start: 0.3, end: 0.95 },
-              { id: 'A1', to: [56, 22], end: 0.9, arrow: false },
+              { id: 'A1', to: [56, 24], end: 0.9, arrow: false },
+              { id: 'D1', to: [56, 40], end: 0.9, arrow: false },
             ],
           },
           {
-            title: 'NOW IT\'S 1 V 1',
-            text: ['The other defender is *isolated*.', '*Head up*: where is the space?', 'Dribble *at* them.'],
-            tags: { A1: 'FACE UP', D1: 'ISOLATED' }, timing: { move: 2.6 },
-            moves: [{ id: 'A1', to: [55, 30], end: 0.9 }, { id: 'D1', to: [55, 40], end: 0.9, ease: 'out' }],
-            halves: [{ x: 44, y: 38, w: 9, h: 22, color: ORANGE, label: 'THE SPACE', labelAt: [48.5, 62.5], soft: true }],
-          },
-          {
-            title: 'TRICK, CHANGE OF PACE',
-            text: ['Show them *outside*, they move...', '...then *change of direction* inside.', '*Explode* into the space.'],
-            tags: { A1: 'CHANGE OF PACE', D1: 'SHIFT' }, timing: { move: 3.2 },
+            title: 'SHOW THEM THAT WAY',
+            text: ['Don\'t dribble *towards* the run.', 'You\'d close your own space, and meet *two defenders*.', 'Instead, *feint* that way: the defender shifts.'],
+            tags: { A1: 'DOUBLE MOVE', D1: 'ISOLATED' }, timing: { move: 3 },
             moves: [
-              { id: 'A1', path: [[59, 32], [52, 38], [48, 50], [48, 62]], end: 0.95 },
-              { id: 'D1', path: [[59, 41], [55, 50]], start: 0.2, end: 0.95, arrow: false },
+              { id: 'A1', path: [[54, 30], [51, 32]], end: 0.75 },
+              { id: 'D1', to: [51, 44], start: 0.3, end: 0.85 },
             ],
-            halves: [{ x: 44, y: 38, w: 9, h: 22, color: ORANGE, label: 'THE SPACE', labelAt: [48.5, 62.5], soft: true }],
+            halves: [ZONE_2R],
+          },
+          {
+            title: 'ATTACK AWAY FROM THE RUN',
+            text: ['Now go the *other way*...', '...into the space *away from the run*.', '*Change of pace*: explode.'],
+            tags: { A1: 'ATTACK THE SPACE' }, timing: { move: 3 },
+            moves: [
+              { id: 'A1', path: [[57, 34], [62, 44], [61, 55]], end: 0.95 },
+              { id: 'D1', to: [55, 50], start: 0.3, end: 0.9, arrow: false },
+            ],
+            halves: [ZONE_2R],
           },
           {
             title: 'SCORE',
-            text: ['Dribble *over the line* to score.', 'Swap jobs: everyone *makes the run* and *takes them on*.'],
+            text: ['*Score* in the small goal.'],
             tags: { A1: 'SCORE' }, timing: { move: 1.8 },
-            moves: [{ id: 'A1', to: [49, 72], end: 0.8 }],
+            ball: { to: [50.5, 67.5], start: 0.05, end: 0.5 },
           },
         ],
-        summary: ['Off the ball: a *run* takes a defender away.', 'Now it\'s *1 v 1*: the defender is isolated.', 'A *trick*, then *change of pace* past them.'],
+        summary: ['A *run off the ball* takes a defender away.', '*Feint* towards the run: don\'t go that way.', 'Attack the space *away from it*.'],
+      }),
+
+      // ---------------- progression: 2 v 2, underlap ----------------
+      Object.assign({}, twoArea(39, '15 yds'), {
+        id: 'underlap',
+        video: 'videos/dribbling-1v1-6.mp4',
+        kicker: '2 v 2 · The underlap',
+        title: 'The Underlap',
+        tagline: 'A run inside confuses the defenders. Then pass or dribble.',
+        intro: ['The free player *underlaps*: runs *inside* the dribbler.', 'Both defenders *press you*? *Pass* to the runner.', 'Both *follow the runner*? *Dribble*.'],
+        players: [
+          { id: 'A1', team: 'a', x: 61, y: 20 }, { id: 'A2', team: 'a', x: 48, y: 13 },
+          { id: 'D1', team: 'd', x: 60, y: 36 }, { id: 'D2', team: 'd', x: 44, y: 36 },
+        ],
+        ball: { owner: 'A1' },
+        keyPhrase: { big: 'PRESSED? PASS. FREE? DRIBBLE.', small: 'Watch what the defenders do' },
+        steps: [
+          {
+            title: 'THE SET-UP',
+            text: ['*2 v 2*, a *small goal*.', 'The dribbler is *wide*, the free player *inside*.'],
+            tags: { A1: 'ATTACKER', A2: 'ATTACKER', D1: 'DEFENDER', D2: 'DEFENDER' },
+          },
+          {
+            title: 'THE UNDERLAP',
+            text: ['The free player runs *inside* the dribbler.', 'The defenders are *confused*: who goes with them?'],
+            tags: { A2: 'UNDERLAP' }, timing: { move: 3.2 },
+            moves: [
+              { id: 'A2', path: [[52, 22], [53, 34], [52, 48]], end: 0.95 },
+              { id: 'A1', to: [61, 27], end: 0.9, arrow: false },
+            ],
+          },
+          {
+            title: 'BOTH PRESS YOU: PASS',
+            text: ['Both defenders *press the dribbler*.', 'The runner is *free*: *pass*.'],
+            tags: { D1: 'PRESS', D2: 'PRESS', A2: 'FREE MAN' }, timing: { move: 3.2 },
+            moves: [
+              { id: 'D1', to: [63, 33], end: 0.5, ease: 'out' }, { id: 'D2', to: [55, 30], end: 0.5, ease: 'out' },
+              { id: 'A2', to: [51, 56], start: 0.82, end: 1 },
+            ],
+            passes: [{ to: 'A2', start: 0.5, end: 0.8 }],
+          },
+          {
+            title: 'SCORE',
+            text: ['*Score* in the small goal.'],
+            tags: { A2: 'SCORE' }, timing: { move: 1.8 },
+            ball: { to: [50, 67.5], start: 0.05, end: 0.5 },
+          },
+          {
+            title: 'GO AGAIN',
+            text: ['Back to the start.', 'Same *underlap*: watch the defenders.'],
+            timing: { move: 2.4 },
+            ball: { give: 'A1' },
+            moves: [
+              { id: 'A1', to: [61, 20], end: 0.9, arrow: false }, { id: 'A2', to: [48, 13], end: 0.9, arrow: false },
+              { id: 'D1', to: [60, 36], end: 0.9, arrow: false }, { id: 'D2', to: [44, 36], end: 0.9, arrow: false },
+            ],
+          },
+          {
+            title: 'THE UNDERLAP',
+            text: ['The free player runs *inside* again.'],
+            tags: { A2: 'UNDERLAP' }, timing: { move: 3.2 },
+            moves: [
+              { id: 'A2', path: [[52, 22], [53, 34], [52, 48]], end: 0.95 },
+              { id: 'A1', to: [61, 27], end: 0.9, arrow: false },
+            ],
+          },
+          {
+            title: 'BOTH FOLLOW THE RUN: DRIBBLE',
+            text: ['This time *both defenders* follow the runner.', 'Space down the *outside*: *dribble*.', '*Change of pace*, away from the run.'],
+            tags: { D1: 'FOLLOWS', D2: 'FOLLOWS', A1: 'ATTACK THE SPACE' }, timing: { move: 3.4 },
+            moves: [
+              { id: 'D1', to: [55, 50], end: 0.55 }, { id: 'D2', to: [45, 52], end: 0.55 },
+              { id: 'A2', to: [50, 58], end: 0.6, arrow: false },
+              { id: 'A1', path: [[64, 36], [65, 48], [61, 57]], start: 0.35, end: 0.98 },
+            ],
+            halves: [{ x: 61, y: 32, w: 8.5, h: 24, color: ORANGE, label: 'THE SPACE', labelAt: [65, 62.5], soft: true }],
+          },
+          {
+            title: 'SCORE',
+            text: ['*Score* in the small goal.', 'Pressed? *Pass*. Free? *Dribble*.'],
+            tags: { A1: 'SCORE' }, timing: { move: 1.8 },
+            ball: { to: [50.5, 67.5], start: 0.05, end: 0.5 },
+          },
+        ],
+        summary: ['The free player *underlaps*: confusion.', 'Both press you: *pass* to the runner.', 'Both follow the runner: *dribble*.'],
       }),
     ],
   });
