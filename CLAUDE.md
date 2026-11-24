@@ -133,8 +133,9 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - The Dugout "Send your session" = Tally form https://tally.so/r/o92ajb (owner's account, hello@): name, email, club, title, ages,
   section, file upload, notes, share/private, credit, permission + no-children's-details ticks. No login needed. Tested: submissions
   email hello@ within a minute (Tally self email notifications on). Owner replies from hello@, then sends Claude the plan.
-- Trial is ready to launch: WhatsApp message drafted with the Join link (?club=bhtfc#join) and #dugout. Next: welcome email
-  (MailerLite Automations, if on the free plan). Later, when the owner decides: Clerk logins, then switch on SITE_FLAGS.members. Later: a Starter Pack PDF.
+- Trial is ready to launch: WhatsApp message drafted with the Join link (?club=bhtfc#join) and #dugout. Welcome email: MailerLite "Welcome"
+  workflow made (trigger: joins Website Sign-Ups) but not activated yet (MailerLite wouldn't allow it; maybe account approval or
+  missing content). Optional: trial goes ahead without it. Later, when the owner decides: Clerk logins, then switch on SITE_FLAGS.members. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
 
