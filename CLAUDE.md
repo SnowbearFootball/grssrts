@@ -129,6 +129,8 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   (grssrts-site > Deployments > Retry deployment).
 - Join and Privacy pages are public (no logins yet; whole site stays open). Owner is thinking about logins: they must never
   get in the way of coaches sending sessions in (The Dugout never needs a login).
+- The Dugout "Send your session" = Tally form https://tally.so/r/o92ajb (owner's account, hello@): name, email, club, title, ages,
+  section, file upload, notes, share/private, credit, permission + no-children's-details ticks. No login needed.
 - Next (when the owner decides): Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 

@@ -35,7 +35,7 @@ window.TOPICS = {
 // Sign-up / request form links. Leave null until the forms exist; the buttons then show "Opening soon".
 window.SITE_LINKS = {
   suggestTopic: null,     // e.g. 'https://tally.so/r/xxxx'
-  bespokeSession: null,
+  bespokeSession: 'https://tally.so/r/o92ajb',   // Tally: Send your session (GRSS RTS)
   kitRoomInterest: null,
   // Join page: the MailerLite form's address (from MailerLite: Forms > Embedded form > HTML code, the form "action").
   // Leave null until MailerLite is set up; the Join button then says sign-up opens soon.
