@@ -1,5 +1,5 @@
 /*
- * SESSION: Play in Your Half (5-a-side shape, U8–U9)
+ * SESSION: Shape: 5-a-Side (play in your half, U8–U9)
  * From the owner's own plan: in 5-a-side every player has a half of the pitch. Attacker top half, defender bottom half,
  * wingers their own side, keeper the box. Ball wide on one side: the far winger tucks in, but not past the middle.
  * Connected by string: attacker goes high, defender comes up to halfway; one winger goes wide, the other comes in.
@@ -52,8 +52,8 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'five-a-side-shape',
-    title: 'Play in Your Half',
-    subtitle: '5-a-side shape',
+    title: 'Shape: 5-a-Side',
+    subtitle: 'Play in your half',
     type: 'Tactical',
     category: 'defending',
     topics: ['Shape', 'Small-sided games'],
@@ -119,7 +119,7 @@
       Object.assign({}, common, {
         id: 'your-half',
         video: 'videos/five-a-side-shape-1.mp4',
-        kicker: 'Clip 1 · 5-a-side shape',
+        kicker: 'Clip 1 · Play in your half',
         title: 'Your Half',
         tagline: 'Every player has their own half of the pitch.',
         intro: ['5-a-side: a *keeper* and *four* outfield players.', 'Each player has *their own half*.', 'Stay in it and we stay *spread out*.'],
@@ -173,7 +173,7 @@
       Object.assign({}, common, {
         id: 'ball-wide',
         video: 'videos/five-a-side-shape-2.mp4',
-        kicker: 'Clip 2 · 5-a-side shape',
+        kicker: 'Clip 2 · Play in your half',
         title: 'Ball Goes Wide',
         tagline: 'Ball on one wing: the other winger tucks in.',
         intro: ['The ball goes out to the *left wing*.', 'The *right wing tucks in* towards the middle...', '...but *doesn\'t cross it*.'],
@@ -229,7 +229,7 @@
       Object.assign({}, common, {
         id: 'string',
         video: 'videos/five-a-side-shape-3.mp4',
-        kicker: 'Clip 3 · 5-a-side shape',
+        kicker: 'Clip 3 · Play in your half',
         title: 'Connected by String',
         tagline: 'One player moves, the others move with them.',
         intro: ['Imagine the team is *tied together by string*.', 'Attacker goes high: the *defender comes up*.', 'One winger goes wide: the *other comes in*.'],

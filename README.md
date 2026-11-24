@@ -29,7 +29,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Penetration via Dribbling (attacking, U9+) | 1. Beat Your Player · 2. Semi-Opposed · 3. 4 v 3 to End Zones · 4. Win It and Go |
 | Midfield Three: Playing Through (attacking, U14+) | 1. Through the Pivot · 2. Rotate and Be Patient · 3. Reds Win It |
 | Defending the Wide Areas (defending, U14+) | 1. Compact: Show It Wide · 2. Press, Cover, Balance · 3. Shift Together |
-| Play in Your Half (defending, 5-a-side shape, U8–U9) | 1. Your Half · 2. Ball Goes Wide · 3. Connected by String |
+| Shape: 5-a-Side (defending, U8–U9) | 1. Your Half · 2. Ball Goes Wide · 3. Connected by String |
 
 ## Brand
 
