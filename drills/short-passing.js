@@ -8,8 +8,11 @@
  *    Pass to a team-mate, then move to a free side. Receive on the middle line: turn and pass into the other zone.
  *    Progress to one touch. (Set it up twice for bigger groups.)
  * 2. Skill (10 mins): same set-up, one defender per zone (can only defend their own zone): 5 v 2. Keep possession.
+ *    Defender wins it: swap roles (defenders hold a bib and hand it over).
  * 3. Game (20 mins): 40 x 30 yds. 4 v 4 inside, 2 floaters play for the team with the ball (can't pass to each other),
- *    4 players on the outside play for the team with the ball: 10 v 4.
+ *    4 players on the outside play for the team with the ball: 10 v 4. 8 passes = a goal. Rotate: a team goes outside,
+ *    the outside four come in.
+ * Owner's extra points: body shape; back-foot control on the middle line; open up to the other zone.
  * Pitch units: x 0..100, y 0..75 (1 unit is about the same across and down).
  */
 (function () {
@@ -67,10 +70,10 @@
         title: 'On the ball',
         lead: 'Be *ready to pass* before the ball arrives.',
         columns: [
-          { heading: 'Receive', items: ['*Get in line* of the pass', 'Control it *out of your feet*', 'Receive on the *back foot*'] },
+          { heading: 'Receive', items: ['*Get in line* of the pass', '*Open body shape*: see the ball and your pass', 'Control it *out of your feet*, on the *back foot*'] },
           { heading: 'Pass', items: ['*Head up*: see your pass', 'Pick the *right short pass*', '*Timing and weight*: talk to each other'] },
         ],
-        phrase: { big: 'OUT OF YOUR FEET', small: 'Ready to pass with your next touch' },
+        phrase: { big: 'OPEN UP, BACK FOOT', small: 'Ready to pass with your next touch' },
       },
       {
         title: 'After the pass',
@@ -87,6 +90,8 @@
       { word: 'In line of the pass', meaning: 'Somewhere the ball can reach you, with no defender in the way.' },
       { word: 'Out of your feet', meaning: 'A first touch that sets the ball a little in front, ready to pass.' },
       { word: 'Weight of pass', meaning: 'How hard you pass it: firm enough to arrive, soft enough to control.' },
+      { word: 'Body shape', meaning: 'How you stand to receive: open, so you can see the ball and where it goes next.' },
+      { word: 'Back foot', meaning: 'The foot furthest from the ball. Control it there and you are already facing your next pass.' },
       { word: 'Free side', meaning: 'A side of the hexagon with nobody on it: the free space to move to.' },
       { word: 'Floater', meaning: 'A player who always plays for the team with the ball.' },
       { word: 'Overload', meaning: 'More of us than them, like 10 v 4.' },
@@ -98,16 +103,19 @@
       equipment: 'Cones, balls, bibs (four colours).',
       setup: [
         'Tech (10 minutes): seven players stand on the sides of the two hexagons. Pass to a team-mate, then move to a free side.',
-        'If you receive on the middle line, turn and pass into the other zone.',
+        'If you receive on the middle line, turn and pass into the other zone. Open up to the other zone and control it on your back foot.',
         'Too easy? Make it one touch.',
         'Skill (10 minutes): same set-up, but one defender in each zone. Defenders can only defend their own zone. 5 v 2: attackers keep possession.',
+        'Defender wins it: swap roles. Defenders hold a bib and hand it over.',
         'Game (20 minutes): 4 v 4 in a 40 × 30 yard area. Two floaters play for the team with the ball (they can\'t pass to each other).',
-        'Four players on the outside also play for the team with the ball: 10 v 4.',
+        'Four players on the outside also play for the team with the ball: 10 v 4. 8 passes in a row is a goal.',
+        'Switch the teams round every few minutes: a team goes to the outside, the outside four come inside.',
       ],
     },
 
     questions: [
       'Where did you stand so the ball could reach you?',
+      'How did you stand on the middle line? Could you see the other zone?',
       'Where did your first touch go? Were you ready to pass?',
       'When did you look up?',
       'Was the pass too hard, too soft or just right?',
@@ -147,7 +155,7 @@
             },
             {
               title: 'OUT OF YOUR FEET',
-              text: ['*Get in line* of the pass.', 'Control it *out of your feet*, *head up*.', 'Pass, then move to a free side.'],
+              text: ['*Get in line* of the pass.', '*Open body shape*: see the ball and your pass.', 'Control it *out of your feet*, *head up*.'],
               tags: { p2: 'HEAD UP' }, timing: { move: 3 },
               passes: [{ to: 'p4', start: 0.1, end: 0.45 }],
               moves: [{ id: 'p2', to: side(CR, 300), start: 0.45, end: 0.95 }],
@@ -155,8 +163,8 @@
             },
             {
               title: 'MIDDLE LINE: TURN',
-              text: ['On the *middle line*?', '*Turn* and pass into the *other zone*.', 'Then move to a free side.'],
-              tags: { p4: 'TURN' }, timing: { move: 3.2 },
+              text: ['On the *middle line*: *open up* to the other zone.', 'Control on your *back foot*.', '*Turn* and pass into the *other zone*.'],
+              tags: { p4: 'OPEN UP' }, timing: { move: 3.2 },
               passes: [{ to: 'p3', start: 0.12, end: 0.45 }],
               moves: [{ id: 'p4', to: side(CL, 300), start: 0.5, end: 0.95 }],
               lines: midLine,
@@ -175,7 +183,7 @@
               passes: [{ to: 'p6', start: 0.02, end: 0.28 }, { to: 'p7', start: 0.32, end: 0.58 }, { to: 'p2', start: 0.62, end: 0.92 }],
             },
           ],
-          summary: ['*Get in line* of the pass.', 'Control it *out of your feet*, *head up*.', 'Pass, then *move to a free side*.', 'Middle line: *turn* and pass to the other zone.'],
+          summary: ['*Get in line*, *open body shape*.', 'Control it *out of your feet*, *head up*.', 'Pass, then *move to a free side*.', 'Middle line: *open up*, *back foot*, play to the other zone.'],
         });
       })(),
 
@@ -224,8 +232,8 @@
             },
             {
               title: 'MIDDLE LINE: TURN',
-              text: ['Into the *middle line*...', '...*turn* and play into the *other zone*.', 'The defender there is on their own.'],
-              tags: { a3: 'TURN' }, timing: { move: 3.4 },
+              text: ['Into the *middle line*: *open up* to the other zone.', '*Back foot* control, then play into the *other zone*.', 'The defender there is on their own.'],
+              tags: { a3: 'BACK FOOT' }, timing: { move: 3.4 },
               passes: [{ to: 'a3', start: 0.02, end: 0.35 }, { to: 'a1', start: 0.5, end: 0.85 }],
               moves: [
                 { id: 'dR', to: [64, 42], start: 0.1, end: 0.6, arrow: false },
@@ -235,7 +243,7 @@
             },
             {
               title: 'TOO SOFT? LOST IT',
-              text: ['A slow pass gives the defender time.', 'Get the *weight* right.', 'Win it: *swap* with the defender.'],
+              text: ['A slow pass gives the defender time.', 'Get the *weight* right.'],
               tags: { dL: 'WON IT!' }, timing: { move: 2.8 },
               lanes: [{ from: 'a1', to: 'a2' }],
               moves: [
@@ -244,8 +252,18 @@
               ],
               ball: { pass: 'dL', start: 0.15, end: 0.7, arrow: false },
             },
+            {
+              title: 'SWAP ROLES',
+              text: ['Defender wins it: *swap roles*.', 'Hand over the *bib*.', 'Straight back into it.'],
+              tags: { a1: 'DEFENDER' }, timing: { move: 2.8 },
+              team: { a1: 'd', dL: 'a' },
+              moves: [
+                { id: 'a1', to: [31, 33], start: 0.2, end: 0.9 },
+                { id: 'dL', to: side(CL, 240), start: 0.2, end: 0.9 },
+              ],
+            },
           ],
-          summary: ['Blocked? *Move* to a free side.', 'Control it *out of your feet*, *head up*.', 'Middle line: *turn* and switch zones.', 'Get the *weight* right.'],
+          summary: ['Blocked? *Move* to a free side.', 'Control it *out of your feet*, *head up*.', 'Middle line: *open up*, *back foot*, switch zones.', 'Lose it? *Swap roles*: hand over the bib.'],
         });
       })(),
 
@@ -256,7 +274,7 @@
         kicker: 'Clip 3 · Game: 4 v 4 + 6',
         title: 'Overload: 10 v 4',
         tagline: 'Floaters and outside players help the team with the ball.',
-        intro: ['*4 v 4* inside.', '*2 floaters* and *4 outside players* play for the team with the ball.', 'That makes *10 v 4*.'],
+        intro: ['*4 v 4* inside. *2 floaters* and *4 outside players*', 'play for the team with the ball: *10 v 4*.', '*8 passes* in a row = a *goal*.'],
         keyPhrase: { big: 'USE THE OVERLOAD', small: 'Head up, support, angles' },
         players: [
           { id: 'G1', team: 'a', x: 30, y: 24 }, { id: 'G2', team: 'a', x: 60, y: 20 },
@@ -276,7 +294,7 @@
           },
           {
             title: '10 v 4',
-            text: ['Greens have it: *10 v 4*.', 'Use the *outside* players.', '*Move* to make a new angle.'],
+            text: ['Greens have it: *10 v 4*.', '*8 passes* in a row = a *goal*.', 'Use the *outside*, *move* to make an angle.'],
             tags: { O4: 'OUTSIDE', G1: 'MOVE' }, timing: { move: 3.2 },
             passes: [{ to: 'O4', start: 0.02, end: 0.32 }, { to: 'G1', start: 0.62, end: 0.92 }],
             moves: [
@@ -321,8 +339,19 @@
             passes: [{ to: 'O3', start: 0.05, end: 0.4 }],
             moves: [{ id: 'G4', to: [66, 56], start: 0.3, end: 0.9 }, { id: 'B3', to: [50, 55], start: 0.3, end: 0.9, arrow: false }],
           },
+          {
+            title: 'SWITCH THE TEAMS',
+            text: ['Every few minutes, *rotate*.', 'Greens go to the *outside*.', 'The outside four come *inside*.'],
+            tags: { O1: 'IN', O2: 'IN', O3: 'IN', O4: 'IN' }, timing: { move: 3.4 },
+            moves: [
+              { id: 'G1', to: [35, A.y - 2.5], end: 0.9 }, { id: 'G2', to: [A.x + A.w + 3, 26], end: 0.9 },
+              { id: 'G4', to: [62, A.y + A.h + 2.5], end: 0.9 }, { id: 'G3', to: [A.x - 3, 48], end: 0.9 },
+              { id: 'O1', to: [36, 18], end: 0.9 }, { id: 'O2', to: [76, 30], end: 0.9 },
+              { id: 'O3', to: [58, 55], end: 0.9 }, { id: 'O4', to: [24, 50], end: 0.9 },
+            ],
+          },
         ],
-        summary: ['Use the *overload*: 10 v 4.', '*Head up*: find the free player.', '*Support* and *angles*: move after you pass.', '*Decide*: first time or a touch.'],
+        summary: ['Use the *overload*: 10 v 4. *8 passes* = a goal.', '*Head up*: find the free player.', '*Support* and *angles*: move after you pass.', '*Rotate* the teams: outside comes in.'],
       }),
     ],
   });
