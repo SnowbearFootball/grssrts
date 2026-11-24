@@ -5,6 +5,11 @@ description: Turn a coach's session plan (photo, drawing, PDF or notes) into a n
 
 # Animate a session
 
+**Firm rule:** always build the session as a `drills/<id>.js` file that uses the site's own engine (`js/drill-engine.js`),
+exactly like the existing sessions. Never write a separate HTML page, artifact or your own animation code: it won't match the
+site's look, has no MP4s, no Share link, no PDF plan and can't go in the library. Output = draft session file + rendered
+MP4s sent with SendUserFile. Use the existing look: plain light pitch, team colours, arrows first, step text in the side panel.
+
 The owner (non-technical, usually on a phone) sends a picture of a session plan with a short note. Turn it into a draft
 session on grssrts.co.uk, show them the clips, and fix it until they approve. Follow CLAUDE.md (style, coaching corrections,
 brand, plain UK English replies). The README explains the engine and clip format.
