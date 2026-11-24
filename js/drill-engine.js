@@ -526,7 +526,6 @@
     'TO HALFWAY': { bg: '#16351f', fg: '#fff' },
     'GO WIDE': { get bg() { return C.accent; }, fg: '#fff' },
     'NOT PAST THE MIDDLE': { bg: '#16351f', fg: '#fff' },
-    BUNCHED: { get bg() { return C.danger; }, fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {

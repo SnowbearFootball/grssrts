@@ -3,7 +3,7 @@
  * From the owner's own plan: in 5-a-side every player has a half of the pitch. Attacker top half, defender bottom half,
  * wingers their own side, keeper the box. Ball wide on one side: the far winger tucks in, but not past the middle.
  * Connected by string: attacker goes high, defender comes up to halfway; one winger goes wide, the other comes in.
- * Don't bunch, don't follow the ball.
+ * Keeping our shape (our halves, connected by string) stops us bunching.
  * Our team attacks the top goal. Pitch drawn as an upright 5-a-side pitch inside x 20..80.
  * Pitch units: x 0..100, y 0..75.
  */
@@ -61,7 +61,7 @@
     squad: [5, 10],
     ages: { from: 8, to: 9 },
     thumb: 'assets/thumbs/five-a-side-shape.jpg',
-    summary: 'Team shape in 5-a-side. Every player has their own half of the pitch. Stay in it, tuck in when the ball is on the other side, and don’t all chase the ball.',
+    summary: 'Team shape in 5-a-side. Every player has their own half of the pitch. Stay in it, tuck in when the ball is on the other side, and stay connected by string.',
     keyPhrase: 'Play in your half',
 
     cards: [
@@ -70,13 +70,13 @@
         lead: 'Every player has *their own half* of the pitch.',
         columns: [
           { heading: 'Who goes where', items: ['Attacker: the *top half*', 'Defender: the *bottom half*', 'Wingers: *their own side*', 'Keeper: the box'] },
-          { heading: 'Why', items: ['We stay *spread out*', 'There\'s always *someone to pass to*', 'The ball comes to you'] },
+          { heading: 'Why', items: ['We stay *spread out*', 'No *bunching*: not too many players in one area', 'There\'s always *someone to pass to*'] },
         ],
         phrase: { big: 'PLAY IN YOUR HALF', small: 'Spread out. Don’t follow the ball.' },
       },
       {
         title: 'Connected by string',
-        lead: 'When one player moves, *the others move too*.',
+        lead: 'When one player moves, *the others move too*. Keep our shape and we *won\'t bunch*.',
         columns: [
           { heading: 'Up and back', items: ['Attacker goes *high* towards goal...', '...defender comes up to *halfway*'] },
           { heading: 'Side to side', items: ['Ball on one wing: the other winger *tucks in*', 'Close to the middle, but *not past it*', 'One winger goes really wide: the other comes in'] },
@@ -102,6 +102,7 @@
         'Play a normal game. Now and then shout "Freeze!": everyone stops and checks they are in their half.',
         'Ball out on one wing: the other winger tucks in towards the middle, but doesn’t cross it.',
         'Connected by string: when the attacker goes high, the defender comes up to halfway. When one winger goes really wide, the other comes in.',
+        'Keeping our shape (sticking to our halves, connected by string) stops us bunching or getting too many players in one area.',
         'Take the markers away once they’ve got it. Keep freezing to check.',
       ],
     },
@@ -288,62 +289,6 @@
           },
         ],
         summary: ['We\'re *connected by string*.', 'Attacker high: defender to *halfway*.', 'One winger wide: the other *comes in*.'],
-      }),
-
-      // ---------------- 4: don't bunch ----------------
-      Object.assign({}, common, {
-        id: 'dont-bunch',
-        video: 'videos/five-a-side-shape-4.mp4',
-        kicker: 'Clip 4 · 5-a-side shape',
-        title: 'Don’t Bunch',
-        tagline: 'Don’t follow the ball. Let it come to you.',
-        intro: ['What happens when *everyone chases the ball*?', 'Then: back to *your half*.', 'Spread out = *easy passes*.'],
-        players: players(),
-        ball: { owner: 'lw' },
-        steps: [
-          {
-            title: 'BALL ON THE LEFT',
-            text: ['The left wing has the ball.'],
-          },
-          {
-            title: 'EVERYONE CHASES IT',
-            text: ['Everyone runs to the ball...', '...now we\'re *bunched*.', '*No one to pass to*.'],
-            tags: { lw: 'BUNCHED' }, timing: { move: 2.6 },
-            moves: [
-              { id: 'att', to: [33, 31], end: 0.85 },
-              { id: 'rw', to: [37, 38], end: 0.85 },
-              { id: 'def', to: [31, 44], end: 0.85 },
-            ],
-            zones: [{ at: [32, 38], r: 10 }],
-          },
-          {
-            title: 'BACK TO YOUR HALF',
-            text: ['*Get back to your half*.', 'Now there\'s *space* and *passes* on.'],
-            halves: allHalves, timing: { move: 2.8 },
-            moves: back(['att', 'rw', 'def']),
-          },
-          {
-            title: 'PASS IT',
-            text: ['Left wing passes to the *attacker*.'],
-            halves: allHalves, timing: { move: 2.4 },
-            moves: [{ id: 'att', to: [46, 19], end: 0.5 }],
-            ball: { pass: 'att', start: 0.15, end: 0.6 },
-          },
-          {
-            title: 'AND AGAIN',
-            text: ['Attacker lays it to the *right wing*.', 'Still in their half.'],
-            halves: allHalves, timing: { move: 2.6 },
-            moves: [{ id: 'rw', to: [64, 15], end: 0.7 }],
-            ball: { pass: 'rw', start: 0.3, end: 0.75 },
-          },
-          {
-            title: 'SHOOT',
-            text: ['Right wing shoots. *On target*.', 'The ball came to them.'],
-            tags: { rw: 'SHOOT' }, shot: GOAL, timing: { move: 1.8 },
-            ball: { to: [53, -2.5], start: 0.05, end: 0.45 },
-          },
-        ],
-        summary: ['*Don\'t bunch*. Don\'t follow the ball.', 'Stay in *your half*.', 'Spread out = *easy passes*.'],
       }),
     ],
   });
