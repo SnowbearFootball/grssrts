@@ -15,6 +15,8 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - **Never publish without the owner's OK.** New sessions start as hidden drafts (`draft: true`, view with `index.html?drafts`).
   Render the videos and **send them to the owner** to check (SendUserFile). Only remove `draft` when they approve.
 - To go live: **open a pull request**; the owner merges it on GitHub (usually from a phone). Explain the merge steps briefly.
+- Before every pull request run `node tools/bump-version.js` (new ?v= on the site's scripts, so phones don't show stale files).
+  Cloudflare zone setting Browser Cache TTL must be "Respect Existing Headers" (owner asked to set it; default overrides _headers).
 - Don't create PRs unprompted for unapproved work. Commit and push work in progress to the session branch.
 - The owner is non-technical and often on a phone: **plain UK English, short sentences, no jargon**, no code in replies
   unless asked. Lead with what changed, then what to check. Ask before guessing on coaching details.
