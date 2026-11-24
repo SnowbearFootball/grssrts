@@ -1,5 +1,5 @@
 /*
- * SESSION: Defending Outnumbered (Defending · tactical) (DRAFT)
+ * SESSION: Defending Outnumbered (Defending · tactical)
  * From the owner's own plan "Defending out-numbered" (1st4sport L2 session sheet).
  *
  * Key factors: delay the attack; recovery run towards goal, as quick as possible; good shape once in position;
@@ -66,7 +66,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'defending-outnumbered',
-    draft: true,
     title: 'Defending Outnumbered',
     subtitle: 'Delay, recover, then defend',
     type: 'Tactical',
