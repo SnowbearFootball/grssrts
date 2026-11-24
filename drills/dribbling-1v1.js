@@ -1,10 +1,9 @@
 /*
- * SESSION (DRAFT): Dribbling: 1 v 1 to 2 v 2 (Attacking · dribbling)
+ * SESSION: Dribbling: 1 v 1 to 2 v 2 (Attacking · dribbling)
  * From the owner's own plans ("Dribbling - Part 2" and "Part 3"). Follows Dribbling (Part 1).
  * 2 v 1: small goal, queues (more attackers); the run is a decoy (defender follows: dribble) or the spare player (defender stays: pass).
  * 2 v 2: isolate (feint towards the run, attack away from it); underlap = run behind the dribbler and down the other wing
  *   (attackers cross over): both press the dribbler = pass, both follow the runner = dribble.
- * draft: true keeps it off the site until approved (index.html?drafts#dribbling-1v1).
  *
  * Warm up: 35 x 35 yard square, a ball each, cones inside (passive defenders) and 6 outside.
  *   Dribble, head up, beat a cone with a trick and explode away into space.
@@ -68,7 +67,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'dribbling-1v1',
-    draft: true,
     title: 'Dribbling: 1 v 1 to 2 v 2',
     subtitle: 'Move the defender, attack the space',
     type: 'Technical',
