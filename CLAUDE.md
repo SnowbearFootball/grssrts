@@ -12,6 +12,9 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 
 ## How the owner likes to work
 
+- To animate a new session, the owner starts a new chat with `/animate-session` and a photo of the plan
+  (skill in `.claude/skills/animate-session/SKILL.md`). Short chats, one session each.
+
 - **Never publish without the owner's OK.** New sessions start as hidden drafts (`draft: true`, view with `index.html?drafts`).
   Render the videos and **send them to the owner** to check (SendUserFile). Only remove `draft` when they approve.
 - To go live: **open a pull request**; the owner merges it on GitHub (usually from a phone). Explain the merge steps briefly.
