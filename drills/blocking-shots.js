@@ -19,6 +19,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'blocking-shots',
+    topics: ['Shape'],
     draft: true,
     title: 'Blocking Shots: Get In the Way',
     subtitle: 'Stopping shots',

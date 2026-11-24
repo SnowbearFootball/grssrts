@@ -37,7 +37,8 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - Arrows first, then movement. Labels (pills) show each player's job; examples use generic words (ATTACKER, not SPLASH).
 - Coaches' own diagrams: plain background (`plain: true`) when they don't need pitch markings; add measurements (`dims`)
   and label players by position (GK, CB, FB, CM, W, ST, D, M) when it helps.
-- Naming a coach's session: keep the coach's own terms (principle of play, penetration, overload); put numbers (4 v 3) in the title.
+- Titles: clear but not too specific. Naming a coach's session: keep the coach's own terms (principle of play, penetration,
+  overload); put numbers (4 v 3) in the title when short; a long coach heading can go in the subtitle.
 - Copy the coach's intent, not a rigid pattern: e.g. "ideas to create a shot, not a set move"; movement is free.
 - Coaching detail the owner has corrected before: in passing patterns (5 Y's, draft) the middle player moves away from the cone first (separation, like losing a defender), back-foot control, and the pass up is always to the opposite side (same side gets tight); alternate direction each go; shots must go on target; pass and follow needs one more player than boxes (never an empty box); a middle player only bounces it back (one-two), never the longer pass; crosses are attacked as a team (strikers cross over, opposite winger sweeps the back post, one CM in the box, one on the edge); runner times the run and keeps space to move onto the ball; pressing as a
   comment means "send one in to apply pressure", not a win-it-and-score drill; a long ball to the keeper comes from the
@@ -53,7 +54,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   The Dugout comes before Home Ground. Home Ground opens with an explanation and two pills side by side (no big cards; Minis orange, Juniors green): Minis (U8 and under, Grass and Roots, `#minis`) and Juniors (U9 and up, `#juniors`); each has its own page.
 - Sessions: Splash & Ripple (defending), Shoot & Recover, 5 v 2 Transfer Rondo, Long Range Shooting: Move Onto It (U14+),
   Long Range Shooting: Up, Back, Shot (U14+), Rotation of Positions (U14+, replaced Building Out: Rotations; old address
-  redirects via `aliases`), Combination Play (U12+, two balls at once), Switching Play: Pass and Follow (U12+, square of 4 boxes: one team then two, 3 or 4 teams OK; progression bounce off one or two middle players, who only bounce it back, talk), Switch of Play: Game Like (U14+, 6 mannequins, double movements, switch into space, underlap / overlap, every clip ends with a team attack on the cross; mix up which CM gets the set-back), Penetration via Dribbling (U9+, from another coach's plan: Drill 1 Ball Mastery: Beat Your Player, unopposed then semi-opposed; Drill 2 Penetration Overload: 4 v 3 to End Zones; titles use the coach's own terms), Utilising the Midfield 3 to Penetrate Against a 4-4-2 (U14+, coach's plan: pivot scans / back foot, midfield rotates to find the spare player, patient with CBs, score through black or blue gates; reds win it and dribble over the yellow end line), Defending in a 4-4-2 Against a Wide 4-3-3 (defending, U14+, coach's plan: compact, show it wide, ball wide = pressing trigger, pressure / cover / balance and the staircase, win it and carry over halfway), Set Position & Shot-Stopping (GK, U6+),
+  redirects via `aliases`), Combination Play (U12+, two balls at once), Switching Play: Pass and Follow (U12+, square of 4 boxes: one team then two, 3 or 4 teams OK; progression bounce off one or two middle players, who only bounce it back, talk), Switch of Play: Game Like (U14+, 6 mannequins, double movements, switch into space, underlap / overlap, every clip ends with a team attack on the cross; mix up which CM gets the set-back), Penetration via Dribbling (U9+, from another coach's plan: Drill 1 Ball Mastery: Beat Your Player, unopposed then semi-opposed; Drill 2 Penetration Overload: 4 v 3 to End Zones; titles use the coach's own terms), Midfield Three: Playing Through (U14+, coach's plan "Utilising the Midfield 3 to Penetrate Against a 4-4-2", shown as coachTitle: pivot scans / back foot, midfield rotates to find the spare player, patient with CBs, score through black or blue gates; reds win it and dribble over the yellow end line), Defending the Wide Areas (defending, U14+, coach's plan "Defending in a 4-4-2 Against a Wide 4-3-3": compact, show it wide, ball wide = pressing trigger, pressure / cover / balance and the staircase, win it and carry over halfway), Set Position & Shot-Stopping (GK, U6+),
   Ball Mastery: The Basics (Home Ground, solo clips).
 - Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
 - Defending attempts: Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
@@ -83,6 +84,35 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   include permission to publish.
 - Every session has Share with your squad and a one-page PDF plan with a QR code.
 - Later: membership at ~12–15 sessions (~£4/month or ~£29/year; club licence), club packs, Kit Room.
+- Free accounts keep the monthly free session; paying members get the whole library (once membership starts). During the trial,
+  "Join free" unlocks everything.
+- **Founding members** (idea agreed): the Burgess Hill Town F.C. trial coaches get a free year of membership as a thank-you
+  when paid membership starts.
+
+## Registration (planned, club trial)
+
+- First trial: coaches at **Burgess Hill Town F.C.**, free sign-up. Trial coaches get their sessions **animated free**
+  (to build up content, with permission to publish and credit).
+- Tool: **MailerLite** (free up to 1,000; owner is setting up the account). Sign-up asks: first name, email, role
+  (coach / parent / player 16+), coaching qualification (optional, coaches only), age groups coached, club, email consent tick box. Never children's names or dates of birth.
+- Domain grssrts.co.uk is registered and managed in the owner's Cloudflare account (email and MailerLite settings go there).
+  Email: a hello@grssrts.co.uk inbox is needed (MailerLite won't send from Yahoo/Gmail). Suggested Google Workspace; Zoho free as the no-cost option. Owner deciding.
+- Access (agreed direction): anyone can browse the home page and section lists; opening a session (clips, coaching points, downloads)
+  needs an account. Header buttons Log in + Join free; tapping a session shows a join / log in pop-up. Home Ground (Minis and Juniors)
+  stays free with no sign-up. Shared ("Share with your squad") links open that one session without login. Taster: the first clip of each session is free
+  by default; a session can name a different free clip (owner's or the sending coach's choice). Login service: suggested Clerk
+  (passwords, reset emails, Google sign-in); MailerLite stays for emails only. Owner to confirm and create accounts.
+- Accounts preview is built (SITE_FLAGS.members = false; see it with ?drafts, "pretend to log in" button until the login service is
+  connected). Free session per section in FREE_SESSIONS (js/categories.js), changed monthly; replaces the first-clip taster.
+  Topic list in TOPICS (js/categories.js); every session has `topics`. Coach sessions: `fromCoach: true` ("From a coach" label).
+- Section page design (approved): orange Type pills across the top (All / Technical / Tactical / Game / Rondo,
+  with counts), rows of up to 3 sessions per type, padlock "Join to watch" on cards, and one featured session first on All with an
+  orange "Free to watch" speech bubble (no sign-up). Topics to be picked at upload from a fixed list (stored as `topics` on each session); keep them generic ("Dribbling",
+  not "Dribbling and 1 v 1"). List: Attacking: Passing, Dribbling, Shooting, Crossing, Combination play, Build-up play, Switching play,
+  Counter-attacks. Defending: Pressing, Tackling, Shape, Transition, Crosses. Goalkeeping: Handling, Shot-stopping, Positioning,
+  Distribution, Crosses. Any section: Warm-ups, Small-sided games.
+- To build: a Join page and a privacy page (hidden until approved), a Starter Pack PDF, and better filtering as the library grows
+  (section pages already have search, Saved, and Age / Type / Players filters).
 
 ## Ideas agreed, not built yet
 

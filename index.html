@@ -27,6 +27,7 @@
     color-scheme: light;
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   html { background: var(--bg); }
   body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 500; line-height: 1.5; }
   .wrap { max-width: 1100px; margin: 0 auto; padding-block: 16px 40px;
@@ -260,6 +261,106 @@
   .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--forest); color: var(--cream);
     padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; z-index: 200; box-shadow: 0 8px 24px rgba(22,53,31,.3); }
   #print-plan { display: none; }
+  /* accounts preview: Log in / Join free, type pills, session cards, padlocks, the free session */
+  .acct { display: flex; gap: 6px; align-items: center; order: 2; }
+  .acct a, .acct button { font: inherit; font-weight: 700; font-size: 13.5px; text-decoration: none; border-radius: 999px; padding: 7px 13px; cursor: pointer; }
+  .acct .a-login { color: var(--text); border: 1px solid var(--edge); background: var(--paper); }
+  .acct .a-join { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+  @media (max-width: 480px) { .acct { gap: 5px; } .acct a, .acct button { font-size: 12.5px; padding: 6px 10px; } .acct .who { display: none; } }
+  .acct .who { font-size: 13px; color: var(--sub); font-weight: 600; }
+  .top .nav { order: 3; }
+  @media (max-width: 760px) { .top .nav { flex-basis: 100%; justify-content: flex-start; } }
+  .mbanner { background: var(--forest); color: var(--cream); border-radius: 14px; padding: 14px 16px; display: flex; gap: 12px 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin: 0 0 16px; }
+  .mbanner b { font-size: 16px; display: block; } .mbanner span { font-size: 13.5px; color: #ddd3be; }
+  .mbanner .btns { display: flex; gap: 8px; }
+  .mbanner a { font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 999px; padding: 9px 16px; }
+  .mbanner .j { background: var(--accent); color: #fff; } .mbanner .l { color: var(--cream); border: 1px solid #4d6b54; }
+  body.members .filter-btn { display: inline-block; }
+  body.members .filters { display: none; } body.members .filters.open { display: grid; }
+  .tpills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin: 0 0 14px; scrollbar-width: none; }
+  .tpill { flex: none; border: 2px solid var(--accent); color: var(--accent-ink); background: var(--paper); border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
+  .tpill i { font-style: normal; font-weight: 700; opacity: .7; margin-left: 4px; }
+  .tpill[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .shelf { margin: 0 0 22px; }
+  .shelf-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .shelf-head h2 { margin: 0; font-size: 20px; }
+  .shelf-head button { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; font-size: 13.5px; color: var(--accent-ink); cursor: pointer; white-space: nowrap; }
+  .shelf .what { margin: 2px 0 10px; font-size: 13.5px; color: var(--muted); }
+  .shelf-row { display: grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+  .cards { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 0 0 24px; list-style: none; padding: 0; }
+  .scard { position: relative; background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+  .scard:hover { border-color: var(--accent); }
+  .scard > a { display: flex; flex-direction: column; color: var(--text); text-decoration: none; height: 100%; }
+  .scard .th { position: relative; aspect-ratio: 16 / 9; background: var(--forest); }
+  .scard .th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lockchip { position: absolute; top: 8px; right: 8px; background: rgba(22,53,31,.88); color: var(--cream); font-size: 12px; font-weight: 700; border-radius: 999px; padding: 4px 9px; display: flex; gap: 5px; align-items: center; }
+  .lockchip svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.6; }
+  .scard .bd { padding: 10px 12px 12px; display: grid; gap: 5px; padding-right: 44px; }
+  .scard b { font-size: 15.5px; line-height: 1.25; }
+  .scard .sum { font-size: 13px; color: var(--sub); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .scard .star { top: auto; bottom: 8px; transform: none; }
+  .badges .coach { background: #fde8dc; color: var(--accent-ink); border-color: #f6c9ad; font-weight: 700; }
+  .featured { border: 2px solid var(--accent); margin: 0 0 24px; }
+  .featured .th { aspect-ratio: 16 / 8; }
+  .bubble { position: absolute; left: 12px; top: 12px; background: var(--accent); color: #fff; font-weight: 800; font-size: 14px; border-radius: 12px; padding: 7px 12px; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+  .bubble::after { content: ''; position: absolute; left: 18px; bottom: -8px; border: 8px solid transparent; border-top-color: var(--accent); border-bottom: 0; }
+  .playdot { position: absolute; inset: 0; margin: auto; width: 58px; height: 58px; border-radius: 50%; background: rgba(217,98,43,.95); box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+  .playdot::before { content: ''; position: absolute; left: 22px; top: 18px; border-left: 18px solid #fff; border-top: 11px solid transparent; border-bottom: 11px solid transparent; }
+  .watch { justify-self: start; background: var(--accent); color: #fff; font-weight: 800; font-size: 14px; border-radius: 999px; padding: 8px 16px; margin-top: 4px; }
+  .lock-pop { max-width: 420px; padding: 0; overflow: hidden; }
+  .lock-pop .th { aspect-ratio: 16 / 8; background: var(--forest); } .lock-pop .th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lock-pop .in { padding: 16px 18px 18px; display: grid; gap: 10px; }
+  .lock-pop h2 { margin: 0; font-size: 20px; } .lock-pop p { margin: 0; color: var(--sub); font-size: 14.5px; }
+  .lock-pop .btn { text-align: center; }
+  .lock-pop small { text-align: center; color: var(--sub); font-size: 13.5px; }
+  .lock-pop small a, .lock-pop small button { color: var(--accent-ink); font-weight: 700; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; text-decoration: underline; }
+  .lock-pop .pv { font-size: 12px; color: var(--muted); text-align: center; }
+  .s-coach { display: block; font-size: 13.5px; font-weight: 700; color: var(--accent-ink); margin-bottom: 4px; }
+  @media (min-width: 760px) {
+    .shelf-row { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); overflow: visible; }
+    .cards { grid-template-columns: repeat(3, 1fr); }
+    .featured > a { flex-direction: row; } .featured .th { flex: 0 0 55%; aspect-ratio: 16 / 9; }
+    .featured .bd { align-content: center; padding: 18px 22px; } .featured b { font-size: 20px; }
+  }
+  .srow .type[data-type] { cursor: pointer; }
+  .srow .type[data-type]:hover { filter: brightness(1.08); text-decoration: underline; }
+  /* join + privacy */
+  .join { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 26px; align-items: start; margin: 0 0 26px; }
+  .join-why { display: grid; gap: 10px; }
+  .join-why h2 { margin: 0 0 4px; font-size: 22px; }
+  .join-why ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .join-why li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; }
+  .join-why li b { font-size: 15.5px; }
+  .join-why li span { color: var(--sub); font-size: 14px; }
+  .trial { background: var(--forest); color: var(--cream); border-radius: 14px; padding: 16px 18px; display: grid; gap: 6px; }
+  .trial .eyebrow { color: var(--accent-soft); margin: 0; }
+  .trial b { font-size: 18px; }
+  .trial span { font-size: 14px; color: #ddd3be; }
+  .join-form { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 18px; display: grid; gap: 14px; }
+  .join-form h2 { margin: 0; font-size: 22px; }
+  .join-form label, .join-form legend { font-size: 13px; font-weight: 700; color: var(--text); display: block; margin: 0 0 5px; padding: 0; }
+  .join-form .opt { font-weight: 500; color: var(--muted); }
+  .join-form input[type=text], .join-form input[type=email] { width: 100%; border: 1px solid var(--edge); border-radius: 10px; padding: 11px 12px; background: #fff; font-size: 16px; }
+  .join-form select { width: 100%; border: 1px solid var(--edge); border-radius: 10px; padding: 11px 12px; background: #fff; font-size: 16px; }
+  .join-form input:focus { outline: 3px solid var(--accent); outline-offset: 1px; }
+  .join-form fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .ticks { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ticks label { margin: 0; font-weight: 600; font-size: 14px; border: 1px solid var(--edge); border-radius: 999px; padding: 6px 12px; background: var(--bg); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .ticks input { accent-color: var(--accent); margin: 0; }
+  .ticks label:has(input:checked) { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .consent { display: flex !important; gap: 10px; align-items: flex-start; font-weight: 500 !important; font-size: 14px !important; color: var(--sub) !important; }
+  .consent input { accent-color: var(--accent); width: 20px; height: 20px; flex: none; margin: 1px 0 0; }
+  .join-form .small { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .join-msg { margin: 0; font-weight: 700; font-size: 14.5px; }
+  .join-msg.ok { color: var(--forest); }
+  .join-msg.err { color: var(--accent-ink); }
+  .privacy { display: grid; gap: 12px; max-width: 760px; }
+  .privacy section { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px 16px; }
+  .privacy h2 { margin: 0 0 6px; font-size: 18px; }
+  .privacy p, .privacy li { margin: 0 0 6px; color: var(--sub); font-size: 14.5px; }
+  .privacy ul { margin: 0; padding-left: 20px; }
+  .todo { background: #fde8dc; color: var(--accent-ink); font-weight: 700; border-radius: 4px; padding: 0 4px; }
+  @media (max-width: 760px) { .join { grid-template-columns: 1fr; } }
   .free-topic { background: var(--paper); border: 1px dashed var(--edge); border-radius: 14px; padding: 18px; display: grid; gap: 8px; margin: 26px 0 16px; }
   .free-topic h2 { margin: 0; font-size: 20px; }
   .free-topic .price { margin: 0; font-weight: 800; font-size: 14px; color: var(--accent-ink); }
@@ -445,6 +546,7 @@
       <img src="assets/logo/grss-rts.svg" alt="GRSS | RTS">
       <span class="audience" id="audience"><span>Coaches</span><i aria-hidden="true"></i><span>Players</span><i aria-hidden="true"></i><span>Parents</span></span>
     </a>
+    <div class="acct" id="acct" hidden></div>
     <nav class="nav" id="nav" aria-label="Main"></nav>
   </header>
 
@@ -496,6 +598,8 @@
     <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a><span aria-hidden="true">›</span><span aria-current="page" id="sec-crumb"></span></nav>
     <div class="page-top"><svg viewBox="0 0 24 24" aria-hidden="true" id="sec-icon"></svg>
       <div><p class="eyebrow">Sessions</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
+    <div class="mbanner" id="sec-banner" hidden></div>
+    <div class="tpills" id="type-pills" hidden></div>
     <div class="finder" id="finder">
       <div class="find-bar">
         <input type="search" id="q" placeholder="Search sessions" aria-label="Search sessions" autocomplete="off">
@@ -505,6 +609,7 @@
       <div class="filters" id="filters"></div>
     </div>
     <div class="count-line"><span id="sec-count"></span><button id="clear-filters" hidden>Clear filters</button></div>
+    <div id="shelves" hidden></div>
     <ul class="srows" id="list"></ul>
     <p class="none" id="sec-none" hidden></p>
   </main>
@@ -563,6 +668,7 @@
     <div id="tab-panel"></div>
   </main>
 
+  <dialog class="popup lock-pop" id="lock-dialog" aria-label="Join to watch"></dialog>
   <dialog class="popup" id="howto-dialog" aria-labelledby="howto-title">
     <button class="popup-close" id="howto-close" aria-label="Close">✕</button>
     <h2 id="howto-title">How the clips work</h2>
@@ -618,6 +724,18 @@
   const AREAS = (window.AREAS || []).filter(a => !a.draft || DRAFTS);
   const catOf = s => (s.minis && MINIS && { id: 'minis', name: 'Minis' }) || CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground (Minis or Juniors)
   const LINKS = window.SITE_LINKS || {};
+  // ---------- accounts (preview until SITE_FLAGS.members is switched on) ----------
+  const MEMBERS = !!FLAGS.members || DRAFTS;
+  const FREE = window.FREE_SESSIONS || {};
+  const TOPICS = window.TOPICS || {};
+  const MEMBER_KEY = 'grssrts:member';   // preview stand-in for a real login, until the login service is connected
+  let member = false;
+  try { member = localStorage.getItem(MEMBER_KEY) === '1'; } catch (e) { /* private window */ }
+  // a "Share with your squad" link (?squad) opens that one session without logging in
+  const sharedId = /[?&]squad\b/.test(location.search) ? location.hash.replace('#', '').split(':')[0] : '';
+  const isFree = s => FREE[s.category] === s.id;
+  document.body.classList.toggle('members', MEMBERS);
+  const locked = s => MEMBERS && !member && CATS.some(c => c.id === s.category) && !isFree(s) && s.id !== sharedId;
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
@@ -773,7 +891,7 @@
     $('s-crumb').textContent = session.title;
     $('s-eyebrow').textContent = cat ? cat.name : '';
     $('title').textContent = session.title;
-    $('s-idea').textContent = session.summary || session.subtitle || '';
+    $('s-idea').innerHTML = (session.coachTitle ? `<span class="s-coach">Coach's plan: ${esc(session.coachTitle)}</span>` : '') + esc(session.summary || session.subtitle || '');
     const total = session.clips.reduce((a, c) => a + clipLen(c), 0);
     const formats = [...new Set(session.clips.map(clipFormat).filter(Boolean))];
     $('s-facts').innerHTML = [
@@ -814,7 +932,7 @@
 
   // ---------- share with your squad, and the one-page plan ----------
   const SITE = 'https://grssrts.co.uk/';
-  const sessionUrl = s => SITE + '#' + s.id;
+  const sessionUrl = s => SITE + '?squad#' + s.id;   // ?squad: opens without logging in
   function toast(msg) {
     const t = document.createElement('div');
     t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
@@ -886,7 +1004,7 @@
     $('nav').innerHTML = CATS.map(c => `<a href="#${c.id}"${active === c.id ? ' aria-current="page"' : ''}>${esc(c.name)}</a>`).join('') +
       '<span class="sep" aria-hidden="true"></span>' +
       `<div class="more"><button class="more-btn${inArea ? ' current' : ''}" id="more-btn" aria-expanded="false" aria-controls="more-list">More ▾</button>
-        <div class="more-list" id="more-list">${AREAS.map(a => `<a href="#${a.id}"${active === a.id ? ' aria-current="page"' : ''}>${esc(a.name)}</a>`).join('')}</div></div>`;
+        <div class="more-list" id="more-list">${AREAS.filter(a => !a.unlisted).map(a => `<a href="#${a.id}"${active === a.id ? ' aria-current="page"' : ''}>${esc(a.name)}</a>`).join('')}</div></div>`;
   }
 
   // ---------- home ----------
@@ -896,7 +1014,7 @@
       return `<a class="main-tile" href="#${c.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg>
         <b>${esc(c.name)}</b><small>${esc(c.blurb)}</small><span class="count">${n ? plural(n, 'session') : 'Coming soon'}</span></a>`;
     }).join('');
-    $('areas').innerHTML = AREAS.map(a => `<a class="area-tile" href="#${a.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${a.icon}</svg>
+    $('areas').innerHTML = AREAS.filter(a => !a.unlisted).map(a => `<a class="area-tile" href="#${a.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${a.icon}</svg>
         <span class="tag">${esc(a.tag)}</span><b>${esc(a.name)}</b><small>${esc(a.blurb)}</small></a>`).join('');
   }
 
@@ -962,7 +1080,7 @@
   const PLAYER_BANDS = [{ id: '1-4', label: '1–4', min: 1, max: 4 }, { id: '5-8', label: '5–8', min: 5, max: 8 },
     { id: '9-12', label: '9–12', min: 9, max: 12 }, { id: '13+', label: '13+', min: 13, max: 99 }];
   const TYPE_ORDER = ['Technical', 'Tactical', 'Rondo', 'Game'];
-  const F = { age: '', type: '', players: '', saved: false, q: '' };
+  const F = { age: '', type: '', players: '', topic: '', saved: false, q: '' };
 
   // favourites, saved on this phone or computer only
   const SAVE_KEY = 'grssrts:saved';
@@ -978,7 +1096,7 @@
   const hayCache = {};
   function hay(s) {
     if (!hayCache[s.id]) {
-      const bits = [s.title, s.subtitle, s.summary, s.keyPhrase, s.type,
+      const bits = [s.title, s.coachTitle, s.subtitle, s.summary, s.keyPhrase, s.type, ...(s.topics || []),
         ...(s.keywords || []).flatMap(k => [k.word, k.meaning]),
         ...(s.cards || []).flatMap(c => [c.title, c.lead, ...(c.columns || []).flatMap(col => [col.heading, ...(col.items || [])])]),
         ...s.clips.flatMap(c => [c.title, c.kicker, ...(c.steps || []).map(st => st.title)])];
@@ -989,6 +1107,7 @@
   function matches(s) {
     if (F.age && !(minAge(s) <= +F.age && +F.age <= maxAge(s))) return false;
     if (F.type && s.type !== F.type) return false;
+    if (F.topic && !(s.topics || []).includes(F.topic)) return false;
     if (F.players) {
       const b = PLAYER_BANDS.find(x => x.id === F.players), q = squad(s);
       if (!q || q[1] < b.min || q[0] > b.max) return false;
@@ -997,7 +1116,7 @@
     const words = F.q.toLowerCase().split(/\s+/).filter(Boolean);
     return words.every(w => hay(s).includes(w));
   }
-  const activeCount = () => ['age', 'type', 'players'].filter(k => F[k]).length;
+  const activeCount = () => (MEMBERS ? ['age', 'players', 'topic'] : ['age', 'type', 'players', 'topic']).filter(k => F[k]).length;
 
   function sessionRow(s) {
     const len = sessionLen(s);
@@ -1005,7 +1124,7 @@
         ${s.thumb ? `<img src="${esc(s.thumb)}" alt="" loading="lazy">` : ''}
         <span class="sm"><b>${esc(s.title)}</b>
           <span class="sum">${esc(s.summary || s.subtitle || '')}</span>
-          <span class="badges"><span class="age">${ageLabel(s)}</span>${s.type ? `<span class="age type">${esc(s.type)}</span>` : ''}${squad(s) ? `<span class="b">${squadLabel(s)}</span>` : ''}<span class="b">${plural(s.clips.length, 'clip')} · ${Math.max(1, Math.round(len / 60))} min</span></span>
+          <span class="badges"><span class="age">${ageLabel(s)}</span>${s.type ? `<span class="age type" data-type="${esc(s.type)}" role="button" tabindex="0" title="Show all ${esc(s.type)} sessions">${esc(s.type)}</span>` : ''}${squad(s) ? `<span class="b">${squadLabel(s)}</span>` : ''}<span class="b">${plural(s.clips.length, 'clip')} · ${Math.max(1, Math.round(len / 60))} min</span></span>
         </span></a>
       <button class="star" data-save="${esc(s.id)}" aria-pressed="${isSaved(s.id)}" aria-label="Save ${esc(s.title)}" title="${isSaved(s.id) ? 'Saved' : 'Save'}">${isSaved(s.id) ? '★' : '☆'}</button></li>`;
   }
@@ -1016,11 +1135,58 @@
     const bands = PLAYER_BANDS.filter(b => all.some(s => squad(s) && squad(s)[1] >= b.min && squad(s)[0] <= b.max));
     const row = (key, label, opts) => opts.length < 2 && !F[key] ? '' : `<div class="frow"><span class="flabel">${label}</span><div class="chips" data-f="${key}">
         <button class="chip" data-v="" aria-pressed="${!F[key]}">Any</button>${opts.map(([v, l]) => `<button class="chip" data-v="${esc(v)}" aria-pressed="${F[key] === String(v)}">${esc(l)}</button>`).join('')}</div></div>`;
-    $('filters').innerHTML = row('age', 'Age', AGES.map(a => [a, 'U' + a])) + row('type', 'Type', types.map(t => [t, t])) + row('players', 'Players', bands.map(b => [b.id, b.label]));
+    const topics = (TOPICS[currentCat && currentCat.id] || []).concat(TOPICS.any || []).filter(t => all.some(s => (s.topics || []).includes(t)));
+    $('filters').innerHTML = row('age', 'Age', AGES.map(a => [a, 'U' + a])) + (MEMBERS ? '' : row('type', 'Type', types.map(t => [t, t]))) +
+      row('players', 'Players', bands.map(b => [b.id, b.label])) + (MEMBERS ? row('topic', 'Topic', topics.map(t => [t, t])) : '');
     const n = activeCount();
     $('filter-btn').textContent = n ? `Filter (${n}) ▾` : 'Filter ▾';
     $('filter-btn').classList.toggle('active', !!n);
   }
+
+  // members layout: type pills, the free session first, rows of cards, padlocks
+  const lockIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+  const TYPE_WHAT = { Technical: 'Ball skills: passing, receiving, dribbling and finishing.', Tactical: 'Team shape, movement and decisions, like in a match.',
+    Game: 'Small-sided games with a coaching focus.', Rondo: 'Keep-ball in tight spaces: angles, support, quick passing.' };
+  const cardBadges = s => `<span class="badges"><span class="age">${ageLabel(s)}</span>${squad(s) ? `<span class="b">${squadLabel(s)}</span>` : ''}<span class="b">${plural(s.clips.length, 'clip')}</span>${s.fromCoach ? '<span class="b coach">From a coach</span>' : ''}</span>`;
+  const starBtn = s => `<button class="star" data-save="${esc(s.id)}" aria-pressed="${isSaved(s.id)}" aria-label="Save ${esc(s.title)}" title="${isSaved(s.id) ? 'Saved' : 'Save'}">${isSaved(s.id) ? '★' : '☆'}</button>`;
+  const thumbImg = s => s.thumb ? `<img src="${esc(s.thumb)}" alt="" loading="lazy">` : '';
+  const sessionCard = s => `<li class="scard"><a href="#${esc(s.id)}"><span class="th">${thumbImg(s)}${locked(s) ? `<span class="lockchip">${lockIcon} Join to watch</span>` : ''}</span>
+      <span class="bd"><b>${esc(s.title)}</b><span class="sum">${esc(s.summary || '')}</span>${cardBadges(s)}</span></a>${starBtn(s)}</li>`;
+  const featuredCard = s => `<div class="scard featured"><a href="#${esc(s.id)}"><span class="th">${thumbImg(s)}<span class="bubble">${member ? 'Free this month' : 'Free to watch'}</span><span class="playdot"></span></span>
+      <span class="bd"><b>${esc(s.title)}</b><span class="sum">${esc(s.summary || '')}</span>${cardBadges(s)}<span class="watch">▶ ${member ? 'Watch now' : 'Watch now, no sign-up'}</span></span></a></div>`;
+  function renderMembersSection(cat, all, list) {
+    if (!all.length) return;
+    $('sec-banner').hidden = member;
+    $('sec-banner').innerHTML = `<div><b>Join free to watch every session</b><span>Browse everything. One session is free to watch each month.</span></div>
+      <div class="btns"><a class="j" href="#join">Join free</a><a class="l" href="#login">Log in</a></div>`;
+    const types = TYPE_ORDER.filter(t => all.some(x => x.type === t)).concat([...new Set(all.map(x => x.type).filter(t => t && !TYPE_ORDER.includes(t)))]);
+    $('type-pills').hidden = types.length < 2;
+    $('type-pills').innerHTML = [['', 'All', all.length]].concat(types.map(t => [t, t, all.filter(x => x.type === t).length]))
+      .map(([v, l, n]) => `<button class="tpill" data-tpill="${esc(v)}" aria-pressed="${F.type === v}">${esc(l)}<i>${n}</i></button>`).join('');
+    const browsing = !F.type && !F.q && !F.saved && !F.age && !F.players && !F.topic;
+    $('list').className = 'cards';
+    if (browsing) {
+      const free = all.find(isFree);
+      const shelves = types.map(t => {
+        const ss = all.filter(x => x.type === t && x !== free);
+        return !ss.length ? '' : `<section class="shelf"><div class="shelf-head"><h2>${esc(t)}</h2>${ss.length > 3 ? `<button data-tpill="${esc(t)}">See all ${ss.length} ›</button>` : ''}</div>
+          ${TYPE_WHAT[t] ? `<p class="what">${esc(TYPE_WHAT[t])}</p>` : ''}<ul class="shelf-row srows">${ss.slice(0, 3).map(sessionCard).join('')}</ul></section>`;
+      }).join('');
+      $('shelves').innerHTML = (free ? featuredCard(free) : '') + shelves;
+      $('shelves').hidden = false;
+      $('list').hidden = true;
+      $('sec-count').textContent = '';
+    } else {
+      $('list').innerHTML = list.map(sessionCard).join('');
+      if (!F.q && !F.saved && !activeCount()) $('clear-filters').hidden = true;
+      if (F.type && TYPE_WHAT[F.type] && !F.q && !F.saved && !activeCount()) $('sec-count').textContent = `${plural(list.length, F.type.toLowerCase() + ' session')} · ${TYPE_WHAT[F.type]}`;
+    }
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-tpill]'); if (!b) return;
+    F.type = b.dataset.tpill; rerender();
+    $('type-pills').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
 
   let currentCat = null;
   function renderSection(cat) {
@@ -1042,6 +1208,9 @@
     $('list').hidden = !list.length;
     $('list').innerHTML = list.map(sessionRow).join('');
     $('sec-none').hidden = !!list.length;
+    $('list').className = 'srows';
+    ['sec-banner', 'type-pills', 'shelves'].forEach(id => { $(id).hidden = true; });
+    if (MEMBERS) renderMembersSection(cat, all, list);
     $('sec-none').innerHTML = !all.length
       ? `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`
       : F.saved && !F.q && !activeCount()
@@ -1062,7 +1231,18 @@
     $('filters').classList.toggle('open', open);
     $('filter-btn').setAttribute('aria-expanded', String(open));
   };
-  $('clear-filters').onclick = () => { Object.assign(F, { age: '', type: '', players: '', saved: false, q: '' }); rerender(); };
+  $('clear-filters').onclick = () => { Object.assign(F, { age: '', type: '', players: '', topic: '', saved: false, q: '' }); rerender(); };
+  // tap the orange type label on a session (e.g. Tactical) to show only that type
+  function typeTap(e) {
+    const t = e.target.closest('.srow [data-type]'); if (!t || $('section').hidden) return;
+    if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault(); e.stopPropagation();
+    F.type = F.type === t.dataset.type ? '' : t.dataset.type;
+    rerender();
+    $('finder').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.addEventListener('click', typeTap, true);
+  document.addEventListener('keydown', typeTap, true);
   // ☆ on any session row (section pages and Home Ground)
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-save]'); if (!b) return;
@@ -1097,6 +1277,45 @@
   $('promo-ba').innerHTML = beforeAfter();
   $('promo-cta').innerHTML = (LINKS.bespokeSession ? `<a class="btn primary" href="${esc(LINKS.bespokeSession)}" target="_blank" rel="noopener">Send your session</a>` : '') +
     `<a class="btn${LINKS.bespokeSession ? '' : ' primary'}" href="#dugout">See how it works</a>`;
+
+  // ---------- join / log in pop-ups and the account buttons (accounts preview) ----------
+  const lockDlg = $('lock-dialog');
+  const pretend = DRAFTS ? `<p class="pv">Preview only (logins aren't switched on yet): <button data-pretend>pretend to log in</button></p>` : '';
+  function openPop(html) { lockDlg.innerHTML = html; if (!lockDlg.open) { if (lockDlg.showModal) lockDlg.showModal(); else lockDlg.setAttribute('open', ''); } }
+  const closePop = () => { if (lockDlg.open) { if (lockDlg.close) lockDlg.close(); else lockDlg.removeAttribute('open'); } };
+  function openLock(s) {
+    openPop(`<div class="th">${thumbImg(s)}</div><div class="in"><h2>${esc(s.title)}</h2>
+      <p>Join free to watch all ${plural(s.clips.length, 'clip')}, the coaching points and the session plan.</p>
+      <a class="btn primary" href="#join">Join free</a><small>Already joined? <a href="#login">Log in</a></small>${pretend}</div>`);
+  }
+  function openLogin() {
+    openPop(`<div class="in"><h2>Log in</h2><p>Logging in opens soon. When it does, you'll log in here with your email and password, or with Google.</p>
+      <a class="btn primary" href="#join">Not joined yet? Join free</a>${pretend}</div>`);
+  }
+  // tapping a locked session (or Log in) opens a pop-up instead
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a || !MEMBERS) return;
+    const id = a.getAttribute('href').slice(1).split(':')[0];
+    if (id === 'login') { e.preventDefault(); openLogin(); return; }
+    const s = SESSIONS.find(x => x.id === id);
+    if (s && locked(s)) { e.preventDefault(); openLock(s); }
+  }, true);
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-pretend]')) { member = true; try { localStorage.setItem(MEMBER_KEY, '1'); } catch (x) {} closePop(); route(); }
+    else if (e.target.closest('[data-logout]')) { member = false; try { localStorage.removeItem(MEMBER_KEY); } catch (x) {} route(); }
+  });
+  window.addEventListener('hashchange', closePop);
+  document.addEventListener('pointerdown', e => {
+    if (!lockDlg.open) return;
+    const r = lockDlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closePop();
+  });
+  function renderAcct() {
+    $('acct').hidden = !MEMBERS;
+    if (!MEMBERS) return;
+    $('acct').innerHTML = member ? `<span class="who">Logged in</span><button class="a-login" data-logout>Log out</button>`
+      : `<a class="a-login" href="#login">Log in</a><a class="a-join" href="#join">Join free</a>`;
+  }
 
   // ---------- area pages ----------
   const linkBtn = (url, label, primary) => url
@@ -1146,6 +1365,89 @@
       if (!$('area').hidden) { const y = scrollY; route(); scrollTo(0, y); }
     }
   });
+  // ---------- join (sign-up) and privacy ----------
+  const CLUBS = window.CLUBS || {};
+  const clubCode = () => (new URLSearchParams(location.search).get('club') || '').toLowerCase();
+  const AGE_TICKS = ['U6', 'U7', 'U8', 'U9', 'U10', 'U11', 'U12', 'U13', 'U14', 'U15', 'U16', 'U17', 'U18', 'Adults'];
+  function joinBody() {
+    const club = CLUBS[clubCode()] || '';
+    return `<div class="join">
+        <div class="join-why">
+          ${club ? `<div class="trial"><p class="eyebrow">${esc(club)} coaches</p><b>You're on the free trial</b>
+            <span>Sign up and send us your own sessions: we'll animate them for free and add them to the library, with credit to you and ${esc(club.replace(/\.$/, ''))}.</span></div>` : ''}
+          <h2>Why join?</h2>
+          <ul>
+            <li><b>New sessions by email</b><span>A short email when new clips go up. No spam, unsubscribe any time.</span></li>
+            <li><b>Your sessions, animated</b><span>Send us your session plans and we'll turn them into clips like these.</span></li>
+            <li><b>Help shape the site</b><span>Tell us which ages and topics you need, and we'll make them next.</span></li>
+          </ul>
+          <p class="note">Free. We only ask for what we need, and we never ask for children's names, photos or dates of birth.</p>
+        </div>
+        <form class="join-form" id="join-form" novalidate>
+          <h2>Join the squad</h2>
+          <div><label for="j-name">First name</label><input type="text" id="j-name" name="name" autocomplete="given-name" required></div>
+          <div><label for="j-email">Email</label><input type="email" id="j-email" name="email" autocomplete="email" required></div>
+          <fieldset><legend>I am a…</legend><div class="ticks">
+            ${['Coach', 'Parent', 'Player (16+)'].map((r, i) => `<label><input type="radio" name="role" value="${esc(r)}"${i ? '' : ' checked id="j-role-coach"'}> ${esc(r)}</label>`).join('')}
+          </div></fieldset>
+          <div id="j-qual-row"><label for="j-qual">Coaching qualification <span class="opt">(optional)</span></label>
+            <select id="j-qual" name="qualification">
+              ${['', 'None yet', 'Playmaker / Introduction to Coaching Football', 'FA Level 1', 'UEFA C (was FA Level 2)', 'UEFA B', 'UEFA A', 'UEFA Pro', 'Other'].map(q => `<option value="${esc(q)}">${q ? esc(q) : 'Choose…'}</option>`).join('')}
+            </select></div>
+          <fieldset><legend>Age groups <span class="opt">(tick any)</span></legend><div class="ticks">
+            ${AGE_TICKS.map(a => `<label><input type="checkbox" name="ages" value="${a}"> ${a}</label>`).join('')}
+          </div></fieldset>
+          <div><label for="j-club">Club <span class="opt">(optional)</span></label><input type="text" id="j-club" name="club" autocomplete="organization" value="${esc(club)}"></div>
+          <label class="consent"><input type="checkbox" id="j-consent" name="consent" required>
+            <span>Yes, email me new sessions and news from GRSS | RTS. I can unsubscribe any time.</span></label>
+          <button class="btn primary" type="submit">Join the squad</button>
+          <p class="join-msg" id="join-msg" role="status" aria-live="polite"></p>
+          <p class="small">We keep your details safe and never sell them. See our <a href="#privacy">privacy page</a>.</p>
+        </form>
+      </div>`;
+  }
+  document.addEventListener('change', e => {
+    if (e.target.name === 'role' && $('j-qual-row')) $('j-qual-row').hidden = !$('j-role-coach').checked;
+  });
+  // Join form: checks the boxes, then sends to MailerLite (SITE_LINKS.joinForm). Until that's set, it says sign-up opens soon.
+  document.addEventListener('submit', e => {
+    if (e.target.id !== 'join-form') return;
+    e.preventDefault();
+    const f = e.target, msg = $('join-msg');
+    const say = (t, ok) => { msg.textContent = t; msg.className = 'join-msg ' + (ok ? 'ok' : 'err'); };
+    const name = $('j-name').value.trim(), email = $('j-email').value.trim();
+    if (!name) return say('Please add your first name.'), $('j-name').focus();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Please check your email address.'), $('j-email').focus();
+    if (!$('j-consent').checked) return say('Please tick the box so we can email you.');
+    if (!LINKS.joinForm) return say('Thanks! Sign-up opens very soon. This is a preview, so nothing was sent.', true);
+    const data = new URLSearchParams();
+    data.set('fields[name]', name); data.set('fields[email]', email);
+    data.set('fields[role]', (f.querySelector('[name=role]:checked') || {}).value || '');
+    data.set('fields[age_groups]', [...f.querySelectorAll('[name=ages]:checked')].map(x => x.value).join(', '));
+    data.set('fields[qualification]', $('j-role-coach').checked ? $('j-qual').value : '');
+    data.set('fields[club]', $('j-club').value.trim());
+    data.set('ml-submit', '1'); data.set('anticsrf', 'true');
+    f.querySelector('[type=submit]').disabled = true;
+    fetch(LINKS.joinForm, { method: 'POST', mode: 'no-cors', body: data })
+      .then(() => { say('Nearly there: check your inbox and tap the link to confirm.', true); f.reset(); })
+      .catch(() => say('Sorry, that didn\'t send. Please try again.'))
+      .finally(() => { f.querySelector('[type=submit]').disabled = false; });
+  });
+  function privacyBody() {
+    const contact = LINKS.contactEmail ? `<a href="mailto:${esc(LINKS.contactEmail)}">${esc(LINKS.contactEmail)}</a>` : '<span class="todo">contact email to add</span>';
+    return `<div class="privacy">
+      <section><h2>Who we are</h2><p>GRSS | RTS (grssrts.co.uk) makes animated coaching clips for grassroots football. Questions about your details: ${contact}.</p></section>
+      <section><h2>What we keep</h2><p>Only what you give us when you join:</p>
+        <ul><li>Your first name and email address</li><li>Whether you're a coach, parent or player (16+)</li><li>The age groups you work with, and your club and coaching qualification if you add them</li><li>That you agreed to our emails, and when</li></ul></section>
+      <section><h2>Why</h2><ul><li>To email you new sessions and news, because you asked us to</li><li>To understand which ages and topics to make next</li><li>To run trials with clubs</li></ul></section>
+      <section><h2>Children</h2><p>Sign-up is for adults and players aged 16 or over. We never ask for or publish children's names, photos or dates of birth. Players of any age can use the site without signing up.</p></section>
+      <section><h2>Where it's kept</h2><p>Your details are kept by our email service, MailerLite, which stores data securely within the EU. We never sell or share your details with anyone else.</p></section>
+      <section><h2>On your device</h2><p>Saved sessions and Minis stars are kept only on your own phone or computer, never sent to us. We don't use tracking cookies or advertising.</p></section>
+      <section><h2>How long</h2><p>Until you unsubscribe or ask us to delete them. Every email has an unsubscribe link, and we'll delete your details within 30 days of you asking.</p></section>
+      <section><h2>Your rights</h2><p>You can ask to see, correct or delete your details at any time. If you're unhappy with how we've used them, you can complain to the Information Commissioner's Office (ico.org.uk).</p></section>
+      <p class="note">Last updated: <span class="todo">date it goes live</span></p>
+    </div>`;
+  }
   const AREA_BODY = {
     'home-ground': a => {
       // the explanation (above), then one pill per group: Minis and Juniors
@@ -1195,6 +1497,8 @@
       <section class="free-topic"><p class="price">Free</p><h2>Suggest a topic</h2>
         <p>Tell us what your team struggles with, for example "we all chase the ball". Popular topics become new sessions in the library, free for everyone.</p>
         <div>${linkBtn(LINKS.suggestTopic, 'Suggest a topic', false)}</div></section>`,
+    'join': () => joinBody(),
+    'privacy': () => privacyBody(),
     'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
       <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
   };
@@ -1244,6 +1548,13 @@
     // parts of an area (e.g. Home Ground: #minis, #juniors) have their own pages
     const parent = !area && AREAS.find(a => (a.parts || []).some(p => p.id === id && (p.id !== 'minis' || MINIS)));
     const part = parent && parent.parts.find(p => p.id === id);
+    renderAcct();
+    if (s && locked(s)) {
+      const c = CATS.find(x => x.id === s.category);
+      setPlaying(false); show('section'); renderSection(c); renderNav(c.id); document.title = `${c.name} · GRSS | RTS`;
+      openLock(s); window.scrollTo(0, 0); return;
+    }
+    if (id === 'login' && MEMBERS) { setPlaying(false); show('home'); renderHome(); renderNav(null); openLogin(); return; }
     if (s) {
       show('session');
       if (s !== session) { session = s; clip = s.clips[0]; }

@@ -52,7 +52,9 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'penetration-dribbling',
+    topics: ['Dribbling', 'Small-sided games'],
     title: 'Penetration via Dribbling',
+    fromCoach: true,
     subtitle: 'Principle of Play: Attacking',
     type: 'Technical',
     category: 'attacking',

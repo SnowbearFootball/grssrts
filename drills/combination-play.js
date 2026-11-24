@@ -55,6 +55,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'combination-play',
+    topics: ['Combination play', 'Passing'],
     title: 'Combination Play',
     subtitle: 'Passing and movement',
     type: 'Technical',

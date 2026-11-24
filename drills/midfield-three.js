@@ -48,7 +48,10 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'midfield-three',
-    title: 'Utilising the Midfield 3 to Penetrate Against a 4-4-2',
+    topics: ['Build-up play', 'Passing'],
+    title: 'Midfield Three: Playing Through',
+    coachTitle: 'Utilising the Midfield 3 to Penetrate Against a 4-4-2',
+    fromCoach: true,
     subtitle: 'Primary player: pivot · Primary unit: midfield',
     type: 'Tactical',
     category: 'attacking',

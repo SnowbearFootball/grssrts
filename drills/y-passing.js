@@ -50,6 +50,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'y-passing',
+    topics: ['Passing', 'Shooting'],
     draft: true,
     title: 'The 5 Y\'s: Passing & Shooting',
     subtitle: 'Passing patterns and finishing',

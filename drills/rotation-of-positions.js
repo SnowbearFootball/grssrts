@@ -53,6 +53,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'rotation-of-positions',
+    topics: ['Build-up play'],
     aliases: ['build-out-rotations'],   // the session this one replaced
     title: 'Rotation of Positions',
     subtitle: 'Building out',
