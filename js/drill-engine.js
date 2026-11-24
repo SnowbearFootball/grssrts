@@ -533,6 +533,8 @@
     'TO HALFWAY': { bg: '#16351f', fg: '#fff' },
     'GO WIDE': { get bg() { return C.accent; }, fg: '#fff' },
     'NOT PAST THE MIDDLE': { bg: '#16351f', fg: '#fff' },
+    EXPLODE: { get bg() { return C.accent; }, fg: '#fff' },
+    'ATTACK THE SPACE': { get bg() { return C.accent; }, fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
