@@ -1,12 +1,12 @@
 /*
- * SESSION (DRAFT): Dribbling: Risk or Reward? (Attacking · dribbling)
+ * SESSION (DRAFT): Dribbling: Where Is the Space / Overload? (Attacking · dribbling)
  * From the owner's own plan "Dribbling - Part 4". Follows Dribbling (Part 1) and Dribbling: 1 v 1 to 2 v 2 (Parts 2 and 3).
  *
  * Numbers game: 35 x 35 yard square, a goal and keeper at each end. Two teams of 5, numbered 1 to 5 (each player has
  *   a numbered opponent). Greens wait by the top goal, blues by the bottom goal. The coach calls a number and passes
  *   straight to one player: the attacker, who attacks the other team's goal. 1 v 1 (10 mins), then 2 v 2: call two
  *   numbers, use movement and exploit space (10 mins).
- * Game: 4 v 4 + keepers on 40 x 50 yards (20 mins). Dribble where possible and appropriate. Think risk / reward.
+ * Game: 4 v 4 + keepers on 40 x 50 yards (20 mins). Dribble where possible and appropriate: look for space and overloads.
  * Key factors: identify space to dribble into; once there, pick a positive outcome: a shot, or if not, a positive pass / cross.
  * Pitch units: x 0..100, y 0..75 (1 unit is about the same across and down).
  */
@@ -48,16 +48,16 @@
 
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
-    id: 'dribbling-risk-reward',
+    id: 'dribbling-space-overload',
     draft: true,
-    title: 'Dribbling: Risk or Reward?',
+    title: 'Dribbling: Where Is the Space / Overload?',
     subtitle: '1 v 1, 2 v 2, then the game',
     type: 'Game',
     category: 'attacking',
     topics: ['Dribbling', 'Small-sided games'],
     squad: [10, 12],
-    thumb: 'assets/thumbs/dribbling-risk-reward.jpg',
-    summary: 'A numbers game in a 35 yard square with a goal and keeper at each end. The coach calls a number and passes to the attacker. 1 v 1, then 2 v 2, then a 4 v 4 game. Think risk or reward: find the space, dribble into it, look for overloads, then a shot or a positive pass.',
+    thumb: 'assets/thumbs/dribbling-space-overload.jpg',
+    summary: 'A numbers game in a 35 yard square with a goal and keeper at each end. The coach calls a number and passes to the attacker. 1 v 1, then 2 v 2, then a 4 v 4 game. Where is the space? Where is the overload? Dribble into the space, use the overload, then a shot or a positive pass.',
     keyPhrase: 'Find the space, then finish positively',
     ages: { from: 11 },
 
@@ -72,13 +72,13 @@
         phrase: { big: 'FIND THE SPACE, FINISH POSITIVELY', small: 'Shot first. Not on? A positive pass.' },
       },
       {
-        title: 'Risk or reward?',
-        lead: 'Dribbling is worth it in the *right place*.',
+        title: 'Space or overload?',
+        lead: 'In the game, *look up* and ask two questions.',
         columns: [
-          { heading: 'Near your own goal', items: ['Lose it here and they *score*', '*High risk*: keep it simple, pass'] },
-          { heading: 'Near their goal', items: ['Beat one player and you\'re *in on goal*', '*High reward*: take them on'] },
+          { heading: 'Where is the space?', items: ['Nobody in front of you? That\'s *space*', '*Drive into it*: big touches, head up'] },
+          { heading: 'Where is the overload?', items: ['*More of us than them*, like 2 v 1', 'Defender steps up? *Pass*. Stays? *Drive*'] },
         ],
-        phrase: { big: 'THINK RISK OR REWARD', small: 'Where am I? What happens if I lose it?' },
+        phrase: { big: 'WHERE IS THE SPACE / OVERLOAD?', small: 'Space there? Drive into it.' },
       },
       {
         title: 'Make it easier or harder',
@@ -97,7 +97,6 @@
       { word: 'Space', meaning: 'An area with no defender in it, where you have time to dribble and look up.' },
       { word: 'Isolate', meaning: 'A team-mate\'s run takes one defender away, leaving it 1 v 1.' },
       { word: 'Positive outcome', meaning: 'The end of your dribble: a shot on target, or a pass or cross that keeps the attack going.' },
-      { word: 'Risk or reward', meaning: 'What you might lose if the dribble goes wrong, against what you might win if it works.' },
     ],
 
     training: {
@@ -107,13 +106,12 @@
       setup: [
         'Numbers game: greens wait by the top goal, blues by the bottom goal. A keeper in each goal. The coach stands at the side with the balls.',
         '1 v 1 (10 minutes): the coach calls a number and passes straight to one of them: they are the attacker and attack the other team\'s goal. Their numbered opponent comes out to defend.',
-        'Think risk or reward: is it on? Head up, find the space, dribble into it, beat the defender and get a shot on target.',
+        'Head up: find the space, dribble into it, beat the defender and get a shot on target.',
         'After each go, both back to their line. Call a new number.',
         'Progression, 2 v 2 (10 minutes): call two numbers. Use movement off the ball to make space, then exploit it. A run can take a defender away: then attack the space away from the run.',
         'Shot on? Shoot. Not on? Look for a positive pass or cross.',
         'Game, 4 v 4 + keepers (20 minutes): go to a game. Encourage players to dribble where possible and appropriate.',
         'Look for an overload (more attackers than defenders) and for space. If the space is there, drive into it.',
-        'Think risk / reward: near your own goal, keep it simple. Near their goal, take them on.',
         'Before this: Dribbling (Part 1) and Dribbling: 1 v 1 to 2 v 2 (Parts 2 and 3).',
       ],
     },
@@ -123,22 +121,20 @@
       'Was the shot on? If not, what was the best pass?',
       'In 2 v 2, how did your team-mate\'s run help you?',
       'In the game, where did we have more players than them?',
-      'Where on the pitch is dribbling worth the risk?',
-      'If you lose it there, what happens?',
     ],
 
     clips: [
       // ---------------- 1 v 1 ----------------
       Object.assign({}, numbers, {
         id: 'one-v-one',
-        video: 'videos/dribbling-risk-reward-1.mp4',
+        video: 'videos/dribbling-space-overload-1.mp4',
         kicker: 'Numbers game · 1 v 1',
-        title: '1 v 1: Risk or Reward?',
+        title: '1 v 1: Find the Space',
         tagline: 'Is it on? Find the space, go past, get a shot on target.',
-        intro: ['The coach calls a number and *passes to the attacker*.', 'Their numbered opponent *defends*.', 'Think *risk or reward*: is it on? Then go past and *shoot*.'],
+        intro: ['The coach calls a number and *passes to the attacker*.', 'Their numbered opponent *defends*.', '*Head up*: find the space, go past and *shoot*.'],
         players: numberPlayers(),
         ball: { owner: 'co' },
-        keyPhrase: { big: 'RISK OR REWARD?', small: 'Space to go? Take them on.' },
+        keyPhrase: { big: 'WHERE IS THE SPACE?', small: 'Find it, go past, shoot.' },
         steps: [
           {
             title: 'THE SET-UP',
@@ -155,15 +151,15 @@
             ],
           },
           {
-            title: 'RISK OR REWARD?',
-            text: ['*Head up*: where is the space?', '*Reward*: get past and you\'re *in on goal*.', '*Risk*: dribble into trouble and you lose it.'],
+            title: 'WHERE IS THE SPACE?',
+            text: ['*Head up*: where is the space?', 'Dribble *at* the defender.'],
             tags: { b3: 'HEAD UP' }, timing: { move: 3 },
             moves: [{ id: 'b3', to: [61, 37], end: 0.9 }, { id: 'g3', to: [58, 25], end: 0.9, ease: 'out' }],
             halves: [{ x: 38, y: 14, w: 14, h: 15, color: ORANGE, label: 'THE SPACE', labelAt: [45, 31.5], soft: true }],
           },
           {
             title: 'MOVE THE DEFENDER',
-            text: ['It\'s on: *be positive*.', '*Show them one way*: the defender moves.'],
+            text: ['*Be positive*.', '*Show them one way*: the defender moves.'],
             tags: { b3: 'DOUBLE MOVE' }, timing: { move: 2.6 },
             moves: [
               { id: 'b3', path: [[64, 36], [62, 36]], end: 0.75 },
@@ -184,7 +180,7 @@
           },
           {
             title: 'SHOT ON TARGET',
-            text: ['The reward: a *shot*.', 'Hit the *target*: make the keeper work.'],
+            text: ['Shot on? *Shoot*.', 'Hit the *target*: make the keeper work.'],
             tags: { b3: 'SHOOT' }, timing: { move: 2 },
             ball: { to: [53.5, 6.8], start: 0.05, end: 0.5 },
           },
@@ -200,13 +196,13 @@
             ],
           },
         ],
-        summary: ['The coach *passes to the attacker*.', '*Risk or reward*: is it on? Find the space.', 'Go past, then a *shot on target*.'],
+        summary: ['The coach *passes to the attacker*.', '*Head up*: find the space.', 'Go past, then a *shot on target*.'],
       }),
 
       // ---------------- 2 v 2 ----------------
       Object.assign({}, numbers, {
         id: 'two-v-two',
-        video: 'videos/dribbling-risk-reward-2.mp4',
+        video: 'videos/dribbling-space-overload-2.mp4',
         kicker: 'Progression · 2 v 2',
         title: 'Call Two Numbers',
         tagline: 'Use movement to make space, then exploit it.',
@@ -271,9 +267,9 @@
       // ---------------- the game ----------------
       Object.assign({}, game, {
         id: 'game',
-        video: 'videos/dribbling-risk-reward-3.mp4',
+        video: 'videos/dribbling-space-overload-3.mp4',
         kicker: 'Game · 4 v 4 + keepers',
-        title: 'Overload or Space?',
+        title: 'Space or Overload?',
         tagline: 'Look for where you outnumber them, and for space to drive into.',
         intro: ['*4 v 4* plus keepers.', 'Look for an *overload*: more attackers than defenders.', 'Look for *space*: if it\'s there, *drive into it*.'],
         players: [
@@ -285,7 +281,7 @@
           { id: 'b3', team: 'd', x: 44, y: 55 }, { id: 'b4', team: 'd', x: 64, y: 50 },
         ],
         ball: { owner: 'g1' },
-        keyPhrase: { big: 'OVERLOAD OR SPACE?', small: 'Space there? Drive into it.' },
+        keyPhrase: { big: 'WHERE IS THE SPACE / OVERLOAD?', small: 'Space there? Drive into it.' },
         steps: [
           {
             title: 'THE SET-UP',
@@ -338,7 +334,7 @@
           },
           {
             title: 'SHOT ON TARGET',
-            text: ['*Shoot*: across the keeper, on target.', 'Overload or space? *Use it*.'],
+            text: ['*Shoot*: across the keeper, on target.', 'Space or overload? *Use it*.'],
             tags: { g2: 'SCORE' }, timing: { move: 2 },
             ball: { to: [47, 77.5], start: 0.05, end: 0.5 },
           },
