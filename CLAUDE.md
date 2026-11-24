@@ -124,15 +124,17 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - MailerLite fields made (Text, not required): Role, Qualification, Age Groups, Club (API keys likely role, qualification,
   age_groups, club: check via API). Group "Club trial: Burgess Hill" made (group ID 205014604942673731).
 - MailerLite API key saved by the owner as Cloudflare secret MAILERLITE_API_KEY. `functions/api/join.js` (Pages Function, /api/join)
-  adds sign-ups to MailerLite as unconfirmed (double opt-in), Burgess Hill club link → the trial group; hidden trap box against bots.
+  adds sign-ups to MailerLite as unconfirmed (double opt-in), Burgess Hill club link → the trial group; every sign-up also joins group "Website Sign-Ups" (looked up by name), which
+  starts the MailerLite "Welcome" automation; hidden trap box against bots.
 - Sign-up tested for real (owner's own email): confirm email arrives from GRSS RTS. Secrets only apply after a redeploy
   (grssrts-site > Deployments > Retry deployment).
 - Join and Privacy pages are public (no logins yet; whole site stays open). Owner is thinking about logins: they must never
   get in the way of coaches sending sessions in (The Dugout never needs a login).
 - The Dugout "Send your session" = Tally form https://tally.so/r/o92ajb (owner's account, hello@): name, email, club, title, ages,
-  section, file upload, notes, share/private, credit, permission + no-children's-details ticks. No login needed.
-- Next (when the owner decides): Clerk; connect them, test, switch on
-  SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
+  section, file upload, notes, share/private, credit, permission + no-children's-details ticks. No login needed. Tested: submissions
+  email hello@ within a minute (Tally self email notifications on). Owner replies from hello@, then sends Claude the plan.
+- Trial is ready to launch: WhatsApp message drafted with the Join link (?club=bhtfc#join) and #dugout. Next: welcome email
+  (MailerLite Automations, if on the free plan). Later, when the owner decides: Clerk logins, then switch on SITE_FLAGS.members. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
 
