@@ -84,6 +84,10 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   include permission to publish.
 - Every session has Share with your squad and a one-page PDF plan with a QR code.
 - Later: membership at ~12–15 sessions (~£4/month or ~£29/year; club licence), club packs, Kit Room.
+- Free accounts keep the monthly free session; paying members get the whole library (once membership starts). During the trial,
+  "Join free" unlocks everything.
+- **Founding members** (idea agreed): the Burgess Hill Town F.C. trial coaches get a free year of membership as a thank-you
+  when paid membership starts.
 
 ## Registration (planned, club trial)
 
