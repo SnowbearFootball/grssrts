@@ -119,7 +119,7 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   DNS only; SPF merged into one record "v=spf1 include:_spf.mlsend.com include:_spf.google.com ~all"; verification TXT). Never give
   third parties Cloudflare API keys; add records by hand.
 - MailerLite fields made (Text, not required): Role, Qualification, Age Groups, Club (API keys likely role, qualification,
-  age_groups, club: check via API). Group "Club trial: Burgess Hill" made.
+  age_groups, club: check via API). Group "Club trial: Burgess Hill" made (group ID 205014604942673731).
 - Next: MailerLite API key saved by the owner as a Cloudflare Pages secret MAILERLITE_API_KEY (never pasted in chat), then Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
