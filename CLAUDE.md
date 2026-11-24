@@ -125,7 +125,9 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   adds sign-ups to MailerLite as unconfirmed (double opt-in), Burgess Hill club link → the trial group; hidden trap box against bots.
 - Sign-up tested for real (owner's own email): confirm email arrives from GRSS RTS. Secrets only apply after a redeploy
   (grssrts-site > Deployments > Retry deployment).
-- Next: Clerk; connect them, test, switch on
+- Join and Privacy pages are public (no logins yet; whole site stays open). Owner is thinking about logins: they must never
+  get in the way of coaches sending sessions in (The Dugout never needs a login).
+- Next (when the owner decides): Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
