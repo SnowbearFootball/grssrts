@@ -115,7 +115,10 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   Privacy page (contact email and date still to fill in), the accounts preview above.
 - Emails: one monthly round-up (new sessions, the free session of the month, a tip or coach shout-out), drafted by Claude for the
   owner to send; an automatic welcome email. No per-video or weekly emails.
-- Next: MailerLite (sign up with hello@, then verify the domain; careful: only one SPF record, merge Google's and MailerLite's), then Clerk; connect them, test, switch on
+- MailerLite: account created with hello@; sending domain grssrts.co.uk added manually in Cloudflare (DKIM CNAME litesrv._domainkey,
+  DNS only; SPF merged into one record "v=spf1 include:_spf.mlsend.com include:_spf.google.com ~all"; verification TXT). Never give
+  third parties Cloudflare API keys; add records by hand.
+- Next: MailerLite fields + a "Club trial" group + API key (stored as a Cloudflare secret), then Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
