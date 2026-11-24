@@ -113,6 +113,8 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   Distribution, Crosses. Any section: Warm-ups, Small-sided games.
 - Built and merged (hidden, preview with ?drafts; owner checked it on their phone): Join page (club link ?club=bhtfc#join),
   Privacy page (contact email and date still to fill in), the accounts preview above.
+- Emails: one monthly round-up (new sessions, the free session of the month, a tip or coach shout-out), drafted by Claude for the
+  owner to send; an automatic welcome email. No per-video or weekly emails.
 - Next: owner picks email (Google or Zoho) for hello@grssrts.co.uk, then MailerLite, then Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
