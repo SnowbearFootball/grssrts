@@ -7,7 +7,8 @@ The README covers how things work (the engine, clip format, tools). Keep this fi
 
 grssrts.co.uk: animated grassroots football coaching clips for **coaches, players and parents**. Sessions are
 drawn like a session-plan diagram and animated **arrows first, then the movement**, with coaching points beside the pitch.
-Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. Plain HTML/JS, no build step for the site.
+Hosted on Cloudflare Pages project **grssrts-site** (linked to GitHub, serves grssrts.co.uk); merging to `main` publishes the site
+automatically. An older project "grssrts" (no Git connection) is not used: secrets go in **grssrts-site**. Plain HTML/JS, no build step for the site.
 
 ## How the owner likes to work
 
@@ -122,7 +123,11 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   age_groups, club: check via API). Group "Club trial: Burgess Hill" made (group ID 205014604942673731).
 - MailerLite API key saved by the owner as Cloudflare secret MAILERLITE_API_KEY. `functions/api/join.js` (Pages Function, /api/join)
   adds sign-ups to MailerLite as unconfirmed (double opt-in), Burgess Hill club link → the trial group; hidden trap box against bots.
-- Next: test a real sign-up on ?drafts#join after merging, then Clerk; connect them, test, switch on
+- Sign-up tested for real (owner's own email): confirm email arrives from GRSS RTS. Secrets only apply after a redeploy
+  (grssrts-site > Deployments > Retry deployment).
+- Join and Privacy pages are public (no logins yet; whole site stays open). Owner is thinking about logins: they must never
+  get in the way of coaches sending sessions in (The Dugout never needs a login).
+- Next (when the owner decides): Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
