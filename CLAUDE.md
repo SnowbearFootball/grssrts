@@ -7,7 +7,8 @@ The README covers how things work (the engine, clip format, tools). Keep this fi
 
 grssrts.co.uk: animated grassroots football coaching clips for **coaches, players and parents**. Sessions are
 drawn like a session-plan diagram and animated **arrows first, then the movement**, with coaching points beside the pitch.
-Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. Plain HTML/JS, no build step for the site.
+Hosted on Cloudflare Pages project **grssrts-site** (linked to GitHub, serves grssrts.co.uk); merging to `main` publishes the site
+automatically. An older project "grssrts" (no Git connection) is not used: secrets go in **grssrts-site**. Plain HTML/JS, no build step for the site.
 
 ## How the owner likes to work
 
