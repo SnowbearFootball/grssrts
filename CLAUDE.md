@@ -37,7 +37,8 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - Arrows first, then movement. Labels (pills) show each player's job; examples use generic words (ATTACKER, not SPLASH).
 - Coaches' own diagrams: plain background (`plain: true`) when they don't need pitch markings; add measurements (`dims`)
   and label players by position (GK, CB, FB, CM, W, ST, D, M) when it helps.
-- Naming a coach's session: keep the coach's own terms (principle of play, penetration, overload); put numbers (4 v 3) in the title.
+- Titles: clear but not too specific. Naming a coach's session: keep the coach's own terms (principle of play, penetration,
+  overload); put numbers (4 v 3) in the title when short; a long coach heading can go in the subtitle.
 - Copy the coach's intent, not a rigid pattern: e.g. "ideas to create a shot, not a set move"; movement is free.
 - Coaching detail the owner has corrected before: in passing patterns (5 Y's, draft) the middle player moves away from the cone first (separation, like losing a defender), back-foot control, and the pass up is always to the opposite side (same side gets tight); alternate direction each go; shots must go on target; pass and follow needs one more player than boxes (never an empty box); a middle player only bounces it back (one-two), never the longer pass; crosses are attacked as a team (strikers cross over, opposite winger sweeps the back post, one CM in the box, one on the edge); runner times the run and keeps space to move onto the ball; pressing as a
   comment means "send one in to apply pressure", not a win-it-and-score drill; a long ball to the keeper comes from the
@@ -99,7 +100,10 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   (passwords, reset emails, Google sign-in); MailerLite stays for emails only. Owner to confirm and create accounts.
 - Section page design (mock-up shown, owner reviewing): orange Type pills across the top (All / Technical / Tactical / Game / Rondo,
   with counts), rows of up to 3 sessions per type, padlock "Join to watch" on cards, and one featured session first on All with an
-  orange "Free to watch" speech bubble (no sign-up). Topics to be picked at upload from a fixed list (stored as `topics` on each session).
+  orange "Free to watch" speech bubble (no sign-up). Topics to be picked at upload from a fixed list (stored as `topics` on each session); keep them generic ("Dribbling",
+  not "Dribbling and 1 v 1"). List: Attacking: Passing, Dribbling, Shooting, Crossing, Combination play, Build-up play, Switching play,
+  Counter-attacks. Defending: Pressing, Tackling, Shape, Transition, Crosses. Goalkeeping: Handling, Shot-stopping, Positioning,
+  Distribution, Crosses. Any section: Warm-ups, Small-sided games.
 - To build: a Join page and a privacy page (hidden until approved), a Starter Pack PDF, and better filtering as the library grows
   (section pages already have search, Saved, and Age / Type / Players filters).
 
