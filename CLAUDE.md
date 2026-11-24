@@ -120,7 +120,9 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   third parties Cloudflare API keys; add records by hand.
 - MailerLite fields made (Text, not required): Role, Qualification, Age Groups, Club (API keys likely role, qualification,
   age_groups, club: check via API). Group "Club trial: Burgess Hill" made (group ID 205014604942673731).
-- Next: MailerLite API key saved by the owner as a Cloudflare Pages secret MAILERLITE_API_KEY (never pasted in chat), then Clerk; connect them, test, switch on
+- MailerLite API key saved by the owner as Cloudflare secret MAILERLITE_API_KEY. `functions/api/join.js` (Pages Function, /api/join)
+  adds sign-ups to MailerLite as unconfirmed (double opt-in), Burgess Hill club link → the trial group; hidden trap box against bots.
+- Next: test a real sign-up on ?drafts#join after merging, then Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet

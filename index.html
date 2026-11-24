@@ -351,6 +351,7 @@
   .consent { display: flex !important; gap: 10px; align-items: flex-start; font-weight: 500 !important; font-size: 14px !important; color: var(--sub) !important; }
   .consent input { accent-color: var(--accent); width: 20px; height: 20px; flex: none; margin: 1px 0 0; }
   .join-form .small { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .join-msg { margin: 0; font-weight: 700; font-size: 14.5px; }
   .join-msg.ok { color: var(--forest); }
   .join-msg.err { color: var(--accent-ink); }
@@ -1398,6 +1399,7 @@
             ${AGE_TICKS.map(a => `<label><input type="checkbox" name="ages" value="${a}"> ${a}</label>`).join('')}
           </div></fieldset>
           <div><label for="j-club">Club <span class="opt">(optional)</span></label><input type="text" id="j-club" name="club" autocomplete="organization" value="${esc(club)}"></div>
+          <div class="trap" aria-hidden="true"><label for="j-website">Leave this empty</label><input type="text" id="j-website" name="website" tabindex="-1" autocomplete="off"></div>
           <label class="consent"><input type="checkbox" id="j-consent" name="consent" required>
             <span>Yes, email me new sessions and news from GRSS | RTS. I can unsubscribe any time.</span></label>
           <button class="btn primary" type="submit">Join the squad</button>
@@ -1409,29 +1411,35 @@
   document.addEventListener('change', e => {
     if (e.target.name === 'role' && $('j-qual-row')) $('j-qual-row').hidden = !$('j-role-coach').checked;
   });
-  // Join form: checks the boxes, then sends to MailerLite (SITE_LINKS.joinForm). Until that's set, it says sign-up opens soon.
+  // Join form: checks the boxes, then sends to our /api/join (functions/api/join.js), which adds them to MailerLite.
   document.addEventListener('submit', e => {
     if (e.target.id !== 'join-form') return;
     e.preventDefault();
-    const f = e.target, msg = $('join-msg');
+    const f = e.target, msg = $('join-msg'), btn = f.querySelector('[type=submit]');
     const say = (t, ok) => { msg.textContent = t; msg.className = 'join-msg ' + (ok ? 'ok' : 'err'); };
     const name = $('j-name').value.trim(), email = $('j-email').value.trim();
     if (!name) return say('Please add your first name.'), $('j-name').focus();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Please check your email address.'), $('j-email').focus();
     if (!$('j-consent').checked) return say('Please tick the box so we can email you.');
-    if (!LINKS.joinForm) return say('Thanks! Sign-up opens very soon. This is a preview, so nothing was sent.', true);
-    const data = new URLSearchParams();
-    data.set('fields[name]', name); data.set('fields[email]', email);
-    data.set('fields[role]', (f.querySelector('[name=role]:checked') || {}).value || '');
-    data.set('fields[age_groups]', [...f.querySelectorAll('[name=ages]:checked')].map(x => x.value).join(', '));
-    data.set('fields[qualification]', $('j-role-coach').checked ? $('j-qual').value : '');
-    data.set('fields[club]', $('j-club').value.trim());
-    data.set('ml-submit', '1'); data.set('anticsrf', 'true');
-    f.querySelector('[type=submit]').disabled = true;
-    fetch(LINKS.joinForm, { method: 'POST', mode: 'no-cors', body: data })
-      .then(() => { say('Nearly there: check your inbox and tap the link to confirm.', true); f.reset(); })
-      .catch(() => say('Sorry, that didn\'t send. Please try again.'))
-      .finally(() => { f.querySelector('[type=submit]').disabled = false; });
+    if (location.protocol === 'file:') return say('Thanks! This is a preview on this computer, so nothing was sent.', true);
+    const coach = $('j-role-coach').checked;
+    const data = {
+      name, email, consent: true, website: $('j-website').value,
+      role: (f.querySelector('[name=role]:checked') || {}).value || '',
+      qualification: coach ? $('j-qual').value : '',
+      ageGroups: [...f.querySelectorAll('[name=ages]:checked')].map(x => x.value).join(', '),
+      club: $('j-club').value.trim(), clubCode: clubCode(),
+    };
+    btn.disabled = true; say('Sending…', true);
+    fetch('/api/join', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) })
+      .then(r => r.json().catch(() => ({})).then(j => ({ ok: r.ok && j.ok, j })))
+      .then(({ ok, j }) => {
+        if (ok) { say('Nearly there: check your inbox and tap the link to confirm.', true); f.reset(); $('j-qual-row').hidden = false; }
+        else if (j.error === 'not-set-up') say('Sign-up opens very soon. Please try again in a few days.');
+        else say('Sorry, that didn\'t send. Please check your details and try again.');
+      })
+      .catch(() => say('Sorry, that didn\'t send. Please check your connection and try again.'))
+      .finally(() => { btn.disabled = false; });
   });
   function privacyBody() {
     const contact = LINKS.contactEmail ? `<a href="mailto:${esc(LINKS.contactEmail)}">${esc(LINKS.contactEmail)}</a>` : '<span class="todo">contact email to add</span>';
