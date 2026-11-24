@@ -226,6 +226,11 @@
   .promo h2 { margin: 0 0 8px; font-size: clamp(24px, 3.4vw, 32px); }
   .promo p { margin: 0; color: #d7dfd2; max-width: 46ch; }
   .promo .price { font-weight: 800; color: var(--accent-soft); margin-top: 10px; }
+  .price-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 4px; max-width: 460px; }
+  .price-opts .opt { border: 1px solid #4d6b54; border-radius: 12px; padding: 10px 14px; display: grid; gap: 2px; align-content: start; }
+  .price-opts .opt.free { border-color: var(--accent); background: rgba(217,98,43,.14); }
+  .price-opts b { font-size: 22px; font-weight: 800; color: var(--accent-soft); line-height: 1.1; }
+  .price-opts span { font-size: 13.5px; color: #ddd3be; line-height: 1.3; }
   .promo .cta { margin-top: 16px; }
   .promo .btn:not(.primary) { background: transparent; color: var(--cream); border-color: var(--forest-edge); }
   .before-after { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; min-width: 0; }
@@ -581,7 +586,7 @@
         <p class="eyebrow">For coaches</p>
         <h2 id="promo-title">Your session, animated.</h2>
         <p>Send us your plan or a photo of your diagram. We animate it for you, arrows first, and you get clips to <b>share with your squad and parents, before or after training</b>.</p>
-        <p class="price">Free when you share it with other coaches · £25 to keep it private</p>
+        <div class="price-opts"><div class="opt free"><b>Free</b><span>Share it with other coaches</span></div><div class="opt"><b>£25</b><span>Keep it private</span></div></div>
         <div class="cta" id="promo-cta"></div>
       </div>
       <div class="before-after" id="promo-ba"></div>
@@ -692,29 +697,29 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611241254"></script>
-<script src="js/logo-data.js?v=202611241254"></script>
-<script src="js/drill-engine.js?v=202611241254"></script>
-<script src="js/categories.js?v=202611241254"></script>
-<script src="js/mascots.js?v=202611241254"></script>
-<script src="js/home-clip.js?v=202611241254"></script>
+<script src="js/vendor/qrcode.js?v=202611241330"></script>
+<script src="js/logo-data.js?v=202611241330"></script>
+<script src="js/drill-engine.js?v=202611241330"></script>
+<script src="js/categories.js?v=202611241330"></script>
+<script src="js/mascots.js?v=202611241330"></script>
+<script src="js/home-clip.js?v=202611241330"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611241254"></script>
-<script src="drills/shoot-and-recover.js?v=202611241254"></script>
-<script src="drills/transfer-rondo.js?v=202611241254"></script>
-<script src="drills/set-position.js?v=202611241254"></script>
-<script src="drills/ball-mastery.js?v=202611241254"></script>
-<script src="drills/long-range-shooting.js?v=202611241254"></script>
-<script src="drills/rotation-of-positions.js?v=202611241254"></script>
-<script src="drills/combination-play.js?v=202611241254"></script>
-<script src="drills/switching-play-square.js?v=202611241254"></script>
-<script src="drills/switch-of-play.js?v=202611241254"></script>
-<script src="drills/intercepting.js?v=202611241254"></script>
-<script src="drills/blocking-shots.js?v=202611241254"></script>
-<script src="drills/y-passing.js?v=202611241254"></script>
-<script src="drills/penetration-dribbling.js?v=202611241254"></script>
-<script src="drills/midfield-three.js?v=202611241254"></script>
-<script src="drills/defending-442.js?v=202611241254"></script>
+<script src="drills/splash-and-ripple.js?v=202611241330"></script>
+<script src="drills/shoot-and-recover.js?v=202611241330"></script>
+<script src="drills/transfer-rondo.js?v=202611241330"></script>
+<script src="drills/set-position.js?v=202611241330"></script>
+<script src="drills/ball-mastery.js?v=202611241330"></script>
+<script src="drills/long-range-shooting.js?v=202611241330"></script>
+<script src="drills/rotation-of-positions.js?v=202611241330"></script>
+<script src="drills/combination-play.js?v=202611241330"></script>
+<script src="drills/switching-play-square.js?v=202611241330"></script>
+<script src="drills/switch-of-play.js?v=202611241330"></script>
+<script src="drills/intercepting.js?v=202611241330"></script>
+<script src="drills/blocking-shots.js?v=202611241330"></script>
+<script src="drills/y-passing.js?v=202611241330"></script>
+<script src="drills/penetration-dribbling.js?v=202611241330"></script>
+<script src="drills/midfield-three.js?v=202611241330"></script>
+<script src="drills/defending-442.js?v=202611241330"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
