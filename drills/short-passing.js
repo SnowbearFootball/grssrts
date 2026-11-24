@@ -1,5 +1,5 @@
 /*
- * SESSION: Short Passing (Attacking · technical) (DRAFT)
+ * SESSION: Short Passing (Attacking · technical)
  * From the owner's own plan "Short Passing" (1st4sport L2 session sheet).
  *
  * Key factors: get in line of the pass; control out of your feet (ready to pass); head up; pick the right short pass;
@@ -53,7 +53,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'short-passing',
-    draft: true,
     title: 'Short Passing',
     subtitle: 'Pass, move, find a free side',
     type: 'Technical',
