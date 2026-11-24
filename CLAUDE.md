@@ -124,7 +124,8 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - MailerLite fields made (Text, not required): Role, Qualification, Age Groups, Club (API keys likely role, qualification,
   age_groups, club: check via API). Group "Club trial: Burgess Hill" made (group ID 205014604942673731).
 - MailerLite API key saved by the owner as Cloudflare secret MAILERLITE_API_KEY. `functions/api/join.js` (Pages Function, /api/join)
-  adds sign-ups to MailerLite as unconfirmed (double opt-in), Burgess Hill club link → the trial group; hidden trap box against bots.
+  adds sign-ups to MailerLite as unconfirmed (double opt-in), Burgess Hill club link → the trial group; every sign-up also joins group "Website Sign-Ups" (looked up by name), which
+  starts the MailerLite "Welcome" automation; hidden trap box against bots.
 - Sign-up tested for real (owner's own email): confirm email arrives from GRSS RTS. Secrets only apply after a redeploy
   (grssrts-site > Deployments > Retry deployment).
 - Join and Privacy pages are public (no logins yet; whole site stays open). Owner is thinking about logins: they must never

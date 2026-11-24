@@ -4,6 +4,19 @@
  * MailerLite custom field keys: role, qualification, age_groups, club. Club trial sign-ups go into a group.
  */
 const CLUB_GROUPS = { bhtfc: '205014604942673731' };   // Club trial: Burgess Hill
+const ALL_GROUP = 'Website Sign-Ups';                     // every sign-up joins this group (it starts the Welcome email)
+let allGroupId = null;
+async function findGroup(key, name) {
+  if (allGroupId) return allGroupId;
+  try {
+    const r = await fetch('https://connect.mailerlite.com/api/groups?limit=50&filter[name]=' + encodeURIComponent(name),
+      { headers: { accept: 'application/json', authorization: 'Bearer ' + key } });
+    const j = await r.json();
+    const g = (j.data || []).find(x => x.name.toLowerCase() === name.toLowerCase());
+    if (g) allGroupId = String(g.id);
+  } catch (e) { /* carry on without it */ }
+  return allGroupId;
+}
 const ROLES = ['Coach', 'Parent', 'Player (16+)'];
 
 const reply = (status, body) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
@@ -20,6 +33,8 @@ export async function onRequestPost({ request, env }) {
   if (d.consent !== true) return reply(400, { ok: false, error: 'consent' });
   const role = ROLES.includes(d.role) ? d.role : '';
   const groups = CLUB_GROUPS[clean(d.clubCode, 20).toLowerCase()] ? [CLUB_GROUPS[clean(d.clubCode, 20).toLowerCase()]] : [];
+  const all = await findGroup(env.MAILERLITE_API_KEY, ALL_GROUP);
+  if (all) groups.push(all);
   const body = {
     email,
     fields: {
