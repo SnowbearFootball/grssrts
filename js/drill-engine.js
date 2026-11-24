@@ -542,6 +542,11 @@
     STAYS: { bg: '#16351f', fg: '#fff' },
     'CROSS OVER': { bg: '#16351f', fg: '#fff' },
     'WHO?': { bg: '#6b7280', fg: '#fff' },
+    'NUMBER 3!': { bg: '#6b7280', fg: '#fff' },
+    'NUMBER 1!': { bg: '#6b7280', fg: '#fff' },
+    '1 AND 4!': { bg: '#6b7280', fg: '#fff' },
+    'KEEP IT SAFE': { bg: '#16351f', fg: '#fff' },
+    'TAKE THEM ON': { get bg() { return C.accent; }, fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
