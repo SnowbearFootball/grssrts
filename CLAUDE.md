@@ -92,6 +92,9 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   (coach / parent / player 16+), coaching qualification (optional, coaches only), age groups coached, club, email consent tick box. Never children's names or dates of birth.
 - Domain grssrts.co.uk is registered and managed in the owner's Cloudflare account (email and MailerLite settings go there).
   Email: a hello@grssrts.co.uk inbox is needed (MailerLite won't send from Yahoo/Gmail). Suggested Google Workspace; Zoho free as the no-cost option. Owner deciding.
+- Access (agreed direction): anyone can browse the home page and section lists; opening a session (clips, coaching points, downloads)
+  needs an account. Header buttons Log in + Join free; tapping a session shows a join / log in pop-up. Home Ground (Minis and Juniors)
+  stays free with no sign-up. Still to decide: shared links open without login? free first clip as a taster? which login service.
 - To build: a Join page and a privacy page (hidden until approved), a Starter Pack PDF, and better filtering as the library grows
   (section pages already have search, Saved, and Age / Type / Players filters).
 
