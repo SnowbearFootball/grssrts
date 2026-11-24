@@ -61,7 +61,7 @@
         lead: '*Head up* when you dribble. Be *positive*: want to dribble.',
         columns: [
           { heading: 'Receive', items: ['*First touch* the way you want to dribble', 'Get the *ball out of your feet*'] },
-          { heading: 'Dribble', items: ['*Head up*', 'Use your *big and little toes*', '*Change of direction* and *pace*'] },
+          { heading: 'Dribble', items: ['*Head up*', '*Inside* (big toe) and *outside* (little toe) of the foot', '*Change of direction* and *pace*'] },
         ],
         phrase: { big: 'HEAD UP, BALL OUT OF YOUR FEET', small: 'Change of direction, change of pace' },
       },
@@ -77,7 +77,7 @@
     keywords: [
       { word: 'Ball out of your feet', meaning: 'A first touch that pushes the ball into space, so you can run with it straight away.' },
       { word: 'Passive defender', meaning: 'A player or cone in your way that doesn\'t try to win the ball. You still have to get past it.' },
-      { word: 'Big and little toes', meaning: 'The inside (big toe) and outside (little toe) of your foot.' },
+      { word: 'Inside and outside of the foot', meaning: 'Inside is the big toe side, outside is the little toe side. Use both to move the ball.' },
       { word: 'Change of pace', meaning: 'Go slow, then suddenly fast, to get away.' },
     ],
 
@@ -127,8 +127,8 @@
             moves: go(1, { all: { end: 0.95 } }),
           },
           {
-            title: 'BIG AND LITTLE TOES',
-            text: ['Move the ball with your *big toe* (inside)...', '...and your *little toe* (outside).'],
+            title: 'INSIDE AND OUTSIDE',
+            text: ['Move the ball with the *inside of the foot* (big toe)...', '...and the *outside of the foot* (little toe).'],
             tags: { p2: 'INSIDE', p8: 'OUTSIDE' }, timing: { move: 3.2 },
             moves: go(2, { all: { end: 0.95 } }),
           },
@@ -143,7 +143,7 @@
             }),
           },
         ],
-        summary: ['*Head up*: see the space.', '*Big and little toes*.', '*Change of direction*, then *change of pace*.'],
+        summary: ['*Head up*: see the space.', '*Inside* (big toe) and *outside* (little toe).', '*Change of direction*, then *change of pace*.'],
       }),
 
       // ---------------- drill 2 ----------------
