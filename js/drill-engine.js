@@ -332,6 +332,13 @@
     });
   }
 
+  // blend two #rrggbb colours (k 0..1)
+  function mixHex(a, b, k) {
+    const h = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+    const A = h(a), B = h(b);
+    return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * k).toString(16).padStart(2, '0')).join('');
+  }
+
   function drawPlayer(ctx, p, team, alpha, label, color) {
     const [x, y] = toPx(p);
     ctx.save();
@@ -1454,7 +1461,20 @@
     clip.players.forEach(p => { if (p.ball && !(st.used || []).includes(p.id)) drawBall(ctx, attached(cp, step, p.id, u)); });
     // faded players (p.dim); a step can change it from then on with dim: { id: true|false } (e.g. players rotating in)
     const dimOf = p => cp.steps.reduce((d, st) => (st.index <= step.index && st.def.dim && p.id in st.def.dim ? st.def.dim[p.id] : d), !!p.dim);
-    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, dimOf(p) ? 0.4 : 1, p.label, teamColor(cp, p.team)));
+    // a step can change a player's team colour with team: { id: 'o' } (e.g. players swapping roles); it fades over their move
+    const colorOf = p => {
+      let team = p.team, next = null;
+      cp.steps.forEach(st => {
+        if (!st.def.team || !(p.id in st.def.team)) return;
+        if (st.index < step.index || phase === 'outro') team = st.def.team[p.id];
+        else if (st.index === step.index) next = st.def.team[p.id];
+      });
+      if (!next) return teamColor(cp, team);
+      const m = (step.def.moves || []).find(mm => mm.id === p.id);
+      const k = m ? clamp((u - (m.start != null ? m.start : 0)) / ((m.end != null ? m.end : 1) - (m.start != null ? m.start : 0))) : u;
+      return mixHex(teamColor(cp, team), teamColor(cp, next), k);
+    };
+    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, dimOf(p) ? 0.4 : 1, p.label, colorOf(p)));
     // ball
     if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
     if (clip.ball2 && step.startState.ball2) drawBall(ctx, ballPos(cp, ball2Step(step), u));
