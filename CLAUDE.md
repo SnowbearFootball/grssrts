@@ -99,8 +99,8 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   Email: a hello@grssrts.co.uk inbox is needed (MailerLite won't send from Yahoo/Gmail). Suggested Google Workspace; Zoho free as the no-cost option. Owner deciding.
 - Access (agreed direction): anyone can browse the home page and section lists; opening a session (clips, coaching points, downloads)
   needs an account. Header buttons Log in + Join free; tapping a session shows a join / log in pop-up. Home Ground (Minis and Juniors)
-  stays free with no sign-up. Shared ("Share with your squad") links open that one session without login. Taster: the first clip of each session is free
-  by default; a session can name a different free clip (owner's or the sending coach's choice). Login service: suggested Clerk
+  stays free with no sign-up. Shared ("Share with your squad") links open that one session without login (`?squad` in the link). No first-clip taster:
+  one free session per section instead (see below). Login service: suggested Clerk
   (passwords, reset emails, Google sign-in); MailerLite stays for emails only. Owner to confirm and create accounts.
 - Accounts preview is built (SITE_FLAGS.members = false; see it with ?drafts, "pretend to log in" button until the login service is
   connected). Free session per section in FREE_SESSIONS (js/categories.js), changed monthly; replaces the first-clip taster.
@@ -111,8 +111,10 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
   not "Dribbling and 1 v 1"). List: Attacking: Passing, Dribbling, Shooting, Crossing, Combination play, Build-up play, Switching play,
   Counter-attacks. Defending: Pressing, Tackling, Shape, Transition, Crosses. Goalkeeping: Handling, Shot-stopping, Positioning,
   Distribution, Crosses. Any section: Warm-ups, Small-sided games.
-- To build: a Join page and a privacy page (hidden until approved), a Starter Pack PDF, and better filtering as the library grows
-  (section pages already have search, Saved, and Age / Type / Players filters).
+- Built and merged (hidden, preview with ?drafts; owner checked it on their phone): Join page (club link ?club=bhtfc#join),
+  Privacy page (contact email and date still to fill in), the accounts preview above.
+- Next: owner picks email (Google or Zoho) for hello@grssrts.co.uk, then MailerLite, then Clerk; connect them, test, switch on
+  SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
 
