@@ -130,9 +130,10 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - Join and Privacy pages are public (no logins yet; whole site stays open). Owner is thinking about logins: they must never
   get in the way of coaches sending sessions in (The Dugout never needs a login).
 - The Dugout "Send your session" = Tally form https://tally.so/r/o92ajb (owner's account, hello@): name, email, club, title, ages,
-  section, file upload, notes, share/private, credit, permission + no-children's-details ticks. No login needed.
-- Next (when the owner decides): Clerk; connect them, test, switch on
-  SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
+  section, file upload, notes, share/private, credit, permission + no-children's-details ticks. No login needed. Tested: submissions
+  email hello@ within a minute (Tally self email notifications on). Owner replies from hello@, then sends Claude the plan.
+- Trial is ready to launch: WhatsApp message drafted with the Join link (?club=bhtfc#join) and #dugout. Next: welcome email
+  (MailerLite Automations, if on the free plan). Later, when the owner decides: Clerk logins, then switch on SITE_FLAGS.members. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
 
