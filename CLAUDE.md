@@ -79,7 +79,12 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   the coach passes to either attacker, defender stalls the attack between ball and goal, shows them away, decides when to stop backing off),
   Recover to Help (2 v 1 to 2 v 2, 15 x 20: defender 1 passes in and delays, defender 2 starts behind the attackers and recovers towards goal
   as soon as they receive), One in the Zone (4 v 4 + keepers, 40 x 30 yds, 10 yd defensive zone each end with one defender until the ball
-  goes in, 2 floaters outside play for whoever has the ball)).
+  goes in, 2 floaters outside play for whoever has the ball)),
+  Short Passing (attacking, Technical, U12+, owner's own plan; 3 clips: Pass and Move (two hexagons of cones sharing a middle line, 7 players on
+  the sides, pass then move to a free side; receive on the middle line = open up to the other zone, back-foot control, turn and pass into it;
+  one touch progression), Keep It: 5 v 2 (one defender per zone, only in their zone; defender wins it = swap roles, hand over the bib),
+  Overload: 10 v 4 (40 x 30, 4 v 4 inside + 2 floaters who can't pass to each other + 4 outside, all play for the team with the ball;
+  8 passes = a goal; rotate: a team goes outside, the outside four come in)). Engine: `edges` draws cone lines in any shape (hexagons).
 - Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
 - Defending attempts: Defending Outnumbered was approved (recovery runs with a 2 v 1 and the zone rule had enough depth). Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
   Intercepting Passes, Blocking Shots and The 5 Y's (waiting for better drawings) are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.
