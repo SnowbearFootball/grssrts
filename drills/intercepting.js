@@ -22,6 +22,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'intercepting',
+    topics: ['Tackling'],
     draft: true,
     title: 'Intercepting Passes: Read It, Nick It',
     subtitle: 'Reading the game',

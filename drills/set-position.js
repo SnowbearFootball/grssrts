@@ -37,6 +37,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'set-position',
+    topics: ['Positioning', 'Shot-stopping'],
     title: 'Set Position & Shot-Stopping',
     subtitle: 'Goalkeeping basics',
     type: 'Technical',

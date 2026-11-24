@@ -9,6 +9,7 @@
 window.SESSIONS = window.SESSIONS || [];
 window.SESSIONS.push({
   id: 'splash-and-ripple',
+  topics: ['Pressing', 'Shape'],
   title: 'Splash & Ripple',
   subtitle: 'Defensive Principle',
   type: 'Game',

@@ -86,6 +86,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'switch-of-play',
+    topics: ['Switching play', 'Crossing'],
     title: 'Switch of Play: Game Like',
     subtitle: 'Build-up, switch and cross',
     type: 'Tactical',

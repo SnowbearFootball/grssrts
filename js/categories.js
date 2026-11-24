@@ -14,6 +14,22 @@ window.CATEGORIES = [
 // Switches for parts of the site still being checked. While false, they only show with ?drafts in the address.
 window.SITE_FLAGS = {
   minis: true,    // the Minis part of Home Ground, and Grass and Roots on the Minis clips
+  members: false, // accounts: section pages with type pills, padlocks and Log in / Join free. Preview with ?drafts
+};
+
+// One free session per section (no sign-up needed), shown first on the section page. Change it each month.
+window.FREE_SESSIONS = {
+  attacking: 'penetration-dribbling',
+  defending: 'splash-and-ripple',
+  goalkeeping: 'set-position',
+};
+
+// Topics: pick from these when adding a session (topics: ['Passing', ...] in its drill file). Keep them generic.
+window.TOPICS = {
+  attacking: ['Passing', 'Dribbling', 'Shooting', 'Crossing', 'Combination play', 'Build-up play', 'Switching play', 'Counter-attacks'],
+  defending: ['Pressing', 'Tackling', 'Shape', 'Transition', 'Crosses'],
+  goalkeeping: ['Handling', 'Shot-stopping', 'Positioning', 'Distribution', 'Crosses'],
+  any: ['Warm-ups', 'Small-sided games'],
 };
 
 // Sign-up / request form links. Leave null until the forms exist; the buttons then show "Opening soon".

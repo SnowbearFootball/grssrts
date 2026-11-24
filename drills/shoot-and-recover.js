@@ -12,6 +12,7 @@
 window.SESSIONS = window.SESSIONS || [];
 window.SESSIONS.push({
   id: 'shoot-and-recover',
+  topics: ['Shooting', 'Transition'],
   title: 'Shoot & Recover',
   subtitle: 'Shooting',
   type: 'Technical',

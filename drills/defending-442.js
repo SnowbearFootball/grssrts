@@ -41,7 +41,10 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'defending-442',
-    title: 'Defending in a 4-4-2 Against a Wide 4-3-3',
+    topics: ['Shape', 'Pressing'],
+    title: 'Defending the Wide Areas',
+    coachTitle: 'Defending in a 4-4-2 Against a Wide 4-3-3',
+    fromCoach: true,
     subtitle: 'Primary player: winger · Primary unit: midfield 4',
     type: 'Tactical',
     category: 'defending',

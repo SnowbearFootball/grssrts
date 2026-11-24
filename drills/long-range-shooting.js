@@ -60,6 +60,7 @@
   });
   window.SESSIONS.push({
     id: 'long-range-move-onto-it',
+    topics: ['Shooting', 'Small-sided games'],
     title: 'Long Range Shooting: Move Onto It',
     subtitle: 'Shooting game',
     type: 'Game',
@@ -276,6 +277,7 @@
   const B = Object.assign({}, common, { legendTeams: teamsLegend, keyPhrase: ubsKey, areas: wideMiddle, players: fourV4 });
   window.SESSIONS.push({
     id: 'long-range-up-back-shot',
+    topics: ['Shooting', 'Combination play'],
     title: 'Long Range Shooting: Up, Back, Shot',
     subtitle: 'Shooting game',
     type: 'Game',

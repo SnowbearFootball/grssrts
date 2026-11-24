@@ -91,6 +91,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'switching-play-square',
+    topics: ['Passing', 'Warm-ups'],
     title: 'Switching Play: Pass and Follow',
     subtitle: 'Passing and movement',
     type: 'Technical',

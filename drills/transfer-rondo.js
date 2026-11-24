@@ -55,6 +55,7 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'transfer-rondo',
+    topics: ['Passing'],
     title: '5 v 2 Transfer Rondo',
     subtitle: 'Possession',
     type: 'Rondo',

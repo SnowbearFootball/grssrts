@@ -12,6 +12,7 @@
 window.SESSIONS = window.SESSIONS || [];
 window.SESSIONS.push({
   id: 'ball-mastery',
+  topics: ['Dribbling', 'Warm-ups'],
   title: 'Ball Mastery: The Basics',
   subtitle: 'Solo practice',
   type: 'Ball mastery',
