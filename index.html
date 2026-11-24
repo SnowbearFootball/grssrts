@@ -68,6 +68,12 @@
   /* coaches are the main audience: "Coach it." is the orange line */
   .hero .tagline > :nth-child(2) { color: var(--accent); }
   .hero .tagline em { color: var(--text); }
+  .hero > div:first-child { width: fit-content; max-width: 100%; }
+  .hero .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hero .cta .btn { text-align: center; padding-left: 10px; padding-right: 10px; }
+  .hero .cta .btn:not(.primary) { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .hero .cta .btn:not(.primary):hover { border-color: var(--accent); }
+  @media (max-width: 420px) { .hero .cta .btn { font-size: 14px; } }
   .hero p { color: var(--sub); margin: 0; max-width: 46ch; font-size: 16px; }
   .hero-art { background: var(--forest); border-radius: 16px; padding: 14px; margin: 0; min-width: 0; }
   .hero-art { padding: 8px; }
@@ -700,29 +706,29 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611241334"></script>
-<script src="js/logo-data.js?v=202611241334"></script>
-<script src="js/drill-engine.js?v=202611241334"></script>
-<script src="js/categories.js?v=202611241334"></script>
-<script src="js/mascots.js?v=202611241334"></script>
-<script src="js/home-clip.js?v=202611241334"></script>
+<script src="js/vendor/qrcode.js?v=202611241337"></script>
+<script src="js/logo-data.js?v=202611241337"></script>
+<script src="js/drill-engine.js?v=202611241337"></script>
+<script src="js/categories.js?v=202611241337"></script>
+<script src="js/mascots.js?v=202611241337"></script>
+<script src="js/home-clip.js?v=202611241337"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611241334"></script>
-<script src="drills/shoot-and-recover.js?v=202611241334"></script>
-<script src="drills/transfer-rondo.js?v=202611241334"></script>
-<script src="drills/set-position.js?v=202611241334"></script>
-<script src="drills/ball-mastery.js?v=202611241334"></script>
-<script src="drills/long-range-shooting.js?v=202611241334"></script>
-<script src="drills/rotation-of-positions.js?v=202611241334"></script>
-<script src="drills/combination-play.js?v=202611241334"></script>
-<script src="drills/switching-play-square.js?v=202611241334"></script>
-<script src="drills/switch-of-play.js?v=202611241334"></script>
-<script src="drills/intercepting.js?v=202611241334"></script>
-<script src="drills/blocking-shots.js?v=202611241334"></script>
-<script src="drills/y-passing.js?v=202611241334"></script>
-<script src="drills/penetration-dribbling.js?v=202611241334"></script>
-<script src="drills/midfield-three.js?v=202611241334"></script>
-<script src="drills/defending-442.js?v=202611241334"></script>
+<script src="drills/splash-and-ripple.js?v=202611241337"></script>
+<script src="drills/shoot-and-recover.js?v=202611241337"></script>
+<script src="drills/transfer-rondo.js?v=202611241337"></script>
+<script src="drills/set-position.js?v=202611241337"></script>
+<script src="drills/ball-mastery.js?v=202611241337"></script>
+<script src="drills/long-range-shooting.js?v=202611241337"></script>
+<script src="drills/rotation-of-positions.js?v=202611241337"></script>
+<script src="drills/combination-play.js?v=202611241337"></script>
+<script src="drills/switching-play-square.js?v=202611241337"></script>
+<script src="drills/switch-of-play.js?v=202611241337"></script>
+<script src="drills/intercepting.js?v=202611241337"></script>
+<script src="drills/blocking-shots.js?v=202611241337"></script>
+<script src="drills/y-passing.js?v=202611241337"></script>
+<script src="drills/penetration-dribbling.js?v=202611241337"></script>
+<script src="drills/midfield-three.js?v=202611241337"></script>
+<script src="drills/defending-442.js?v=202611241337"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
