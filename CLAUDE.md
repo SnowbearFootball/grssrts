@@ -118,7 +118,9 @@ Hosted on Cloudflare Pages; merging to `main` publishes the site automatically. 
 - MailerLite: account created with hello@; sending domain grssrts.co.uk added manually in Cloudflare (DKIM CNAME litesrv._domainkey,
   DNS only; SPF merged into one record "v=spf1 include:_spf.mlsend.com include:_spf.google.com ~all"; verification TXT). Never give
   third parties Cloudflare API keys; add records by hand.
-- Next: MailerLite fields + a "Club trial" group + API key (stored as a Cloudflare secret), then Clerk; connect them, test, switch on
+- MailerLite fields made (Text, not required): Role, Qualification, Age Groups, Club (API keys likely role, qualification,
+  age_groups, club: check via API). Group "Club trial: Burgess Hill" made.
+- Next: MailerLite API key saved by the owner as a Cloudflare Pages secret MAILERLITE_API_KEY (never pasted in chat), then Clerk; connect them, test, switch on
   SITE_FLAGS.members, send the Burgess Hill link. Later: a Starter Pack PDF.
 
 ## Ideas agreed, not built yet
