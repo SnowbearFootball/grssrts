@@ -549,6 +549,7 @@
     'TAKE THEM ON': { get bg() { return C.accent; }, fg: '#fff' },
     DRIVE: { get bg() { return C.accent; }, fg: '#fff' },
     DELAY: { bg: '#16351f', fg: '#fff' },
+    STALL: { bg: '#16351f', fg: '#fff' },
     FLOATER: { bg: '#6b7280', fg: '#fff' },
   };
 
