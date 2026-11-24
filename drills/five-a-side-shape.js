@@ -1,5 +1,5 @@
 /*
- * SESSION (DRAFT): Play in Your Half (5-a-side shape, U8–U9)
+ * SESSION: Play in Your Half (5-a-side shape, U8–U9)
  * From the owner's own plan: in 5-a-side every player has a half of the pitch. Attacker top half, defender bottom half,
  * wingers their own side, keeper the box. Ball wide on one side: the far winger tucks in, but not past the middle.
  * Connected by string: attacker goes high, defender comes up to halfway; one winger goes wide, the other comes in.
@@ -52,7 +52,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'five-a-side-shape',
-    draft: true,
     title: 'Play in Your Half',
     subtitle: '5-a-side shape',
     type: 'Tactical',
