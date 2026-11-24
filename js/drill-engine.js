@@ -547,6 +547,7 @@
     '1 AND 4!': { bg: '#6b7280', fg: '#fff' },
     'KEEP IT SAFE': { bg: '#16351f', fg: '#fff' },
     'TAKE THEM ON': { get bg() { return C.accent; }, fg: '#fff' },
+    DRIVE: { get bg() { return C.accent; }, fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {

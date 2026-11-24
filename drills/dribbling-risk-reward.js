@@ -3,8 +3,8 @@
  * From the owner's own plan "Dribbling - Part 4". Follows Dribbling (Part 1) and Dribbling: 1 v 1 to 2 v 2 (Parts 2 and 3).
  *
  * Numbers game: 35 x 35 yard square, a goal and keeper at each end. Two teams of 5, numbered 1 to 5 (each player has
- *   a numbered opponent). Greens wait by the top goal, blues by the bottom goal. The coach calls a number and plays a
- *   ball in: whoever gets it is the attacker and attacks the other team's goal. 1 v 1 (10 mins), then 2 v 2: call two
+ *   a numbered opponent). Greens wait by the top goal, blues by the bottom goal. The coach calls a number and passes
+ *   straight to one player: the attacker, who attacks the other team's goal. 1 v 1 (10 mins), then 2 v 2: call two
  *   numbers, use movement and exploit space (10 mins).
  * Game: 4 v 4 + keepers on 40 x 50 yards (20 mins). Dribble where possible and appropriate. Think risk / reward.
  * Key factors: identify space to dribble into; once there, pick a positive outcome: a shot, or if not, a positive pass / cross.
@@ -43,21 +43,21 @@
     legend: { a: 'Greens (attack down)', d: 'Blues' },
     tagPlace: 'auto',
   };
-  const RISK = { x: 19, y: -1.5, w: 62, h: 25, color: '#e5484d', label: 'RISK: KEEP IT SAFE', labelAt: [33, 2.5], soft: true };
-  const REWARD = { x: 19, y: 51.5, w: 62, h: 25, color: ORANGE, label: 'REWARD: TAKE THEM ON', labelAt: [33, 72.5], soft: true };
+  const SPACE = { x: 45, y: 20, w: 22, h: 21, color: ORANGE, label: 'THE SPACE', labelAt: [56, 17.5], soft: true };
+  const OVERLOAD = { x: 54, y: 41, w: 27, h: 29, color: '#2fbf7f', label: '2 v 1: OVERLOAD', labelAt: [67.5, 67.5], soft: true };
 
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'dribbling-risk-reward',
     draft: true,
     title: 'Dribbling: Risk or Reward?',
-    subtitle: 'Numbers game: 1 v 1, 2 v 2, then the game',
+    subtitle: '1 v 1, 2 v 2, then the game',
     type: 'Game',
     category: 'attacking',
     topics: ['Dribbling', 'Small-sided games'],
     squad: [10, 12],
     thumb: 'assets/thumbs/dribbling-risk-reward.jpg',
-    summary: 'A numbers game in a 35 yard square with a goal and keeper at each end. The coach calls a number: whoever gets the ball attacks. 1 v 1, then 2 v 2, then a 4 v 4 game. Find the space, dribble into it, then pick a positive finish: a shot, or a positive pass.',
+    summary: 'A numbers game in a 35 yard square with a goal and keeper at each end. The coach calls a number and passes to the attacker. 1 v 1, then 2 v 2, then a 4 v 4 game. Think risk or reward: find the space, dribble into it, look for overloads, then a shot or a positive pass.',
     keyPhrase: 'Find the space, then finish positively',
     ages: { from: 11 },
 
@@ -83,15 +83,17 @@
       {
         title: 'Make it easier or harder',
         columns: [
-          { heading: 'Easier', items: ['Play the ball *nearer* the attacker', 'Make the square *bigger*'] },
-          { heading: 'Harder', items: ['Play the ball *between* the two players', 'Call *two numbers* fast, or a 3 v 3'] },
+          { heading: 'Easier', items: ['Defender starts *further back*', 'Make the square *bigger*'] },
+          { heading: 'Harder', items: ['Pass to the attacker *later*, so the defender is closer', 'Call *two numbers* fast, or a 3 v 3'] },
         ],
       },
     ],
 
     keywords: [
       { word: 'Numbers game', meaning: 'Each player has a number. The coach calls a number and those players go in.' },
-      { word: 'Attacker', meaning: 'Here: whoever gets the ball first. They attack the other team\'s goal.' },
+      { word: 'Attacker', meaning: 'Here: the player the coach passes to. They attack the other team\'s goal.' },
+      { word: 'Overload', meaning: 'More attackers than defenders in one area, like 2 v 1.' },
+      { word: 'Drive', meaning: 'Run with the ball at speed into space, with big touches.' },
       { word: 'Space', meaning: 'An area with no defender in it, where you have time to dribble and look up.' },
       { word: 'Isolate', meaning: 'A team-mate\'s run takes one defender away, leaving it 1 v 1.' },
       { word: 'Positive outcome', meaning: 'The end of your dribble: a shot on target, or a pass or cross that keeps the attack going.' },
@@ -104,12 +106,13 @@
       equipment: 'Cones, 2 goals, a good supply of balls with the coach, bibs in two colours.',
       setup: [
         'Numbers game: greens wait by the top goal, blues by the bottom goal. A keeper in each goal. The coach stands at the side with the balls.',
-        '1 v 1 (10 minutes): the coach calls a number and plays a ball in. Whoever gets it is the attacker and attacks the other team\'s goal. The other player defends.',
-        'Head up: find the space, dribble into it, beat the defender and get a shot on target.',
+        '1 v 1 (10 minutes): the coach calls a number and passes straight to one of them: they are the attacker and attack the other team\'s goal. Their numbered opponent comes out to defend.',
+        'Think risk or reward: is it on? Head up, find the space, dribble into it, beat the defender and get a shot on target.',
         'After each go, both back to their line. Call a new number.',
         'Progression, 2 v 2 (10 minutes): call two numbers. Use movement off the ball to make space, then exploit it. A run can take a defender away: then attack the space away from the run.',
         'Shot on? Shoot. Not on? Look for a positive pass or cross.',
         'Game, 4 v 4 + keepers (20 minutes): go to a game. Encourage players to dribble where possible and appropriate.',
+        'Look for an overload (more attackers than defenders) and for space. If the space is there, drive into it.',
         'Think risk / reward: near your own goal, keep it simple. Near their goal, take them on.',
         'Before this: Dribbling (Part 1) and Dribbling: 1 v 1 to 2 v 2 (Parts 2 and 3).',
       ],
@@ -119,6 +122,7 @@
       'When you got the ball, where was the space?',
       'Was the shot on? If not, what was the best pass?',
       'In 2 v 2, how did your team-mate\'s run help you?',
+      'In the game, where did we have more players than them?',
       'Where on the pitch is dribbling worth the risk?',
       'If you lose it there, what happens?',
     ],
@@ -129,12 +133,12 @@
         id: 'one-v-one',
         video: 'videos/dribbling-risk-reward-1.mp4',
         kicker: 'Numbers game · 1 v 1',
-        title: 'Call a Number',
-        tagline: 'Whoever gets the ball attacks. Find the space, get a shot on target.',
-        intro: ['Two teams, numbered *1 to 5*.', 'The coach *calls a number* and plays a ball in.', 'Whoever gets it *attacks*: dribble past and *shoot*.'],
+        title: '1 v 1: Risk or Reward?',
+        tagline: 'Is it on? Find the space, go past, get a shot on target.',
+        intro: ['The coach calls a number and *passes to the attacker*.', 'Their numbered opponent *defends*.', 'Think *risk or reward*: is it on? Then go past and *shoot*.'],
         players: numberPlayers(),
         ball: { owner: 'co' },
-        keyPhrase: { big: 'FIND THE SPACE, GO PAST', small: 'Then a shot on target' },
+        keyPhrase: { big: 'RISK OR REWARD?', small: 'Space to go? Take them on.' },
         steps: [
           {
             title: 'THE SET-UP',
@@ -142,33 +146,24 @@
           },
           {
             title: '"NUMBER 3!"',
-            text: ['The coach *calls a number*.', 'Both *number 3s* sprint in.'],
-            tags: { co: 'NUMBER 3!', g3: 'GO!', b3: 'GO!' }, timing: { move: 2.6 },
+            text: ['The coach calls a number and *passes to the attacker*.', 'Their *number 3* comes out to defend.', 'First touch *out of your feet*.'],
+            tags: { co: 'NUMBER 3!', b3: 'ATTACKER', g3: 'DEFENDER' }, timing: { move: 3.4 },
+            passes: [{ to: 'b3', start: 0.02, end: 0.45 }],
             moves: [
-              { id: 'g3', to: [60, 26], end: 0.9 },
-              { id: 'b3', to: [67, 43], end: 0.9 },
+              { id: 'b3', to: [64, 61], start: 0.5, end: 0.95 },
+              { id: 'g3', to: [60, 24], start: 0.1, end: 0.95, ease: 'out' },
             ],
           },
           {
-            title: 'FIRST TO THE BALL',
-            text: ['The coach *plays a ball in*.', 'Whoever gets it is the *attacker*.', 'They attack the *other team\'s goal*.'],
-            tags: { b3: 'ATTACKER', g3: 'DEFENDER' }, timing: { move: 3 },
-            passes: [{ to: 'b3', start: 0.02, end: 0.38 }],
-            moves: [
-              { id: 'b3', to: [64, 41], start: 0.42, end: 0.95 },
-              { id: 'g3', to: [57, 24], start: 0.35, end: 0.95, ease: 'out' },
-            ],
-          },
-          {
-            title: 'HEAD UP: WHERE\'S THE SPACE?',
-            text: ['*Head up*: find the *space* to dribble into.', 'Dribble *at* the defender.'],
-            tags: { b3: 'HEAD UP' }, timing: { move: 2.6 },
+            title: 'RISK OR REWARD?',
+            text: ['*Head up*: where is the space?', '*Reward*: get past and you\'re *in on goal*.', '*Risk*: dribble into trouble and you lose it.'],
+            tags: { b3: 'HEAD UP' }, timing: { move: 3 },
             moves: [{ id: 'b3', to: [61, 37], end: 0.9 }, { id: 'g3', to: [58, 25], end: 0.9, ease: 'out' }],
             halves: [{ x: 38, y: 14, w: 14, h: 15, color: ORANGE, label: 'THE SPACE', labelAt: [45, 31.5], soft: true }],
           },
           {
             title: 'MOVE THE DEFENDER',
-            text: ['*Show them one way*...', '...the defender *moves* with you.'],
+            text: ['It\'s on: *be positive*.', '*Show them one way*: the defender moves.'],
             tags: { b3: 'DOUBLE MOVE' }, timing: { move: 2.6 },
             moves: [
               { id: 'b3', path: [[64, 36], [62, 36]], end: 0.75 },
@@ -189,7 +184,7 @@
           },
           {
             title: 'SHOT ON TARGET',
-            text: ['Shot on? *Shoot*.', 'Hit the *target*: make the keeper work.'],
+            text: ['The reward: a *shot*.', 'Hit the *target*: make the keeper work.'],
             tags: { b3: 'SHOOT' }, timing: { move: 2 },
             ball: { to: [53.5, 6.8], start: 0.05, end: 0.5 },
           },
@@ -202,12 +197,10 @@
               { id: 'b3', to: [QX[3], BOTQ], end: 0.9, arrow: false },
               { id: 'g3', to: [QX[3], TOPQ], end: 0.9, arrow: false },
               { id: 'kt', to: [50, 10.5], end: 0.6, arrow: false },
-              { id: 'g1', to: [30, 18], start: 0.45, end: 0.95 },
-              { id: 'b1', to: [32, 56], start: 0.45, end: 0.95 },
             ],
           },
         ],
-        summary: ['Whoever gets the ball *attacks*.', '*Head up*: find the space, dribble into it.', 'Then a *shot on target*.'],
+        summary: ['The coach *passes to the attacker*.', '*Risk or reward*: is it on? Find the space.', 'Go past, then a *shot on target*.'],
       }),
 
       // ---------------- 2 v 2 ----------------
@@ -224,22 +217,14 @@
         steps: [
           {
             title: '"1 AND 4!"',
-            text: ['The coach calls *two numbers*.', 'Both *1s* and both *4s* sprint in.'],
-            tags: { co: '1 AND 4!' }, timing: { move: 2.8 },
+            text: ['The coach calls *two numbers*...', '...and *passes to an attacker*.', 'Greens attack the *bottom goal*. Blues defend.'],
+            tags: { co: '1 AND 4!', g4: 'ATTACKER', g1: 'ATTACKER', b4: 'DEFENDER', b1: 'DEFENDER' }, timing: { move: 3.6 },
+            passes: [{ to: 'g4', start: 0.02, end: 0.45 }],
             moves: [
-              { id: 'g1', to: [33, 21], end: 0.9 }, { id: 'g4', to: [64, 21], end: 0.9 },
-              { id: 'b1', to: [36, 46], end: 0.9 }, { id: 'b4', to: [64, 46], end: 0.9 },
-            ],
-          },
-          {
-            title: 'FIRST TO THE BALL',
-            text: ['The coach *plays a ball in*.', 'Greens get it: they *attack the bottom goal*.'],
-            tags: { g4: 'ATTACKER', g1: 'ATTACKER', b4: 'DEFENDER', b1: 'DEFENDER' }, timing: { move: 3 },
-            passes: [{ to: 'g4', start: 0.02, end: 0.38 }],
-            moves: [
-              { id: 'g4', to: [62, 27], start: 0.42, end: 0.95 },
-              { id: 'b4', to: [61, 40], start: 0.35, end: 0.95, ease: 'out' },
-              { id: 'b1', to: [40, 44], start: 0.35, end: 0.95, arrow: false },
+              { id: 'g4', to: [64, 22], start: 0.5, end: 0.95 },
+              { id: 'g1', to: [33, 20], start: 0.2, end: 0.95 },
+              { id: 'b4', to: [61, 40], start: 0.1, end: 0.95, ease: 'out' },
+              { id: 'b1', to: [38, 45], start: 0.1, end: 0.95 },
             ],
           },
           {
@@ -288,90 +273,77 @@
         id: 'game',
         video: 'videos/dribbling-risk-reward-3.mp4',
         kicker: 'Game · 4 v 4 + keepers',
-        title: 'Risk or Reward?',
-        tagline: 'Dribble where it\'s worth it. Near your goal, keep it simple.',
-        intro: ['*4 v 4* plus keepers.', 'Dribble where *possible and appropriate*.', 'Think *risk or reward*.'],
+        title: 'Overload or Space?',
+        tagline: 'Look for where you outnumber them, and for space to drive into.',
+        intro: ['*4 v 4* plus keepers.', 'Look for an *overload*: more attackers than defenders.', 'Look for *space*: if it\'s there, *drive into it*.'],
         players: [
           { id: 'kt', team: 'k', label: 'GK', x: 50, y: 2 },
           { id: 'kb', team: 'k', label: 'GK', x: 50, y: 73 },
-          { id: 'g1', team: 'a', x: 40, y: 13 }, { id: 'g2', team: 'a', x: 67, y: 19 },
-          { id: 'g3', team: 'a', x: 32, y: 34 }, { id: 'g4', team: 'a', x: 55, y: 37 },
-          { id: 'b1', team: 'd', x: 47, y: 24 }, { id: 'b2', team: 'd', x: 62, y: 31 },
-          { id: 'b3', team: 'd', x: 38, y: 50 }, { id: 'b4', team: 'd', x: 62, y: 55 },
+          { id: 'g1', team: 'a', x: 46, y: 14 }, { id: 'g2', team: 'a', x: 72, y: 30 },
+          { id: 'g3', team: 'a', x: 25, y: 33 }, { id: 'g4', team: 'a', x: 38, y: 40 },
+          { id: 'b1', team: 'd', x: 32, y: 24 }, { id: 'b2', team: 'd', x: 31, y: 47 },
+          { id: 'b3', team: 'd', x: 44, y: 55 }, { id: 'b4', team: 'd', x: 64, y: 50 },
         ],
         ball: { owner: 'g1' },
-        keyPhrase: { big: 'THINK RISK OR REWARD', small: 'Keep it simple near your goal. Take them on near theirs.' },
+        keyPhrase: { big: 'OVERLOAD OR SPACE?', small: 'Space there? Drive into it.' },
         steps: [
           {
             title: 'THE SET-UP',
             text: ['*40 × 50* yards, *4 v 4* plus keepers.', 'Greens attack *down* the screen.', 'Dribble where *possible and appropriate*.'],
           },
           {
-            title: 'RISK OR REWARD?',
-            text: ['Near *your own goal*: lose it and they score.', 'Near *their goal*: beat one and you\'re *in*.'],
-            timing: { move: 1.5 },
-            halves: [RISK, REWARD],
+            title: 'WHERE IS THE SPACE?',
+            text: ['*Head up* on the ball.', 'Nobody in front of you? That\'s *space*.'],
+            tags: { g1: 'HEAD UP' }, timing: { move: 1.5 },
+            halves: [SPACE],
           },
           {
-            title: 'NEAR YOUR GOAL: KEEP IT SIMPLE',
-            text: ['Pressed near your own goal?', '*High risk*: don\'t dribble.', 'A *simple pass* to a free team-mate.'],
-            tags: { b1: 'PRESS', g1: 'KEEP IT SAFE' }, timing: { move: 3 },
-            passes: [{ to: 'g2', start: 0.35, end: 0.7 }],
+            title: 'DRIVE INTO IT',
+            text: ['Space is there: *drive into it*.', 'Big touches, *head up*.'],
+            tags: { g1: 'DRIVE' }, timing: { move: 3.2 },
             moves: [
-              { id: 'b1', to: [44, 19.5], end: 0.5, ease: 'out' },
-              { id: 'g2', to: [71, 21], end: 0.35 },
-              { id: 'g3', to: [31, 41], start: 0.4, end: 0.95, arrow: false },
-              { id: 'g4', to: [52, 43], start: 0.4, end: 0.95, arrow: false },
-              { id: 'b2', to: [66, 30], start: 0.6, end: 0.95, arrow: false },
+              { id: 'g1', path: [[50, 24], [56, 38]], end: 0.95 },
+              { id: 'g2', to: [74, 42], start: 0.2, end: 0.95 },
+              { id: 'b1', to: [40, 27], start: 0.3, end: 0.95, arrow: false },
+              { id: 'g4', to: [36, 48], start: 0.3, end: 0.95, arrow: false },
+              { id: 'b2', to: [32, 52], start: 0.3, end: 0.95, arrow: false },
+              { id: 'g3', to: [24, 42], start: 0.3, end: 0.95, arrow: false },
+              { id: 'b4', to: [64, 52], start: 0.3, end: 0.95, arrow: false },
             ],
-            halves: [RISK, REWARD],
+            halves: [SPACE],
           },
           {
-            title: 'SPACE AHEAD: GO',
-            text: ['*Space* in front of you?', '*Run with it*: big touches, head up.'],
-            tags: { g2: 'INTO SPACE' }, timing: { move: 3 },
+            title: 'LOOK FOR THE OVERLOAD',
+            text: ['On this side: *2 attackers v 1 defender*.', 'That\'s an *overload*.', 'Keep driving: *make the defender decide*.'],
+            tags: { g1: 'DRIVE', g2: 'FREE MAN' }, timing: { move: 2.8 },
             moves: [
-              { id: 'g2', path: [[74, 30], [73, 44]], end: 0.95 },
-              { id: 'b2', to: [65, 36], start: 0.3, end: 0.95, arrow: false },
-              { id: 'b4', to: [66, 55], start: 0.3, end: 0.95, arrow: false },
-              { id: 'g4', to: [50, 49], start: 0.3, end: 0.95, arrow: false },
-              { id: 'g3', to: [28, 50], start: 0.3, end: 0.95, arrow: false },
-              { id: 'b3', to: [36, 58], start: 0.3, end: 0.95, arrow: false },
-              { id: 'b1', to: [46, 28], start: 0.3, end: 0.95, arrow: false },
+              { id: 'g1', to: [59, 45], end: 0.9 },
+              { id: 'g2', to: [75, 48], end: 0.9, arrow: false },
+              { id: 'b4', to: [63, 53], start: 0.3, end: 0.9, ease: 'out' },
             ],
-            halves: [RISK, REWARD],
+            halves: [OVERLOAD],
           },
           {
-            title: 'NEAR THEIR GOAL: TAKE THEM ON',
-            text: ['*High reward*: beat them and you\'re *in on goal*.', 'Show them outside, *cut inside*.'],
-            tags: { g2: 'TAKE THEM ON' }, timing: { move: 3.2 },
+            title: 'THEY STEP UP: PASS',
+            text: ['The defender *steps up* to you?', '*Pass* to the free player.', 'They *stay*? Keep *driving* at goal.'],
+            tags: { b4: 'PRESS', g2: 'ATTACK THE SPACE' }, timing: { move: 3.2 },
+            passes: [{ to: 'g2', start: 0.05, end: 0.4 }],
             moves: [
-              { id: 'g2', path: [[75, 50], [72, 54], [61, 60]], end: 0.95 },
-              { id: 'b4', to: [71, 56], start: 0.1, end: 0.6, arrow: false },
-              { id: 'b2', to: [68, 46], start: 0.3, end: 0.95, arrow: false },
+              { id: 'b4', to: [61, 52], end: 0.4, ease: 'out' },
+              { id: 'g2', to: [70, 60], start: 0.45, end: 0.95 },
+              { id: 'kb', to: [53.5, 72], start: 0.5, end: 0.95, arrow: false },
+              { id: 'b3', to: [52, 60], start: 0.4, end: 0.95, arrow: false },
             ],
-            halves: [RISK, REWARD],
+            halves: [OVERLOAD],
           },
           {
-            title: 'NO SHOT? POSITIVE PASS',
-            text: ['The shot is *blocked*: don\'t force it.', 'A *positive pass* to the free team-mate.'],
-            tags: { b3: 'BLOCK', g4: 'FREE MAN' }, timing: { move: 3 },
-            passes: [{ to: 'g4', start: 0.4, end: 0.75 }],
-            moves: [
-              { id: 'b3', to: [55, 65], end: 0.4, ease: 'out' },
-              { id: 'kb', to: [53.5, 72], end: 0.4, arrow: false },
-              { id: 'g4', to: [45, 57], end: 0.4 },
-            ],
-            halves: [RISK, REWARD],
-          },
-          {
-            title: 'SCORE',
-            text: ['*Shot on target*.', 'Dribble *where it\'s worth it*.'],
-            tags: { g4: 'SCORE' }, timing: { move: 2 },
+            title: 'SHOT ON TARGET',
+            text: ['*Shoot*: across the keeper, on target.', 'Overload or space? *Use it*.'],
+            tags: { g2: 'SCORE' }, timing: { move: 2 },
             ball: { to: [47, 77.5], start: 0.05, end: 0.5 },
           },
         ],
-        summary: ['Near *your goal*: high risk, keep it simple.', 'Near *their goal*: high reward, take them on.', 'Shot blocked? A *positive pass*.'],
+        summary: ['Look for an *overload*: more of us than them.', 'Look for *space*: drive into it.', 'Defender steps up? *Pass*. Stays? *Drive*.'],
       }),
     ],
   });
