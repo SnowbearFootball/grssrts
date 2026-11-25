@@ -244,15 +244,13 @@
   .usp-card { border-top: 4px solid var(--accent); box-shadow: 0 6px 18px rgba(22,53,31,.08); padding: 18px; }
   .usp-card svg { width: 52px; height: 52px; padding: 12px; border-radius: 50%; background: var(--accent); stroke: #fff; }
   .usp-card b { font-size: 19px; }
-  .usps.orange .usp-card { background: linear-gradient(180deg, #f07a3d, #d9622b); border-color: #d9622b; border-top-color: #d9622b; color: #fff;
+  .usps .usp-card { background: linear-gradient(180deg, #f07a3d, #d9622b); border-color: #d9622b; border-top-color: #d9622b; color: #fff;
     box-shadow: 0 6px 18px rgba(217,98,43,.28); }
-  .usps.orange .usp-card:hover { transform: translateY(-2px); }
-  .usps.orange .usp-card svg { background: #fff; stroke: var(--accent); }
-  .usps.orange .usp-card span { color: #fff3ea; }
-  .usps.orange .usp-card em { color: var(--forest); background: var(--cream); justify-self: start; border-radius: 999px; padding: 5px 12px; margin-top: 8px; }
-  .usps.dark .usp-card { background: var(--forest); border-color: var(--forest); border-top-color: var(--accent); color: var(--cream); }
-  .usps.dark .usp-card span { color: #ddd3be; }
-  .usps.dark .usp-card em { color: var(--accent-soft); }
+  .usps .usp-card { transition: transform .15s; }
+  .usps .usp-card:hover { transform: translateY(-2px); }
+  .usps .usp-card svg { background: #fff; stroke: var(--accent); }
+  .usps .usp-card span { color: #fff3ea; }
+  .usps .usp-card em { color: var(--forest); background: var(--cream); justify-self: start; border-radius: 999px; padding: 5px 12px; margin-top: 8px; }
   @media (max-width: 760px) { .usp-card svg { width: 44px; height: 44px; padding: 10px; } .usp-card { grid-template-columns: 44px 1fr; } }
   .promo { background: var(--forest); color: var(--cream); border-radius: 16px; padding: 24px; display: grid; grid-template-columns: 1fr 1.05fr;
     gap: 24px; align-items: center; margin: 0 0 40px; }
@@ -618,7 +616,7 @@
       </div>
     </section>
 
-    <section class="usps" id="usps" hidden aria-label="Why GRSS | RTS">
+    <section class="usps" id="usps" aria-label="Why GRSS | RTS">
       <h2 class="usps-head">Why coaches use GRSS | RTS</h2>
       <a class="usp-card" href="#shoot-and-recover">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg>
@@ -746,40 +744,40 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611251332"></script>
-<script src="js/logo-data.js?v=202611251332"></script>
-<script src="js/drill-engine.js?v=202611251332"></script>
-<script src="js/categories.js?v=202611251332"></script>
-<script src="js/mascots.js?v=202611251332"></script>
-<script src="js/home-clip.js?v=202611251332"></script>
+<script src="js/vendor/qrcode.js?v=202611251345"></script>
+<script src="js/logo-data.js?v=202611251345"></script>
+<script src="js/drill-engine.js?v=202611251345"></script>
+<script src="js/categories.js?v=202611251345"></script>
+<script src="js/mascots.js?v=202611251345"></script>
+<script src="js/home-clip.js?v=202611251345"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611251332"></script>
-<script src="drills/shoot-and-recover.js?v=202611251332"></script>
-<script src="drills/transfer-rondo.js?v=202611251332"></script>
-<script src="drills/set-position.js?v=202611251332"></script>
-<script src="drills/ball-mastery.js?v=202611251332"></script>
-<script src="drills/long-range-shooting.js?v=202611251332"></script>
-<script src="drills/rotation-of-positions.js?v=202611251332"></script>
-<script src="drills/combination-play.js?v=202611251332"></script>
-<script src="drills/switching-play-square.js?v=202611251332"></script>
-<script src="drills/switch-of-play.js?v=202611251332"></script>
-<script src="drills/intercepting.js?v=202611251332"></script>
-<script src="drills/blocking-shots.js?v=202611251332"></script>
-<script src="drills/y-passing.js?v=202611251332"></script>
-<script src="drills/penetration-dribbling.js?v=202611251332"></script>
-<script src="drills/midfield-three.js?v=202611251332"></script>
-<script src="drills/defending-442.js?v=202611251332"></script>
-<script src="drills/five-a-side-shape.js?v=202611251332"></script>
-<script src="drills/dribbling.js?v=202611251332"></script>
-<script src="drills/dribbling-1v1.js?v=202611251332"></script>
-<script src="drills/dribbling-space-overload.js?v=202611251332"></script>
-<script src="drills/defending-outnumbered.js?v=202611251332"></script>
-<script src="drills/short-passing.js?v=202611251332"></script>
-<script src="drills/long-range-passing.js?v=202611251332"></script>
-<script src="drills/close-range-finishing.js?v=202611251332"></script>
-<script src="drills/long-range-finishing.js?v=202611251332"></script>
-<script src="drills/creating-space.js?v=202611251332"></script>
-<script src="drills/defending-matched-up.js?v=202611251332"></script>
+<script src="drills/splash-and-ripple.js?v=202611251345"></script>
+<script src="drills/shoot-and-recover.js?v=202611251345"></script>
+<script src="drills/transfer-rondo.js?v=202611251345"></script>
+<script src="drills/set-position.js?v=202611251345"></script>
+<script src="drills/ball-mastery.js?v=202611251345"></script>
+<script src="drills/long-range-shooting.js?v=202611251345"></script>
+<script src="drills/rotation-of-positions.js?v=202611251345"></script>
+<script src="drills/combination-play.js?v=202611251345"></script>
+<script src="drills/switching-play-square.js?v=202611251345"></script>
+<script src="drills/switch-of-play.js?v=202611251345"></script>
+<script src="drills/intercepting.js?v=202611251345"></script>
+<script src="drills/blocking-shots.js?v=202611251345"></script>
+<script src="drills/y-passing.js?v=202611251345"></script>
+<script src="drills/penetration-dribbling.js?v=202611251345"></script>
+<script src="drills/midfield-three.js?v=202611251345"></script>
+<script src="drills/defending-442.js?v=202611251345"></script>
+<script src="drills/five-a-side-shape.js?v=202611251345"></script>
+<script src="drills/dribbling.js?v=202611251345"></script>
+<script src="drills/dribbling-1v1.js?v=202611251345"></script>
+<script src="drills/dribbling-space-overload.js?v=202611251345"></script>
+<script src="drills/defending-outnumbered.js?v=202611251345"></script>
+<script src="drills/short-passing.js?v=202611251345"></script>
+<script src="drills/long-range-passing.js?v=202611251345"></script>
+<script src="drills/close-range-finishing.js?v=202611251345"></script>
+<script src="drills/long-range-finishing.js?v=202611251345"></script>
+<script src="drills/creating-space.js?v=202611251345"></script>
+<script src="drills/defending-matched-up.js?v=202611251345"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
@@ -1076,9 +1074,6 @@
 
   // ---------- home ----------
   function renderHome() {
-    $('usps').hidden = !DRAFTS;   // preview only until approved
-    $('usps').classList.toggle('dark', /[?&]usp=dark/.test(location.search));
-    $('usps').classList.toggle('orange', /[?&]usp=orange/.test(location.search));
     $('mains').innerHTML = CATS.map(c => {
       const n = SESSIONS.filter(s => s.category === c.id).length;
       return `<a class="main-tile" href="#${c.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg>
