@@ -325,6 +325,20 @@
   .age-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .age-chips button { font: inherit; font-weight: 700; font-size: 13.5px; border: 1px solid var(--edge); background: var(--bg); color: var(--text);
     border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+  .age-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .age-pick { font: inherit; font-weight: 800; font-size: 14px; background: var(--forest); color: var(--cream); border: 0; border-radius: 999px;
+    padding: 6px 14px; cursor: pointer; }
+  .age-chips button[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .more-wrap { display: flex; justify-content: center; margin: -8px 0 30px; }
+  .show-more { font: inherit; font-weight: 800; font-size: 15px; background: var(--paper); color: var(--text); border: 2px solid var(--accent);
+    border-radius: 999px; padding: 10px 22px; cursor: pointer; }
+  .show-more span { font-weight: 600; color: var(--muted); font-size: 13px; margin-left: 6px; }
+  .show-more:hover { background: var(--accent); color: #fff; } .show-more:hover span { color: #fff3ea; }
+  @media (max-width: 760px) {
+    body.members .tpills { flex-wrap: wrap; overflow: visible; }
+    body.members .find-bar { flex-wrap: wrap; } body.members .find-bar input { flex-basis: 100%; }
+    body.members .find-bar .chip, body.members .find-bar .filter-btn { flex: 1 1 0; text-align: center; }
+  }
   .age-hint { font-size: 13px; color: var(--muted); }
   .age-chips button.all { background: var(--forest); color: var(--cream); border-color: var(--forest); }
   .age-chips button:hover { border-color: var(--accent); }
@@ -677,6 +691,7 @@
     <div class="count-line"><span id="sec-count"></span><button id="clear-filters" hidden>Clear filters</button></div>
     <div id="shelves" hidden></div>
     <ul class="srows" id="list"></ul>
+    <div class="more-wrap" id="more-wrap" hidden></div>
     <p class="none" id="sec-none" hidden></p>
   </main>
 
@@ -1246,50 +1261,51 @@
       .map(([v, l, n]) => `<button class="tpill" data-tpill="${esc(v)}" aria-pressed="${F.type === v}">${esc(l)}<i>${n}</i></button>`).join('');
     const browsing = !F.type && !F.q && !F.saved && !F.age && !F.players && !F.topic;
     $('list').className = 'cards';
-    // my age group: asked once, remembered on this device
+    // age group: one tidy line; tap to open the age buttons; remembered on this device
     $('age-bar').hidden = false;
-    $('age-bar').innerHTML = !myAge
-      ? `<b>Which age group?</b><span class="age-hint">Coach, parent or player: pick one to see what suits it.</span>
-         <div class="age-chips">${AGES.map(a => `<button data-myage="${a}">U${a}</button>`).join('')}<button class="all" data-myage="all">All ages</button></div>`
-      : `<span>${ageOn ? `Showing sessions for <b>U${myAge}</b>` : 'Showing <b>all ages</b>'}</span>
-         ${myAge !== 'all' ? `<button data-allages>${ageOn ? 'Show all ages' : `Back to U${myAge}`}</button>` : ''}<button data-myage="">${myAge === 'all' ? 'Pick an age group' : 'Change age'}</button>`;
+    const ageLabel2 = ageOn ? 'U' + myAge : 'All ages';
+    $('age-bar').innerHTML = `<span class="age-line"><b>Age group</b><button class="age-pick" data-ageopen aria-expanded="${ageOpen}">${ageLabel2} ▾</button>
+        <span class="age-hint">${myAge ? '' : 'Coach, parent or player: pick one to see what suits it.'}</span></span>
+      ${ageOpen ? `<div class="age-chips">${AGES.map(a => `<button data-myage="${a}" aria-pressed="${ageOn && myAge === a}">U${a}</button>`).join('')}
+        <button class="all" data-myage="all" aria-pressed="${!ageOn}">All ages</button></div>` : ''}`;
+    // always a tidy grid in rows of three: a mixed selection, then "Show more"
+    let pick;
     if (browsing) {
-      const free = MEMBERS ? all.find(isFree) : null;
-      const newest = pool.filter(x => x !== free).slice(-3).reverse();
-      const newShelf = newest.length && pool.length > 4 ? `<section class="shelf"><div class="shelf-head"><h2>New</h2></div>
-          <p class="what">The latest sessions added.</p><ul class="shelf-row srows">${newest.map(sessionCard).join('')}</ul></section>` : '';
-      const shelves = types.map(t => {
-        const ss = pool.filter(x => x.type === t && x !== free), rest = ss.filter(x => !newest.includes(x));
-        return !rest.length ? '' : `<section class="shelf"><div class="shelf-head"><h2>${esc(t)}</h2>${ss.length > 3 ? `<button data-tpill="${esc(t)}">See all ${ss.length} ›</button>` : ''}</div>
-          ${TYPE_WHAT[t] ? `<p class="what">${esc(TYPE_WHAT[t])}</p>` : ''}<ul class="shelf-row srows">${rest.slice(0, 3).map(sessionCard).join('')}</ul></section>`;
-      }).join('');
-      $('shelves').innerHTML = (free ? featuredCard(free) : '') + newShelf + (shelves ||
-        `<p class="none">No sessions for U${myAge} here yet. <button class="linkbtn" data-allages>Show all ages</button></p>`);
-      $('shelves').hidden = false;
-      $('list').hidden = true;
-      $('sec-count').textContent = '';
+      // a mix: take the newest of each type in turn, so the first rows show variety
+      const byType = types.map(t => pool.filter(x => x.type === t).reverse());
+      pick = [];
+      for (let i = 0; pick.length < pool.length; i++) byType.forEach(q => { if (q[i]) pick.push(q[i]); });
+      $('sec-count').textContent = pool.length ? `A selection of ${pool.length} ${ageOn ? 'U' + myAge + ' ' : ''}sessions` : '';
     } else {
-      const shown = ageOn && !F.age ? list.filter(x => suits(x, myAge)) : list;
-      $('list').innerHTML = shown.map(sessionCard).join('');
-      $('list').hidden = !shown.length;
+      pick = (ageOn && !F.age ? list.filter(x => suits(x, myAge)) : list).slice().reverse();
       if (!F.q && !F.saved && !activeCount()) $('clear-filters').hidden = true;
       $('sec-count').textContent = F.type && TYPE_WHAT[F.type] && !F.q && !F.saved && !activeCount()
-        ? `${plural(shown.length, F.type.toLowerCase() + ' session')}${ageOn ? ' for U' + myAge : ''} · ${TYPE_WHAT[F.type]}`
-        : `${plural(shown.length, 'session')}${ageOn ? ' for U' + myAge : ''}`;
+        ? `${plural(pick.length, F.type.toLowerCase() + ' session')}${ageOn ? ' for U' + myAge : ''} · ${TYPE_WHAT[F.type]}`
+        : `${plural(pick.length, 'session')}${ageOn ? ' for U' + myAge : ''}`;
     }
+    const n = Math.min(pick.length, showN);
+    $('shelves').hidden = true;
+    $('list').hidden = !pick.length;
+    $('list').innerHTML = pick.slice(0, n).map(sessionCard).join('');
+    $('more-wrap').hidden = n >= pick.length;
+    $('more-wrap').innerHTML = `<button class="show-more" data-more>Show more <span>${n} of ${pick.length}</span></button>`;
+    if (!pick.length) { $('sec-none').hidden = false; $('sec-none').innerHTML = ageOn
+      ? `No sessions for U${myAge} here yet. <button class="linkbtn" data-allages>Show all ages</button>` : 'No sessions match that yet.'; }
   }
   const AGE_KEY = 'grssrts:my-age';
-  let myAge = 0, allAges = false;
+  let myAge = 0, allAges = false, ageOpen = false, showN = 6;
   try { const v = localStorage.getItem(AGE_KEY); myAge = v === 'all' ? 'all' : +v || 0; } catch (e) { /* private window */ }
   const suits = (s, a) => minAge(s) <= a && a <= maxAge(s);
   document.addEventListener('click', e => {
     const m = e.target.closest('[data-myage]');
-    if (m) { const v = m.dataset.myage; myAge = v === 'all' ? 'all' : +v || 0; allAges = false; try { localStorage.setItem(AGE_KEY, String(myAge || '')); } catch (x) {} rerender(); return; }
+    if (e.target.closest('[data-ageopen]')) { ageOpen = !ageOpen; rerender(); return; }
+    if (e.target.closest('[data-more]')) { showN += 6; rerender(); return; }
+    if (m) { ageOpen = false; showN = 6; const v = m.dataset.myage; myAge = v === 'all' ? 'all' : +v || 0; allAges = false; try { localStorage.setItem(AGE_KEY, String(myAge || '')); } catch (x) {} rerender(); return; }
     if (e.target.closest('[data-allages]')) { allAges = !allAges; rerender(); }
   });
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-tpill]'); if (!b) return;
-    F.type = b.dataset.tpill; rerender();
+    F.type = b.dataset.tpill; showN = 6; rerender();
     $('type-pills').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
@@ -1314,7 +1330,7 @@
     $('list').innerHTML = list.map(sessionRow).join('');
     $('sec-none').hidden = !!list.length;
     $('list').className = 'srows';
-    ['sec-banner', 'type-pills', 'shelves', 'age-bar'].forEach(id => { $(id).hidden = true; });
+    ['sec-banner', 'type-pills', 'shelves', 'age-bar', 'more-wrap'].forEach(id => { $(id).hidden = true; });
     if (SHELVES) renderMembersSection(cat, all, list);
     $('sec-none').innerHTML = !all.length
       ? `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`
