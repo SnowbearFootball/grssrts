@@ -1,5 +1,5 @@
 /*
- * SESSION: Long Range Finishing (Attacking · technical) (DRAFT)
+ * SESSION: Long Range Finishing (Attacking · technical)
  * From the owner's own plan "Long Range Finishing" (1st4sport L2 session sheet).
  *
  * Key factors: positive attitude; select the right shooting technique (first time or not); execute the strike correctly;
@@ -52,7 +52,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'long-range-finishing',
-    draft: true,
     title: 'Long Range Finishing',
     subtitle: 'Head up, pick the technique, strike it right',
     type: 'Technical',
