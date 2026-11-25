@@ -610,6 +610,8 @@
     'STRAIGHT PASS': { bg: '#16351f', fg: '#fff' },
     'DIAGONAL RUN': { bg: '#16351f', fg: '#fff' },
     'LOB IT': { get bg() { return C.accent; }, fg: '#fff' },
+    'CHECK AWAY': { bg: '#16351f', fg: '#fff' },
+    'HALF TURN': { bg: '#16351f', fg: '#fff' },
     SUPPORT: { bg: '#16351f', fg: '#fff' },
     'TOUCH AND PASS': { get bg() { return C.accent; }, fg: '#fff' },
     'SHORT PASS': { bg: '#16351f', fg: '#fff' },
