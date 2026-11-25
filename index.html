@@ -240,6 +240,14 @@
   .usp-card em { font-style: normal; font-weight: 700; font-size: 13.5px; color: var(--accent-ink); margin-top: 4px; }
   @media (max-width: 760px) { .usps { grid-template-columns: 1fr; gap: 8px; } .usp-card { grid-template-columns: 34px 1fr; column-gap: 12px; }
     .usp-card svg { grid-row: span 3; margin: 2px 0 0; } }
+  .usps-head { grid-column: 1 / -1; margin: 0 0 2px; font-size: 22px; }
+  .usp-card { border-top: 4px solid var(--accent); box-shadow: 0 6px 18px rgba(22,53,31,.08); padding: 18px; }
+  .usp-card svg { width: 52px; height: 52px; padding: 12px; border-radius: 50%; background: var(--accent); stroke: #fff; }
+  .usp-card b { font-size: 19px; }
+  .usps.dark .usp-card { background: var(--forest); border-color: var(--forest); border-top-color: var(--accent); color: var(--cream); }
+  .usps.dark .usp-card span { color: #ddd3be; }
+  .usps.dark .usp-card em { color: var(--accent-soft); }
+  @media (max-width: 760px) { .usp-card svg { width: 44px; height: 44px; padding: 10px; } .usp-card { grid-template-columns: 44px 1fr; } }
   .promo { background: var(--forest); color: var(--cream); border-radius: 16px; padding: 24px; display: grid; grid-template-columns: 1fr 1.05fr;
     gap: 24px; align-items: center; margin: 0 0 40px; }
   .promo .eyebrow { color: var(--accent-soft); }
@@ -605,9 +613,10 @@
     </section>
 
     <section class="usps" id="usps" hidden aria-label="Why GRSS | RTS">
+      <h2 class="usps-head">Why coaches use GRSS | RTS</h2>
       <a class="usp-card" href="#shoot-and-recover">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg>
-        <b>See it move</b><span>Every session animated, step by step: arrows first, then the play.</span><em>Watch one ›</em></a>
+        <b>See it move</b><span>Every session is animated, so everyone sees exactly what to do.</span><em>Watch one ›</em></a>
       <a class="usp-card" href="#shoot-and-recover">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.9l7.6-4.4M8.2 13.1l7.6 4.4"/></svg>
         <b>Share it with your squad</b><span>One link or a printable plan for players, parents and co-coaches.</span><em>See how ›</em></a>
@@ -1062,6 +1071,7 @@
   // ---------- home ----------
   function renderHome() {
     $('usps').hidden = !DRAFTS;   // preview only until approved
+    $('usps').classList.toggle('dark', /[?&]usp=dark/.test(location.search));
     $('mains').innerHTML = CATS.map(c => {
       const n = SESSIONS.filter(s => s.category === c.id).length;
       return `<a class="main-tile" href="#${c.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg>
