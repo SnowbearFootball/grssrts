@@ -36,6 +36,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Defending Outnumbered (defending, U12+) | 1. Stall the Attack (2 v 1) · 2. Recover to Help (2 v 1 to 2 v 2) · 3. One in the Zone (4 v 4 + keepers + 2 floaters) |
 | Short Passing (attacking, U12+) | 1. Pass and Move · 2. Keep It: 5 v 2 · 3. Overload: 10 v 4 |
 | Long Range Passing (attacking, U14+) | 1. End to End · 2. Press and Block · 3. 4 v 4 + Targets |
+| Close Range Finishing (attacking, U12+) | 1. Call a Number · 2. Play What You See · 3. 4 v 4 + Floaters |
 
 ## Brand
 

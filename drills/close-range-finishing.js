@@ -1,5 +1,5 @@
 /*
- * SESSION: Close Range Finishing (Attacking · technical) (DRAFT)
+ * SESSION: Close Range Finishing (Attacking · technical)
  * From the owner's own plan "Close Range Finishing" (1st4sport L2 session sheet).
  *
  * Key factors: positive attitude; movement to create space; decision making (first time etc); where to control the ball;
@@ -43,7 +43,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'close-range-finishing',
-    draft: true,
     title: 'Close Range Finishing',
     subtitle: 'Make space, pick the finish, weight the set-up',
     type: 'Technical',
