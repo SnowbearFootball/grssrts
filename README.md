@@ -38,6 +38,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Long Range Passing (attacking, U14+) | 1. End to End · 2. Press and Block · 3. 4 v 4 + Targets |
 | Close Range Finishing (attacking, U12+) | 1. Call a Number · 2. Play What You See · 3. 4 v 4 + Floaters |
 | Long Range Finishing (attacking, U14+) | 1. Set Up the Shot · 2. Beat the Press · 3. Points for Distance |
+| Creating Space (attacking, U10+) | 1. Double Movement · 2. Lose Your Defender · 3. Make the Space |
 
 ## Brand
 

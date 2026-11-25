@@ -1,5 +1,5 @@
 /*
- * SESSION: Creating Space (Attacking · technical) (DRAFT)
+ * SESSION: Creating Space (Attacking · technical)
  * From the owner's own plan "Creating Space" (1st4sport L2 session sheet).
  *
  * Key factors: identify where the space is; initial movement away from the space (with or without the ball); then
@@ -43,7 +43,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'creating-space',
-    draft: true,
     title: 'Creating Space',
     subtitle: 'Double movement, angles, back-foot control',
     type: 'Technical',
