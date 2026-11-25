@@ -317,6 +317,15 @@
   .mbanner .j { background: var(--accent); color: #fff; } .mbanner .l { color: var(--cream); border: 1px solid #4d6b54; }
   body.members .filter-btn { display: inline-block; }
   body.members .filters { display: none; } body.members .filters.open { display: grid; }
+  .age-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; background: var(--paper); border: 1px solid var(--edge);
+    border-radius: 12px; padding: 10px 14px; margin: 0 0 16px; font-size: 14.5px; color: var(--sub); }
+  .age-bar b { color: var(--text); }
+  .age-bar > button, .linkbtn { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; font-size: 13.5px; color: var(--accent-ink);
+    text-decoration: underline; cursor: pointer; }
+  .age-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .age-chips button { font: inherit; font-weight: 700; font-size: 13.5px; border: 1px solid var(--edge); background: var(--bg); color: var(--text);
+    border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+  .age-chips button:hover { border-color: var(--accent); }
   .tpills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin: 0 0 14px; scrollbar-width: none; }
   .tpill { flex: none; border: 2px solid var(--accent); color: var(--accent-ink); background: var(--paper); border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
   .tpill i { font-style: normal; font-weight: 700; opacity: .7; margin-left: 4px; }
@@ -654,6 +663,7 @@
       <div><p class="eyebrow">Sessions</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
     <div class="mbanner" id="sec-banner" hidden></div>
     <div class="tpills" id="type-pills" hidden></div>
+    <div class="age-bar" id="age-bar" hidden></div>
     <div class="finder" id="finder">
       <div class="find-bar">
         <input type="search" id="q" placeholder="Search sessions" aria-label="Search sessions" autocomplete="off">
@@ -790,7 +800,8 @@
   const catOf = s => (s.minis && MINIS && { id: 'minis', name: 'Minis' }) || CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground (Minis or Juniors)
   const LINKS = window.SITE_LINKS || {};
   // ---------- accounts (preview until SITE_FLAGS.members is switched on) ----------
-  const MEMBERS = !!FLAGS.members || DRAFTS;
+  const MEMBERS = !!FLAGS.members || /[?&]members\b/.test(location.search);   // logins + padlocks (preview: ?drafts&members)
+  const SHELVES = !!FLAGS.shelves || DRAFTS || MEMBERS;                      // neat section pages: type pills, shelves, my age group
   const FREE = window.FREE_SESSIONS || {};
   const TOPICS = window.TOPICS || {};
   const MEMBER_KEY = 'grssrts:member';   // preview stand-in for a real login, until the login service is connected
@@ -799,7 +810,7 @@
   // a "Share with your squad" link (?squad) opens that one session without logging in
   const sharedId = /[?&]squad\b/.test(location.search) ? location.hash.replace('#', '').split(':')[0] : '';
   const isFree = s => FREE[s.category] === s.id;
-  document.body.classList.toggle('members', MEMBERS);
+  document.body.classList.toggle('members', SHELVES);
   const locked = s => MEMBERS && !member && CATS.some(c => c.id === s.category) && !isFree(s) && s.id !== sharedId;
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1181,7 +1192,7 @@
     const words = F.q.toLowerCase().split(/\s+/).filter(Boolean);
     return words.every(w => hay(s).includes(w));
   }
-  const activeCount = () => (MEMBERS ? ['age', 'players', 'topic'] : ['age', 'type', 'players', 'topic']).filter(k => F[k]).length;
+  const activeCount = () => (SHELVES ? ['age', 'players', 'topic'] : ['age', 'type', 'players', 'topic']).filter(k => F[k]).length;
 
   function sessionRow(s) {
     const len = sessionLen(s);
@@ -1201,10 +1212,11 @@
     const row = (key, label, opts) => opts.length < 2 && !F[key] ? '' : `<div class="frow"><span class="flabel">${label}</span><div class="chips" data-f="${key}">
         <button class="chip" data-v="" aria-pressed="${!F[key]}">Any</button>${opts.map(([v, l]) => `<button class="chip" data-v="${esc(v)}" aria-pressed="${F[key] === String(v)}">${esc(l)}</button>`).join('')}</div></div>`;
     const topics = (TOPICS[currentCat && currentCat.id] || []).concat(TOPICS.any || []).filter(t => all.some(s => (s.topics || []).includes(t)));
-    $('filters').innerHTML = row('age', 'Age', AGES.map(a => [a, 'U' + a])) + (MEMBERS ? '' : row('type', 'Type', types.map(t => [t, t]))) +
-      row('players', 'Players', bands.map(b => [b.id, b.label])) + (MEMBERS ? row('topic', 'Topic', topics.map(t => [t, t])) : '');
+    $('filters').innerHTML = row('age', 'Age', AGES.map(a => [a, 'U' + a])) + (SHELVES ? '' : row('type', 'Type', types.map(t => [t, t]))) +
+      row('players', 'Players', bands.map(b => [b.id, b.label])) + (SHELVES ? row('topic', 'Topic', topics.map(t => [t, t])) : '');
     const n = activeCount();
-    $('filter-btn').textContent = n ? `Filter (${n}) ▾` : 'Filter ▾';
+    const fl = SHELVES ? 'Refine' : 'Filter';
+    $('filter-btn').textContent = n ? `${fl} (${n}) ▾` : `${fl} ▾`;
     $('filter-btn').classList.toggle('active', !!n);
   }
 
@@ -1221,32 +1233,57 @@
       <span class="bd"><b>${esc(s.title)}</b><span class="sum">${esc(s.summary || '')}</span>${cardBadges(s)}<span class="watch">▶ ${member ? 'Watch now' : 'Watch now, no sign-up'}</span></span></a></div>`;
   function renderMembersSection(cat, all, list) {
     if (!all.length) return;
-    $('sec-banner').hidden = member;
+    $('sec-banner').hidden = !MEMBERS || member;
     $('sec-banner').innerHTML = `<div><b>Join free to watch every session</b><span>Browse everything. One session is free to watch each month.</span></div>
       <div class="btns"><a class="j" href="#join">Join free</a><a class="l" href="#login">Log in</a></div>`;
+    const ageOn = myAge && !allAges;
+    const pool = ageOn ? all.filter(x => suits(x, myAge)) : all;
     const types = TYPE_ORDER.filter(t => all.some(x => x.type === t)).concat([...new Set(all.map(x => x.type).filter(t => t && !TYPE_ORDER.includes(t)))]);
     $('type-pills').hidden = types.length < 2;
-    $('type-pills').innerHTML = [['', 'All', all.length]].concat(types.map(t => [t, t, all.filter(x => x.type === t).length]))
+    $('type-pills').innerHTML = [['', 'All', pool.length]].concat(types.map(t => [t, t, pool.filter(x => x.type === t).length]).filter(([v, , n]) => n || F.type === v))
       .map(([v, l, n]) => `<button class="tpill" data-tpill="${esc(v)}" aria-pressed="${F.type === v}">${esc(l)}<i>${n}</i></button>`).join('');
     const browsing = !F.type && !F.q && !F.saved && !F.age && !F.players && !F.topic;
     $('list').className = 'cards';
+    // my age group: asked once, remembered on this device
+    $('age-bar').hidden = false;
+    $('age-bar').innerHTML = !myAge
+      ? `<b>Which age do you coach?</b><div class="age-chips">${AGES.map(a => `<button data-myage="${a}">U${a}</button>`).join('')}</div>`
+      : `<span>${ageOn ? `Showing sessions for <b>U${myAge}</b>` : 'Showing <b>all ages</b>'}</span>
+         <button data-allages>${ageOn ? 'Show all ages' : `Back to U${myAge}`}</button><button data-myage="">Change age</button>`;
     if (browsing) {
-      const free = all.find(isFree);
+      const free = MEMBERS ? all.find(isFree) : null;
+      const newest = pool.filter(x => x !== free).slice(-3).reverse();
+      const newShelf = newest.length && pool.length > 4 ? `<section class="shelf"><div class="shelf-head"><h2>New</h2></div>
+          <p class="what">The latest sessions added.</p><ul class="shelf-row srows">${newest.map(sessionCard).join('')}</ul></section>` : '';
       const shelves = types.map(t => {
-        const ss = all.filter(x => x.type === t && x !== free);
-        return !ss.length ? '' : `<section class="shelf"><div class="shelf-head"><h2>${esc(t)}</h2>${ss.length > 3 ? `<button data-tpill="${esc(t)}">See all ${ss.length} ›</button>` : ''}</div>
-          ${TYPE_WHAT[t] ? `<p class="what">${esc(TYPE_WHAT[t])}</p>` : ''}<ul class="shelf-row srows">${ss.slice(0, 3).map(sessionCard).join('')}</ul></section>`;
+        const ss = pool.filter(x => x.type === t && x !== free), rest = ss.filter(x => !newest.includes(x));
+        return !rest.length ? '' : `<section class="shelf"><div class="shelf-head"><h2>${esc(t)}</h2>${ss.length > 3 ? `<button data-tpill="${esc(t)}">See all ${ss.length} ›</button>` : ''}</div>
+          ${TYPE_WHAT[t] ? `<p class="what">${esc(TYPE_WHAT[t])}</p>` : ''}<ul class="shelf-row srows">${rest.slice(0, 3).map(sessionCard).join('')}</ul></section>`;
       }).join('');
-      $('shelves').innerHTML = (free ? featuredCard(free) : '') + shelves;
+      $('shelves').innerHTML = (free ? featuredCard(free) : '') + newShelf + (shelves ||
+        `<p class="none">No sessions for U${myAge} here yet. <button class="linkbtn" data-allages>Show all ages</button></p>`);
       $('shelves').hidden = false;
       $('list').hidden = true;
       $('sec-count').textContent = '';
     } else {
-      $('list').innerHTML = list.map(sessionCard).join('');
+      const shown = ageOn && !F.age ? list.filter(x => suits(x, myAge)) : list;
+      $('list').innerHTML = shown.map(sessionCard).join('');
+      $('list').hidden = !shown.length;
       if (!F.q && !F.saved && !activeCount()) $('clear-filters').hidden = true;
-      if (F.type && TYPE_WHAT[F.type] && !F.q && !F.saved && !activeCount()) $('sec-count').textContent = `${plural(list.length, F.type.toLowerCase() + ' session')} · ${TYPE_WHAT[F.type]}`;
+      $('sec-count').textContent = F.type && TYPE_WHAT[F.type] && !F.q && !F.saved && !activeCount()
+        ? `${plural(shown.length, F.type.toLowerCase() + ' session')}${ageOn ? ' for U' + myAge : ''} · ${TYPE_WHAT[F.type]}`
+        : `${plural(shown.length, 'session')}${ageOn ? ' for U' + myAge : ''}`;
     }
   }
+  const AGE_KEY = 'grssrts:my-age';
+  let myAge = 0, allAges = false;
+  try { myAge = +localStorage.getItem(AGE_KEY) || 0; } catch (e) { /* private window */ }
+  const suits = (s, a) => minAge(s) <= a && a <= maxAge(s);
+  document.addEventListener('click', e => {
+    const m = e.target.closest('[data-myage]');
+    if (m) { myAge = +m.dataset.myage || 0; allAges = false; try { localStorage.setItem(AGE_KEY, String(myAge || '')); } catch (x) {} rerender(); return; }
+    if (e.target.closest('[data-allages]')) { allAges = !allAges; rerender(); }
+  });
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-tpill]'); if (!b) return;
     F.type = b.dataset.tpill; rerender();
@@ -1274,8 +1311,8 @@
     $('list').innerHTML = list.map(sessionRow).join('');
     $('sec-none').hidden = !!list.length;
     $('list').className = 'srows';
-    ['sec-banner', 'type-pills', 'shelves'].forEach(id => { $(id).hidden = true; });
-    if (MEMBERS) renderMembersSection(cat, all, list);
+    ['sec-banner', 'type-pills', 'shelves', 'age-bar'].forEach(id => { $(id).hidden = true; });
+    if (SHELVES) renderMembersSection(cat, all, list);
     $('sec-none').innerHTML = !all.length
       ? `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`
       : F.saved && !F.q && !activeCount()
