@@ -230,6 +230,38 @@
   @media (max-width: 760px) { .kit { grid-template-columns: 1fr 1fr; } .kit li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
   .soon li span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; flex: none; }
   /* "Your session, animated": home-page band and the Dugout page */
+  /* new home page (preview: ?drafts, live: SITE_FLAGS.newHome) */
+  .v2 { display: none !important; }
+  body.v2home .benefit.v2, body.v2home .lede.v2, body.v2home .quote.v2 { display: block !important; }
+  body.v2home .who.v2, body.v2home .joinband.v2 { display: grid !important; }
+  body.v2home #usps, body.v2home #home > .promo, body.v2home #areas-head, body.v2home #areas { display: none !important; }
+  .hero .benefit { font-size: clamp(21px, 2.6vw, 27px); font-weight: 800; line-height: 1.25; margin: 4px 0 10px; color: var(--text); max-width: none; }
+  .benefit em { font-style: normal; color: var(--accent); }
+  .hero .lede { font-size: 17px; color: var(--sub); margin: 0 0 4px; max-width: 40ch; }
+  .btn.cream { background: var(--cream); color: var(--forest); border-color: var(--cream); }
+  .btn.green { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .who { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0 0 34px; }
+  .who .w { border-radius: 18px; padding: 22px; display: grid; gap: 8px; align-content: start; }
+  .who .w.c { background: var(--forest); color: var(--cream); }
+  .who .w.p { background: linear-gradient(180deg, #f07a3d, #d9622b); color: #fff; box-shadow: 0 8px 20px rgba(217,98,43,.25); }
+  .who .w.a { background: var(--paper); border: 1px solid var(--edge); }
+  .who small { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; font-weight: 800; }
+  .who .w.c small { color: var(--accent-soft); } .who .w.p small { color: #fff3ea; } .who .w.a small { color: var(--accent-ink); }
+  .who h3 { margin: 0; font-size: 24px; line-height: 1.15; }
+  .who ul { list-style: none; margin: 4px 0 6px; padding: 0; display: grid; gap: 8px; }
+  .who li { display: grid; grid-template-columns: 22px 1fr; gap: 6px; font-size: 15px; line-height: 1.35; }
+  .who li::before { content: '✓'; font-weight: 800; }
+  .who .w.c li::before { color: var(--accent-soft); } .who .w.a li::before { color: var(--accent); } .who .w.p li { color: #fff3ea; }
+  .who .btn { justify-self: start; margin-top: auto; }
+  .quote { margin: 0 0 34px; background: var(--paper); border: 1px solid var(--edge); border-left: 5px solid var(--accent); border-radius: 14px;
+    padding: 18px 20px; font-size: 19px; font-weight: 700; line-height: 1.4; color: var(--text); }
+  .joinband { background: linear-gradient(180deg, #f07a3d, #d9622b); color: #fff; border-radius: 20px; padding: 26px;
+    grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: center; margin: 10px 0 30px; }
+  .joinband h2 { margin: 0 0 4px; font-size: 28px; } .joinband p { margin: 0; color: #fff3ea; }
+  .joinform { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+  .joinform input { border: 0; border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 16px; min-width: 0; }
+  .joinform .btn { border-radius: 12px; }
+  @media (max-width: 760px) { .who, .joinband, .joinform { grid-template-columns: 1fr !important; } }
   .usps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: -10px 0 34px; }
   .usp-card { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 4px;
     align-content: start; text-decoration: none; color: var(--text); }
@@ -626,6 +658,8 @@
     <section class="hero">
       <div>
         <h1 class="tagline"><span>Watch it.</span> <span>Coach it.</span> <em>Play it.</em></h1>
+        <p class="benefit v2">Less time explaining.<br><em>More time coaching.</em></p>
+        <p class="lede v2">Animated grassroots sessions your players can watch before they arrive.</p>
         <div class="cta">
           <button class="btn primary" id="go-sections">Choose a section</button>
           <button class="btn" id="go-howto">How the clips work</button>
@@ -645,6 +679,17 @@
       </div>
     </section>
 
+    <section class="who v2" aria-label="Who it's for">
+      <div class="w c"><small>For coaches</small><h3>Run better sessions, faster</h3>
+        <ul><li>Players arrive already knowing the drill</li><li>One link for your squad, parents and co-coaches</li><li>A printable plan for the touchline</li><li>Your own sessions animated, free</li></ul>
+        <a class="btn primary" href="#attacking">Browse sessions</a></div>
+      <div class="w p"><small>For players</small><h3>Know what to do before you step on the pitch</h3>
+        <ul><li>See where to run and why</li><li>Watch it again any time</li><li>Practise at home with Home Ground</li></ul>
+        <a class="btn cream" href="#juniors">Practise at home</a></div>
+      <div class="w a"><small>For parents</small><h3>See what they're learning</h3>
+        <ul><li>Know what training was about</li><li>Help at home in five minutes</li><li>Grass and Roots for the little ones: free, no sign-up</li></ul>
+        <a class="btn green" href="#minis">Minis: U8 and under</a></div>
+    </section>
     <section class="usps" id="usps" aria-label="Why GRSS | RTS">
       <h2 class="usps-head">Why coaches use GRSS | RTS</h2>
       <a class="usp-card" href="#shoot-and-recover">
@@ -671,7 +716,11 @@
     <div class="section-head" id="sections"><h2>Sessions</h2><p>Choose a section to see its sessions.</p></div>
     <div class="mains" id="mains"></div>
 
-    <div class="section-head"><h2>More from GRSS | RTS</h2></div>
+    <blockquote class="quote v2">"They've already seen the drill, so I spend my time coaching the detail, not explaining the set-up."</blockquote>
+    <section class="joinband v2"><div><h2>Join the squad, free</h2><p>New sessions once a month. Send us your own plan and we'll animate it for free.</p></div>
+      <form class="joinform" id="joinband-form"><input type="email" id="jb-email" placeholder="Your email" aria-label="Your email" autocomplete="email"><button class="btn green" type="submit">Join free</button></form></section>
+
+    <div class="section-head" id="areas-head"><h2>More from GRSS | RTS</h2></div>
     <div class="areas" id="areas"></div>
 
   </main>
@@ -775,40 +824,40 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611251516"></script>
-<script src="js/logo-data.js?v=202611251516"></script>
-<script src="js/drill-engine.js?v=202611251516"></script>
-<script src="js/categories.js?v=202611251516"></script>
-<script src="js/mascots.js?v=202611251516"></script>
-<script src="js/home-clip.js?v=202611251516"></script>
+<script src="js/vendor/qrcode.js?v=202611251600"></script>
+<script src="js/logo-data.js?v=202611251600"></script>
+<script src="js/drill-engine.js?v=202611251600"></script>
+<script src="js/categories.js?v=202611251600"></script>
+<script src="js/mascots.js?v=202611251600"></script>
+<script src="js/home-clip.js?v=202611251600"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611251516"></script>
-<script src="drills/shoot-and-recover.js?v=202611251516"></script>
-<script src="drills/transfer-rondo.js?v=202611251516"></script>
-<script src="drills/set-position.js?v=202611251516"></script>
-<script src="drills/ball-mastery.js?v=202611251516"></script>
-<script src="drills/long-range-shooting.js?v=202611251516"></script>
-<script src="drills/rotation-of-positions.js?v=202611251516"></script>
-<script src="drills/combination-play.js?v=202611251516"></script>
-<script src="drills/switching-play-square.js?v=202611251516"></script>
-<script src="drills/switch-of-play.js?v=202611251516"></script>
-<script src="drills/intercepting.js?v=202611251516"></script>
-<script src="drills/blocking-shots.js?v=202611251516"></script>
-<script src="drills/y-passing.js?v=202611251516"></script>
-<script src="drills/penetration-dribbling.js?v=202611251516"></script>
-<script src="drills/midfield-three.js?v=202611251516"></script>
-<script src="drills/defending-442.js?v=202611251516"></script>
-<script src="drills/five-a-side-shape.js?v=202611251516"></script>
-<script src="drills/dribbling.js?v=202611251516"></script>
-<script src="drills/dribbling-1v1.js?v=202611251516"></script>
-<script src="drills/dribbling-space-overload.js?v=202611251516"></script>
-<script src="drills/defending-outnumbered.js?v=202611251516"></script>
-<script src="drills/short-passing.js?v=202611251516"></script>
-<script src="drills/long-range-passing.js?v=202611251516"></script>
-<script src="drills/close-range-finishing.js?v=202611251516"></script>
-<script src="drills/long-range-finishing.js?v=202611251516"></script>
-<script src="drills/creating-space.js?v=202611251516"></script>
-<script src="drills/defending-matched-up.js?v=202611251516"></script>
+<script src="drills/splash-and-ripple.js?v=202611251600"></script>
+<script src="drills/shoot-and-recover.js?v=202611251600"></script>
+<script src="drills/transfer-rondo.js?v=202611251600"></script>
+<script src="drills/set-position.js?v=202611251600"></script>
+<script src="drills/ball-mastery.js?v=202611251600"></script>
+<script src="drills/long-range-shooting.js?v=202611251600"></script>
+<script src="drills/rotation-of-positions.js?v=202611251600"></script>
+<script src="drills/combination-play.js?v=202611251600"></script>
+<script src="drills/switching-play-square.js?v=202611251600"></script>
+<script src="drills/switch-of-play.js?v=202611251600"></script>
+<script src="drills/intercepting.js?v=202611251600"></script>
+<script src="drills/blocking-shots.js?v=202611251600"></script>
+<script src="drills/y-passing.js?v=202611251600"></script>
+<script src="drills/penetration-dribbling.js?v=202611251600"></script>
+<script src="drills/midfield-three.js?v=202611251600"></script>
+<script src="drills/defending-442.js?v=202611251600"></script>
+<script src="drills/five-a-side-shape.js?v=202611251600"></script>
+<script src="drills/dribbling.js?v=202611251600"></script>
+<script src="drills/dribbling-1v1.js?v=202611251600"></script>
+<script src="drills/dribbling-space-overload.js?v=202611251600"></script>
+<script src="drills/defending-outnumbered.js?v=202611251600"></script>
+<script src="drills/short-passing.js?v=202611251600"></script>
+<script src="drills/long-range-passing.js?v=202611251600"></script>
+<script src="drills/close-range-finishing.js?v=202611251600"></script>
+<script src="drills/long-range-finishing.js?v=202611251600"></script>
+<script src="drills/creating-space.js?v=202611251600"></script>
+<script src="drills/defending-matched-up.js?v=202611251600"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
@@ -831,9 +880,15 @@
   // a "Share with your squad" link (?squad) opens that one session without logging in
   const sharedId = /[?&]squad\b/.test(location.search) ? location.hash.replace('#', '').split(':')[0] : '';
   const isFree = s => FREE[s.category] === s.id;
+  const NEWHOME = !!FLAGS.newHome || DRAFTS;
+  document.body.classList.toggle('v2home', NEWHOME);
   document.body.classList.toggle('members', SHELVES);
   const locked = s => MEMBERS && !member && CATS.some(c => c.id === s.category) && !isFree(s) && s.id !== sharedId;
   const $ = id => document.getElementById(id);
+  if (NEWHOME) {
+    $('go-sections').textContent = 'Find a session';
+    $('go-howto').textContent = 'Join free';
+  }
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const rich = s => esc(s).replace(/\*(.+?)\*/g, '<span class="em">$1</span>');
   const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
@@ -1645,7 +1700,14 @@
 
   $('go-sections').onclick = () => $('sections').scrollIntoView({ behavior: 'smooth' });
   const dlg = $('howto-dialog');
-  $('go-howto').onclick = () => { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); };
+  $('go-howto').onclick = () => { if (NEWHOME) { location.hash = '#join'; return; } if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); };
+  // join band on the home page: carry the email over to the Join page
+  $('joinband-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const em = $('jb-email').value.trim();
+    location.hash = '#join';
+    setTimeout(() => { if ($('j-email')) { $('j-email').value = em; $(em ? 'j-name' : 'j-email').focus(); } }, 50);
+  });
   const closeDlg = () => { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); };
   $('howto-close').onclick = closeDlg;
   // tap outside the box (on the dimmed background) to close
