@@ -317,10 +317,36 @@
   .mbanner .j { background: var(--accent); color: #fff; } .mbanner .l { color: var(--cream); border: 1px solid #4d6b54; }
   body.members .filter-btn { display: inline-block; }
   body.members .filters { display: none; } body.members .filters.open { display: grid; }
+  .age-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; background: var(--paper); border: 1px solid var(--edge);
+    border-radius: 12px; padding: 10px 14px; margin: 0 0 16px; font-size: 14.5px; color: var(--sub); }
+  .age-bar b { color: var(--text); }
+  .age-bar > button, .linkbtn { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; font-size: 13.5px; color: var(--accent-ink);
+    text-decoration: underline; cursor: pointer; }
+  .age-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .age-chips button { font: inherit; font-weight: 700; font-size: 13.5px; border: 1px solid var(--edge); background: var(--bg); color: var(--text);
+    border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+  .age-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .age-pick { font: inherit; font-weight: 800; font-size: 14px; background: var(--forest); color: var(--cream); border: 0; border-radius: 999px;
+    padding: 6px 14px; cursor: pointer; }
+  .age-chips button[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .more-wrap { display: flex; justify-content: center; margin: -8px 0 30px; }
+  .show-more { font: inherit; font-weight: 800; font-size: 15px; background: var(--paper); color: var(--text); border: 2px solid var(--accent);
+    border-radius: 999px; padding: 10px 22px; cursor: pointer; }
+  .show-more span { font-weight: 600; color: var(--muted); font-size: 13px; margin-left: 6px; }
+  .show-more:hover { background: var(--accent); color: #fff; } .show-more:hover span { color: #fff3ea; }
+  @media (max-width: 760px) {
+    body.members .tpills { flex-wrap: wrap; overflow: visible; }
+    body.members .find-bar { flex-wrap: wrap; } body.members .find-bar input { flex-basis: 100%; }
+    body.members .find-bar .chip, body.members .find-bar .filter-btn { flex: 1 1 0; text-align: center; }
+  }
+  .age-hint { font-size: 13px; color: var(--muted); }
+  .age-chips button.all { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .age-chips button:hover { border-color: var(--accent); }
   .tpills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin: 0 0 14px; scrollbar-width: none; }
-  .tpill { flex: none; border: 2px solid var(--accent); color: var(--accent-ink); background: var(--paper); border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
-  .tpill i { font-style: normal; font-weight: 700; opacity: .7; margin-left: 4px; }
-  .tpill[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .tpill { flex: none; border: 2px solid var(--accent); color: var(--cream); background: linear-gradient(180deg, #f07a3d, #d9622b); border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 2px 6px rgba(217,98,43,.25); }
+  .tpill:hover { transform: translateY(-1px); }
+  .tpill i { font-style: normal; font-weight: 700; opacity: .85; margin-left: 4px; }
+  .tpill[aria-pressed="true"] { background: var(--forest); border-color: var(--forest); color: var(--cream); box-shadow: none; }
   .shelf { margin: 0 0 22px; }
   .shelf-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
   .shelf-head h2 { margin: 0; font-size: 20px; }
@@ -654,6 +680,7 @@
       <div><p class="eyebrow">Sessions</p><h1 id="sec-title"></h1><p id="sec-blurb"></p></div></div>
     <div class="mbanner" id="sec-banner" hidden></div>
     <div class="tpills" id="type-pills" hidden></div>
+    <div class="age-bar" id="age-bar" hidden></div>
     <div class="finder" id="finder">
       <div class="find-bar">
         <input type="search" id="q" placeholder="Search sessions" aria-label="Search sessions" autocomplete="off">
@@ -665,6 +692,7 @@
     <div class="count-line"><span id="sec-count"></span><button id="clear-filters" hidden>Clear filters</button></div>
     <div id="shelves" hidden></div>
     <ul class="srows" id="list"></ul>
+    <div class="more-wrap" id="more-wrap" hidden></div>
     <p class="none" id="sec-none" hidden></p>
   </main>
 
@@ -744,40 +772,40 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611251345"></script>
-<script src="js/logo-data.js?v=202611251345"></script>
-<script src="js/drill-engine.js?v=202611251345"></script>
-<script src="js/categories.js?v=202611251345"></script>
-<script src="js/mascots.js?v=202611251345"></script>
-<script src="js/home-clip.js?v=202611251345"></script>
+<script src="js/vendor/qrcode.js?v=202611251510"></script>
+<script src="js/logo-data.js?v=202611251510"></script>
+<script src="js/drill-engine.js?v=202611251510"></script>
+<script src="js/categories.js?v=202611251510"></script>
+<script src="js/mascots.js?v=202611251510"></script>
+<script src="js/home-clip.js?v=202611251510"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611251345"></script>
-<script src="drills/shoot-and-recover.js?v=202611251345"></script>
-<script src="drills/transfer-rondo.js?v=202611251345"></script>
-<script src="drills/set-position.js?v=202611251345"></script>
-<script src="drills/ball-mastery.js?v=202611251345"></script>
-<script src="drills/long-range-shooting.js?v=202611251345"></script>
-<script src="drills/rotation-of-positions.js?v=202611251345"></script>
-<script src="drills/combination-play.js?v=202611251345"></script>
-<script src="drills/switching-play-square.js?v=202611251345"></script>
-<script src="drills/switch-of-play.js?v=202611251345"></script>
-<script src="drills/intercepting.js?v=202611251345"></script>
-<script src="drills/blocking-shots.js?v=202611251345"></script>
-<script src="drills/y-passing.js?v=202611251345"></script>
-<script src="drills/penetration-dribbling.js?v=202611251345"></script>
-<script src="drills/midfield-three.js?v=202611251345"></script>
-<script src="drills/defending-442.js?v=202611251345"></script>
-<script src="drills/five-a-side-shape.js?v=202611251345"></script>
-<script src="drills/dribbling.js?v=202611251345"></script>
-<script src="drills/dribbling-1v1.js?v=202611251345"></script>
-<script src="drills/dribbling-space-overload.js?v=202611251345"></script>
-<script src="drills/defending-outnumbered.js?v=202611251345"></script>
-<script src="drills/short-passing.js?v=202611251345"></script>
-<script src="drills/long-range-passing.js?v=202611251345"></script>
-<script src="drills/close-range-finishing.js?v=202611251345"></script>
-<script src="drills/long-range-finishing.js?v=202611251345"></script>
-<script src="drills/creating-space.js?v=202611251345"></script>
-<script src="drills/defending-matched-up.js?v=202611251345"></script>
+<script src="drills/splash-and-ripple.js?v=202611251510"></script>
+<script src="drills/shoot-and-recover.js?v=202611251510"></script>
+<script src="drills/transfer-rondo.js?v=202611251510"></script>
+<script src="drills/set-position.js?v=202611251510"></script>
+<script src="drills/ball-mastery.js?v=202611251510"></script>
+<script src="drills/long-range-shooting.js?v=202611251510"></script>
+<script src="drills/rotation-of-positions.js?v=202611251510"></script>
+<script src="drills/combination-play.js?v=202611251510"></script>
+<script src="drills/switching-play-square.js?v=202611251510"></script>
+<script src="drills/switch-of-play.js?v=202611251510"></script>
+<script src="drills/intercepting.js?v=202611251510"></script>
+<script src="drills/blocking-shots.js?v=202611251510"></script>
+<script src="drills/y-passing.js?v=202611251510"></script>
+<script src="drills/penetration-dribbling.js?v=202611251510"></script>
+<script src="drills/midfield-three.js?v=202611251510"></script>
+<script src="drills/defending-442.js?v=202611251510"></script>
+<script src="drills/five-a-side-shape.js?v=202611251510"></script>
+<script src="drills/dribbling.js?v=202611251510"></script>
+<script src="drills/dribbling-1v1.js?v=202611251510"></script>
+<script src="drills/dribbling-space-overload.js?v=202611251510"></script>
+<script src="drills/defending-outnumbered.js?v=202611251510"></script>
+<script src="drills/short-passing.js?v=202611251510"></script>
+<script src="drills/long-range-passing.js?v=202611251510"></script>
+<script src="drills/close-range-finishing.js?v=202611251510"></script>
+<script src="drills/long-range-finishing.js?v=202611251510"></script>
+<script src="drills/creating-space.js?v=202611251510"></script>
+<script src="drills/defending-matched-up.js?v=202611251510"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
@@ -790,7 +818,8 @@
   const catOf = s => (s.minis && MINIS && { id: 'minis', name: 'Minis' }) || CATS.find(c => c.id === s.category) || AREAS.find(a => a.id === s.category);   // solo sessions live in Home Ground (Minis or Juniors)
   const LINKS = window.SITE_LINKS || {};
   // ---------- accounts (preview until SITE_FLAGS.members is switched on) ----------
-  const MEMBERS = !!FLAGS.members || DRAFTS;
+  const MEMBERS = !!FLAGS.members || /[?&]members\b/.test(location.search);   // logins + padlocks (preview: ?drafts&members)
+  const SHELVES = !!FLAGS.shelves || DRAFTS || MEMBERS;                      // neat section pages: type pills, shelves, my age group
   const FREE = window.FREE_SESSIONS || {};
   const TOPICS = window.TOPICS || {};
   const MEMBER_KEY = 'grssrts:member';   // preview stand-in for a real login, until the login service is connected
@@ -799,7 +828,7 @@
   // a "Share with your squad" link (?squad) opens that one session without logging in
   const sharedId = /[?&]squad\b/.test(location.search) ? location.hash.replace('#', '').split(':')[0] : '';
   const isFree = s => FREE[s.category] === s.id;
-  document.body.classList.toggle('members', MEMBERS);
+  document.body.classList.toggle('members', SHELVES);
   const locked = s => MEMBERS && !member && CATS.some(c => c.id === s.category) && !isFree(s) && s.id !== sharedId;
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1181,7 +1210,7 @@
     const words = F.q.toLowerCase().split(/\s+/).filter(Boolean);
     return words.every(w => hay(s).includes(w));
   }
-  const activeCount = () => (MEMBERS ? ['age', 'players', 'topic'] : ['age', 'type', 'players', 'topic']).filter(k => F[k]).length;
+  const activeCount = () => (SHELVES ? ['age', 'players', 'topic'] : ['age', 'type', 'players', 'topic']).filter(k => F[k]).length;
 
   function sessionRow(s) {
     const len = sessionLen(s);
@@ -1201,10 +1230,11 @@
     const row = (key, label, opts) => opts.length < 2 && !F[key] ? '' : `<div class="frow"><span class="flabel">${label}</span><div class="chips" data-f="${key}">
         <button class="chip" data-v="" aria-pressed="${!F[key]}">Any</button>${opts.map(([v, l]) => `<button class="chip" data-v="${esc(v)}" aria-pressed="${F[key] === String(v)}">${esc(l)}</button>`).join('')}</div></div>`;
     const topics = (TOPICS[currentCat && currentCat.id] || []).concat(TOPICS.any || []).filter(t => all.some(s => (s.topics || []).includes(t)));
-    $('filters').innerHTML = row('age', 'Age', AGES.map(a => [a, 'U' + a])) + (MEMBERS ? '' : row('type', 'Type', types.map(t => [t, t]))) +
-      row('players', 'Players', bands.map(b => [b.id, b.label])) + (MEMBERS ? row('topic', 'Topic', topics.map(t => [t, t])) : '');
+    $('filters').innerHTML = row('age', 'Age', AGES.map(a => [a, 'U' + a])) + (SHELVES ? '' : row('type', 'Type', types.map(t => [t, t]))) +
+      row('players', 'Players', bands.map(b => [b.id, b.label])) + (SHELVES ? row('topic', 'Topic', topics.map(t => [t, t])) : '');
     const n = activeCount();
-    $('filter-btn').textContent = n ? `Filter (${n}) ▾` : 'Filter ▾';
+    const fl = SHELVES ? 'Refine' : 'Filter';
+    $('filter-btn').textContent = n ? `${fl} (${n}) ▾` : `${fl} ▾`;
     $('filter-btn').classList.toggle('active', !!n);
   }
 
@@ -1221,35 +1251,62 @@
       <span class="bd"><b>${esc(s.title)}</b><span class="sum">${esc(s.summary || '')}</span>${cardBadges(s)}<span class="watch">▶ ${member ? 'Watch now' : 'Watch now, no sign-up'}</span></span></a></div>`;
   function renderMembersSection(cat, all, list) {
     if (!all.length) return;
-    $('sec-banner').hidden = member;
+    $('sec-banner').hidden = !MEMBERS || member;
     $('sec-banner').innerHTML = `<div><b>Join free to watch every session</b><span>Browse everything. One session is free to watch each month.</span></div>
       <div class="btns"><a class="j" href="#join">Join free</a><a class="l" href="#login">Log in</a></div>`;
+    const ageOn = myAge && myAge !== 'all' && !allAges;
+    const pool = ageOn ? all.filter(x => suits(x, myAge)) : all;
     const types = TYPE_ORDER.filter(t => all.some(x => x.type === t)).concat([...new Set(all.map(x => x.type).filter(t => t && !TYPE_ORDER.includes(t)))]);
     $('type-pills').hidden = types.length < 2;
-    $('type-pills').innerHTML = [['', 'All', all.length]].concat(types.map(t => [t, t, all.filter(x => x.type === t).length]))
+    $('type-pills').innerHTML = [['', 'All', pool.length]].concat(types.map(t => [t, t, pool.filter(x => x.type === t).length]).filter(([v, , n]) => n || F.type === v))
       .map(([v, l, n]) => `<button class="tpill" data-tpill="${esc(v)}" aria-pressed="${F.type === v}">${esc(l)}<i>${n}</i></button>`).join('');
     const browsing = !F.type && !F.q && !F.saved && !F.age && !F.players && !F.topic;
     $('list').className = 'cards';
+    // age group: one tidy line; tap to open the age buttons; remembered on this device
+    $('age-bar').hidden = false;
+    const ageLabel2 = ageOn ? 'U' + myAge : 'All ages';
+    $('age-bar').innerHTML = `<span class="age-line"><b>Age group</b><button class="age-pick" data-ageopen aria-expanded="${ageOpen}">${ageLabel2} ▾</button>
+        <span class="age-hint">${myAge ? '' : 'Coach, parent or player: pick one to see what suits it.'}</span></span>
+      ${ageOpen ? `<div class="age-chips">${AGES.map(a => `<button data-myage="${a}" aria-pressed="${ageOn && myAge === a}">U${a}</button>`).join('')}
+        <button class="all" data-myage="all" aria-pressed="${!ageOn}">All ages</button></div>` : ''}`;
+    // always a tidy grid in rows of three: a mixed selection, then "Show more"
+    let pick;
     if (browsing) {
-      const free = all.find(isFree);
-      const shelves = types.map(t => {
-        const ss = all.filter(x => x.type === t && x !== free);
-        return !ss.length ? '' : `<section class="shelf"><div class="shelf-head"><h2>${esc(t)}</h2>${ss.length > 3 ? `<button data-tpill="${esc(t)}">See all ${ss.length} ›</button>` : ''}</div>
-          ${TYPE_WHAT[t] ? `<p class="what">${esc(TYPE_WHAT[t])}</p>` : ''}<ul class="shelf-row srows">${ss.slice(0, 3).map(sessionCard).join('')}</ul></section>`;
-      }).join('');
-      $('shelves').innerHTML = (free ? featuredCard(free) : '') + shelves;
-      $('shelves').hidden = false;
-      $('list').hidden = true;
-      $('sec-count').textContent = '';
+      // a mix: take the newest of each type in turn, so the first rows show variety
+      const byType = types.map(t => pool.filter(x => x.type === t).reverse());
+      pick = [];
+      for (let i = 0; pick.length < pool.length; i++) byType.forEach(q => { if (q[i]) pick.push(q[i]); });
+      $('sec-count').textContent = pool.length ? `A selection of ${pool.length} ${ageOn ? 'U' + myAge + ' ' : ''}sessions` : '';
     } else {
-      $('list').innerHTML = list.map(sessionCard).join('');
+      pick = (ageOn && !F.age ? list.filter(x => suits(x, myAge)) : list).slice().reverse();
       if (!F.q && !F.saved && !activeCount()) $('clear-filters').hidden = true;
-      if (F.type && TYPE_WHAT[F.type] && !F.q && !F.saved && !activeCount()) $('sec-count').textContent = `${plural(list.length, F.type.toLowerCase() + ' session')} · ${TYPE_WHAT[F.type]}`;
+      $('sec-count').textContent = F.type && TYPE_WHAT[F.type] && !F.q && !F.saved && !activeCount()
+        ? `${plural(pick.length, F.type.toLowerCase() + ' session')}${ageOn ? ' for U' + myAge : ''} · ${TYPE_WHAT[F.type]}`
+        : `${plural(pick.length, 'session')}${ageOn ? ' for U' + myAge : ''}`;
     }
+    const n = Math.min(pick.length, showN);
+    $('shelves').hidden = true;
+    $('list').hidden = !pick.length;
+    $('list').innerHTML = pick.slice(0, n).map(sessionCard).join('');
+    $('more-wrap').hidden = n >= pick.length;
+    $('more-wrap').innerHTML = `<button class="show-more" data-more>Show more <span>${n} of ${pick.length}</span></button>`;
+    if (!pick.length) { $('sec-none').hidden = false; $('sec-none').innerHTML = ageOn
+      ? `No sessions for U${myAge} here yet. <button class="linkbtn" data-allages>Show all ages</button>` : 'No sessions match that yet.'; }
   }
+  const AGE_KEY = 'grssrts:my-age';
+  let myAge = 0, allAges = false, ageOpen = false, showN = 6;
+  try { const v = localStorage.getItem(AGE_KEY); myAge = v === 'all' ? 'all' : +v || 0; } catch (e) { /* private window */ }
+  const suits = (s, a) => minAge(s) <= a && a <= maxAge(s);
+  document.addEventListener('click', e => {
+    const m = e.target.closest('[data-myage]');
+    if (e.target.closest('[data-ageopen]')) { ageOpen = !ageOpen; rerender(); return; }
+    if (e.target.closest('[data-more]')) { showN += 6; rerender(); return; }
+    if (m) { ageOpen = false; showN = 6; const v = m.dataset.myage; myAge = v === 'all' ? 'all' : +v || 0; allAges = false; try { localStorage.setItem(AGE_KEY, String(myAge || '')); } catch (x) {} rerender(); return; }
+    if (e.target.closest('[data-allages]')) { allAges = !allAges; rerender(); }
+  });
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-tpill]'); if (!b) return;
-    F.type = b.dataset.tpill; rerender();
+    F.type = b.dataset.tpill; showN = 6; rerender();
     $('type-pills').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
@@ -1274,8 +1331,8 @@
     $('list').innerHTML = list.map(sessionRow).join('');
     $('sec-none').hidden = !!list.length;
     $('list').className = 'srows';
-    ['sec-banner', 'type-pills', 'shelves'].forEach(id => { $(id).hidden = true; });
-    if (MEMBERS) renderMembersSection(cat, all, list);
+    ['sec-banner', 'type-pills', 'shelves', 'age-bar', 'more-wrap'].forEach(id => { $(id).hidden = true; });
+    if (SHELVES) renderMembersSection(cat, all, list);
     $('sec-none').innerHTML = !all.length
       ? `No ${esc(cat.name.toLowerCase())} sessions yet. They'll appear here as they're added. Coaches can <a href="#dugout">suggest a topic in The Dugout</a>.`
       : F.saved && !F.q && !activeCount()
