@@ -49,7 +49,9 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - Coaching detail the owner has corrected before: in passing patterns (5 Y's, draft) the middle player moves away from the cone first (separation, like losing a defender), back-foot control, and the pass up is always to the opposite side (same side gets tight); alternate direction each go; shots must go on target; pass and follow needs one more player than boxes (never an empty box); a middle player only bounces it back (one-two), never the longer pass; crosses are attacked as a team (strikers cross over, opposite winger sweeps the back post, one CM in the box, one on the edge); runner times the run and keeps space to move onto the ball; pressing as a
   comment means "send one in to apply pressure", not a win-it-and-score drill; a long ball to the keeper comes from the
   furthest opponent and is over-hit; waiting players rotate in; say "inside / outside of the foot" with "(big toe)" / "(little toe)" after it, never "instep" (reads as the laces); in dribbling drills all the balls start inside; a run off the ball works as a decoy (defender follows: dribble) or the spare player (defender stays: pass); never dribble towards a team-mate's run (closes your own space, meets two defenders): feint that way, attack away from it; an underlap here = run behind the player on the ball and down the other wing (attackers cross over, "who marks who?"), not a run through the middle; both press the dribbler = pass, both follow the runner = dribble; 2 v 1 needs queues with more attackers than defenders; GK stands on an arc post to post, an extra step towards
-  the near post when the ball is wide.
+  the near post when the ball is wide; long passing: mix it up (drilled along the ground, floated, chipped over a lane blocker) and play it when it's on;
+  support after a long pass with space, not all near the ball: one drops short, two wider and a little higher, one gives height
+  (in the middle, furthest from the ball, not in the other end zone: the mid-length pass).
 - Remove children's names from any photo before using it. Avoid other companies' watermarked diagrams on the site.
 - Never copy other providers' (e.g. The Coaching Manual) drills, diagrams or wording into the library; sessions come
   from the owner's own plans or are newly written.
@@ -85,6 +87,13 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   one touch progression), Keep It: 5 v 2 (one defender per zone, only in their zone; defender wins it = swap roles, hand over the bib),
   Overload: 10 v 4 (40 x 30, 4 v 4 inside + 2 floaters who can't pass to each other + 4 outside, all play for the team with the ball;
   8 passes = a goal; rotate: a team goes outside, the outside four come in)). Engine: `edges` draws cone lines in any shape (hexagons).
+  Long Range Passing (attacking, Technical, U14+, owner's own plan; 3 clips: End to End (40 x 30, 10 yd end zones, 2 per end zone + 2 middle;
+  long, or short to the supporting middle player who bounces it straight back or sets it for the other end-zone player, who goes long;
+  after every long pass the other middle player joins in as support), Press and Block (both middle players are defenders: first pass starts it,
+  one presses, the deeper one blocks the long lane; after a long pass the closer one presses, the other blocks: each presses one end),
+  4 v 4 + Targets (45 x 30, 2 targets per end zone; middle players play short into a target, ONLY targets play the long pass, into the far end
+  zone = a goal; win it = feed your own target; rotate the targets so everyone practises long passes)). Engine: lofted passes
+  (`loft: 'float' | 'chip'` on a pass: curved arrow, ball lifts off its shadow).
 - Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
 - Defending attempts: Defending Outnumbered was approved (recovery runs with a 2 v 1 and the zone rule had enough depth). Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
   Intercepting Passes, Blocking Shots and The 5 Y's (waiting for better drawings) are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.
