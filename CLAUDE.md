@@ -209,7 +209,7 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 
 ## Ideas agreed, not built yet
 
-- Home page rework (owner: "better direction"; mock-up only so far): lean and benefit-led, five blocks: hero (tagline, bold benefit
+- Home page rework (LIVE since 25 Nov 2026, SITE_FLAGS.newHome = true): lean and benefit-led, five blocks: hero (tagline, bold benefit
   line, Find a session + Join free, big clip), three audience cards with ticks (Coaches green / Players orange / Parents cream),
   a quote, Join band with email box, footer. Copy must never suggest the coach isn't needed (owner rejected "We just play").
   Quote approved: "They've already seen the drill, so I spend my time coaching the detail, not explaining the set-up." (swap for
