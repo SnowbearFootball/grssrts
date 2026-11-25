@@ -1,5 +1,5 @@
 /*
- * SESSION: Long Range Passing (Attacking · technical) (DRAFT)
+ * SESSION: Long Range Passing (Attacking · technical)
  * From the owner's own plan "Long range passing" (1st4sport L2 session sheet).
  *
  * Key factors: make a decision (first time long pass / control and long pass / short pass to a team-mate);
@@ -67,7 +67,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'long-range-passing',
-    draft: true,
     title: 'Long Range Passing',
     subtitle: 'Drilled, floated or chipped: play it when it\'s on',
     type: 'Technical',

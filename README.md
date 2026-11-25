@@ -35,6 +35,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Dribbling: Where Is the Space / Overload? (attacking, U11+) | 1. 1 v 1: Find the Space · 2. Call Two Numbers (2 v 2) · 3. Space or Overload? (4 v 4 + keepers) |
 | Defending Outnumbered (defending, U12+) | 1. Stall the Attack (2 v 1) · 2. Recover to Help (2 v 1 to 2 v 2) · 3. One in the Zone (4 v 4 + keepers + 2 floaters) |
 | Short Passing (attacking, U12+) | 1. Pass and Move · 2. Keep It: 5 v 2 · 3. Overload: 10 v 4 |
+| Long Range Passing (attacking, U14+) | 1. End to End · 2. Press and Block · 3. 4 v 4 + Targets |
 
 ## Brand
 
