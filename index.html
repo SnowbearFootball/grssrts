@@ -343,9 +343,10 @@
   .age-chips button.all { background: var(--forest); color: var(--cream); border-color: var(--forest); }
   .age-chips button:hover { border-color: var(--accent); }
   .tpills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin: 0 0 14px; scrollbar-width: none; }
-  .tpill { flex: none; border: 2px solid var(--accent); color: var(--accent-ink); background: var(--paper); border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
-  .tpill i { font-style: normal; font-weight: 700; opacity: .7; margin-left: 4px; }
-  .tpill[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .tpill { flex: none; border: 2px solid var(--accent); color: var(--cream); background: linear-gradient(180deg, #f07a3d, #d9622b); border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 2px 6px rgba(217,98,43,.25); }
+  .tpill:hover { transform: translateY(-1px); }
+  .tpill i { font-style: normal; font-weight: 700; opacity: .85; margin-left: 4px; }
+  .tpill[aria-pressed="true"] { background: var(--forest); border-color: var(--forest); color: var(--cream); box-shadow: none; }
   .shelf { margin: 0 0 22px; }
   .shelf-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
   .shelf-head h2 { margin: 0; font-size: 20px; }
