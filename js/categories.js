@@ -14,7 +14,7 @@ window.CATEGORIES = [
 // Switches for parts of the site still being checked. While false, they only show with ?drafts in the address.
 window.SITE_FLAGS = {
   minis: true,    // the Minis part of Home Ground, and Grass and Roots on the Minis clips
-  newHome: false, // the lean, benefit-led home page. Preview with ?drafts
+  newHome: true,  // the lean, benefit-led home page. Preview with ?drafts
   shelves: true,  // neat section pages (type pills, my age group, rows). Preview with ?drafts
   members: false, // accounts: section pages with type pills, padlocks and Log in / Join free. Preview with ?drafts
 };
