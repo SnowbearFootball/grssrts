@@ -11,7 +11,7 @@
  *    is now the passer for the other receiver. Progressions: end players make space along their lines; the receiver
  *    does a trick and attacks a front cone before passing.
  * 2. Skill (10 mins): same set-up. Receiver v end player, taking turns to defend. Lose the defender anywhere in the zone
- *    before receiving. Owner's change: pass it into a small goal (no keeper) instead of the cone points.
+ *    before receiving. Owner's change: a small goal at each end (no keeper), 1 v 1 at each end, continuous, rotate roles.
  * Owner's changes: the double movement is the headline: check away just a couple of yards (separation), explode back;
  *   pass on angles, not straight lines (easier to open up). Game: play it as a real game, sharp passing and moving; the
  *   coach freezes it to show the better option (double movement, open up, back foot).
@@ -97,8 +97,8 @@
         'Good body angle to receive: half turn, ball out of the body, head up, pass to the end player.',
         'End player and receiver swap. The end player is now the passer for the other receiver. Repeat.',
         'Progressions: end players move along their line to make space. The receiver does a trick and attacks a front cone before passing.',
-        'Skill (10 minutes): same set-up. The receiver and the end player compete, taking turns to defend. Lose your defender anywhere in the zone before receiving.',
-        'Score by passing it into a small goal at the end (no keeper).',
+        'Skill (10 minutes): same grid. 1 v 1 at each end: lose your defender anywhere in the zone before receiving, turn, and pass it into the small goal.',
+        'Owner\'s change: a small goal at each end (no keepers), 1 v 1 at each end. One end plays, then the other: it keeps going. Rotate attacking and defending roles.',
         'Game (20 minutes): 40 × 30 yards, 4 v 4 plus keepers. A floater in a channel on each side: 3 touches, keeps the game flowing.',
         'Play it as a real game: sharp passing and moving. Focus on double movements, opening up the pitch and back-foot control.',
         'Width and depth: make the pitch as big as possible when you have the ball. Step in (freeze) when needed to show the better option.',
@@ -192,30 +192,30 @@
         summary: ['*Double movement*: check away a couple of yards...', '...then *explode* back into space.', '*Angles*, not straight lines: easier to open up.', '*Back foot*, *head up*, pass.'],
       }),
 
-      // ---------------- 2: skill (1 v 1, small goal) ----------------
+      // ---------------- 2: skill (1 v 1 at each end, small goals) ----------------
       Object.assign({}, grid, {
         id: 'lose-your-defender',
         video: 'videos/creating-space-2.mp4',
         kicker: 'Clip 2 · Skill',
         title: 'Lose Your Defender',
-        tagline: 'Lose him, receive, turn, pass it into the small goal.',
-        intro: ['Same grid, now *1 v 1* in the zone.', '*Lose your defender*, receive, turn.', 'Pass it into the *small goal*: no keeper.'],
+        tagline: '1 v 1 at each end, a small goal each end. Keep it going.',
+        intro: ['Same grid, a *small goal* at each end.', '*1 v 1* at one end, then the other.', 'Lose him, turn, *pass it in*. Rotate roles.'],
         keyPhrase: { big: 'LOSE YOUR DEFENDER', small: 'Check away, explode, turn' },
-        legend: { a: 'Attacker', d: 'Defender' },
-        miniGoals: [{ at: [50, 2.5], angle: 0, scale: 0.9 }],
+        legend: { a: 'Attackers', d: 'Defenders' },
+        miniGoals: [{ at: [50, 2.5], angle: 0, scale: 0.9 }, { at: [50, 72.5], angle: 180, scale: 0.9 }],
         players: [
           { id: 'X1', team: 'd', label: '1', x: 50, y: 22 }, { id: 'X2', team: 'a', label: '2', x: 50, y: 33 },
-          { id: 'X3', team: 'a', label: '3', x: 44, y: 50, ball: true }, { id: 'X4', team: 'a', label: '4', x: 56, y: Y3 },
+          { id: 'X3', team: 'a', label: '3', x: 45, y: 45, ball: true }, { id: 'X4', team: 'd', label: '4', x: 53, y: 58 },
         ],
         ball: { owner: 'X3' },
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['Same grid. *1 v 1* in the zone.', 'Take turns to *defend*.', 'Score: pass it into the *small goal*. No keeper.'],
-            tags: { X1: 'DEFENDER', X2: 'ATTACKER' },
+            text: ['A *small goal* at each end, no keepers.', '*1 v 1* at each end: one attacks, one defends.', 'One end, then the other: it *keeps going*.'],
+            tags: { X1: 'DEFENDER', X2: 'ATTACKER', X4: 'DEFENDER' },
           },
           {
-            title: 'CHECK AWAY, EXPLODE',
+            title: 'TOP END: CHECK AWAY, EXPLODE',
             text: ['Check *towards* the passer: he follows.', 'Then *explode* into the space.', 'Lose him *anywhere* in the zone.'],
             tags: { X2: 'DOUBLE MOVE' }, timing: { move: 3 },
             moves: [
@@ -242,44 +242,46 @@
             moves: [{ id: 'X1', to: [46, 26], start: 0.1, end: 0.6, arrow: false }],
           },
           {
-            title: 'SWAP ROLES',
-            text: ['Now *swap*: the defender attacks.', 'New ball from the passer.'],
-            tags: { X1: 'ATTACKER' }, timing: { move: 2.6 },
-            team: { X1: 'a', X2: 'd' },
-            ball: { give: 'X3' },
+            title: 'NOW THE OTHER END',
+            text: ['Straight away: *1 v 1* at the *other end*.', 'Ball in from the top.', 'Check *away*, then *explode*.'],
+            tags: { X3: 'DOUBLE MOVE' }, timing: { move: 3.2 },
+            ball: { give: 'X1' },
             moves: [
-              { id: 'X1', to: [52, 35], start: 0, end: 0.8 },
-              { id: 'X2', to: [50, 25], start: 0, end: 0.8 },
+              { id: 'X3', path: [[47, 43], [58, 50]], start: 0, end: 0.75 },
+              { id: 'X4', path: [[50, 51], [53, 53]], start: 0.1, end: 0.95, arrow: false },
             ],
-          },
-          {
-            title: 'CHECK AWAY, EXPLODE',
-            text: ['Take him *away* a couple of yards...', '...then *explode* into the space.'],
-            tags: { X1: 'EXPLODE' }, timing: { move: 3 },
-            moves: [
-              { id: 'X1', path: [[54, 40], [60, 30]], start: 0, end: 0.75 },
-              { id: 'X2', path: [[52, 32], [53, 27]], start: 0.15, end: 0.95, arrow: false },
-            ],
-            passes: [{ to: 'X1', start: 0.5, end: 0.85 }],
+            passes: [{ to: 'X3', start: 0.45, end: 0.85 }],
           },
           {
             title: 'TURN ON THE BACK FOOT',
             text: ['*Back foot*: turn *away* from him.', '*Head up*.'],
-            tags: { X1: 'BACK FOOT' }, timing: { move: 2.4 },
+            tags: { X3: 'BACK FOOT' }, timing: { move: 2.4 },
             moves: [
-              { id: 'X1', to: [60, 22], start: 0, end: 0.4 },
-              { id: 'X2', to: [56, 28], start: 0.2, end: 0.9, arrow: false },
+              { id: 'X3', to: [61, 58], start: 0, end: 0.4 },
+              { id: 'X4', to: [55, 52], start: 0.2, end: 0.9, arrow: false },
             ],
           },
           {
             title: 'PASS IT IN',
-            text: ['He\'s behind you: *pass it in*.', 'Then swap and go again.'],
-            tags: { X1: 'SCORE' }, timing: { move: 2 },
-            shot: [50.5, 3.2],
-            ball: { to: [50.5, 3.2], start: 0.05, end: 0.4 },
+            text: ['He\'s behind you: *pass it in*.'],
+            tags: { X3: 'SCORE' }, timing: { move: 2 },
+            shot: [50, 71.8],
+            ball: { to: [50, 71.8], start: 0.05, end: 0.4 },
+          },
+          {
+            title: 'ROTATE ROLES',
+            text: ['*Swap* roles at each end.', 'Defenders now attack.', 'Keep it going: one end, then the other.'],
+            tags: { X1: 'ATTACKER', X4: 'ATTACKER' }, timing: { move: 2.8 },
+            team: { X1: 'a', X2: 'd', X3: 'd', X4: 'a' },
+            moves: [
+              { id: 'X1', to: [50, 31], start: 0, end: 0.8 },
+              { id: 'X2', to: [50, 21], start: 0, end: 0.8 },
+              { id: 'X4', to: [48, 48], start: 0, end: 0.8 },
+              { id: 'X3', to: [52, 58], start: 0, end: 0.8 },
+            ],
           },
         ],
-        summary: ['*Check away*, then *explode*: lose your defender.', '*Half turn*, *back foot*: turn away from him.', '*Head up*, pass it into the *small goal*.', 'Swap roles and go again.'],
+        summary: ['*1 v 1* at each end, a *small goal* each end.', '*Check away*, then *explode*: lose your defender.', '*Half turn*, *back foot*, pass it in.', '*Rotate* roles and keep it going.'],
       }),
 
       // ---------------- 3: game ----------------
