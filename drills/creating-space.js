@@ -98,7 +98,8 @@
         'End player and receiver swap. The end player is now the passer for the other receiver. Repeat.',
         'Progressions: end players move along their line to make space. The receiver does a trick and attacks a front cone before passing.',
         'Skill (10 minutes): same grid. 1 v 1 at each end: lose your defender anywhere in the zone before receiving, turn, and pass it into the small goal.',
-        'Owner\'s change: a small goal at each end (no keepers), 1 v 1 at each end. One end plays, then the other: it keeps going. Rotate attacking and defending roles.',
+        'A small goal at each end (no keepers), 1 v 1 at each end. To begin, blues just defend.',
+        'Score, get the ball back and play in your team-mate, who is 1 v 1 at the other end (that end\'s defender is out of the game). Repeat, then rotate: blues become attackers.',
         'Game (20 minutes): 40 × 30 yards, 4 v 4 plus keepers. A floater in a channel on each side: 3 touches, keeps the game flowing.',
         'Play it as a real game: sharp passing and moving. Focus on double movements, opening up the pitch and back-foot control.',
         'Width and depth: make the pitch as big as possible when you have the ball. Step in (freeze) when needed to show the better option.',
@@ -211,7 +212,7 @@
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['A *small goal* at each end, no keepers.', '*1 v 1* at each end: one attacks, one defends.', 'One end, then the other: it *keeps going*.'],
+            text: ['A *small goal* at each end, no keepers.', '*1 v 1* at each end. To begin, *blues* just *defend*.', 'Greens score, then feed their team-mate at the other end.'],
             tags: { X1: 'DEFENDER', X2: 'ATTACKER', X4: 'DEFENDER' },
           },
           {
@@ -242,10 +243,19 @@
             moves: [{ id: 'X1', to: [46, 26], start: 0.1, end: 0.6, arrow: false }],
           },
           {
-            title: 'NOW THE OTHER END',
-            text: ['Straight away: *1 v 1* at the *other end*.', 'Ball in from the top.', 'Check *away*, then *explode*.'],
+            title: 'GET THE BALL',
+            text: ['Goal! The striker *gets the ball* back.', 'That end\'s defender is *out of the game*.'],
+            tags: { X2: 'GET IT', X1: 'OUT' }, timing: { move: 2.4 },
+            moves: [
+              { id: 'X2', to: [47, 8], start: 0, end: 0.8 },
+              { id: 'X1', to: [40, 22], start: 0, end: 0.8, arrow: false },
+            ],
+          },
+          {
+            title: 'PLAY IN YOUR TEAM-MATE',
+            text: ['He plays it in to his *team-mate*...', '...who is *1 v 1* at the *other end*.', 'Check *away*, then *explode*.'],
             tags: { X3: 'DOUBLE MOVE' }, timing: { move: 3.2 },
-            ball: { give: 'X1' },
+            ball: { give: 'X2' },
             moves: [
               { id: 'X3', path: [[47, 43], [58, 50]], start: 0, end: 0.75 },
               { id: 'X4', path: [[50, 51], [53, 53]], start: 0.1, end: 0.95, arrow: false },
@@ -269,8 +279,8 @@
             ball: { to: [50, 71.8], start: 0.05, end: 0.4 },
           },
           {
-            title: 'ROTATE ROLES',
-            text: ['*Swap* roles at each end.', 'Defenders now attack.', 'Keep it going: one end, then the other.'],
+            title: 'REPEAT, THEN ROTATE',
+            text: ['Score, get the ball, *play in your team-mate*. Repeat.', 'When you want: *rotate*.', '*Blues* become the attackers.'],
             tags: { X1: 'ATTACKER', X4: 'ATTACKER' }, timing: { move: 2.8 },
             team: { X1: 'a', X2: 'd', X3: 'd', X4: 'a' },
             moves: [
@@ -281,7 +291,7 @@
             ],
           },
         ],
-        summary: ['*1 v 1* at each end, a *small goal* each end.', '*Check away*, then *explode*: lose your defender.', '*Half turn*, *back foot*, pass it in.', '*Rotate* roles and keep it going.'],
+        summary: ['*1 v 1* at each end, a *small goal* each end.', '*Check away*, then *explode*: lose your defender.', 'Score, get the ball, *play in your team-mate*.', '*Rotate*: blues become attackers.'],
       }),
 
       // ---------------- 3: game ----------------
