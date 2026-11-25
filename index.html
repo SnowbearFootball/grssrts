@@ -235,7 +235,7 @@
   body.v2home .benefit.v2, body.v2home .lede.v2, body.v2home .quote.v2 { display: block !important; }
   body.v2home .who.v2, body.v2home .joinband.v2 { display: grid !important; }
   body.v2home #usps, body.v2home #home > .promo, body.v2home #areas-head, body.v2home #areas { display: none !important; }
-  .hero .benefit { font-size: clamp(13px, 3.75vw, 24px); font-weight: 800; line-height: 1.25; margin: 10px 0 10px; width: max-content; color: var(--text); max-width: none; white-space: nowrap; }
+  .hero .benefit { font-size: clamp(13px, 3.75vw, 24px); font-weight: 800; line-height: 1.1; letter-spacing: -.01em; margin: 10px 0 10px; width: max-content; color: var(--text); max-width: none; white-space: nowrap; }
   .benefit em { font-style: normal; color: var(--accent); }
   .hero .lede { font-size: 17px; color: var(--sub); margin: 0 0 4px; max-width: 40ch; }
   @media (max-width: 480px) { .hero .lede { font-size: 14px; } }
@@ -263,6 +263,17 @@
   .joinform input { border: 0; border-radius: 12px; padding: 12px 14px; font: inherit; font-size: 16px; min-width: 0; }
   .joinform .btn { border-radius: 12px; }
   @media (max-width: 760px) { .who, .joinband, .joinform { grid-template-columns: 1fr !important; } }
+  /* new home page on phones: the message leads, the example clip steps back */
+  @media (max-width: 600px) {
+    body.v2home .hero h1 { font-size: 12.5vw; line-height: 1.04; margin-bottom: 14px; }
+    body.v2home .hero .benefit { white-space: nowrap; width: auto; font-size: 7.6vw !important; line-height: 1.02; letter-spacing: -.01em; margin: 2px 0 12px; }
+    body.v2home .hero .benefit span, body.v2home .hero .benefit em { display: block; }
+    body.v2home .hero .benefit em { padding-left: 1.1em; }
+    body.v2home .hero .lede { font-size: 15px; }
+    body.v2home .hero-clip { width: 84%; margin: 6px auto 0; }
+    body.v2home .hero-clip .beats { display: none; }
+    body.v2home .hero-clip .usp { font-size: 13px; text-align: center; }
+  }
   .usps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: -10px 0 34px; }
   .usp-card { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 4px;
     align-content: start; text-decoration: none; color: var(--text); }
@@ -659,7 +670,7 @@
     <section class="hero">
       <div>
         <h1 class="tagline"><span>Watch it.</span> <span>Coach it.</span> <em>Play it.</em></h1>
-        <p class="benefit v2">Less time explaining. <em>More time coaching.</em></p>
+        <p class="benefit v2"><span>Less time explaining.</span> <em>More time coaching.</em></p>
         <p class="lede v2">Animated grassroots sessions your players can watch before they arrive.</p>
         <div class="cta">
           <button class="btn primary" id="go-sections">Choose a section</button>
@@ -825,40 +836,40 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611251832"></script>
-<script src="js/logo-data.js?v=202611251832"></script>
-<script src="js/drill-engine.js?v=202611251832"></script>
-<script src="js/categories.js?v=202611251832"></script>
-<script src="js/mascots.js?v=202611251832"></script>
-<script src="js/home-clip.js?v=202611251832"></script>
+<script src="js/vendor/qrcode.js?v=202611251859"></script>
+<script src="js/logo-data.js?v=202611251859"></script>
+<script src="js/drill-engine.js?v=202611251859"></script>
+<script src="js/categories.js?v=202611251859"></script>
+<script src="js/mascots.js?v=202611251859"></script>
+<script src="js/home-clip.js?v=202611251859"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611251832"></script>
-<script src="drills/shoot-and-recover.js?v=202611251832"></script>
-<script src="drills/transfer-rondo.js?v=202611251832"></script>
-<script src="drills/set-position.js?v=202611251832"></script>
-<script src="drills/ball-mastery.js?v=202611251832"></script>
-<script src="drills/long-range-shooting.js?v=202611251832"></script>
-<script src="drills/rotation-of-positions.js?v=202611251832"></script>
-<script src="drills/combination-play.js?v=202611251832"></script>
-<script src="drills/switching-play-square.js?v=202611251832"></script>
-<script src="drills/switch-of-play.js?v=202611251832"></script>
-<script src="drills/intercepting.js?v=202611251832"></script>
-<script src="drills/blocking-shots.js?v=202611251832"></script>
-<script src="drills/y-passing.js?v=202611251832"></script>
-<script src="drills/penetration-dribbling.js?v=202611251832"></script>
-<script src="drills/midfield-three.js?v=202611251832"></script>
-<script src="drills/defending-442.js?v=202611251832"></script>
-<script src="drills/five-a-side-shape.js?v=202611251832"></script>
-<script src="drills/dribbling.js?v=202611251832"></script>
-<script src="drills/dribbling-1v1.js?v=202611251832"></script>
-<script src="drills/dribbling-space-overload.js?v=202611251832"></script>
-<script src="drills/defending-outnumbered.js?v=202611251832"></script>
-<script src="drills/short-passing.js?v=202611251832"></script>
-<script src="drills/long-range-passing.js?v=202611251832"></script>
-<script src="drills/close-range-finishing.js?v=202611251832"></script>
-<script src="drills/long-range-finishing.js?v=202611251832"></script>
-<script src="drills/creating-space.js?v=202611251832"></script>
-<script src="drills/defending-matched-up.js?v=202611251832"></script>
+<script src="drills/splash-and-ripple.js?v=202611251859"></script>
+<script src="drills/shoot-and-recover.js?v=202611251859"></script>
+<script src="drills/transfer-rondo.js?v=202611251859"></script>
+<script src="drills/set-position.js?v=202611251859"></script>
+<script src="drills/ball-mastery.js?v=202611251859"></script>
+<script src="drills/long-range-shooting.js?v=202611251859"></script>
+<script src="drills/rotation-of-positions.js?v=202611251859"></script>
+<script src="drills/combination-play.js?v=202611251859"></script>
+<script src="drills/switching-play-square.js?v=202611251859"></script>
+<script src="drills/switch-of-play.js?v=202611251859"></script>
+<script src="drills/intercepting.js?v=202611251859"></script>
+<script src="drills/blocking-shots.js?v=202611251859"></script>
+<script src="drills/y-passing.js?v=202611251859"></script>
+<script src="drills/penetration-dribbling.js?v=202611251859"></script>
+<script src="drills/midfield-three.js?v=202611251859"></script>
+<script src="drills/defending-442.js?v=202611251859"></script>
+<script src="drills/five-a-side-shape.js?v=202611251859"></script>
+<script src="drills/dribbling.js?v=202611251859"></script>
+<script src="drills/dribbling-1v1.js?v=202611251859"></script>
+<script src="drills/dribbling-space-overload.js?v=202611251859"></script>
+<script src="drills/defending-outnumbered.js?v=202611251859"></script>
+<script src="drills/short-passing.js?v=202611251859"></script>
+<script src="drills/long-range-passing.js?v=202611251859"></script>
+<script src="drills/close-range-finishing.js?v=202611251859"></script>
+<script src="drills/long-range-finishing.js?v=202611251859"></script>
+<script src="drills/creating-space.js?v=202611251859"></script>
+<script src="drills/defending-matched-up.js?v=202611251859"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
@@ -1776,6 +1787,7 @@
   function fitBenefit() {
     const b = document.querySelector('.hero .benefit'), t = document.querySelector('.hero .tagline');
     if (!b || !t || !b.offsetParent) return;
+    if (matchMedia('(max-width: 600px)').matches) { b.style.fontSize = ''; return; }
     b.style.fontSize = '12px';
     const rects = [...t.children].map(c => { const r = document.createRange(); r.selectNodeContents(c); return r.getBoundingClientRect(); });
     const left = t.getBoundingClientRect().left, right = Math.max(...rects.map(x => x.right));
