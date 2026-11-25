@@ -51,7 +51,7 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   furthest opponent and is over-hit; waiting players rotate in; say "inside / outside of the foot" with "(big toe)" / "(little toe)" after it, never "instep" (reads as the laces); in dribbling drills all the balls start inside; a run off the ball works as a decoy (defender follows: dribble) or the spare player (defender stays: pass); never dribble towards a team-mate's run (closes your own space, meets two defenders): feint that way, attack away from it; an underlap here = run behind the player on the ball and down the other wing (attackers cross over, "who marks who?"), not a run through the middle; both press the dribbler = pass, both follow the runner = dribble; 2 v 1 needs queues with more attackers than defenders; GK stands on an arc post to post, an extra step towards
   the near post when the ball is wide; long passing: mix it up (drilled along the ground, floated, chipped over a lane blocker) and play it when it's on;
   support after a long pass with space, not all near the ball: one drops short, two wider and a little higher, one gives height
-  (in the middle, furthest from the ball, not in the other end zone: the mid-length pass).
+  (in the middle, furthest from the ball, not in the other end zone: the mid-length pass); finishing drills: decisions are "play what you see", not a set order; while play is at the other end, recover.
 - Remove children's names from any photo before using it. Avoid other companies' watermarked diagrams on the site.
 - Never copy other providers' (e.g. The Coaching Manual) drills, diagrams or wording into the library; sessions come
   from the owner's own plans or are newly written.
@@ -94,6 +94,12 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   4 v 4 + Targets (45 x 30, 2 targets per end zone; middle players play short into a target, ONLY targets play the long pass, into the far end
   zone = a goal; win it = feed your own target; rotate the targets so everyone practises long passes)). Engine: lofted passes
   (`loft: 'float' | 'chip'` on a pass: curved arrow, ball lifts off its shadow).
+  Close Range Finishing (attacking, Technical, U12+, owner's own plan; 34 x 20: two 15 yd shooting zones (like inside the box, adjust
+  for age) + a 4 yd neutral zone, goal + GK each end; 3 clips: Call a Number (3 numbered servers per half; finishes alternate ends:
+  close up first time, meanwhile the first shooter recovers to the neutral zone for a longer finish (let it run / turn and shoot), then
+  close again), Play What You See (2 v 1 each half: he commits = quick pass, mate arriving = soft cushion to hit first time, he follows
+  your mate = touch and shoot; not in a set order; recover to the neutral zone while play is at the other end), 4 v 4 + Floaters
+  (a floater in a wide channel each side, unopposed but quick: 2 or 3 touches, feed it back in timed with a run; mix up angle and speed)).
 - Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
 - Defending attempts: Defending Outnumbered was approved (recovery runs with a 2 v 1 and the zone rule had enough depth). Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
   Intercepting Passes, Blocking Shots and The 5 Y's (waiting for better drawings) are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.
