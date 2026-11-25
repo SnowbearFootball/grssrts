@@ -12,9 +12,9 @@
  *    the other (deeper) blocks the long passing lane. After a long pass the closer defender presses and the other
  *    blocks the lane: each defender presses one end.
  * 3. Game (20 mins): 45 x 30 yds. 4 v 4, anyone can go anywhere (end zones too). 2 target players in each end zone play
- *    for the team with the ball and can't make long passes. A long pass into the end zone furthest away = a goal.
- *    Long pass blocked: play short through the middle to the other end; that player goes long and the team gets up
- *    to support (like a defender playing long to the striker).
+ *    for the team with the ball. Owner's change: the middle players play short; the TARGETS play the long pass. A target's
+ *    long pass into the end zone furthest away = a goal (like a defender playing long to the striker).
+ *    Support with space, not all close to the ball: one drops short, two wider and a little higher, one gives height.
  * Owner's extra points: support and communication; decision making; touch and pass or first time;
  *   mix up the long pass: drilled along the ground, floated, chipped.
  * Pitch units: x 0..100, y 0..75 (about 2 units a yard).
@@ -92,7 +92,7 @@
         lead: 'Get in line, good first touch, then *strike it well*.',
         columns: [
           { heading: 'On the ball', items: ['*Move* to get *in line* of the ball', 'Control with the *right surface*', 'First touch *out of your feet*', 'Strike through the ball, follow through'] },
-          { heading: 'Off the ball', items: ['After a long pass, *get up and support*', 'Be the short option: *bounce it back* or *set it*', '*Talk*: call "time", "man on", "short"'] },
+          { heading: 'Off the ball', items: ['After a long pass, *get up and support*', 'Support *with space*: one short, two wide, one high', 'Be the short option: *bounce it back* or *set it*', '*Talk*: call "time", "man on", "short"'] },
         ],
         phrase: { big: 'SUPPORT AND TALK', small: 'Join in after the long pass' },
       },
@@ -107,7 +107,8 @@
       { word: 'Touch and pass', meaning: 'One touch to control it out of your feet, then the pass.' },
       { word: 'Support', meaning: 'Moving close to the player on the ball so they have a short pass.' },
       { word: 'Passing lane', meaning: 'The line the ball travels along. A defender standing in it blocks the pass.' },
-      { word: 'Target player', meaning: 'A player in an end zone who plays for the team with the ball. They can only pass short.' },
+      { word: 'Target player', meaning: 'A player in an end zone who plays for the team with the ball. Targets play the long pass.' },
+      { word: 'Height', meaning: 'A player furthest forward, stretching the other team.' },
     ],
 
     training: {
@@ -123,8 +124,8 @@
         'One defender presses, the other (deeper) blocks the long passing lane. After a long pass the closer defender presses and the other blocks the lane: each presses one end.',
         'Look at where the defenders are: go short, chip it over the lane blocker, or drill it through an open lane.',
         'Game (20 minutes): 4 v 4 in a 45 × 30 yard area. Anyone can go anywhere, end zones too.',
-        'Two target players in each end zone play for the team with the ball. Target players can\'t make long passes.',
-        'A goal is a long pass into the end zone furthest away. Long pass blocked? Play short through the middle to the other end, who goes long. Then get up and support.',
+        'Two target players in each end zone play for the team with the ball. Middle players play short through the middle into a target; the target plays the long pass.',
+        'A goal is a target\'s long pass into the end zone furthest away. Then support with space: one short, two wide and a little higher, one giving height.',
       ],
     },
 
@@ -132,7 +133,7 @@
       'When did you decide which pass to play?',
       'When did you drill it, float it or chip it? Why?',
       'Where were the defenders when you went short?',
-      'After a long pass, where did you go to support?',
+      'After a long pass, where did you go to support? Were we too close together?',
       'How did you help the player on the ball? What did you say?',
     ],
 
@@ -300,107 +301,80 @@
         video: 'videos/long-range-passing-3.mp4',
         kicker: 'Clip 3 · Game',
         title: '4 v 4 + Targets',
-        tagline: 'A long pass into the far end zone is a goal.',
-        intro: ['*4 v 4*, anyone can go anywhere.', '*2 targets* in each end zone help the team with the ball.', 'Goal = a *long pass* into the *far* end zone.'],
-        keyPhrase: { big: 'PLAY IT WHEN IT\'S ON', small: 'Then get up and support' },
+        tagline: 'The target goes long. Then support with space.',
+        intro: ['*4 v 4* in the middle, anyone can go anywhere.', '*2 targets* in each end zone help the team with the ball.', 'A *target\'s long pass* into the *far* end zone = a *goal*.'],
+        keyPhrase: { big: 'SUPPORT WITH SPACE', small: 'One short, two wide, one high' },
         players: [
           { id: 'T1', team: 't', x: 16, y: 20 }, { id: 'T2', team: 't', x: 16, y: 55 },
           { id: 'T3', team: 't', x: 84, y: 20 }, { id: 'T4', team: 't', x: 84, y: 55 },
-          { id: 'G1', team: 'a', x: 36, y: 24 }, { id: 'G2', team: 'a', x: 38, y: 52 },
-          { id: 'G3', team: 'a', x: 58, y: 28 }, { id: 'G4', team: 'a', x: 62, y: 60 },
-          { id: 'B1', team: 'd', x: 46, y: 22 }, { id: 'B2', team: 'd', x: 46, y: 42 },
-          { id: 'B3', team: 'd', x: 58, y: 40 }, { id: 'B4', team: 'd', x: 68, y: 30 },
+          { id: 'G1', team: 'a', x: 48, y: 24 }, { id: 'G2', team: 'a', x: 42, y: 50 },
+          { id: 'G3', team: 'a', x: 58, y: 38 }, { id: 'G4', team: 'a', x: 64, y: 56 },
+          { id: 'B1', team: 'd', x: 54, y: 30 }, { id: 'B2', team: 'd', x: 48, y: 40 },
+          { id: 'B3', team: 'd', x: 64, y: 46 }, { id: 'B4', team: 'd', x: 58, y: 17 },
         ],
         ball: { owner: 'G1' },
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['*4 v 4* in 45 × 30 yards.', '*2 targets* in each end zone play for the team *with the ball*.', 'Targets *can\'t* make long passes.'],
+            text: ['*4 v 4* in 45 × 30 yards.', '*2 targets* in each end zone play for the team *with the ball*.', 'A *target\'s long pass* into the far end zone = a *goal*.'],
             tags: { T1: 'TARGET', T2: 'TARGET', T3: 'TARGET', T4: 'TARGET' },
           },
           {
-            title: 'USE THE TARGET',
-            text: ['Play into a *target*.', 'Targets play *short*: *support* them.', '*Talk*: call for it.'],
-            tags: { T1: 'TARGET', G2: 'SUPPORT' }, timing: { move: 3.2 },
+            title: 'SHORT THROUGH THE MIDDLE',
+            text: ['Middle players play *short*...', '...through the middle...', '...into a *target*.'],
+            tags: { G2: 'SHORT PASS', T2: 'TARGET' }, timing: { move: 3.4 },
             moves: [
-              { id: 'G2', to: [29, 44], start: 0.1, end: 0.55 },
-              { id: 'B1', to: [36, 31], start: 0.3, end: 0.9, arrow: false },
-              { id: 'B2', to: [40, 40], start: 0.5, end: 1, arrow: false },
+              { id: 'G2', to: [36, 45], start: 0, end: 0.3 },
+              { id: 'B2', to: [42, 49], start: 0.35, end: 0.95, arrow: false },
+              { id: 'B1', to: [44, 34], start: 0.3, end: 0.95, arrow: false },
             ],
-            passes: [{ to: 'T1', start: 0.02, end: 0.38 }, { to: 'G2', start: 0.58, end: 0.9 }],
+            passes: [{ to: 'G2', start: 0.2, end: 0.45 }, { to: 'T2', start: 0.58, end: 0.88 }],
           },
           {
-            title: 'IT\'S ON: DRILL IT',
-            text: ['*Head up*: the long pass is on.', '*Touch*, then *drilled* along the ground.', 'Into the *far end zone* = a *goal*.'],
-            tags: { G2: 'DRILLED', T4: 'SCORE' }, timing: { move: 3.2 },
-            moves: [
-              { id: 'G2', to: [30, 47], start: 0, end: 0.25 },
-              { id: 'T4', to: [84, 53], start: 0.1, end: 0.4, arrow: false },
-              { id: 'B2', to: [38, 43], start: 0.2, end: 0.7, arrow: false },
-            ],
-            passes: [{ to: 'T4', start: 0.3, end: 0.72 }],
-          },
-          {
-            title: 'KEEP IT: GO THE OTHER WAY',
-            text: ['Target plays *short* to a team-mate.', 'Now the *far end* is the other way.', 'Blues get across to *block it*.'],
-            tags: { G4: 'SUPPORT', B3: 'BLOCK' }, timing: { move: 3.2 },
-            moves: [
-              { id: 'G4', to: [70, 58], start: 0, end: 0.4 },
-              { id: 'B3', to: [56, 55], start: 0.3, end: 0.95, arrow: false },
-              { id: 'B4', to: [70, 49], start: 0.3, end: 0.95, arrow: false },
-              { id: 'B2', to: [44, 50], start: 0.4, end: 1, arrow: false },
-            ],
-            passes: [{ to: 'G4', start: 0.42, end: 0.78 }],
-          },
-          {
-            title: 'BLOCKED? GO SHORT, THEN BACK',
-            text: ['Long pass *blocked*: don\'t force it.', 'Play *short through the middle*...', '...to a team-mate at the *other end*.'],
-            tags: { G3: 'SHORT PASS', G1: 'DROP' }, timing: { move: 3.6 },
-            lanes: [{ from: 'G4', to: 'T2', blocked: 'start' }],
-            moves: [
-              { id: 'G3', to: [56, 40], start: 0, end: 0.3 },
-              { id: 'G1', to: [27, 36], start: 0.1, end: 0.55 },
-              { id: 'B1', to: [36, 29], start: 0.6, end: 1, arrow: false },
-              { id: 'B2', to: [42, 44], start: 0.55, end: 1, arrow: false },
-            ],
-            passes: [{ to: 'G3', start: 0.25, end: 0.5 }, { to: 'G1', start: 0.6, end: 0.88 }],
-          },
-          {
-            title: 'NOW LONG: FLOAT IT',
+            title: 'THE TARGET GOES LONG',
             text: ['Like a *defender* playing long to the *striker*.', '*Floated* into the far end zone.', 'That\'s a *goal*.'],
-            tags: { G1: 'FLOATED', T3: 'SCORE' }, timing: { move: 3.6 },
-            moves: [{ id: 'T3', to: [84, 23], start: 0.05, end: 0.35, arrow: false }],
-            passes: [{ to: 'T3', start: 0.1, end: 0.72, loft: 'float' }],
+            tags: { T2: 'FLOATED', T3: 'SCORE' }, timing: { move: 3.6 },
+            moves: [{ id: 'T3', to: [83, 36], start: 0.05, end: 0.5 }],
+            passes: [{ to: 'T3', start: 0.1, end: 0.75, loft: 'float' }],
           },
           {
-            title: 'GET UP AND SUPPORT',
-            text: ['Now *get up* and *support* the target.', 'Targets only play *short*: be there.', '*Talk*: "time", "man on".'],
-            tags: { G3: 'SUPPORT', G2: 'SUPPORT', G4: 'SUPPORT' }, timing: { move: 3.4 },
+            title: 'SUPPORT WITH SPACE',
+            text: ['*Don\'t all go to the ball*: easy to shut down.', 'One *short*. Two *wide*, a little *higher*.', 'One gives us *height*.'],
+            tags: { G3: 'SHORT', G1: 'WIDE', G2: 'WIDE', G4: 'HEIGHT' }, timing: { move: 3.8 },
             moves: [
-              { id: 'G3', to: [72, 26], start: 0, end: 0.55 },
-              { id: 'G2', to: [60, 28], start: 0, end: 0.85 },
-              { id: 'G4', to: [74, 42], start: 0.05, end: 0.6 },
-              { id: 'B4', to: [65, 37], start: 0.2, end: 0.9, arrow: false },
-              { id: 'B3', to: [52, 48], start: 0.3, end: 0.95, arrow: false },
+              { id: 'G3', to: [67, 38], start: 0, end: 0.5 },
+              { id: 'G1', to: [73, 14], start: 0, end: 0.8 },
+              { id: 'G2', to: [73, 61], start: 0, end: 0.95 },
+              { id: 'G4', to: [90, 46], start: 0.05, end: 0.85 },
+              { id: 'B3', to: [76, 42], start: 0.2, end: 0.9, arrow: false },
+              { id: 'B1', to: [62, 28], start: 0.2, end: 0.95, arrow: false },
+              { id: 'B2', to: [58, 46], start: 0.2, end: 0.95, arrow: false },
+              { id: 'B4', to: [64, 19], start: 0.3, end: 0.95, arrow: false },
             ],
-            passes: [{ to: 'G3', start: 0.62, end: 0.9 }],
+          },
+          {
+            title: 'HARDER TO SHUT DOWN',
+            text: ['Spread out: they *can\'t cover* everyone.', 'Target finds the *free* player.', 'Keep it and *go again*.'],
+            tags: { T3: 'TARGET', G2: 'FREE' }, timing: { move: 3 },
+            moves: [{ id: 'B2', to: [66, 53], start: 0.4, end: 1, arrow: false }],
+            passes: [{ to: 'G2', start: 0.1, end: 0.5 }],
           },
           {
             title: 'BLUES WIN IT',
             text: ['A pass gets cut out: *blues win it*.', 'Now the targets play for *blues*.'],
-            tags: { B4: 'WON IT!' }, timing: { move: 2.4 },
-            moves: [{ id: 'B4', to: [66, 28.5], start: 0, end: 0.5, ease: 'out' }],
-            ball: { pass: 'B4', start: 0.15, end: 0.5 },
+            tags: { B2: 'WON IT!' }, timing: { move: 2.4 },
+            moves: [{ id: 'B2', to: [70, 52], start: 0, end: 0.5, ease: 'out' }],
+            ball: { pass: 'B2', start: 0.15, end: 0.5 },
           },
           {
-            title: 'SUPPORT, THEN CHIP IT',
-            text: ['Blue *supports* and *calls* for it.', 'Lane blocked: *chip it* over.', 'Far end zone: *goal*.'],
-            tags: { B3: 'CHIPPED', T2: 'SCORE' }, timing: { move: 3.4 },
-            moves: [{ id: 'G1', to: [32, 51], start: 0, end: 0.5, ease: 'out', arrow: false }],
-            passes: [{ to: 'B3', start: 0.05, end: 0.35 }, { to: 'T2', start: 0.45, end: 0.95, loft: 'chip' }],
+            title: 'SHORT IN, TARGET GOES LONG',
+            text: ['Blues play *short* into a target.', 'The *target* goes long: *drilled*.', 'Far end zone: *goal*.'],
+            tags: { T4: 'DRILLED', T1: 'SCORE' }, timing: { move: 3.4 },
+            moves: [{ id: 'T1', to: [17, 24], start: 0.3, end: 0.6, arrow: false }, { id: 'B2', to: [64, 57], start: 0.3, end: 0.6, arrow: false }],
+            passes: [{ to: 'T4', start: 0.05, end: 0.3 }, { to: 'T1', start: 0.42, end: 0.85 }],
           },
         ],
-        summary: ['Goal = a *long pass* into the *far* end zone.', 'Blocked? *Short through the middle*, then long.', 'Mix it up: *drilled*, *floated*, *chipped*.', 'After the long pass: *get up and support*.'],
+        summary: ['Middle players: *short* through the middle into a target.', 'The *target* goes long into the *far* end zone.', 'Support with *space*: one short, two wide, one high.', 'Mix it up: *drilled*, *floated*, *chipped*.'],
       }),
     ],
   });
