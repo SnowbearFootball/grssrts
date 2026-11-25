@@ -325,6 +325,9 @@
   .age-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .age-chips button { font: inherit; font-weight: 700; font-size: 13.5px; border: 1px solid var(--edge); background: var(--bg); color: var(--text);
     border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+  .grid-head { display: grid; gap: 2px; margin: 6px 0 4px; }
+  .grid-head b { font-size: 22px; line-height: 1.15; color: var(--text); }
+  .grid-head small { font-size: 14px; font-weight: 500; color: var(--muted); }
   .age-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
   .age-pick { font: inherit; font-weight: 800; font-size: 14px; background: var(--forest); color: var(--cream); border: 0; border-radius: 999px;
     padding: 6px 14px; cursor: pointer; }
@@ -772,40 +775,40 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611251510"></script>
-<script src="js/logo-data.js?v=202611251510"></script>
-<script src="js/drill-engine.js?v=202611251510"></script>
-<script src="js/categories.js?v=202611251510"></script>
-<script src="js/mascots.js?v=202611251510"></script>
-<script src="js/home-clip.js?v=202611251510"></script>
+<script src="js/vendor/qrcode.js?v=202611251513"></script>
+<script src="js/logo-data.js?v=202611251513"></script>
+<script src="js/drill-engine.js?v=202611251513"></script>
+<script src="js/categories.js?v=202611251513"></script>
+<script src="js/mascots.js?v=202611251513"></script>
+<script src="js/home-clip.js?v=202611251513"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611251510"></script>
-<script src="drills/shoot-and-recover.js?v=202611251510"></script>
-<script src="drills/transfer-rondo.js?v=202611251510"></script>
-<script src="drills/set-position.js?v=202611251510"></script>
-<script src="drills/ball-mastery.js?v=202611251510"></script>
-<script src="drills/long-range-shooting.js?v=202611251510"></script>
-<script src="drills/rotation-of-positions.js?v=202611251510"></script>
-<script src="drills/combination-play.js?v=202611251510"></script>
-<script src="drills/switching-play-square.js?v=202611251510"></script>
-<script src="drills/switch-of-play.js?v=202611251510"></script>
-<script src="drills/intercepting.js?v=202611251510"></script>
-<script src="drills/blocking-shots.js?v=202611251510"></script>
-<script src="drills/y-passing.js?v=202611251510"></script>
-<script src="drills/penetration-dribbling.js?v=202611251510"></script>
-<script src="drills/midfield-three.js?v=202611251510"></script>
-<script src="drills/defending-442.js?v=202611251510"></script>
-<script src="drills/five-a-side-shape.js?v=202611251510"></script>
-<script src="drills/dribbling.js?v=202611251510"></script>
-<script src="drills/dribbling-1v1.js?v=202611251510"></script>
-<script src="drills/dribbling-space-overload.js?v=202611251510"></script>
-<script src="drills/defending-outnumbered.js?v=202611251510"></script>
-<script src="drills/short-passing.js?v=202611251510"></script>
-<script src="drills/long-range-passing.js?v=202611251510"></script>
-<script src="drills/close-range-finishing.js?v=202611251510"></script>
-<script src="drills/long-range-finishing.js?v=202611251510"></script>
-<script src="drills/creating-space.js?v=202611251510"></script>
-<script src="drills/defending-matched-up.js?v=202611251510"></script>
+<script src="drills/splash-and-ripple.js?v=202611251513"></script>
+<script src="drills/shoot-and-recover.js?v=202611251513"></script>
+<script src="drills/transfer-rondo.js?v=202611251513"></script>
+<script src="drills/set-position.js?v=202611251513"></script>
+<script src="drills/ball-mastery.js?v=202611251513"></script>
+<script src="drills/long-range-shooting.js?v=202611251513"></script>
+<script src="drills/rotation-of-positions.js?v=202611251513"></script>
+<script src="drills/combination-play.js?v=202611251513"></script>
+<script src="drills/switching-play-square.js?v=202611251513"></script>
+<script src="drills/switch-of-play.js?v=202611251513"></script>
+<script src="drills/intercepting.js?v=202611251513"></script>
+<script src="drills/blocking-shots.js?v=202611251513"></script>
+<script src="drills/y-passing.js?v=202611251513"></script>
+<script src="drills/penetration-dribbling.js?v=202611251513"></script>
+<script src="drills/midfield-three.js?v=202611251513"></script>
+<script src="drills/defending-442.js?v=202611251513"></script>
+<script src="drills/five-a-side-shape.js?v=202611251513"></script>
+<script src="drills/dribbling.js?v=202611251513"></script>
+<script src="drills/dribbling-1v1.js?v=202611251513"></script>
+<script src="drills/dribbling-space-overload.js?v=202611251513"></script>
+<script src="drills/defending-outnumbered.js?v=202611251513"></script>
+<script src="drills/short-passing.js?v=202611251513"></script>
+<script src="drills/long-range-passing.js?v=202611251513"></script>
+<script src="drills/close-range-finishing.js?v=202611251513"></script>
+<script src="drills/long-range-finishing.js?v=202611251513"></script>
+<script src="drills/creating-space.js?v=202611251513"></script>
+<script src="drills/defending-matched-up.js?v=202611251513"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
@@ -1276,12 +1279,12 @@
       const byType = types.map(t => pool.filter(x => x.type === t).reverse());
       pick = [];
       for (let i = 0; pick.length < pool.length; i++) byType.forEach(q => { if (q[i]) pick.push(q[i]); });
-      $('sec-count').textContent = pool.length ? `A selection of ${pool.length} ${ageOn ? 'U' + myAge + ' ' : ''}sessions` : '';
+      $('sec-count').innerHTML = pool.length ? `<span class="grid-head"><b>A selection of sessions</b><small>${pool.length} ${ageOn ? 'for U' + myAge : 'in Attacking'.replace('Attacking', esc(cat.name))}</small></span>` : '';
     } else {
       pick = (ageOn && !F.age ? list.filter(x => suits(x, myAge)) : list).slice().reverse();
       if (!F.q && !F.saved && !activeCount()) $('clear-filters').hidden = true;
-      $('sec-count').textContent = F.type && TYPE_WHAT[F.type] && !F.q && !F.saved && !activeCount()
-        ? `${plural(pick.length, F.type.toLowerCase() + ' session')}${ageOn ? ' for U' + myAge : ''} · ${TYPE_WHAT[F.type]}`
+      $('sec-count').innerHTML = F.type && !F.q && !F.saved && !activeCount()
+        ? `<span class="grid-head"><b>${esc(F.type)}</b><small>${TYPE_WHAT[F.type] ? esc(TYPE_WHAT[F.type]) + ' ' : ''}${plural(pick.length, 'session')}${ageOn ? ' for U' + myAge : ''}.</small></span>`
         : `${plural(pick.length, 'session')}${ageOn ? ' for U' + myAge : ''}`;
     }
     const n = Math.min(pick.length, showN);
