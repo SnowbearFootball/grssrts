@@ -580,6 +580,7 @@
     'QUICK PASS': { get bg() { return C.accent; }, fg: '#fff' },
     CUSHION: { bg: '#16351f', fg: '#fff' },
     'FOLLOW UP': { bg: '#16351f', fg: '#fff' },
+    'TWO TOUCH': { get bg() { return C.accent; }, fg: '#fff' },
     SUPPORT: { bg: '#16351f', fg: '#fff' },
     'TOUCH AND PASS': { get bg() { return C.accent; }, fg: '#fff' },
     'SHORT PASS': { bg: '#16351f', fg: '#fff' },
