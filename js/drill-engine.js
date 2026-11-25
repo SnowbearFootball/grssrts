@@ -553,6 +553,10 @@
     FLOATER: { bg: '#6b7280', fg: '#fff' },
     MOVE: { bg: '#16351f', fg: '#fff' },
     'IN LINE': { bg: '#16351f', fg: '#fff' },
+    SUPPORT: { bg: '#16351f', fg: '#fff' },
+    'TOUCH AND PASS': { get bg() { return C.accent; }, fg: '#fff' },
+    'SHORT PASS': { bg: '#16351f', fg: '#fff' },
+    TARGET: { bg: '#6b7280', fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
