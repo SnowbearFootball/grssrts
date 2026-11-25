@@ -325,6 +325,8 @@
   .age-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .age-chips button { font: inherit; font-weight: 700; font-size: 13.5px; border: 1px solid var(--edge); background: var(--bg); color: var(--text);
     border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+  .age-hint { font-size: 13px; color: var(--muted); }
+  .age-chips button.all { background: var(--forest); color: var(--cream); border-color: var(--forest); }
   .age-chips button:hover { border-color: var(--accent); }
   .tpills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin: 0 0 14px; scrollbar-width: none; }
   .tpill { flex: none; border: 2px solid var(--accent); color: var(--accent-ink); background: var(--paper); border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
@@ -1236,7 +1238,7 @@
     $('sec-banner').hidden = !MEMBERS || member;
     $('sec-banner').innerHTML = `<div><b>Join free to watch every session</b><span>Browse everything. One session is free to watch each month.</span></div>
       <div class="btns"><a class="j" href="#join">Join free</a><a class="l" href="#login">Log in</a></div>`;
-    const ageOn = myAge && !allAges;
+    const ageOn = myAge && myAge !== 'all' && !allAges;
     const pool = ageOn ? all.filter(x => suits(x, myAge)) : all;
     const types = TYPE_ORDER.filter(t => all.some(x => x.type === t)).concat([...new Set(all.map(x => x.type).filter(t => t && !TYPE_ORDER.includes(t)))]);
     $('type-pills').hidden = types.length < 2;
@@ -1247,9 +1249,10 @@
     // my age group: asked once, remembered on this device
     $('age-bar').hidden = false;
     $('age-bar').innerHTML = !myAge
-      ? `<b>Which age do you coach?</b><div class="age-chips">${AGES.map(a => `<button data-myage="${a}">U${a}</button>`).join('')}</div>`
+      ? `<b>Which age group?</b><span class="age-hint">Coach, parent or player: pick one to see what suits it.</span>
+         <div class="age-chips">${AGES.map(a => `<button data-myage="${a}">U${a}</button>`).join('')}<button class="all" data-myage="all">All ages</button></div>`
       : `<span>${ageOn ? `Showing sessions for <b>U${myAge}</b>` : 'Showing <b>all ages</b>'}</span>
-         <button data-allages>${ageOn ? 'Show all ages' : `Back to U${myAge}`}</button><button data-myage="">Change age</button>`;
+         ${myAge !== 'all' ? `<button data-allages>${ageOn ? 'Show all ages' : `Back to U${myAge}`}</button>` : ''}<button data-myage="">${myAge === 'all' ? 'Pick an age group' : 'Change age'}</button>`;
     if (browsing) {
       const free = MEMBERS ? all.find(isFree) : null;
       const newest = pool.filter(x => x !== free).slice(-3).reverse();
@@ -1277,11 +1280,11 @@
   }
   const AGE_KEY = 'grssrts:my-age';
   let myAge = 0, allAges = false;
-  try { myAge = +localStorage.getItem(AGE_KEY) || 0; } catch (e) { /* private window */ }
+  try { const v = localStorage.getItem(AGE_KEY); myAge = v === 'all' ? 'all' : +v || 0; } catch (e) { /* private window */ }
   const suits = (s, a) => minAge(s) <= a && a <= maxAge(s);
   document.addEventListener('click', e => {
     const m = e.target.closest('[data-myage]');
-    if (m) { myAge = +m.dataset.myage || 0; allAges = false; try { localStorage.setItem(AGE_KEY, String(myAge || '')); } catch (x) {} rerender(); return; }
+    if (m) { const v = m.dataset.myage; myAge = v === 'all' ? 'all' : +v || 0; allAges = false; try { localStorage.setItem(AGE_KEY, String(myAge || '')); } catch (x) {} rerender(); return; }
     if (e.target.closest('[data-allages]')) { allAges = !allAges; rerender(); }
   });
   document.addEventListener('click', e => {

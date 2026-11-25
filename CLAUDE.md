@@ -173,7 +173,7 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - Accounts preview is built (SITE_FLAGS.members = false; see it with ?drafts, "pretend to log in" button until the login service is
   connected). Free session per section in FREE_SESSIONS (js/categories.js), changed monthly; replaces the first-clip taster.
   Topic list in TOPICS (js/categories.js); every session has `topics`. Coach sessions: `fromCoach: true` ("From a coach" label).
-- Neater section pages (preview, SITE_FLAGS.shelves; ?drafts shows them): type pills with counts, "Which age do you coach?"
+- Neater section pages (preview, SITE_FLAGS.shelves; ?drafts shows them): type pills with counts, "Which age group?" (coach, parent or player; or All ages)
   (remembered on the device, Show all ages / Change age), a "New" row, rows of 3 per type with See all, Search / Saved / Refine.
   Works without logins; padlocks + Log in only with SITE_FLAGS.members (preview ?drafts&members).
 - Section page design (approved): orange Type pills across the top (All / Technical / Tactical / Game / Rondo,
