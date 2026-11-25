@@ -34,7 +34,13 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - **Logo:** "GRSS" then "RTS" standing in a **football goal** (left post is the divider; deeper net, stanchions angled down
   to the ground, side net is four-sided, not triangular). The owner rejected a box/hockey-goal look and rejected putting
   all of GRSS RTS inside the goal. Built by `tools/build-logo.js`, PNGs by `tools/build-logo-png.js`.
+- **Logo versions:** main logo (goal with net) for site, clips, PDFs; kit logo (goal outline, no net: `grss-rts-kit*.svg`) for
+  embroidery (hoodies, jackets, bags); plain "GRSS | RTS" with an orange bar for tiny items (cap side, tags). Keep the bar: it's
+  the goal's left post, simplified. Write the name "GRSS | RTS"; "GRSS RTS" only where the bar can't be typed (email sender etc.).
 - **App icon:** GRSS stacked over RTS-in-the-goal, cream and orange on forest green (`assets/logo/grss-rts-icon.svg`).
+- Home page USPs (under the hero, heading "Why coaches use GRSS | RTS"): three orange cards like the Minis pill: See it move
+  (every session animated), Share it with your squad (players, parents, co-coaches), Practise at home (Home Ground, free).
+  Owner rejected wording about "arrows first" here: just say it's animated.
 - Tagline "Watch it. Coach it. Play it." (big heading). Explanation line: "Every session as a short animated clip:
   see the plan, watch it happen, understand why." Keep them separate.
 

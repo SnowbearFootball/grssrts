@@ -224,8 +224,34 @@
   .none { color: var(--sub); background: var(--paper); border: 1px dashed var(--edge); border-radius: 12px; padding: 22px; margin: 0 0 30px; }
   .soon { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 30px; padding: 0; list-style: none; }
   .soon li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; font-weight: 600; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+  .kit { list-style: none; margin: 0 0 24px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .kit li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px 10px; min-height: 64px;
+    display: grid; place-items: center; text-align: center; font-weight: 700; font-size: 15px; line-height: 1.25; }
+  @media (max-width: 760px) { .kit { grid-template-columns: 1fr 1fr; } .kit li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
   .soon li span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; flex: none; }
   /* "Your session, animated": home-page band and the Dugout page */
+  .usps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: -10px 0 34px; }
+  .usp-card { background: var(--paper); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 4px;
+    align-content: start; text-decoration: none; color: var(--text); }
+  .usp-card:hover { border-color: var(--accent); }
+  .usp-card svg { width: 30px; height: 30px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 4px; }
+  .usp-card b { font-size: 17px; line-height: 1.2; }
+  .usp-card span { color: var(--sub); font-size: 14px; line-height: 1.4; }
+  .usp-card em { font-style: normal; font-weight: 700; font-size: 13.5px; color: var(--accent-ink); margin-top: 4px; }
+  @media (max-width: 760px) { .usps { grid-template-columns: 1fr; gap: 8px; } .usp-card { grid-template-columns: 34px 1fr; column-gap: 12px; }
+    .usp-card svg { grid-row: span 3; margin: 2px 0 0; } }
+  .usps-head { grid-column: 1 / -1; margin: 0 0 2px; font-size: 22px; }
+  .usp-card { border-top: 4px solid var(--accent); box-shadow: 0 6px 18px rgba(22,53,31,.08); padding: 18px; }
+  .usp-card svg { width: 52px; height: 52px; padding: 12px; border-radius: 50%; background: var(--accent); stroke: #fff; }
+  .usp-card b { font-size: 19px; }
+  .usps .usp-card { background: linear-gradient(180deg, #f07a3d, #d9622b); border-color: #d9622b; border-top-color: #d9622b; color: #fff;
+    box-shadow: 0 6px 18px rgba(217,98,43,.28); }
+  .usps .usp-card { transition: transform .15s; }
+  .usps .usp-card:hover { transform: translateY(-2px); }
+  .usps .usp-card svg { background: #fff; stroke: var(--accent); }
+  .usps .usp-card span { color: #fff3ea; }
+  .usps .usp-card em { color: var(--forest); background: var(--cream); justify-self: start; border-radius: 999px; padding: 5px 12px; margin-top: 8px; }
+  @media (max-width: 760px) { .usp-card svg { width: 44px; height: 44px; padding: 10px; } .usp-card { grid-template-columns: 44px 1fr; } }
   .promo { background: var(--forest); color: var(--cream); border-radius: 16px; padding: 24px; display: grid; grid-template-columns: 1fr 1.05fr;
     gap: 24px; align-items: center; margin: 0 0 40px; }
   .promo .eyebrow { color: var(--accent-soft); }
@@ -590,6 +616,18 @@
       </div>
     </section>
 
+    <section class="usps" id="usps" aria-label="Why GRSS | RTS">
+      <h2 class="usps-head">Why coaches use GRSS | RTS</h2>
+      <a class="usp-card" href="#shoot-and-recover">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg>
+        <b>See it move</b><span>Every session is animated, so everyone sees exactly what to do.</span><em>Watch one ›</em></a>
+      <a class="usp-card" href="#shoot-and-recover">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.9l7.6-4.4M8.2 13.1l7.6 4.4"/></svg>
+        <b>Share it with your squad</b><span>One link or a printable plan for players, parents and co-coaches.</span><em>See how ›</em></a>
+      <a class="usp-card" href="#home-ground">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2.5"/></svg>
+        <b>Practise at home</b><span>Home Ground for Minis and Juniors. Free, no sign-up.</span><em>Go to Home Ground ›</em></a>
+    </section>
     <section class="promo" aria-labelledby="promo-title">
       <div>
         <p class="eyebrow">For coaches</p>
@@ -706,40 +744,40 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611251327"></script>
-<script src="js/logo-data.js?v=202611251327"></script>
-<script src="js/drill-engine.js?v=202611251327"></script>
-<script src="js/categories.js?v=202611251327"></script>
-<script src="js/mascots.js?v=202611251327"></script>
-<script src="js/home-clip.js?v=202611251327"></script>
+<script src="js/vendor/qrcode.js?v=202611251345"></script>
+<script src="js/logo-data.js?v=202611251345"></script>
+<script src="js/drill-engine.js?v=202611251345"></script>
+<script src="js/categories.js?v=202611251345"></script>
+<script src="js/mascots.js?v=202611251345"></script>
+<script src="js/home-clip.js?v=202611251345"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611251327"></script>
-<script src="drills/shoot-and-recover.js?v=202611251327"></script>
-<script src="drills/transfer-rondo.js?v=202611251327"></script>
-<script src="drills/set-position.js?v=202611251327"></script>
-<script src="drills/ball-mastery.js?v=202611251327"></script>
-<script src="drills/long-range-shooting.js?v=202611251327"></script>
-<script src="drills/rotation-of-positions.js?v=202611251327"></script>
-<script src="drills/combination-play.js?v=202611251327"></script>
-<script src="drills/switching-play-square.js?v=202611251327"></script>
-<script src="drills/switch-of-play.js?v=202611251327"></script>
-<script src="drills/intercepting.js?v=202611251327"></script>
-<script src="drills/blocking-shots.js?v=202611251327"></script>
-<script src="drills/y-passing.js?v=202611251327"></script>
-<script src="drills/penetration-dribbling.js?v=202611251327"></script>
-<script src="drills/midfield-three.js?v=202611251327"></script>
-<script src="drills/defending-442.js?v=202611251327"></script>
-<script src="drills/five-a-side-shape.js?v=202611251327"></script>
-<script src="drills/dribbling.js?v=202611251327"></script>
-<script src="drills/dribbling-1v1.js?v=202611251327"></script>
-<script src="drills/dribbling-space-overload.js?v=202611251327"></script>
-<script src="drills/defending-outnumbered.js?v=202611251327"></script>
-<script src="drills/short-passing.js?v=202611251327"></script>
-<script src="drills/long-range-passing.js?v=202611251327"></script>
-<script src="drills/close-range-finishing.js?v=202611251327"></script>
-<script src="drills/long-range-finishing.js?v=202611251327"></script>
-<script src="drills/creating-space.js?v=202611251327"></script>
-<script src="drills/defending-matched-up.js?v=202611251327"></script>
+<script src="drills/splash-and-ripple.js?v=202611251345"></script>
+<script src="drills/shoot-and-recover.js?v=202611251345"></script>
+<script src="drills/transfer-rondo.js?v=202611251345"></script>
+<script src="drills/set-position.js?v=202611251345"></script>
+<script src="drills/ball-mastery.js?v=202611251345"></script>
+<script src="drills/long-range-shooting.js?v=202611251345"></script>
+<script src="drills/rotation-of-positions.js?v=202611251345"></script>
+<script src="drills/combination-play.js?v=202611251345"></script>
+<script src="drills/switching-play-square.js?v=202611251345"></script>
+<script src="drills/switch-of-play.js?v=202611251345"></script>
+<script src="drills/intercepting.js?v=202611251345"></script>
+<script src="drills/blocking-shots.js?v=202611251345"></script>
+<script src="drills/y-passing.js?v=202611251345"></script>
+<script src="drills/penetration-dribbling.js?v=202611251345"></script>
+<script src="drills/midfield-three.js?v=202611251345"></script>
+<script src="drills/defending-442.js?v=202611251345"></script>
+<script src="drills/five-a-side-shape.js?v=202611251345"></script>
+<script src="drills/dribbling.js?v=202611251345"></script>
+<script src="drills/dribbling-1v1.js?v=202611251345"></script>
+<script src="drills/dribbling-space-overload.js?v=202611251345"></script>
+<script src="drills/defending-outnumbered.js?v=202611251345"></script>
+<script src="drills/short-passing.js?v=202611251345"></script>
+<script src="drills/long-range-passing.js?v=202611251345"></script>
+<script src="drills/close-range-finishing.js?v=202611251345"></script>
+<script src="drills/long-range-finishing.js?v=202611251345"></script>
+<script src="drills/creating-space.js?v=202611251345"></script>
+<script src="drills/defending-matched-up.js?v=202611251345"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
@@ -1533,7 +1571,7 @@
         <div>${linkBtn(LINKS.suggestTopic, 'Suggest a topic', false)}</div></section>`,
     'join': () => joinBody(),
     'privacy': () => privacyBody(),
-    'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
+    'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div><ul class="kit">${a.plans.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
       <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
   };
   function renderArea(a, parent) {
