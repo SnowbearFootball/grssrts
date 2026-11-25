@@ -215,7 +215,8 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   Quote approved: "They've already seen the drill, so I spend my time coaching the detail, not explaining the set-up." (swap for
   a real Burgess Hill coach quote later). Benefit line chosen: "Less time explaining. More time coaching."
   Built as a preview (SITE_FLAGS.newHome = false; ?drafts shows it): hero keeps the moving clip; buttons Find a session / Join free;
-  audience cards; the three Sessions tiles kept (route into sections); quote; Join band (email carries over to the Join page).
+  audience cards (Browse sessions scrolls to the section tiles; Practise at home opens Home Ground, which splits Minis / Juniors);
+  the three Sessions tiles kept (route into sections); quote; Join band (email carries over to the Join page).
   Hides the USP cards, the Dugout promo box and "More from" tiles (still in the menu). Computer: benefit line on one line, sized to
   the tagline width. Phones: tagline bigger (stagger kept: owner likes it), order: tagline, benefit in a green pill (cream + orange words, two centred lines), the clip full width, then Find a session / Join free; the lede line is hidden on phones. (Owner felt option B read as "one long title".) Pill centred under the tagline (phone and computer).
 
