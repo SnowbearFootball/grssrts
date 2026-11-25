@@ -244,6 +244,12 @@
   .usp-card { border-top: 4px solid var(--accent); box-shadow: 0 6px 18px rgba(22,53,31,.08); padding: 18px; }
   .usp-card svg { width: 52px; height: 52px; padding: 12px; border-radius: 50%; background: var(--accent); stroke: #fff; }
   .usp-card b { font-size: 19px; }
+  .usps.orange .usp-card { background: linear-gradient(180deg, #f07a3d, #d9622b); border-color: #d9622b; border-top-color: #d9622b; color: #fff;
+    box-shadow: 0 6px 18px rgba(217,98,43,.28); }
+  .usps.orange .usp-card:hover { transform: translateY(-2px); }
+  .usps.orange .usp-card svg { background: #fff; stroke: var(--accent); }
+  .usps.orange .usp-card span { color: #fff3ea; }
+  .usps.orange .usp-card em { color: var(--forest); background: var(--cream); justify-self: start; border-radius: 999px; padding: 5px 12px; margin-top: 8px; }
   .usps.dark .usp-card { background: var(--forest); border-color: var(--forest); border-top-color: var(--accent); color: var(--cream); }
   .usps.dark .usp-card span { color: #ddd3be; }
   .usps.dark .usp-card em { color: var(--accent-soft); }
@@ -1072,6 +1078,7 @@
   function renderHome() {
     $('usps').hidden = !DRAFTS;   // preview only until approved
     $('usps').classList.toggle('dark', /[?&]usp=dark/.test(location.search));
+    $('usps').classList.toggle('orange', /[?&]usp=orange/.test(location.search));
     $('mains').innerHTML = CATS.map(c => {
       const n = SESSIONS.filter(s => s.category === c.id).length;
       return `<a class="main-tile" href="#${c.id}"><svg viewBox="0 0 24 24" aria-hidden="true">${c.icon}</svg>
