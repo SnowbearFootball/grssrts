@@ -209,5 +209,14 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 
 ## Ideas agreed, not built yet
 
+- Home page rework (owner: "better direction"; mock-up only so far): lean and benefit-led, five blocks: hero (tagline, bold benefit
+  line, Find a session + Join free, big clip), three audience cards with ticks (Coaches green / Players orange / Parents cream),
+  a quote, Join band with email box, footer. Copy must never suggest the coach isn't needed (owner rejected "We just play").
+  Quote approved: "They've already seen the drill, so I spend my time coaching the detail, not explaining the set-up." (swap for
+  a real Burgess Hill coach quote later). Benefit line chosen: "Less time explaining. More time coaching."
+  Built as a preview (SITE_FLAGS.newHome = false; ?drafts shows it): hero keeps the moving clip; buttons Find a session / Join free;
+  audience cards; the three Sessions tiles kept (route into sections); quote; Join band (email carries over to the Join page).
+  Hides the USP cards, the Dugout promo box and "More from" tiles (still in the menu).
+
 - Installable web app (PWA) with clips saved for offline use at training; icons are ready. App stores later.
 - Per-session link previews for WhatsApp.
