@@ -173,9 +173,10 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - Accounts preview is built (SITE_FLAGS.members = false; see it with ?drafts, "pretend to log in" button until the login service is
   connected). Free session per section in FREE_SESSIONS (js/categories.js), changed monthly; replaces the first-clip taster.
   Topic list in TOPICS (js/categories.js); every session has `topics`. Coach sessions: `fromCoach: true` ("From a coach" label).
-- Neater section pages (preview, SITE_FLAGS.shelves; ?drafts shows them): owner wants uniform, symmetrical and informative.
+- Neater section pages (LIVE since 25 Nov 2026, SITE_FLAGS.shelves = true): owner wants uniform, symmetrical and informative.
   Type pills solid orange with cream writing, the chosen one forest green (wrap on phones), one-line "Age group: All ages ▾" (opens U6–U16 + All ages; remembered on the device), Search /
   Saved / Refine, then always a grid in rows of 3: a mixed selection of 6 (newest of each type in turn), "Show more" adds 6.
+  Heading above the grid in green ("A selection of sessions" / the chosen type + what it means); owner chose green over orange.
   No per-type rows (they left lonely single cards). Works without logins; padlocks + Log in only with SITE_FLAGS.members (preview ?drafts&members).
 - Section page design (approved): orange Type pills across the top (All / Technical / Tactical / Game / Rondo,
   with counts), rows of up to 3 sessions per type, padlock "Join to watch" on cards, and one featured session first on All with an
