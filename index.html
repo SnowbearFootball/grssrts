@@ -224,6 +224,10 @@
   .none { color: var(--sub); background: var(--paper); border: 1px dashed var(--edge); border-radius: 12px; padding: 22px; margin: 0 0 30px; }
   .soon { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 30px; padding: 0; list-style: none; }
   .soon li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px; font-weight: 600; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+  .kit { list-style: none; margin: 0 0 24px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+  .kit li { background: var(--paper); border: 1px solid var(--edge); border-radius: 12px; padding: 14px 10px; min-height: 64px;
+    display: grid; place-items: center; text-align: center; font-weight: 700; font-size: 15px; line-height: 1.25; }
+  @media (max-width: 760px) { .kit { grid-template-columns: 1fr 1fr; } .kit li:last-child:nth-child(odd) { grid-column: 1 / -1; } }
   .soon li span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; flex: none; }
   /* "Your session, animated": home-page band and the Dugout page */
   .promo { background: var(--forest); color: var(--cream); border-radius: 16px; padding: 24px; display: grid; grid-template-columns: 1fr 1.05fr;
@@ -706,40 +710,40 @@
 </div>
 
 <div id="print-plan" aria-hidden="true"></div>
-<script src="js/vendor/qrcode.js?v=202611251327"></script>
-<script src="js/logo-data.js?v=202611251327"></script>
-<script src="js/drill-engine.js?v=202611251327"></script>
-<script src="js/categories.js?v=202611251327"></script>
-<script src="js/mascots.js?v=202611251327"></script>
-<script src="js/home-clip.js?v=202611251327"></script>
+<script src="js/vendor/qrcode.js?v=202611251332"></script>
+<script src="js/logo-data.js?v=202611251332"></script>
+<script src="js/drill-engine.js?v=202611251332"></script>
+<script src="js/categories.js?v=202611251332"></script>
+<script src="js/mascots.js?v=202611251332"></script>
+<script src="js/home-clip.js?v=202611251332"></script>
 <!-- Sessions: add one script tag per session file -->
-<script src="drills/splash-and-ripple.js?v=202611251327"></script>
-<script src="drills/shoot-and-recover.js?v=202611251327"></script>
-<script src="drills/transfer-rondo.js?v=202611251327"></script>
-<script src="drills/set-position.js?v=202611251327"></script>
-<script src="drills/ball-mastery.js?v=202611251327"></script>
-<script src="drills/long-range-shooting.js?v=202611251327"></script>
-<script src="drills/rotation-of-positions.js?v=202611251327"></script>
-<script src="drills/combination-play.js?v=202611251327"></script>
-<script src="drills/switching-play-square.js?v=202611251327"></script>
-<script src="drills/switch-of-play.js?v=202611251327"></script>
-<script src="drills/intercepting.js?v=202611251327"></script>
-<script src="drills/blocking-shots.js?v=202611251327"></script>
-<script src="drills/y-passing.js?v=202611251327"></script>
-<script src="drills/penetration-dribbling.js?v=202611251327"></script>
-<script src="drills/midfield-three.js?v=202611251327"></script>
-<script src="drills/defending-442.js?v=202611251327"></script>
-<script src="drills/five-a-side-shape.js?v=202611251327"></script>
-<script src="drills/dribbling.js?v=202611251327"></script>
-<script src="drills/dribbling-1v1.js?v=202611251327"></script>
-<script src="drills/dribbling-space-overload.js?v=202611251327"></script>
-<script src="drills/defending-outnumbered.js?v=202611251327"></script>
-<script src="drills/short-passing.js?v=202611251327"></script>
-<script src="drills/long-range-passing.js?v=202611251327"></script>
-<script src="drills/close-range-finishing.js?v=202611251327"></script>
-<script src="drills/long-range-finishing.js?v=202611251327"></script>
-<script src="drills/creating-space.js?v=202611251327"></script>
-<script src="drills/defending-matched-up.js?v=202611251327"></script>
+<script src="drills/splash-and-ripple.js?v=202611251332"></script>
+<script src="drills/shoot-and-recover.js?v=202611251332"></script>
+<script src="drills/transfer-rondo.js?v=202611251332"></script>
+<script src="drills/set-position.js?v=202611251332"></script>
+<script src="drills/ball-mastery.js?v=202611251332"></script>
+<script src="drills/long-range-shooting.js?v=202611251332"></script>
+<script src="drills/rotation-of-positions.js?v=202611251332"></script>
+<script src="drills/combination-play.js?v=202611251332"></script>
+<script src="drills/switching-play-square.js?v=202611251332"></script>
+<script src="drills/switch-of-play.js?v=202611251332"></script>
+<script src="drills/intercepting.js?v=202611251332"></script>
+<script src="drills/blocking-shots.js?v=202611251332"></script>
+<script src="drills/y-passing.js?v=202611251332"></script>
+<script src="drills/penetration-dribbling.js?v=202611251332"></script>
+<script src="drills/midfield-three.js?v=202611251332"></script>
+<script src="drills/defending-442.js?v=202611251332"></script>
+<script src="drills/five-a-side-shape.js?v=202611251332"></script>
+<script src="drills/dribbling.js?v=202611251332"></script>
+<script src="drills/dribbling-1v1.js?v=202611251332"></script>
+<script src="drills/dribbling-space-overload.js?v=202611251332"></script>
+<script src="drills/defending-outnumbered.js?v=202611251332"></script>
+<script src="drills/short-passing.js?v=202611251332"></script>
+<script src="drills/long-range-passing.js?v=202611251332"></script>
+<script src="drills/close-range-finishing.js?v=202611251332"></script>
+<script src="drills/long-range-finishing.js?v=202611251332"></script>
+<script src="drills/creating-space.js?v=202611251332"></script>
+<script src="drills/defending-matched-up.js?v=202611251332"></script>
 <script>
 (function () {
   // draft: true sessions stay off the site until approved; open index.html?drafts to see them
@@ -1533,7 +1537,7 @@
         <div>${linkBtn(LINKS.suggestTopic, 'Suggest a topic', false)}</div></section>`,
     'join': () => joinBody(),
     'privacy': () => privacyBody(),
-    'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div>${soonList(a.plans)}
+    'kit-room': a => `<div class="section-head"><h2>Coming soon</h2><p>GRSS | RTS branded kit.</p></div><ul class="kit">${a.plans.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
       <div>${linkBtn(LINKS.kitRoomInterest, 'Tell me when it opens', true)}</div>`,
   };
   function renderArea(a, parent) {
