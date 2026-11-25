@@ -37,6 +37,7 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Short Passing (attacking, U12+) | 1. Pass and Move · 2. Keep It: 5 v 2 · 3. Overload: 10 v 4 |
 | Long Range Passing (attacking, U14+) | 1. End to End · 2. Press and Block · 3. 4 v 4 + Targets |
 | Close Range Finishing (attacking, U12+) | 1. Call a Number · 2. Play What You See · 3. 4 v 4 + Floaters |
+| Long Range Finishing (attacking, U14+) | 1. Set Up the Shot · 2. Beat the Press · 3. Points for Distance |
 
 ## Brand
 
@@ -137,6 +138,7 @@ steps: [{
   moves: [{ id: 'b2', to: [48, 35], ease: 'out', start: 0, end: 1 }],   // or path: [[x,y],[x,y]]
   ball: { pass: 'g3', start: 0, end: 0.35 },       // or { to: [x, y] } for a loose ball / bad touch
   passes: [{ to: 'g2', start: 0, end: 0.5, loft: 'float' }],  // a run of passes; loft 'float' / 'chip' = in the air (curved arrow, shadow), none = along the ground
+  // ball: { to: [x, y], bend: 8, loft: 'chip' } bends (units sideways, + = curls left of its path) and / or lifts a shot
   lanes: [{ from: 'g2', to: 'g1', blocked: true }],
   timing: { move: 3 },                             // seconds; optional per-step override
   team: { i1: 'o' },                               // change a player's colour from this step (fades over their move), e.g. swapping roles

@@ -51,7 +51,7 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   furthest opponent and is over-hit; waiting players rotate in; say "inside / outside of the foot" with "(big toe)" / "(little toe)" after it, never "instep" (reads as the laces); in dribbling drills all the balls start inside; a run off the ball works as a decoy (defender follows: dribble) or the spare player (defender stays: pass); never dribble towards a team-mate's run (closes your own space, meets two defenders): feint that way, attack away from it; an underlap here = run behind the player on the ball and down the other wing (attackers cross over, "who marks who?"), not a run through the middle; both press the dribbler = pass, both follow the runner = dribble; 2 v 1 needs queues with more attackers than defenders; GK stands on an arc post to post, an extra step towards
   the near post when the ball is wide; long passing: mix it up (drilled along the ground, floated, chipped over a lane blocker) and play it when it's on;
   support after a long pass with space, not all near the ball: one drops short, two wider and a little higher, one gives height
-  (in the middle, furthest from the ball, not in the other end zone: the mid-length pass); finishing drills: decisions are "play what you see", not a set order; while play is at the other end, recover.
+  (in the middle, furthest from the ball, not in the other end zone: the mid-length pass); finishing drills: decisions are "play what you see", not a set order; while play is at the other end, recover; avoid set numbers of passes: be game like (movement, energy, talk), defenders always moving; vs blockers, find the spare man and work an opening.
 - Remove children's names from any photo before using it. Avoid other companies' watermarked diagrams on the site.
 - Never copy other providers' (e.g. The Coaching Manual) drills, diagrams or wording into the library; sessions come
   from the owner's own plans or are newly written.
@@ -100,6 +100,12 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   close again), Play What You See (2 v 1 each half: he commits = quick pass, mate arriving = soft cushion to hit first time, he follows
   your mate = touch and shoot; not in a set order; recover to the neutral zone while play is at the other end), 4 v 4 + Floaters
   (a floater in a wide channel each side, unopposed but quick: 2 or 3 touches, feed it back in timed with a run; mix up angle and speed)).
+  Long Range Finishing (attacking, Technical, U14+, owner's own plan; 41 x 25: two 18 yd shooting areas (penalty box) + a 5 yd middle zone;
+  3 clips: Set Up the Shot (two teams of 4 in their own areas, floaters in the middle set it up; no set number of passes, game like:
+  movement, energy, talk; laces, volley, side foot), Beat the Press (the two middle defenders press: find the spare man, work an opening
+  (decoy run, bounce) to bypass the blockers, move onto it, first time), Points for Distance (a normal match, everyone moving; floater in each
+  end area can't shoot; 1 point, 2 from the middle, 3 from own half; work the chance from any zone)). Engine: shots can bend and lift
+  (`ball: { to, bend, loft }`).
 - Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
 - Defending attempts: Defending Outnumbered was approved (recovery runs with a 2 v 1 and the zone rule had enough depth). Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
   Intercepting Passes, Blocking Shots and The 5 Y's (waiting for better drawings) are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.

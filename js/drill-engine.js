@@ -216,7 +216,22 @@
     const h = (LOFT[loft] || 0) * Math.hypot(b[0] - a[0], b[1] - a[1]);
     return Array.from({ length: n + 1 }, (_, i) => { const t = i / n; return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t - h * 4 * t * (1 - t)]; });
   }
+  // a shot or loose ball can bend and lift too: ball: { to, bend, loft } (bend in pitch units, + curls to the left of its path)
+  function curvePts(a, b, bend, loft, n = 18) {
+    const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1, h = (LOFT[loft] || 0) * len;
+    return Array.from({ length: n + 1 }, (_, i) => {
+      const t = i / n, o = (bend || 0) * Math.sin(Math.PI * t);
+      return [a[0] + dx * t + (dy / len) * o, a[1] + dy * t - (dx / len) * o - h * 4 * t * (1 - t)];
+    });
+  }
   function ballLift(cp, step, u) {
+    const act = step.def.ball;
+    if (act && act.to && act.loft && (!step.def.passes || !step.def.passes.length)) {
+      const s = act.start != null ? act.start : 0, e = act.end != null ? act.end : 0.4;
+      if (u <= s || u >= e) return 0;
+      const a = ballStartPos(cp, step, s), k = EASE.pass(clamp((u - s) / (e - s)));
+      return (LOFT[act.loft] || 0) * Math.hypot(act.to[0] - a[0], act.to[1] - a[1]) * 4 * k * (1 - k);
+    }
     if (!step.def.passes || !step.def.passes.length) return 0;
     const g = passSeq(cp, step).find(sg => sg.loft && sg.from && u > sg.s && u < sg.e);
     if (!g) return 0;
@@ -246,7 +261,12 @@
     if (u <= s) return ballStartPos(cp, step, u);
     if (u >= e) return target(u);
     const k = EASE.pass(clamp((u - s) / (e - s)));
-    return lerpP(ballStartPos(cp, step, s), target(e), k);
+    const a = ballStartPos(cp, step, s), b = target(e), p = lerpP(a, b, k);
+    if (act.to && act.bend) {
+      const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1, o = act.bend * Math.sin(Math.PI * k);
+      return [p[0] + (dy / len) * o, p[1] - (dx / len) * o];
+    }
+    return p;
   }
 
   // ---------- drawing primitives ----------
@@ -581,6 +601,15 @@
     CUSHION: { bg: '#16351f', fg: '#fff' },
     'FOLLOW UP': { bg: '#16351f', fg: '#fff' },
     'TWO TOUCH': { get bg() { return C.accent; }, fg: '#fff' },
+    LACES: { get bg() { return C.accent; }, fg: '#fff' },
+    'SIDE FOOT': { get bg() { return C.accent; }, fg: '#fff' },
+    VOLLEY: { get bg() { return C.accent; }, fg: '#fff' },
+    'BEND IT': { get bg() { return C.accent; }, fg: '#fff' },
+    'DRILL IT': { get bg() { return C.accent; }, fg: '#fff' },
+    'SHIFT IT': { bg: '#16351f', fg: '#fff' },
+    'STRAIGHT PASS': { bg: '#16351f', fg: '#fff' },
+    'DIAGONAL RUN': { bg: '#16351f', fg: '#fff' },
+    'LOB IT': { get bg() { return C.accent; }, fg: '#fff' },
     SUPPORT: { bg: '#16351f', fg: '#fff' },
     'TOUCH AND PASS': { get bg() { return C.accent; }, fg: '#fff' },
     'SHORT PASS': { bg: '#16351f', fg: '#fff' },
@@ -1458,7 +1487,9 @@
           const b = playerPos(step, def.ball.pass, e);
           arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: owner && cp.team[owner] === 'd' ? ARROW_STYLE.passD : ARROW_STYLE.pass, order: -1 });
         } else if (def.ball.to) {
-          arrows.push({ pts: trimPath([ballStartPos(cp, step, s), def.ball.to], 1.2, 1.4), style: ARROW_STYLE.loose, order: -1 });
+          const a0 = ballStartPos(cp, step, s);
+          const pts = def.ball.bend || def.ball.loft ? curvePts(a0, def.ball.to, def.ball.bend, def.ball.loft) : [a0, def.ball.to];
+          arrows.push({ pts: trimPath(pts, 1.2, 1.4), style: ARROW_STYLE.loose, order: -1 });
         }
       }
       arrows.sort((a, b) => a.order - b.order);
