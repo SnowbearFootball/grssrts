@@ -51,7 +51,7 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   furthest opponent and is over-hit; waiting players rotate in; say "inside / outside of the foot" with "(big toe)" / "(little toe)" after it, never "instep" (reads as the laces); in dribbling drills all the balls start inside; a run off the ball works as a decoy (defender follows: dribble) or the spare player (defender stays: pass); never dribble towards a team-mate's run (closes your own space, meets two defenders): feint that way, attack away from it; an underlap here = run behind the player on the ball and down the other wing (attackers cross over, "who marks who?"), not a run through the middle; both press the dribbler = pass, both follow the runner = dribble; 2 v 1 needs queues with more attackers than defenders; GK stands on an arc post to post, an extra step towards
   the near post when the ball is wide; long passing: mix it up (drilled along the ground, floated, chipped over a lane blocker) and play it when it's on;
   support after a long pass with space, not all near the ball: one drops short, two wider and a little higher, one gives height
-  (in the middle, furthest from the ball, not in the other end zone: the mid-length pass); finishing drills: decisions are "play what you see", not a set order; while play is at the other end, recover; avoid set numbers of passes: be game like (movement, energy, talk), defenders always moving; vs blockers, find the spare man and work an opening; pass on angles, not straight lines (easier to open up); a check away is only a couple of yards; game clips can "freeze" to show the better option; in feeder drills, defenders never pass: the scorer gets the ball and plays in his team-mate.
+  (in the middle, furthest from the ball, not in the other end zone: the mid-length pass); finishing drills: decisions are "play what you see", not a set order; while play is at the other end, recover; avoid set numbers of passes: be game like (movement, energy, talk), defenders always moving; vs blockers, find the spare man and work an opening; pass on angles, not straight lines (easier to open up); a check away is only a couple of yards; game clips can "freeze" to show the better option; in feeder drills, defenders never pass: the scorer gets the ball and plays in his team-mate; defending: "travel as the ball travels" is the trigger to get out; small goals rather than cone gates; forcing play sideways or back = job done.
 - Remove children's names from any photo before using it. Avoid other companies' watermarked diagrams on the site.
 - Never copy other providers' (e.g. The Coaching Manual) drills, diagrams or wording into the library; sessions come
   from the owner's own plans or are newly written.
@@ -112,7 +112,13 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   keepers; blues only defend at first: score, get the ball back, play in your team-mate at the other end, that end's defender is out;
   repeat, then rotate: blues attack), Make the Space (4 v 4 + keepers on 40 x 30, a floater in each side channel, 3 touch; a real game,
   sharp passing and moving, width and depth; coach freezes it (red FREEZE label, space highlighted), rewinds, shows the better option)).
-- Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
+  Defending: Matched Up (defending, Technical, U10+, owner's own plan; 3 clips: Travel as the Ball Travels (1 v 1, 10 x 10, small goal a
+  little left of centre near the defender; defender passes in, the ball travelling is the trigger to get out; arc run, slow, get low,
+  show away, pivot off the back foot (never turn your back), patient front-foot tackle), Pressure and Cover (30 x 20, teams numbered 1 to 6,
+  small goal central each end; coach calls two numbers: press + cover, swap jobs when the ball moves), Defend as a Unit (4 v 4 + keepers,
+  floaters; stop the shot and forward pass, sideways or back = job done, squeeze, quick switch = travel as the ball travels as a unit,
+  recovery runs)). Engine: long intro titles shrink to fit.
+- Gaps to fill: more defending, younger ages (U6–U10), goalkeeping, more solo sessions.
 - Defending attempts: Defending Outnumbered was approved (recovery runs with a 2 v 1 and the zone rule had enough depth). Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
   Intercepting Passes, Blocking Shots and The 5 Y's (waiting for better drawings) are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.
 

@@ -1,5 +1,5 @@
 /*
- * SESSION: Defending: Matched Up (Defending · technical) (DRAFT)
+ * SESSION: Defending: Matched Up (Defending · technical)
  * From the owner's own plan "Defending (Matched Up)" (1st4sport L2 session sheet).
  *
  * Key factors: close the space as the ball travels; angle of approach (arc run); slow down as you approach the attacker,
@@ -23,7 +23,6 @@
   window.SESSIONS = window.SESSIONS || [];
   window.SESSIONS.push({
     id: 'defending-matched-up',
-    draft: true,
     title: 'Defending: Matched Up',
     subtitle: 'Close it as it travels, arc run, never turn your back',
     type: 'Technical',
