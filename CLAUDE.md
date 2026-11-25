@@ -217,7 +217,7 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
   Built as a preview (SITE_FLAGS.newHome = false; ?drafts shows it): hero keeps the moving clip; buttons Find a session / Join free;
   audience cards; the three Sessions tiles kept (route into sections); quote; Join band (email carries over to the Join page).
   Hides the USP cards, the Dugout promo box and "More from" tiles (still in the menu). Computer: benefit line on one line, sized to
-  the tagline width. Phones: tagline bigger (less stagger), benefit on two big lines, clip narrower without the four beat buttons.
+  the tagline width. Phones: tagline bigger (stagger kept: owner likes it), benefit on two big lines, clip narrower without the four beat buttons.
 
 - Installable web app (PWA) with clips saved for offline use at training; icons are ready. App stores later.
 - Per-session link previews for WhatsApp.
