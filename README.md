@@ -134,6 +134,7 @@ steps: [{
   tags: { b2: 'SPLASH', b1: 'RIPPLE', g4: 'DANGER' },
   moves: [{ id: 'b2', to: [48, 35], ease: 'out', start: 0, end: 1 }],   // or path: [[x,y],[x,y]]
   ball: { pass: 'g3', start: 0, end: 0.35 },       // or { to: [x, y] } for a loose ball / bad touch
+  passes: [{ to: 'g2', start: 0, end: 0.5, loft: 'float' }],  // a run of passes; loft 'float' / 'chip' = in the air (curved arrow, shadow), none = along the ground
   lanes: [{ from: 'g2', to: 'g1', blocked: true }],
   timing: { move: 3 },                             // seconds; optional per-step override
   team: { i1: 'o' },                               // change a player's colour from this step (fades over their move), e.g. swapping roles

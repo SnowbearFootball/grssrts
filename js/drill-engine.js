@@ -199,7 +199,7 @@
   function passSeq(cp, step) {
     let from = step.startState.ball.owner;
     return step.def.passes.map((ps, i) => {
-      const seg = { from, to: ps.to, s: ps.start != null ? ps.start : i / step.def.passes.length, e: ps.end };
+      const seg = { from, to: ps.to, s: ps.start != null ? ps.start : i / step.def.passes.length, e: ps.end, loft: ps.loft };
       if (seg.e == null) seg.e = seg.s + 0.6 / step.def.passes.length;
       from = ps.to;
       return seg;
@@ -208,6 +208,21 @@
   // the second ball (clip.ball2): reuse the first ball's maths on a view of the step with passes2 as its passes
   function ball2Step(step, n = 2) {
     return Object.assign({}, step, { def: Object.assign({}, step.def, { passes: step.def['passes' + n], ball: null }), startState: Object.assign({}, step.startState, { ball: step.startState['ball' + n] }) });
+  }
+  // Lofted passes: passes: [{ to, loft: 'float' | 'chip' }] (leave loft out for a pass along the ground).
+  // The ball rises off its shadow and the arrow curves; the height is a share of the pass length.
+  const LOFT = { float: 0.2, chip: 0.3 };
+  function loftArc(a, b, loft, n = 18) {
+    const h = (LOFT[loft] || 0) * Math.hypot(b[0] - a[0], b[1] - a[1]);
+    return Array.from({ length: n + 1 }, (_, i) => { const t = i / n; return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t - h * 4 * t * (1 - t)]; });
+  }
+  function ballLift(cp, step, u) {
+    if (!step.def.passes || !step.def.passes.length) return 0;
+    const g = passSeq(cp, step).find(sg => sg.loft && sg.from && u > sg.s && u < sg.e);
+    if (!g) return 0;
+    const a = attached(cp, step, g.from, g.s), b = attached(cp, step, g.to, g.e);
+    const k = EASE.pass(clamp((u - g.s) / (g.e - g.s)));
+    return (LOFT[g.loft] || 0) * Math.hypot(b[0] - a[0], b[1] - a[1]) * 4 * k * (1 - k);
   }
   function ballPos(cp, step, u) {
     if (step.def.passes && step.def.passes.length) {
@@ -360,9 +375,9 @@
     ctx.restore();
   }
 
-  function drawBall(ctx, p) {
+  function drawBall(ctx, p, scale) {
     const [x, y] = toPx(p);
-    const r = 9;
+    const s = scale || 1, r = 9 * s;
     ctx.save();
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -376,7 +391,7 @@
     ctx.beginPath();
     for (let i = 0; i < 5; i++) {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
-      const px = x + Math.cos(a) * 3.6, py = y + Math.sin(a) * 3.6;
+      const px = x + Math.cos(a) * 3.6 * s, py = y + Math.sin(a) * 3.6 * s;
       i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
     }
     ctx.closePath();
@@ -384,7 +399,7 @@
     for (let i = 0; i < 5; i++) {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
       ctx.beginPath();
-      ctx.moveTo(x + Math.cos(a) * 3.6, y + Math.sin(a) * 3.6);
+      ctx.moveTo(x + Math.cos(a) * 3.6 * s, y + Math.sin(a) * 3.6 * s);
       ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r);
       ctx.lineWidth = 1.4;
       ctx.stroke();
@@ -553,6 +568,9 @@
     FLOATER: { bg: '#6b7280', fg: '#fff' },
     MOVE: { bg: '#16351f', fg: '#fff' },
     'IN LINE': { bg: '#16351f', fg: '#fff' },
+    DRILLED: { get bg() { return C.accent; }, fg: '#fff' },
+    FLOATED: { get bg() { return C.accent; }, fg: '#fff' },
+    CHIPPED: { get bg() { return C.accent; }, fg: '#fff' },
     SUPPORT: { bg: '#16351f', fg: '#fff' },
     'TOUCH AND PASS': { get bg() { return C.accent; }, fg: '#fff' },
     'SHORT PASS': { bg: '#16351f', fg: '#fff' },
@@ -1418,7 +1436,7 @@
           if (!g.from) return;
           const a = playerPos(step, g.from, g.s), b = playerPos(step, g.to, g.e);
           const col = teamColor(cp, cp.team[g.from]);
-          arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: { color: col, width: 3, dash: [9, 7], head: 13 }, order: -1 + i * 0.01 });
+          arrows.push({ pts: trimPath(g.loft ? loftArc(a, b, g.loft) : [a, b], R_U + 1, R_U + 1.2), style: { color: col, width: 3, dash: [9, 7], head: 13 }, order: -1 + i * 0.01 });
         });
       }
       if (def.ball && def.ball.arrow !== false) {
@@ -1518,7 +1536,16 @@
     };
     clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, dimOf(p) ? 0.4 : 1, p.label, colorOf(p)));
     // ball
-    if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
+    if (clip.ball) {
+      const bp = ballPos(cp, step, u), lift = ballLift(cp, step, u);
+      if (lift > 0.2) {
+        // shadow on the ground, ball up in the air (a little bigger the higher it goes)
+        const [sx, sy] = toPx(bp);
+        ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        ctx.beginPath(); ctx.ellipse(sx, sy + 3, 8, 3.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+        drawBall(ctx, [bp[0], bp[1] - lift], 1 + Math.min(lift, 15) * 0.025);
+      } else drawBall(ctx, bp);
+    }
     if (clip.ball2 && step.startState.ball2) drawBall(ctx, ballPos(cp, ball2Step(step), u));
     if (clip.ball3 && step.startState.ball3) drawBall(ctx, ballPos(cp, ball2Step(step, 3), u));
     // tags on top

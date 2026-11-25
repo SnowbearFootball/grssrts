@@ -5,13 +5,18 @@
  * Key factors: make a decision (first time long pass / control and long pass / short pass to a team-mate);
  *   correct technique; move to get in line of the ball, control with the correct surface; support and communication.
  * 1. Tech (10 mins): 40 x 30 yds, a 10 yd end zone at each end. Two players in each end zone, two in the middle.
- *    A middle player passes into an end zone. The receiver passes short to a team-mate or long to the other end zone.
- *    The other middle player supports the receiver. Repeat.
- * 2. Skill (10 mins): same set-up, but the middle player who passes in then defends (2 v 1). Players look at where the
- *    defender is before deciding how, and if, to pass long.
+ *    A middle player passes into an end zone. The receiver passes long to the other end zone, or short to the supporting
+ *    middle player, who bounces it straight back or sets it for the other player in that end zone, who then goes long.
+ *    After a long pass, the other middle player joins in as the support option. Repeat.
+ * 2. Skill (10 mins): same set-up, but the two middle players are now defenders. The first pass starts it; one presses,
+ *    the other (deeper) blocks the long passing lane. After a long pass the closer defender presses and the other
+ *    blocks the lane: each defender presses one end.
  * 3. Game (20 mins): 45 x 30 yds. 4 v 4, anyone can go anywhere (end zones too). 2 target players in each end zone play
  *    for the team with the ball and can't make long passes. A long pass into the end zone furthest away = a goal.
- * Owner's extra points: support and communication; decision making; touch and pass or first time.
+ *    Long pass blocked: play short through the middle to the other end; that player goes long and the team gets up
+ *    to support (like a defender playing long to the striker).
+ * Owner's extra points: support and communication; decision making; touch and pass or first time;
+ *   mix up the long pass: drilled along the ground, floated, chipped.
  * Pitch units: x 0..100, y 0..75 (about 2 units a yard).
  */
 (function () {
@@ -37,10 +42,9 @@
     { x: 10, y: 7.5, w: 20, h: 60, color: OR, label: 'END ZONE', labelAt: [20, 64], soft: true },
     { x: 70, y: 7.5, w: 20, h: 60, color: OR, label: 'END ZONE', labelAt: [80, 64], soft: true },
   ];
-  const sixPlayers = [
+  const endPlayers = [
     { id: 'L1', team: 'a', x: 20, y: 20 }, { id: 'L2', team: 'a', x: 20, y: 55 },
     { id: 'R1', team: 'a', x: 80, y: 20 }, { id: 'R2', team: 'a', x: 80, y: 55 },
-    { id: 'M1', team: 'a', x: 42, y: 52 }, { id: 'M2', team: 'a', x: 57, y: 40 },
   ];
 
   // ---------- game: 45 x 30 yds ----------
@@ -63,23 +67,23 @@
     id: 'long-range-passing',
     draft: true,
     title: 'Long Range Passing',
-    subtitle: 'First time, touch and pass, or short?',
+    subtitle: 'Drilled, floated or chipped: play it when it\'s on',
     type: 'Technical',
     category: 'attacking',
     topics: ['Passing', 'Switching play'],
     squad: [6, 12],
     thumb: 'assets/thumbs/long-range-passing.jpg',
-    summary: 'Pass long from end zone to end zone, then with a defender (2 v 1), then a 4 v 4 game with target players. Decide: first time, touch and pass, or short. Support and talk.',
+    summary: 'Pass long from end zone to end zone, then against two defenders, then a 4 v 4 game with target players. Mix up the long pass (drilled, floated, chipped), decide when it\'s on, and get up to support.',
     keyPhrase: 'Long, touch or short?',
     ages: { from: 14 },
 
     cards: [
       {
         title: 'Make a decision',
-        lead: 'Know your pass *before* the ball arrives.',
+        lead: 'Know your pass *before* the ball arrives. Play it *when it\'s on*.',
         columns: [
-          { heading: 'Three choices', items: ['*First time* long pass', '*Touch and pass*: control, then long', '*Short pass* to a team-mate'] },
-          { heading: 'How to choose', items: ['*Head up*: where is the defender?', 'Long pass on? *Go first time* if you can', 'Blocked? *Short*, then long'] },
+          { heading: 'Three choices', items: ['*First time* long pass', '*Touch and pass*: control, then long', '*Short* to a supporting team-mate'] },
+          { heading: 'Mix up the long pass', items: ['*Drilled*: firm, along the ground', '*Floated*: up and over, lands soft', '*Chipped*: over a defender in the lane'] },
         ],
         phrase: { big: 'LONG, TOUCH OR SHORT?', small: 'Decide before it arrives' },
       },
@@ -88,19 +92,21 @@
         lead: 'Get in line, good first touch, then *strike it well*.',
         columns: [
           { heading: 'On the ball', items: ['*Move* to get *in line* of the ball', 'Control with the *right surface*', 'First touch *out of your feet*', 'Strike through the ball, follow through'] },
-          { heading: 'Off the ball', items: ['*Support* the receiver: be the short option', '*Talk*: call "time", "man on", "short"', 'Get in line *before* the pass comes'] },
+          { heading: 'Off the ball', items: ['After a long pass, *get up and support*', 'Be the short option: *bounce it back* or *set it*', '*Talk*: call "time", "man on", "short"'] },
         ],
-        phrase: { big: 'SUPPORT AND TALK', small: 'Help the player on the ball decide' },
+        phrase: { big: 'SUPPORT AND TALK', small: 'Join in after the long pass' },
       },
     ],
 
     keywords: [
       { word: 'Long pass', meaning: 'A pass over a long distance, here from one end zone to the other.' },
+      { word: 'Drilled', meaning: 'A firm, fast long pass along the ground.' },
+      { word: 'Floated', meaning: 'A long pass up in the air that drops softly for the receiver.' },
+      { word: 'Chipped', meaning: 'A pass lifted quickly up and over a defender who is blocking the way.' },
       { word: 'First time', meaning: 'Passing the ball with your first touch, without controlling it.' },
       { word: 'Touch and pass', meaning: 'One touch to control it out of your feet, then the pass.' },
-      { word: 'In line', meaning: 'Moving so the ball comes straight to you, with no defender in the way.' },
       { word: 'Support', meaning: 'Moving close to the player on the ball so they have a short pass.' },
-      { word: 'End zone', meaning: 'The area at each end of the pitch. Get the ball into the far one.' },
+      { word: 'Passing lane', meaning: 'The line the ball travels along. A defender standing in it blocks the pass.' },
       { word: 'Target player', meaning: 'A player in an end zone who plays for the team with the ball. They can only pass short.' },
     ],
 
@@ -110,21 +116,23 @@
       equipment: 'Cones, balls, bibs (three colours).',
       setup: [
         'Tech (10 minutes): two players in each end zone, two in the middle. A middle player starts by passing into an end zone.',
-        'The receiver decides: pass long to the other end zone (first time, or touch and pass), or pass short to a team-mate.',
-        'The other middle player supports the receiver. Repeat.',
-        'Skill (10 minutes): same set-up, but the middle player who passes in now defends: 2 v 1.',
-        'Look at where the defender is before deciding how, and if, to pass to the other end zone.',
+        'The receiver decides: pass long to the other end zone (first time, or touch and pass), or short to the supporting middle player.',
+        'The support player bounces it straight back, or sets it for the other player in that end zone, who then goes long.',
+        'After each long pass, the other middle player joins in as the support option. Mix up the long pass: drilled, floated, chipped.',
+        'Skill (10 minutes): same set-up, but the two middle players are now defenders. The first pass starts it.',
+        'One defender presses, the other (deeper) blocks the long passing lane. After a long pass the closer defender presses and the other blocks the lane: each presses one end.',
+        'Look at where the defenders are: go short, chip it over the lane blocker, or drill it through an open lane.',
         'Game (20 minutes): 4 v 4 in a 45 × 30 yard area. Anyone can go anywhere, end zones too.',
         'Two target players in each end zone play for the team with the ball. Target players can\'t make long passes.',
-        'A goal is a long pass into the end zone furthest away. Take every chance to pass long.',
+        'A goal is a long pass into the end zone furthest away. Long pass blocked? Play short through the middle to the other end, who goes long. Then get up and support.',
       ],
     },
 
     questions: [
       'When did you decide which pass to play?',
-      'When could you go first time? When did you need a touch?',
-      'Where was the defender when you went short?',
-      'Where did you move to get in line of the ball?',
+      'When did you drill it, float it or chip it? Why?',
+      'Where were the defenders when you went short?',
+      'After a long pass, where did you go to support?',
       'How did you help the player on the ball? What did you say?',
     ],
 
@@ -135,11 +143,11 @@
         video: 'videos/long-range-passing-1.mp4',
         kicker: 'Clip 1 · Tech',
         title: 'End to End',
-        tagline: 'Pass into an end zone. Receiver decides: long or short?',
-        intro: ['*Two players* in each end zone, *two* in the middle.', 'A middle player *passes in*.', 'Receiver: *long* to the other end zone, or *short*.'],
+        tagline: 'Long, or short to the support player? Then join in.',
+        intro: ['*Two players* in each end zone, *two* in the middle.', 'Receiver: *long* to the other end zone, or *short* to the support.', 'After a long pass, the middle player *joins in*.'],
         keyPhrase: { big: 'LONG, TOUCH OR SHORT?', small: 'Decide before it arrives' },
         legend: { a: 'Players' },
-        players: sixPlayers,
+        players: endPlayers.concat({ id: 'M1', team: 'a', x: 42, y: 52 }, { id: 'M2', team: 'a', x: 57, y: 40 }),
         ball: { owner: 'M1' },
         steps: [
           {
@@ -155,102 +163,135 @@
             passes: [{ to: 'L1', start: 0.3, end: 0.85 }],
           },
           {
-            title: 'TOUCH AND PASS LONG',
-            text: ['First touch *out of your feet*.', 'Then the *long pass* to the other end zone.', 'Other middle player: *support* the receiver.'],
-            tags: { L1: 'TOUCH AND PASS', M2: 'SUPPORT' }, timing: { move: 3.4 },
+            title: 'TOUCH, THEN DRILL IT',
+            text: ['First touch *out of your feet*.', '*Drilled*: firm, along the ground.', 'Other middle player: *join in*, *support*.'],
+            tags: { L1: 'DRILLED', M2: 'SUPPORT' }, timing: { move: 3.2 },
             moves: [
               { id: 'L1', to: [26, 26], start: 0, end: 0.25 },
-              { id: 'R1', to: [79, 23], start: 0.1, end: 0.45 },
-              { id: 'M2', to: [67, 34], start: 0.4, end: 0.95 },
+              { id: 'R1', to: [79, 23], start: 0.1, end: 0.4 },
+              { id: 'M2', to: [67, 34], start: 0.35, end: 0.9 },
             ],
-            passes: [{ to: 'R1', start: 0.3, end: 0.8 }],
+            passes: [{ to: 'R1', start: 0.3, end: 0.68 }],
           },
           {
-            title: 'OR SHORT TO A TEAM-MATE',
-            text: ['Not on? Play it *short*.', 'Team-mate: *move* and *talk*.', 'Call for it: "short!"'],
-            tags: { R1: 'SHORT PASS', R2: 'TALK' }, timing: { move: 3 },
-            moves: [{ id: 'R2', to: [79, 42], start: 0, end: 0.4 }],
-            passes: [{ to: 'R2', start: 0.45, end: 0.8 }],
+            title: 'SUPPORT: BOUNCE IT BACK',
+            text: ['Support player is the *short option*.', '*Bounces it straight back*...', '...to the *same player*.'],
+            tags: { M2: 'BOUNCE', R1: 'ONE-TWO' }, timing: { move: 3 },
+            moves: [{ id: 'R1', to: [78, 27], start: 0.3, end: 0.6 }],
+            passes: [{ to: 'M2', start: 0.05, end: 0.35 }, { to: 'R1', start: 0.45, end: 0.75 }],
           },
           {
-            title: 'FIRST TIME LONG',
-            text: ['Know it *before* it arrives?', 'Go *first time*: quicker.', 'Other middle player: *support* again.'],
-            tags: { R2: 'FIRST TIME', L2: 'IN LINE', M1: 'SUPPORT' }, timing: { move: 3.2 },
+            title: 'NOW FLOAT IT',
+            text: ['*Floated*: up and over...', '...dropping *soft* for the receiver.', 'Other middle player *joins in* to support.'],
+            tags: { R1: 'FLOATED', M1: 'SUPPORT' }, timing: { move: 3.6 },
             moves: [
-              { id: 'L2', to: [22, 46], start: 0, end: 0.35 },
-              { id: 'M1', to: [34, 58], start: 0.4, end: 0.95 },
+              { id: 'L2', to: [22, 48], start: 0, end: 0.3 },
+              { id: 'M2', to: [56, 38], start: 0.3, end: 0.9, arrow: false },
+              { id: 'M1', to: [32, 58], start: 0.45, end: 0.95 },
             ],
-            passes: [{ to: 'L2', start: 0.1, end: 0.6 }],
+            passes: [{ to: 'L2', start: 0.15, end: 0.7, loft: 'float' }],
+          },
+          {
+            title: 'OR SET IT FOR THE OTHER ONE',
+            text: ['Short to the *support*...', '...who *sets it* for the *other player* in the end zone.', '*Talk*: call for it.'],
+            tags: { M1: 'SUPPORT', L1: 'TALK' }, timing: { move: 3.2 },
+            moves: [{ id: 'L1', to: [21, 36], start: 0, end: 0.4 }],
+            passes: [{ to: 'M1', start: 0.05, end: 0.35 }, { to: 'L1', start: 0.45, end: 0.8 }],
+          },
+          {
+            title: 'FIRST TIME, DRILLED',
+            text: ['Ball set up nicely: go *first time*.', '*Drilled* to the other end zone.', 'Middle player: *get across* and *support*.'],
+            tags: { L1: 'DRILLED', M2: 'SUPPORT' }, timing: { move: 3.2 },
+            moves: [
+              { id: 'R2', to: [79, 49], start: 0, end: 0.3 },
+              { id: 'M2', to: [67, 40], start: 0.45, end: 0.95 },
+            ],
+            passes: [{ to: 'R2', start: 0.1, end: 0.5 }],
           },
         ],
-        summary: ['*Move* to get *in line* of the ball.', 'Decide: *first time*, *touch and pass*, or *short*.', 'Other middle player: *support* the receiver.', '*Talk*: help the player on the ball.'],
+        summary: ['*Move* to get *in line* of the ball.', 'Decide: *first time*, *touch and pass*, or *short*.', 'Support: *bounce it back* or *set it* for the other player.', 'Mix it up: *drilled*, *floated*, *chipped*.'],
       }),
 
-      // ---------------- 2: skill (2 v 1) ----------------
+      // ---------------- 2: skill (two defenders) ----------------
       Object.assign({}, drill, {
-        id: 'two-v-one',
+        id: 'press-and-block',
         video: 'videos/long-range-passing-2.mp4',
-        kicker: 'Clip 2 · Skill: 2 v 1',
-        title: 'Pass In, Then Press',
-        tagline: 'Middle player now defends. Where is the defender?',
-        intro: ['Same set-up.', 'The middle player *passes in*, then *defends*: *2 v 1*.', 'Where is the defender? *Long*, or *short* first?'],
-        keyPhrase: { big: 'WHERE IS THE DEFENDER?', small: 'Blocked: short. Space: long' },
-        legend: { a: 'Players', d: 'Defender' },
-        players: sixPlayers,
+        kicker: 'Clip 2 · Skill: two defenders',
+        title: 'Press and Block',
+        tagline: 'One defender presses, one blocks the lane. Play it when it\'s on.',
+        intro: ['The two middle players are now *defenders*.', 'One *presses*, the other *blocks the long pass*.', 'Short, *chip it*, or *drill it*: play it *when it\'s on*.'],
+        keyPhrase: { big: 'PLAY IT WHEN IT\'S ON', small: 'Where are the defenders?' },
+        legend: { a: 'Players', d: 'Defenders' },
+        players: endPlayers.concat({ id: 'M1', team: 'd', x: 38, y: 46 }, { id: 'M2', team: 'd', x: 62, y: 32 }),
         ball: { owner: 'M1' },
         steps: [
           {
-            title: 'NOW A DEFENDER',
-            text: ['Same set-up as before.', 'Middle player *passes in*...', '...then *defends* that end zone: *2 v 1*.'],
+            title: 'NOW TWO DEFENDERS',
+            text: ['The middle players are now *defenders*.', 'Each one *presses one end*.', 'The other *blocks the long pass*.'],
             halves: zoneLabels,
           },
           {
-            title: 'PASS IN, THEN PRESS',
-            text: ['Pass into the end zone.', 'Then *press* the receiver.', 'Receiver: *head up*, where is he?'],
-            tags: { M1: 'PRESS' }, timing: { move: 3 },
-            team: { M1: 'd' },
+            title: 'FIRST PASS STARTS IT',
+            text: ['Defender passes in, then *presses*.', 'The other drops deeper to *block the lane*.'],
+            tags: { M1: 'PRESS', M2: 'BLOCK' }, timing: { move: 3 },
             moves: [
               { id: 'L1', to: [23, 25], start: 0, end: 0.35 },
-              { id: 'M1', to: [31, 25], start: 0.35, end: 0.95, ease: 'out' },
+              { id: 'M1', to: [31, 29], start: 0.4, end: 0.95, ease: 'out' },
+              { id: 'M2', to: [50, 23], start: 0.35, end: 0.95 },
             ],
-            passes: [{ to: 'L1', start: 0.05, end: 0.45 }],
+            passes: [{ to: 'L1', start: 0.05, end: 0.42 }],
           },
           {
-            title: 'BLOCKED? GO SHORT',
-            text: ['Defender blocks the long pass.', '*Don\'t force it*: play *short*.', 'Team-mate: *move* and *talk*.'],
-            tags: { L1: 'SHORT PASS', L2: 'TALK' }, timing: { move: 3 },
+            title: 'BLOCKED: GO SHORT',
+            text: ['Long pass *blocked*? Don\'t force it.', 'Play *short* to your team-mate.', 'Team-mate: *move* and *talk*.'],
+            tags: { L1: 'SHORT PASS', L2: 'TALK' }, timing: { move: 3.2 },
             lanes: [{ from: 'L1', to: 'R1', blocked: true }],
             moves: [
-              { id: 'L2', to: [21, 42], start: 0, end: 0.4 },
-              { id: 'M1', to: [28, 33], start: 0.6, end: 1, arrow: false },
+              { id: 'L2', to: [21, 44], start: 0, end: 0.4 },
+              { id: 'M1', to: [30, 33], start: 0.65, end: 1, arrow: false },
+              { id: 'M2', to: [50, 45], start: 0.6, end: 1, arrow: false },
             ],
-            passes: [{ to: 'L2', start: 0.45, end: 0.8 }],
+            passes: [{ to: 'L2', start: 0.45, end: 0.78 }],
           },
           {
-            title: 'SPACE? TOUCH AND PASS LONG',
-            text: ['Now the long pass is *on*.', 'Touch *away from the defender*...', '...and *pass long* to the other end zone.'],
-            tags: { L2: 'TOUCH AND PASS', R2: 'IN LINE' }, timing: { move: 3.4 },
-            moves: [
-              { id: 'L2', to: [23, 47], start: 0, end: 0.25 },
-              { id: 'R2', to: [79, 50], start: 0, end: 0.35 },
-              { id: 'M1', to: [31, 37], start: 0.3, end: 0.8, arrow: false },
-            ],
-            passes: [{ to: 'R2', start: 0.3, end: 0.8 }],
+            title: 'CHIP IT OVER',
+            text: ['Lane blocker gets across.', '*Chip it* over him.', 'Receiver: *in line*, *right surface* to control.'],
+            tags: { L2: 'CHIPPED', M2: 'BLOCK' }, timing: { move: 3.2 },
+            moves: [{ id: 'R2', to: [79, 50], start: 0, end: 0.35 }],
+            passes: [{ to: 'R2', start: 0.2, end: 0.75, loft: 'chip' }],
           },
           {
-            title: 'PRESSURE COMING? FIRST TIME',
-            text: ['Next defender *presses*.', 'Go *first time*, before he gets there.', 'First defender goes back to the middle.'],
-            tags: { M2: 'PRESS', R2: 'FIRST TIME' }, timing: { move: 3.2 },
-            team: { M2: 'd', M1: 'a' },
+            title: 'SWAP JOBS',
+            text: ['Long pass made: *closer defender presses*.', 'The other *blocks the lane*.', 'Team-mate: *support* and *talk*.'],
+            tags: { M2: 'PRESS', M1: 'BLOCK', R1: 'SUPPORT' }, timing: { move: 3 },
             moves: [
-              { id: 'M2', to: [71, 42], start: 0, end: 0.6, ease: 'out' },
-              { id: 'L2', to: [22, 51], start: 0, end: 0.3 },
-              { id: 'M1', to: [45, 30], start: 0.4, end: 0.95, arrow: false },
+              { id: 'M2', to: [72, 50], start: 0, end: 0.7, ease: 'out' },
+              { id: 'M1', to: [48, 44], start: 0.1, end: 0.9 },
+              { id: 'R1', to: [79, 36], start: 0.2, end: 0.8 },
             ],
-            passes: [{ to: 'L2', start: 0.12, end: 0.6 }],
+          },
+          {
+            title: 'SHORT, THEN FLOAT IT',
+            text: ['Pressed: *short* to the support.', 'Low lane blocked: *float it* over the top.', '*Lands soft* for the receiver.'],
+            tags: { R1: 'FLOATED' }, timing: { move: 3.6 },
+            moves: [
+              { id: 'L1', to: [22, 24], start: 0.3, end: 0.6 },
+              { id: 'M2', to: [74, 46], start: 0.2, end: 0.7, arrow: false },
+            ],
+            passes: [{ to: 'R1', start: 0.05, end: 0.3 }, { to: 'L1', start: 0.38, end: 0.92, loft: 'float' }],
+          },
+          {
+            title: 'LANE OPEN? DRILL IT',
+            text: ['Left defender *presses* again.', 'Lane open: *first time*, *drilled*.', 'Before the pressure arrives.'],
+            tags: { M1: 'PRESS', L1: 'DRILLED' }, timing: { move: 3 },
+            moves: [
+              { id: 'M1', to: [30, 33], start: 0, end: 0.7, ease: 'out' },
+              { id: 'M2', to: [62, 44], start: 0, end: 0.8, arrow: false },
+            ],
+            passes: [{ to: 'R1', start: 0.15, end: 0.55 }],
           },
         ],
-        summary: ['*Head up*: where is the defender?', 'Blocked? *Short*, then long.', 'Space? *Touch and pass* long.', 'Pressure coming? *First time*.'],
+        summary: ['*Head up*: where are the defenders?', 'Blocked? *Short*, then long.', 'Blocker in the lane? *Chip* or *float* it over.', 'Lane open? *Drill it*, first time.'],
       }),
 
       // ---------------- 3: game ----------------
@@ -261,7 +302,7 @@
         title: '4 v 4 + Targets',
         tagline: 'A long pass into the far end zone is a goal.',
         intro: ['*4 v 4*, anyone can go anywhere.', '*2 targets* in each end zone help the team with the ball.', 'Goal = a *long pass* into the *far* end zone.'],
-        keyPhrase: { big: 'LOOK LONG', small: 'Every chance to pass long' },
+        keyPhrase: { big: 'PLAY IT WHEN IT\'S ON', small: 'Then get up and support' },
         players: [
           { id: 'T1', team: 't', x: 16, y: 20 }, { id: 'T2', team: 't', x: 16, y: 55 },
           { id: 'T3', team: 't', x: 84, y: 20 }, { id: 'T4', team: 't', x: 84, y: 55 },
@@ -289,45 +330,77 @@
             passes: [{ to: 'T1', start: 0.02, end: 0.38 }, { to: 'G2', start: 0.58, end: 0.9 }],
           },
           {
-            title: 'HEAD UP: LONG IS ON',
-            text: ['*Head up*: is the long pass on?', '*Touch and pass*, or *first time*.', 'Into the *far end zone* = a *goal*.'],
-            tags: { G2: 'LONG PASS', T4: 'SCORE' }, timing: { move: 3.4 },
+            title: 'IT\'S ON: DRILL IT',
+            text: ['*Head up*: the long pass is on.', '*Touch*, then *drilled* along the ground.', 'Into the *far end zone* = a *goal*.'],
+            tags: { G2: 'DRILLED', T4: 'SCORE' }, timing: { move: 3.2 },
             moves: [
               { id: 'G2', to: [30, 47], start: 0, end: 0.25 },
               { id: 'T4', to: [84, 53], start: 0.1, end: 0.4, arrow: false },
               { id: 'B2', to: [38, 43], start: 0.2, end: 0.7, arrow: false },
             ],
-            passes: [{ to: 'T4', start: 0.3, end: 0.85 }],
+            passes: [{ to: 'T4', start: 0.3, end: 0.72 }],
           },
           {
-            title: 'KEEP IT: GO AGAIN',
-            text: ['Greens keep the ball.', 'Target plays *short* to a team-mate.', 'Now look for the *other* end zone.'],
-            tags: { T4: 'TARGET', G4: 'SUPPORT' }, timing: { move: 3 },
+            title: 'KEEP IT: GO THE OTHER WAY',
+            text: ['Target plays *short* to a team-mate.', 'Now the *far end* is the other way.', 'Blues get across to *block it*.'],
+            tags: { G4: 'SUPPORT', B3: 'BLOCK' }, timing: { move: 3.2 },
             moves: [
               { id: 'G4', to: [70, 58], start: 0, end: 0.4 },
-              { id: 'B4', to: [70, 48], start: 0.3, end: 0.95, arrow: false },
+              { id: 'B3', to: [56, 55], start: 0.3, end: 0.95, arrow: false },
+              { id: 'B4', to: [70, 49], start: 0.3, end: 0.95, arrow: false },
+              { id: 'B2', to: [44, 50], start: 0.4, end: 1, arrow: false },
             ],
-            passes: [{ to: 'G4', start: 0.42, end: 0.8 }],
+            passes: [{ to: 'G4', start: 0.42, end: 0.78 }],
+          },
+          {
+            title: 'BLOCKED? GO SHORT, THEN BACK',
+            text: ['Long pass *blocked*: don\'t force it.', 'Play *short through the middle*...', '...to a team-mate at the *other end*.'],
+            tags: { G3: 'SHORT PASS', G1: 'DROP' }, timing: { move: 3.6 },
+            lanes: [{ from: 'G4', to: 'T2', blocked: 'start' }],
+            moves: [
+              { id: 'G3', to: [56, 40], start: 0, end: 0.3 },
+              { id: 'G1', to: [27, 36], start: 0.1, end: 0.55 },
+              { id: 'B1', to: [36, 29], start: 0.6, end: 1, arrow: false },
+              { id: 'B2', to: [42, 44], start: 0.55, end: 1, arrow: false },
+            ],
+            passes: [{ to: 'G3', start: 0.25, end: 0.5 }, { to: 'G1', start: 0.6, end: 0.88 }],
+          },
+          {
+            title: 'NOW LONG: FLOAT IT',
+            text: ['Like a *defender* playing long to the *striker*.', '*Floated* into the far end zone.', 'That\'s a *goal*.'],
+            tags: { G1: 'FLOATED', T3: 'SCORE' }, timing: { move: 3.6 },
+            moves: [{ id: 'T3', to: [84, 23], start: 0.05, end: 0.35, arrow: false }],
+            passes: [{ to: 'T3', start: 0.1, end: 0.72, loft: 'float' }],
+          },
+          {
+            title: 'GET UP AND SUPPORT',
+            text: ['Now *get up* and *support* the target.', 'Targets only play *short*: be there.', '*Talk*: "time", "man on".'],
+            tags: { G3: 'SUPPORT', G2: 'SUPPORT', G4: 'SUPPORT' }, timing: { move: 3.4 },
+            moves: [
+              { id: 'G3', to: [72, 26], start: 0, end: 0.55 },
+              { id: 'G2', to: [60, 28], start: 0, end: 0.85 },
+              { id: 'G4', to: [74, 42], start: 0.05, end: 0.6 },
+              { id: 'B4', to: [65, 37], start: 0.2, end: 0.9, arrow: false },
+              { id: 'B3', to: [52, 48], start: 0.3, end: 0.95, arrow: false },
+            ],
+            passes: [{ to: 'G3', start: 0.62, end: 0.9 }],
           },
           {
             title: 'BLUES WIN IT',
             text: ['A pass gets cut out: *blues win it*.', 'Now the targets play for *blues*.'],
-            tags: { B3: 'WON IT!' }, timing: { move: 2.4 },
-            moves: [{ id: 'B3', to: [63, 46], start: 0, end: 0.5, ease: 'out' }],
-            ball: { pass: 'B3', start: 0.2, end: 0.55 },
+            tags: { B4: 'WON IT!' }, timing: { move: 2.4 },
+            moves: [{ id: 'B4', to: [66, 28.5], start: 0, end: 0.5, ease: 'out' }],
+            ball: { pass: 'B4', start: 0.15, end: 0.5 },
           },
           {
-            title: 'SUPPORT, THEN FIRST TIME',
-            text: ['Blue *supports* and *calls* for it...', '...then goes *first time* long.', 'Far end zone: *goal*.'],
-            tags: { B4: 'FIRST TIME', T2: 'SCORE' }, timing: { move: 3.4 },
-            moves: [
-              { id: 'B4', to: [72, 44], start: 0, end: 0.3 },
-              { id: 'G4', to: [68, 52], start: 0.3, end: 0.9, arrow: false },
-            ],
-            passes: [{ to: 'B4', start: 0.3, end: 0.5 }, { to: 'T2', start: 0.55, end: 0.95 }],
+            title: 'SUPPORT, THEN CHIP IT',
+            text: ['Blue *supports* and *calls* for it.', 'Lane blocked: *chip it* over.', 'Far end zone: *goal*.'],
+            tags: { B3: 'CHIPPED', T2: 'SCORE' }, timing: { move: 3.4 },
+            moves: [{ id: 'G1', to: [32, 51], start: 0, end: 0.5, ease: 'out', arrow: false }],
+            passes: [{ to: 'B3', start: 0.05, end: 0.35 }, { to: 'T2', start: 0.45, end: 0.95, loft: 'chip' }],
           },
         ],
-        summary: ['*4 v 4*: targets help the team *with the ball*.', 'Goal = a *long pass* into the *far* end zone.', '*Head up*: take every chance to go long.', '*Support* and *talk*.'],
+        summary: ['Goal = a *long pass* into the *far* end zone.', 'Blocked? *Short through the middle*, then long.', 'Mix it up: *drilled*, *floated*, *chipped*.', 'After the long pass: *get up and support*.'],
       }),
     ],
   });
