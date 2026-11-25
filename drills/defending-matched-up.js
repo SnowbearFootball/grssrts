@@ -70,16 +70,17 @@
     training: {
       area: 'Tech: 10 × 10 yards (then 15 × 15). Skill: 30 × 20 yards. Game: 40 × 35 yards.',
       players: 'Tech: pairs. Skill: two teams of up to 6. Game: 4 v 4 plus keepers and two floaters.',
-      equipment: 'Cones for gates, balls, bibs, two goals.',
+      equipment: 'Cones, balls, bibs, small goals, two full-size goals.',
       setup: [
-        'Tech (10 minutes): 10 × 10 yards. The defender passes to the attacker, then defends a cone gate. The attacker tries to dribble through it.',
-        'Close the space as the ball travels. Arc run to protect the gate. Slow down, get low, watch the ball.',
+        'Tech (10 minutes): 10 × 10 yards, a small goal a little left of centre, close to the defender. The defender passes to the attacker, then defends the goal.',
+        'Travel as the ball travels: that is the trigger to get out and stop him coming forward. Arc run to protect the goal. Slow down, get low, watch the ball.',
         'Body angle: show him away. Pivot off the back foot, never turn your back. Be patient, tackle with the front foot.',
         'Progression: 15 × 15 yards, then 2 v 2.',
-        'Skill (10 minutes): 30 × 20 yards, two teams numbered 1 to 6 on their end lines, two gates at each end. The coach calls two numbers and serves to one side.',
+        'Skill (10 minutes): 30 × 20 yards, two teams numbered 1 to 6 on their end lines, a small goal in the middle of each end. The coach calls two numbers and serves to one side.',
         'Coach the team without the ball: pressure the ball, the second defender supports (cover) in the right position. When the ball is passed, swap jobs.',
         'Game (20 minutes): 40 × 35 yards, 4 v 4 plus keepers and a floater on each side.',
-        'As a team, stop the shot and the forward pass. Close the ball quickly, pressure, cover, balance. Roles pivot as the ball is passed.',
+        'As a team, stop the shot and the forward pass: if they play sideways or back, the defence has done its job. Close the ball quickly, pressure, cover, balance. Roles pivot as the ball is passed.',
+        'Quick switch to a wide player? Travel as the ball travels, as a unit.',
         'Squeeze as a unit when the ball goes back or sideways. Recovery runs when needed. Communicate and defend as a unit.',
       ],
     },
@@ -99,13 +100,13 @@
         id: 'arc-run',
         video: 'videos/defending-matched-up-1.mp4',
         kicker: 'Clip 1 · Tech: 1 v 1',
-        title: 'Arc Run',
-        tagline: 'Pass, close it as it travels, protect the gate.',
-        intro: ['*10 × 10 yards*, a cone *gate*.', 'Defender passes in, then *defends the gate*.', 'Attacker: dribble through it.'],
+        title: 'Travel as the Ball Travels',
+        tagline: 'Our trigger: get out and stop them coming forward.',
+        intro: ['*10 × 10 yards*, a *small goal*.', 'Defender passes in, then *defends the goal*.', 'Ball travels: that\'s the *trigger* to get out.'],
         keyPhrase: { big: 'CLOSE IT AS IT TRAVELS', small: 'Arc run to protect the goal' },
         plain: true, goals: [],
         areas: [{ x: 20, y: 7.5, w: 60, h: 60 }],
-        cones: [{ at: [25, 67.5] }, { at: [37, 67.5] }],
+        miniGoals: [{ at: [41, 68.5], angle: 180, scale: 0.9 }],
         dims: [{ a: [20, 71.5], b: [80, 71.5], label: '10 yds' }, { a: [15, 7.5], b: [15, 67.5], label: '10 yds' }],
         tagPlace: 'auto',
         legend: { a: 'Attacker', d: 'Defender' },
@@ -114,15 +115,14 @@
         steps: [
           {
             title: 'THE SET-UP',
-            text: ['10 × 10 yards, a cone *gate*.', 'Defender passes to the attacker...', '...then *defends the gate*.'],
+            text: ['10 × 10 yards, a *small goal*.', 'Defender passes to the attacker...', '...then *defends the goal*.'],
             tags: { X: 'ATTACKER', O: 'DEFENDER' },
-            zones: [{ at: [31, 67.5], r: 5, label: 'Gate' }],
           },
           {
             title: 'TRAVEL AS THE BALL TRAVELS',
-            text: ['Pass, and *go* as the ball travels.', '*Arc run*: curve to get *between ball and gate*.', 'Straight at him? The gate is *open*.'],
+            text: ['Ball travels: that\'s our *trigger*. Get out!', '*Arc run*: curve to get *between ball and goal*.', 'Stop him *coming forward*.'],
             tags: { O: 'ARC RUN' }, timing: { move: 3 },
-            moves: [{ id: 'O', path: [[62, 62], [49, 56], [39, 46], [33, 36]], start: 0.12, end: 1 }],
+            moves: [{ id: 'O', path: [[63, 61], [51, 55], [41, 46], [33, 36]], start: 0.12, end: 1 }],
             passes: [{ to: 'X', start: 0.02, end: 0.5 }],
           },
           {
@@ -130,47 +130,46 @@
             text: ['*Slow down* as you get close.', '*Get low*: knees bent.', '*Watch the ball*.'],
             tags: { O: 'GET LOW' }, timing: { move: 2.4 },
             moves: [
-              { id: 'O', to: [30, 33], start: 0, end: 0.8, ease: 'out' },
+              { id: 'O', to: [31, 33], start: 0, end: 0.8, ease: 'out' },
               { id: 'X', to: [28, 19], start: 0.1, end: 0.7 },
             ],
           },
           {
             title: 'BODY ANGLE: SHOW HIM AWAY',
-            text: ['Side on: *show him away* from the gate.', 'Stay *between ball and gate*.'],
+            text: ['Side on: *show him away* from goal.', 'Stay *between ball and goal*.'],
             tags: { O: 'SHOW' }, timing: { move: 2.8 },
             moves: [
-              { id: 'X', to: [43, 21], start: 0, end: 0.8 },
-              { id: 'O', to: [41, 33], start: 0.1, end: 0.9 },
+              { id: 'X', to: [23, 31], start: 0, end: 0.8 },
+              { id: 'O', to: [31, 40], start: 0.1, end: 0.9 },
             ],
           },
           {
             title: 'HE CUTS BACK: PIVOT',
-            text: ['He cuts back towards the gate?', '*Pivot off your back foot*.', '*Never turn your back* on him.'],
+            text: ['He cuts back inside?', '*Pivot off your back foot*.', '*Never turn your back* on him.'],
             tags: { O: 'PIVOT' }, timing: { move: 2.4 },
             moves: [
-              { id: 'X', to: [34, 24], start: 0, end: 0.6 },
-              { id: 'O', to: [34, 35], start: 0.1, end: 0.7 },
+              { id: 'X', to: [33, 30], start: 0, end: 0.6 },
+              { id: 'O', to: [36, 40], start: 0.1, end: 0.7 },
             ],
           },
           {
             title: 'PATIENT: FRONT FOOT TACKLE',
             text: ['*Be patient*: wait for the heavy touch.', 'Then *tackle with your front foot*.'],
             tags: { O: 'WON IT!' }, timing: { move: 2.2 },
-            moves: [{ id: 'O', to: [34, 31], start: 0.2, end: 0.6, ease: 'out' }, { id: 'X', to: [35, 25], start: 0, end: 0.3 }],
+            moves: [{ id: 'O', to: [35, 36], start: 0.2, end: 0.6, ease: 'out' }, { id: 'X', to: [34, 31], start: 0, end: 0.3 }],
             ball: { pass: 'O', start: 0.25, end: 0.55, arrow: false },
           },
         ],
-        summary: ['*Travel as the ball travels*: close the space.', '*Arc run*: protect the gate.', '*Slow down*, *get low*, *body angle*.', '*Pivot*, never turn your back. *Front foot* tackle.', 'Progression: 15 × 15, then *2 v 2*.'],
+        summary: ['*Travel as the ball travels*: our *trigger* to get out.', '*Arc run*: protect the goal, stop him coming forward.', '*Slow down*, *get low*, *body angle*.', '*Pivot*, never turn your back. *Front foot* tackle.', 'Progression: 15 × 15, then *2 v 2*.'],
       },
 
       // ---------------- 2: skill (numbers, 2 v 2) ----------------
       (() => {
-        const top = [18, 30, 42, 54, 66, 78], gx = [[30, 38], [58, 66]];
+        const top = [18, 30, 42, 54, 66, 78];
         const P = [];
         top.forEach((x, i) => P.push({ id: 'X' + (i + 1), team: 'a', label: String(i + 1), x, y: 4.5 }));
         top.forEach((x, i) => P.push({ id: 'O' + (i + 1), team: 'd', label: String(i + 1), x, y: 70.5 }));
         P.push({ id: 'C', team: 'c', label: 'C', x: 95, y: 36 });
-        const gateCones = gx.flatMap(([a, b]) => [{ at: [a, 9] }, { at: [b, 9] }, { at: [a, 66] }, { at: [b, 66] }]);
         return {
           id: 'pressure-and-cover',
           video: 'videos/defending-matched-up-2.mp4',
@@ -181,7 +180,7 @@
           keyPhrase: { big: 'PRESSURE AND COVER', small: 'Swap jobs when the ball moves' },
           plain: true, goals: [],
           areas: [{ x: 10, y: 9, w: 80, h: 57 }],
-          cones: gateCones,
+          miniGoals: [{ at: [50, 10.5], angle: 0, scale: 0.9 }, { at: [50, 64.5], angle: 180, scale: 0.9 }],
           dims: [{ a: [10, 73.5], b: [90, 73.5], label: '30 yds' }],
           tagPlace: 'auto',
           teamColors: { c: COACH },
@@ -191,7 +190,7 @@
           steps: [
             {
               title: 'THE SET-UP',
-              text: ['30 × 20 yards, *two gates* at each end.', 'Two teams, numbered *1 to 6*, on their end lines.', 'Coach calls *two numbers*, then serves.'],
+              text: ['30 × 20 yards, a *small goal* at each end.', 'Two teams, numbered *1 to 6*, on their end lines.', 'Coach calls *two numbers*, then serves.'],
             },
             {
               title: 'CALL "2 AND 4!"',
@@ -204,7 +203,7 @@
             },
             {
               title: 'CLOSE IT AS IT TRAVELS',
-              text: ['Ball served: *first defender* goes as it travels.', '*Arc run*: protect your gates.', '*Second defender*: *cover*, behind and to the side.'],
+              text: ['Ball served: *first defender* goes as it travels.', '*Arc run*: protect your goal.', '*Second defender*: *cover*, behind and to the side.'],
               tags: { O4: 'PRESS', O2: 'COVER' }, timing: { move: 3 },
               moves: [
                 { id: 'O4', path: [[58, 42], [56, 33]], start: 0.15, end: 0.95, ease: 'out' },
@@ -295,7 +294,7 @@
           },
           {
             title: 'NO WAY FORWARD',
-            text: ['Show him *into* your team-mates.', 'Forward pass *blocked*.', 'He has to play it *back*.'],
+            text: ['Show him *into* your team-mates.', 'Forward pass *blocked*: he plays it *back*.', 'Sideways or back? *Job done*.'],
             tags: { B1: 'SHOW' }, timing: { move: 2.6 },
             lanes: [{ from: 'G1', to: 'G4', blocked: true }],
             moves: [{ id: 'G3', to: [54, 42], start: 0, end: 0.4, arrow: false }],
@@ -313,29 +312,42 @@
             ],
           },
           {
+            title: 'QUICK SWITCH: MOVE TOGETHER',
+            text: ['Quick switch out wide?', '*Travel as the ball travels*: as a *unit*.', 'Pressure, cover, balance again.'],
+            tags: { B3: 'PRESS', B2: 'COVER', B1: 'BALANCE' }, timing: { move: 3 },
+            moves: [
+              { id: 'B3', path: [[50, 52], [57, 52]], start: 0.1, end: 0.9, ease: 'out' },
+              { id: 'B2', to: [50, 45], start: 0.1, end: 0.9 },
+              { id: 'B1', to: [43, 38], start: 0.1, end: 0.9 },
+              { id: 'B4', to: [30, 37], start: 0.1, end: 0.9 },
+              { id: 'G1', to: [60, 28], start: 0.2, end: 0.8, arrow: false },
+            ],
+            passes: [{ to: 'G2', start: 0.05, end: 0.45 }],
+          },
+          {
             title: 'BEATEN? RECOVERY RUN',
-            text: ['Out to the floater, a runner goes.', '*Recovery run*: sprint back *goal side*.'],
+            text: ['A one-two with the floater: he\'s past.', '*Recovery run*: sprint back *goal side*.'],
             tags: { F2: 'FLOATER', B3: 'RECOVER' }, timing: { move: 3.4 },
             moves: [
-              { id: 'F2', to: [46, 70.5], start: 0, end: 0.35 },
-              { id: 'G2', to: [37, 60], start: 0.2, end: 0.85 },
-              { id: 'B3', to: [30, 57], start: 0.45, end: 1 },
-              { id: 'B2', to: [42, 48], start: 0.5, end: 1, arrow: false },
+              { id: 'F2', to: [56, 70.5], start: 0, end: 0.3 },
+              { id: 'G2', path: [[58, 61], [42, 60]], start: 0.2, end: 0.85 },
+              { id: 'B3', to: [34, 57], start: 0.4, end: 1 },
+              { id: 'B2', to: [44, 50], start: 0.5, end: 1, arrow: false },
             ],
-            passes: [{ to: 'F2', start: 0.05, end: 0.35 }, { to: 'G2', start: 0.55, end: 0.88 }],
+            passes: [{ to: 'F2', start: 0.05, end: 0.3 }, { to: 'G2', start: 0.55, end: 0.88 }],
           },
           {
             title: 'GOAL SIDE: WIN IT',
             text: ['Goal side again: *get low*, be *patient*.', '*Front foot* tackle. Never turn your back.', '*Talk*: defend as a unit.'],
             tags: { B3: 'WON IT!' }, timing: { move: 2.4 },
             moves: [
-              { id: 'G2', to: [34, 59], start: 0, end: 0.4 },
-              { id: 'B3', to: [31, 58], start: 0.2, end: 0.6, ease: 'out' },
+              { id: 'G2', to: [39, 59], start: 0, end: 0.4 },
+              { id: 'B3', to: [35, 58], start: 0.2, end: 0.6, ease: 'out' },
             ],
             ball: { pass: 'B3', start: 0.3, end: 0.6, arrow: false },
           },
         ],
-        summary: ['Stop the *shot* and the *forward pass*.', '*Pressure*, *cover*, *balance*: roles pivot.', 'Ball back or sideways: *squeeze*.', 'Beaten? *Recovery run*. *Talk*.'],
+        summary: ['Stop the *shot* and the *forward pass*: sideways or back is a *job done*.', '*Pressure*, *cover*, *balance*: roles pivot.', 'Ball back: *squeeze*. Quick switch: *travel together*.', 'Beaten? *Recovery run*. *Talk*.'],
       },
     ],
   });

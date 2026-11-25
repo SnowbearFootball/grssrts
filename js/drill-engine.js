@@ -1632,7 +1632,9 @@
       ctx.font = `600 20px ${FONT}`;
       ctx.fillText((clip.kicker || '').toUpperCase(), PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h / 2 - 50);
       ctx.fillStyle = C.accent;
-      ctx.font = `800 54px ${FONT}`;
+      // long titles shrink to fit the pitch (short ones stay at 54px)
+      let ts = 54;
+      do { ctx.font = `800 ${ts}px ${FONT}`; ts -= 2; } while (ts > 30 && ctx.measureText(clip.title.toUpperCase()).width > PITCH.w - 40);
       ctx.fillText(clip.title.toUpperCase(), PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h / 2 + 10);
       ctx.fillStyle = C.text;
       ctx.font = `500 22px ${FONT}`;
