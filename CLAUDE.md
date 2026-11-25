@@ -48,8 +48,10 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - Copy the coach's intent, not a rigid pattern: e.g. "ideas to create a shot, not a set move"; movement is free.
 - Coaching detail the owner has corrected before: in passing patterns (5 Y's, draft) the middle player moves away from the cone first (separation, like losing a defender), back-foot control, and the pass up is always to the opposite side (same side gets tight); alternate direction each go; shots must go on target; pass and follow needs one more player than boxes (never an empty box); a middle player only bounces it back (one-two), never the longer pass; crosses are attacked as a team (strikers cross over, opposite winger sweeps the back post, one CM in the box, one on the edge); runner times the run and keeps space to move onto the ball; pressing as a
   comment means "send one in to apply pressure", not a win-it-and-score drill; a long ball to the keeper comes from the
-  furthest opponent and is over-hit; waiting players rotate in; GK stands on an arc post to post, an extra step towards
-  the near post when the ball is wide.
+  furthest opponent and is over-hit; waiting players rotate in; say "inside / outside of the foot" with "(big toe)" / "(little toe)" after it, never "instep" (reads as the laces); in dribbling drills all the balls start inside; a run off the ball works as a decoy (defender follows: dribble) or the spare player (defender stays: pass); never dribble towards a team-mate's run (closes your own space, meets two defenders): feint that way, attack away from it; an underlap here = run behind the player on the ball and down the other wing (attackers cross over, "who marks who?"), not a run through the middle; both press the dribbler = pass, both follow the runner = dribble; 2 v 1 needs queues with more attackers than defenders; GK stands on an arc post to post, an extra step towards
+  the near post when the ball is wide; long passing: mix it up (drilled along the ground, floated, chipped over a lane blocker) and play it when it's on;
+  support after a long pass with space, not all near the ball: one drops short, two wider and a little higher, one gives height
+  (in the middle, furthest from the ball, not in the other end zone: the mid-length pass); finishing drills: decisions are "play what you see", not a set order; while play is at the other end, recover; avoid set numbers of passes: be game like (movement, energy, talk), defenders always moving; vs blockers, find the spare man and work an opening; pass on angles, not straight lines (easier to open up); a check away is only a couple of yards; game clips can "freeze" to show the better option; in feeder drills, defenders never pass: the scorer gets the ball and plays in his team-mate; defending: "travel as the ball travels" is the trigger to get out; small goals rather than cone gates; forcing play sideways or back = job done.
 - Remove children's names from any photo before using it. Avoid other companies' watermarked diagrams on the site.
 - Never copy other providers' (e.g. The Coaching Manual) drills, diagrams or wording into the library; sessions come
   from the owner's own plans or are newly written.
@@ -61,9 +63,63 @@ automatically. An older project "grssrts" (no Git connection) is not used: secre
 - Sessions: Splash & Ripple (defending), Shoot & Recover, 5 v 2 Transfer Rondo, Long Range Shooting: Move Onto It (U14+),
   Long Range Shooting: Up, Back, Shot (U14+), Rotation of Positions (U14+, replaced Building Out: Rotations; old address
   redirects via `aliases`), Combination Play (U12+, two balls at once), Switching Play: Pass and Follow (U12+, square of 4 boxes: one team then two, 3 or 4 teams OK; progression bounce off one or two middle players, who only bounce it back, talk), Switch of Play: Game Like (U14+, 6 mannequins, double movements, switch into space, underlap / overlap, every clip ends with a team attack on the cross; mix up which CM gets the set-back), Penetration via Dribbling (U9+, from another coach's plan: Drill 1 Ball Mastery: Beat Your Player, unopposed then semi-opposed; Drill 2 Penetration Overload: 4 v 3 to End Zones; titles use the coach's own terms), Midfield Three: Playing Through (U14+, coach's plan "Utilising the Midfield 3 to Penetrate Against a 4-4-2", shown as coachTitle: pivot scans / back foot, midfield rotates to find the spare player, patient with CBs, score through black or blue gates; reds win it and dribble over the yellow end line), Defending the Wide Areas (defending, U14+, coach's plan "Defending in a 4-4-2 Against a Wide 4-3-3": compact, show it wide, ball wide = pressing trigger, pressure / cover / balance and the staircase, win it and carry over halfway), Set Position & Shot-Stopping (GK, U6+),
-  Ball Mastery: The Basics (Home Ground, solo clips).
-- Gaps to fill: defending, younger ages (U6–U10), goalkeeping, more solo sessions.
-- Defending attempts: Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
+  Dribbling (attacking, U12+, owner's own plan: 35 yd square; Ball Each, Pass and Swap with 4 purple outside players who swap colour when they
+  swap places, Beat the Cones with 5 balls all starting inside, cones as passive defenders, rotate the outside),
+  Dribbling: 1 v 1 to 2 v 2 (attacking, U11+, owner's own plans "Dribbling Part 2 and 3"; 6 clips: Beat the Cone, Turn and Back In,
+  Beat Your Defender (1 v 1 + double movement, queues each end, swap ends = swap roles), Decoy or Spare Player (2 v 1, queues, more attackers),
+  Isolate the Defender and The Underlap (2 v 2); small goals throughout),
+  Dribbling: Where Is the Space / Overload? (attacking, Game, U11+, owner's own plan "Dribbling Part 4"; numbers game in a 35 yd square,
+  goal + keeper each end, two teams numbered 1 to 5 by their own goal: the coach calls a number and passes straight to the attacker
+  (nobody runs to the middle and waits), numbered opponent defends; 1 v 1, then 2 v 2 (call two numbers), then 4 v 4 + keepers on 40 x 50:
+  where is the space (drive into it), where is the overload (2 v 1: defender steps up = pass, stays = drive). Owner rejected "risk / reward":
+  don't use it),
+  Ball Mastery: The Basics (Home Ground, solo clips), Shape: 5-a-Side (defending, Shape, U8–U9 only; first called Play in Your Half, renamed because "your half" could read as the team's own half; that phrase stays as the subtitle and key phrase, owner's own plan: 5-a-side,
+  each player's half shaded in their colour (ATT top, DEF bottom, wingers their side, GK box); ball wide = far winger tucks in to the
+  middle but not past it; connected by string: ATT high pulls DEF to halfway, one winger wide pulls the other in. A "Don't Bunch"
+  clip was dropped: keeping our shape is what stops bunching. Older ages would need more players, so not U10+),
+  Defending Outnumbered (defending, Tactical, U12+, owner's own plan "Defending out-numbered"; 3 clips: Stall the Attack (2 v 1, 15 x 15,
+  the coach passes to either attacker, defender stalls the attack between ball and goal, shows them away, decides when to stop backing off),
+  Recover to Help (2 v 1 to 2 v 2, 15 x 20: defender 1 passes in and delays, defender 2 starts behind the attackers and recovers towards goal
+  as soon as they receive), One in the Zone (4 v 4 + keepers, 40 x 30 yds, 10 yd defensive zone each end with one defender until the ball
+  goes in, 2 floaters outside play for whoever has the ball)),
+  Short Passing (attacking, Technical, U12+, owner's own plan; 3 clips: Pass and Move (two hexagons of cones sharing a middle line, 7 players on
+  the sides, pass then move to a free side; receive on the middle line = open up to the other zone, back-foot control, turn and pass into it;
+  one touch progression), Keep It: 5 v 2 (one defender per zone, only in their zone; defender wins it = swap roles, hand over the bib),
+  Overload: 10 v 4 (40 x 30, 4 v 4 inside + 2 floaters who can't pass to each other + 4 outside, all play for the team with the ball;
+  8 passes = a goal; rotate: a team goes outside, the outside four come in)). Engine: `edges` draws cone lines in any shape (hexagons).
+  Long Range Passing (attacking, Technical, U14+, owner's own plan; 3 clips: End to End (40 x 30, 10 yd end zones, 2 per end zone + 2 middle;
+  long, or short to the supporting middle player who bounces it straight back or sets it for the other end-zone player, who goes long;
+  after every long pass the other middle player joins in as support), Press and Block (both middle players are defenders: first pass starts it,
+  one presses, the deeper one blocks the long lane; after a long pass the closer one presses, the other blocks: each presses one end),
+  4 v 4 + Targets (45 x 30, 2 targets per end zone; middle players play short into a target, ONLY targets play the long pass, into the far end
+  zone = a goal; win it = feed your own target; rotate the targets so everyone practises long passes)). Engine: lofted passes
+  (`loft: 'float' | 'chip'` on a pass: curved arrow, ball lifts off its shadow).
+  Close Range Finishing (attacking, Technical, U12+, owner's own plan; 34 x 20: two 15 yd shooting zones (like inside the box, adjust
+  for age) + a 4 yd neutral zone, goal + GK each end; 3 clips: Call a Number (3 numbered servers per half; finishes alternate ends:
+  close up first time, meanwhile the first shooter recovers to the neutral zone for a longer finish (let it run / turn and shoot), then
+  close again), Play What You See (2 v 1 each half: he commits = quick pass, mate arriving = soft cushion to hit first time, he follows
+  your mate = touch and shoot; not in a set order; recover to the neutral zone while play is at the other end), 4 v 4 + Floaters
+  (a floater in a wide channel each side, unopposed but quick: 2 or 3 touches, feed it back in timed with a run; mix up angle and speed)).
+  Long Range Finishing (attacking, Technical, U14+, owner's own plan; 41 x 25: two 18 yd shooting areas (penalty box) + a 5 yd middle zone;
+  3 clips: Set Up the Shot (two teams of 4 in their own areas, floaters in the middle set it up; no set number of passes, game like:
+  movement, energy, talk; laces, volley, side foot), Beat the Press (the two middle defenders press: find the spare man, work an opening
+  (decoy run, bounce) to bypass the blockers, move onto it, first time), Points for Distance (a normal match, everyone moving; floater in each
+  end area can't shoot; 1 point, 2 from the middle, 3 from own half; work the chance from any zone)). Engine: shots can bend and lift
+  (`ball: { to, bend, loft }`).
+  Creating Space (attacking, Technical, U10+, owner's own plan; 3 clips: Double Movement (10 x 25 grid, 5 yd end zones + 15 yd receiving
+  zone, 4 players numbered 1 to 4; check away just a couple of yards, explode back, half turn, back foot, pass; players offset so every
+  pass is on an angle, never straight lines; swap with the end player), Lose Your Defender (1 v 1 at each end, a small goal each end, no
+  keepers; blues only defend at first: score, get the ball back, play in your team-mate at the other end, that end's defender is out;
+  repeat, then rotate: blues attack), Make the Space (4 v 4 + keepers on 40 x 30, a floater in each side channel, 3 touch; a real game,
+  sharp passing and moving, width and depth; coach freezes it (red FREEZE label, space highlighted), rewinds, shows the better option)).
+  Defending: Matched Up (defending, Technical, U10+, owner's own plan; 3 clips: Travel as the Ball Travels (1 v 1, 10 x 10, small goal a
+  little left of centre near the defender; defender passes in, the ball travelling is the trigger to get out; arc run, slow, get low,
+  show away, pivot off the back foot (never turn your back), patient front-foot tackle), Pressure and Cover (30 x 20, teams numbered 1 to 6,
+  small goal central each end; coach calls two numbers: press + cover, swap jobs when the ball moves), Defend as a Unit (4 v 4 + keepers,
+  floaters; stop the shot and forward pass, sideways or back = job done, squeeze, quick switch = travel as the ball travels as a unit,
+  recovery runs)). Engine: long intro titles shrink to fit.
+- Gaps to fill: more defending, younger ages (U6–U10), goalkeeping, more solo sessions.
+- Defending attempts: Defending Outnumbered was approved (recovery runs with a 2 v 1 and the zone rule had enough depth). Recovery Runs and Defend as a Back Four were rejected (too similar to Shoot & Recover and Splash & Ripple; removed).
   Intercepting Passes, Blocking Shots and The 5 Y's (waiting for better drawings) are on hold as hidden drafts (owner: "very basic"). Next defending ideas need more depth than a 1 v 1 basic.
 
 ## Grass and Roots (the Minis characters)

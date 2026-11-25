@@ -29,6 +29,17 @@ players are circles (green = attackers, blue = defenders), each step shows the
 | Penetration via Dribbling (attacking, U9+) | 1. Beat Your Player · 2. Semi-Opposed · 3. 4 v 3 to End Zones · 4. Win It and Go |
 | Midfield Three: Playing Through (attacking, U14+) | 1. Through the Pivot · 2. Rotate and Be Patient · 3. Reds Win It |
 | Defending the Wide Areas (defending, U14+) | 1. Compact: Show It Wide · 2. Press, Cover, Balance · 3. Shift Together |
+| Shape: 5-a-Side (defending, U8–U9) | 1. Your Half · 2. Ball Goes Wide · 3. Connected by String |
+| Dribbling (attacking, U12+) | 1. Ball Each · 2. Pass and Swap · 3. Beat the Cones |
+| Dribbling: 1 v 1 to 2 v 2 (attacking, U11+) | 1. Beat the Cone · 2. Turn and Back In · 3. Beat Your Defender (1 v 1) · 4. Decoy or Spare Player (2 v 1) · 5. Isolate the Defender (2 v 2) · 6. The Underlap (2 v 2) |
+| Dribbling: Where Is the Space / Overload? (attacking, U11+) | 1. 1 v 1: Find the Space · 2. Call Two Numbers (2 v 2) · 3. Space or Overload? (4 v 4 + keepers) |
+| Defending Outnumbered (defending, U12+) | 1. Stall the Attack (2 v 1) · 2. Recover to Help (2 v 1 to 2 v 2) · 3. One in the Zone (4 v 4 + keepers + 2 floaters) |
+| Short Passing (attacking, U12+) | 1. Pass and Move · 2. Keep It: 5 v 2 · 3. Overload: 10 v 4 |
+| Long Range Passing (attacking, U14+) | 1. End to End · 2. Press and Block · 3. 4 v 4 + Targets |
+| Close Range Finishing (attacking, U12+) | 1. Call a Number · 2. Play What You See · 3. 4 v 4 + Floaters |
+| Long Range Finishing (attacking, U14+) | 1. Set Up the Shot · 2. Beat the Press · 3. Points for Distance |
+| Creating Space (attacking, U10+) | 1. Double Movement · 2. Lose Your Defender · 3. Make the Space |
+| Defending: Matched Up (defending, U10+) | 1. Travel as the Ball Travels · 2. Pressure and Cover · 3. Defend as a Unit |
 
 ## Brand
 
@@ -128,8 +139,13 @@ steps: [{
   tags: { b2: 'SPLASH', b1: 'RIPPLE', g4: 'DANGER' },
   moves: [{ id: 'b2', to: [48, 35], ease: 'out', start: 0, end: 1 }],   // or path: [[x,y],[x,y]]
   ball: { pass: 'g3', start: 0, end: 0.35 },       // or { to: [x, y] } for a loose ball / bad touch
+  passes: [{ to: 'g2', start: 0, end: 0.5, loft: 'float' }],  // a run of passes; loft 'float' / 'chip' = in the air (curved arrow, shadow), none = along the ground
+  // ball: { to: [x, y], bend: 8, loft: 'chip' } bends (units sideways, + = curls left of its path) and / or lifts a shot
   lanes: [{ from: 'g2', to: 'g1', blocked: true }],
   timing: { move: 3 },                             // seconds; optional per-step override
+  team: { i1: 'o' },                               // change a player's colour from this step (fades over their move), e.g. swapping roles
+  halves: [{ x: 20, y: 0, w: 60, h: 37.5, color: '#2fbf7f', label: 'ATTACKER’S HALF', soft: false }], // shaded area per player
+  lines: [{ a: [50, 0], b: [50, 75], label: 'THE MIDDLE' }],  // dashed guide line with a label
 }]
 ```
 

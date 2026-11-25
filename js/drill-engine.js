@@ -199,7 +199,7 @@
   function passSeq(cp, step) {
     let from = step.startState.ball.owner;
     return step.def.passes.map((ps, i) => {
-      const seg = { from, to: ps.to, s: ps.start != null ? ps.start : i / step.def.passes.length, e: ps.end };
+      const seg = { from, to: ps.to, s: ps.start != null ? ps.start : i / step.def.passes.length, e: ps.end, loft: ps.loft };
       if (seg.e == null) seg.e = seg.s + 0.6 / step.def.passes.length;
       from = ps.to;
       return seg;
@@ -208,6 +208,36 @@
   // the second ball (clip.ball2): reuse the first ball's maths on a view of the step with passes2 as its passes
   function ball2Step(step, n = 2) {
     return Object.assign({}, step, { def: Object.assign({}, step.def, { passes: step.def['passes' + n], ball: null }), startState: Object.assign({}, step.startState, { ball: step.startState['ball' + n] }) });
+  }
+  // Lofted passes: passes: [{ to, loft: 'float' | 'chip' }] (leave loft out for a pass along the ground).
+  // The ball rises off its shadow and the arrow curves; the height is a share of the pass length.
+  const LOFT = { float: 0.2, chip: 0.3 };
+  function loftArc(a, b, loft, n = 18) {
+    const h = (LOFT[loft] || 0) * Math.hypot(b[0] - a[0], b[1] - a[1]);
+    return Array.from({ length: n + 1 }, (_, i) => { const t = i / n; return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t - h * 4 * t * (1 - t)]; });
+  }
+  // a shot or loose ball can bend and lift too: ball: { to, bend, loft } (bend in pitch units, + curls to the left of its path)
+  function curvePts(a, b, bend, loft, n = 18) {
+    const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1, h = (LOFT[loft] || 0) * len;
+    return Array.from({ length: n + 1 }, (_, i) => {
+      const t = i / n, o = (bend || 0) * Math.sin(Math.PI * t);
+      return [a[0] + dx * t + (dy / len) * o, a[1] + dy * t - (dx / len) * o - h * 4 * t * (1 - t)];
+    });
+  }
+  function ballLift(cp, step, u) {
+    const act = step.def.ball;
+    if (act && act.to && act.loft && (!step.def.passes || !step.def.passes.length)) {
+      const s = act.start != null ? act.start : 0, e = act.end != null ? act.end : 0.4;
+      if (u <= s || u >= e) return 0;
+      const a = ballStartPos(cp, step, s), k = EASE.pass(clamp((u - s) / (e - s)));
+      return (LOFT[act.loft] || 0) * Math.hypot(act.to[0] - a[0], act.to[1] - a[1]) * 4 * k * (1 - k);
+    }
+    if (!step.def.passes || !step.def.passes.length) return 0;
+    const g = passSeq(cp, step).find(sg => sg.loft && sg.from && u > sg.s && u < sg.e);
+    if (!g) return 0;
+    const a = attached(cp, step, g.from, g.s), b = attached(cp, step, g.to, g.e);
+    const k = EASE.pass(clamp((u - g.s) / (g.e - g.s)));
+    return (LOFT[g.loft] || 0) * Math.hypot(b[0] - a[0], b[1] - a[1]) * 4 * k * (1 - k);
   }
   function ballPos(cp, step, u) {
     if (step.def.passes && step.def.passes.length) {
@@ -231,7 +261,12 @@
     if (u <= s) return ballStartPos(cp, step, u);
     if (u >= e) return target(u);
     const k = EASE.pass(clamp((u - s) / (e - s)));
-    return lerpP(ballStartPos(cp, step, s), target(e), k);
+    const a = ballStartPos(cp, step, s), b = target(e), p = lerpP(a, b, k);
+    if (act.to && act.bend) {
+      const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy) || 1, o = act.bend * Math.sin(Math.PI * k);
+      return [p[0] + (dy / len) * o, p[1] - (dx / len) * o];
+    }
+    return p;
   }
 
   // ---------- drawing primitives ----------
@@ -332,6 +367,13 @@
     });
   }
 
+  // blend two #rrggbb colours (k 0..1)
+  function mixHex(a, b, k) {
+    const h = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+    const A = h(a), B = h(b);
+    return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * k).toString(16).padStart(2, '0')).join('');
+  }
+
   function drawPlayer(ctx, p, team, alpha, label, color) {
     const [x, y] = toPx(p);
     ctx.save();
@@ -353,9 +395,9 @@
     ctx.restore();
   }
 
-  function drawBall(ctx, p) {
+  function drawBall(ctx, p, scale) {
     const [x, y] = toPx(p);
-    const r = 9;
+    const s = scale || 1, r = 9 * s;
     ctx.save();
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -369,7 +411,7 @@
     ctx.beginPath();
     for (let i = 0; i < 5; i++) {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
-      const px = x + Math.cos(a) * 3.6, py = y + Math.sin(a) * 3.6;
+      const px = x + Math.cos(a) * 3.6 * s, py = y + Math.sin(a) * 3.6 * s;
       i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
     }
     ctx.closePath();
@@ -377,7 +419,7 @@
     for (let i = 0; i < 5; i++) {
       const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
       ctx.beginPath();
-      ctx.moveTo(x + Math.cos(a) * 3.6, y + Math.sin(a) * 3.6);
+      ctx.moveTo(x + Math.cos(a) * 3.6 * s, y + Math.sin(a) * 3.6 * s);
       ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r);
       ctx.lineWidth = 1.4;
       ctx.stroke();
@@ -522,6 +564,63 @@
     SAVE: { get bg() { return C.accent; }, fg: '#fff' },
     'GET UP!': { get bg() { return C.accent; }, fg: '#fff' },
     DEFENDER: { bg: '#16351f', fg: '#fff' },
+    'GO HIGH': { get bg() { return C.accent; }, fg: '#fff' },
+    'TO HALFWAY': { bg: '#16351f', fg: '#fff' },
+    'GO WIDE': { get bg() { return C.accent; }, fg: '#fff' },
+    'NOT PAST THE MIDDLE': { bg: '#16351f', fg: '#fff' },
+    EXPLODE: { get bg() { return C.accent; }, fg: '#fff' },
+    'ATTACK THE SPACE': { get bg() { return C.accent; }, fg: '#fff' },
+    DRAG: { bg: '#16351f', fg: '#fff' },
+    ISOLATED: { get bg() { return C.accent; }, fg: '#fff' },
+    DECOY: { bg: '#16351f', fg: '#fff' },
+    FOLLOWS: { bg: '#16351f', fg: '#fff' },
+    STAYS: { bg: '#16351f', fg: '#fff' },
+    'CROSS OVER': { bg: '#16351f', fg: '#fff' },
+    'WHO?': { bg: '#6b7280', fg: '#fff' },
+    'NUMBER 3!': { bg: '#6b7280', fg: '#fff' },
+    'NUMBER 1!': { bg: '#6b7280', fg: '#fff' },
+    '1 AND 4!': { bg: '#6b7280', fg: '#fff' },
+    'KEEP IT SAFE': { bg: '#16351f', fg: '#fff' },
+    'TAKE THEM ON': { get bg() { return C.accent; }, fg: '#fff' },
+    DRIVE: { get bg() { return C.accent; }, fg: '#fff' },
+    DELAY: { bg: '#16351f', fg: '#fff' },
+    STALL: { bg: '#16351f', fg: '#fff' },
+    FLOATER: { bg: '#6b7280', fg: '#fff' },
+    MOVE: { bg: '#16351f', fg: '#fff' },
+    'IN LINE': { bg: '#16351f', fg: '#fff' },
+    DRILLED: { get bg() { return C.accent; }, fg: '#fff' },
+    FLOATED: { get bg() { return C.accent; }, fg: '#fff' },
+    CHIPPED: { get bg() { return C.accent; }, fg: '#fff' },
+    SHORT: { bg: '#16351f', fg: '#fff' },
+    WIDE: { bg: '#16351f', fg: '#fff' },
+    HEIGHT: { get bg() { return C.accent; }, fg: '#fff' },
+    'PLACE IT': { get bg() { return C.accent; }, fg: '#fff' },
+    POWER: { get bg() { return C.accent; }, fg: '#fff' },
+    'LET IT RUN': { get bg() { return C.accent; }, fg: '#fff' },
+    'QUICK PASS': { get bg() { return C.accent; }, fg: '#fff' },
+    CUSHION: { bg: '#16351f', fg: '#fff' },
+    'FOLLOW UP': { bg: '#16351f', fg: '#fff' },
+    'TWO TOUCH': { get bg() { return C.accent; }, fg: '#fff' },
+    LACES: { get bg() { return C.accent; }, fg: '#fff' },
+    'SIDE FOOT': { get bg() { return C.accent; }, fg: '#fff' },
+    VOLLEY: { get bg() { return C.accent; }, fg: '#fff' },
+    'BEND IT': { get bg() { return C.accent; }, fg: '#fff' },
+    'DRILL IT': { get bg() { return C.accent; }, fg: '#fff' },
+    'SHIFT IT': { bg: '#16351f', fg: '#fff' },
+    'STRAIGHT PASS': { bg: '#16351f', fg: '#fff' },
+    'DIAGONAL RUN': { bg: '#16351f', fg: '#fff' },
+    'LOB IT': { get bg() { return C.accent; }, fg: '#fff' },
+    'CHECK AWAY': { bg: '#16351f', fg: '#fff' },
+    'HALF TURN': { bg: '#16351f', fg: '#fff' },
+    FREEZE: { get bg() { return C.danger; }, fg: '#fff' },
+    'GET IT': { bg: '#16351f', fg: '#fff' },
+    'ARC RUN': { get bg() { return C.accent; }, fg: '#fff' },
+    'GET LOW': { bg: '#16351f', fg: '#fff' },
+    PIVOT: { get bg() { return C.accent; }, fg: '#fff' },
+    SUPPORT: { bg: '#16351f', fg: '#fff' },
+    'TOUCH AND PASS': { get bg() { return C.accent; }, fg: '#fff' },
+    'SHORT PASS': { bg: '#16351f', fg: '#fff' },
+    TARGET: { bg: '#6b7280', fg: '#fff' },
   };
 
   function drawTag(ctx, p, text, alpha, below) {
@@ -1274,8 +1373,70 @@
     });
 
 
+    // straight cone lines in any shape (e.g. hexagons): clip.edges = [{ a: [x, y], b: [x, y], dash }] in pitch units;
+    // a cone sits at every corner
+    if (clip.edges) {
+      const corners = {};
+      clip.edges.forEach(e => {
+        const a = toPx(e.a), b = toPx(e.b);
+        ctx.save();
+        ctx.strokeStyle = 'rgba(22,53,31,0.4)'; ctx.lineWidth = 2.5; ctx.setLineDash(e.dash ? [10, 8] : []);
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        ctx.restore();
+        [a, b].forEach(p => { corners[Math.round(p[0]) + ',' + Math.round(p[1])] = p; });
+      });
+      Object.values(corners).forEach(([cx, cy]) => {
+        ctx.beginPath(); ctx.moveTo(cx, cy - 7); ctx.lineTo(cx + 6, cy + 5); ctx.lineTo(cx - 6, cy + 5); ctx.closePath();
+        ctx.fillStyle = '#e5b52b'; ctx.fill();
+      });
+    }
+
     const showStepFx = phase !== 'intro' && phase !== 'outro';
     const fxAlpha = phase === 'stepIn' ? pk : 1;
+
+    // each player's area, in their colour: def.halves = [{ x, y, w, h, color, label, labelAt: [x, y], soft }] in pitch units
+    if (showStepFx && def.halves) {
+      def.halves.forEach(z => {
+        const [x1, y1] = toPx([z.x, z.y]), [x2, y2] = toPx([z.x + z.w, z.y + z.h]);
+        ctx.save();
+        roundRect(ctx, PITCH.x, PITCH.y, PITCH.w, PITCH.h, 10); ctx.clip();
+        ctx.globalAlpha = fxAlpha * (z.soft ? 0.12 : 0.22);
+        ctx.fillStyle = z.color; ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+        ctx.globalAlpha = fxAlpha * (z.soft ? 0.5 : 0.9);
+        ctx.strokeStyle = z.color; ctx.lineWidth = z.soft ? 2 : 3.5; ctx.setLineDash([10, 7]);
+        ctx.strokeRect(x1 + 2, y1 + 2, x2 - x1 - 4, y2 - y1 - 4);
+        ctx.restore();
+        if (z.label) {
+          const [lx, ly] = toPx(z.labelAt || [z.x + z.w / 2, z.y + 5]);
+          ctx.save(); ctx.globalAlpha = fxAlpha;
+          ctx.font = `800 15px ${FONT}`;
+          const w = ctx.measureText(z.label).width + 18;
+          roundRect(ctx, lx - w / 2, ly - 12, w, 24, 12); ctx.fillStyle = z.color; ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(z.label, lx, ly + 1);
+          ctx.restore();
+        }
+      });
+    }
+    // guide lines, e.g. the middle line a winger shouldn't cross: def.lines = [{ a: [x, y], b: [x, y], label, labelAt: [x, y] }]
+    if (showStepFx && def.lines) {
+      def.lines.forEach(l => {
+        const a = toPx(l.a), b = toPx(l.b);
+        ctx.save(); ctx.globalAlpha = fxAlpha;
+        ctx.strokeStyle = l.color || C.accent; ctx.lineWidth = 4; ctx.setLineDash([14, 9]);
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        ctx.setLineDash([]);
+        if (l.label) {
+          const [lx, ly] = toPx(l.labelAt || lerpP(l.a, l.b, 0.5));
+          ctx.font = `800 14px ${FONT}`;
+          const w = ctx.measureText(l.label).width + 18;
+          roundRect(ctx, lx - w / 2, ly - 12, w, 24, 12); ctx.fillStyle = l.color || C.accent; ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(l.label, lx, ly + 1);
+        }
+        ctx.restore();
+      });
+    }
 
     // string between defenders
     const stringIds = def.string !== undefined ? def.string : clip.string;
@@ -1321,7 +1482,7 @@
           if (!g.from) return;
           const a = playerPos(step, g.from, g.s), b = playerPos(step, g.to, g.e);
           const col = teamColor(cp, cp.team[g.from]);
-          arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: { color: col, width: 3, dash: [9, 7], head: 13 }, order: -1 + i * 0.01 });
+          arrows.push({ pts: trimPath(g.loft ? loftArc(a, b, g.loft) : [a, b], R_U + 1, R_U + 1.2), style: { color: col, width: 3, dash: [9, 7], head: 13 }, order: -1 + i * 0.01 });
         });
       }
       if (def.ball && def.ball.arrow !== false) {
@@ -1333,7 +1494,9 @@
           const b = playerPos(step, def.ball.pass, e);
           arrows.push({ pts: trimPath([a, b], R_U + 1, R_U + 1.2), style: owner && cp.team[owner] === 'd' ? ARROW_STYLE.passD : ARROW_STYLE.pass, order: -1 });
         } else if (def.ball.to) {
-          arrows.push({ pts: trimPath([ballStartPos(cp, step, s), def.ball.to], 1.2, 1.4), style: ARROW_STYLE.loose, order: -1 });
+          const a0 = ballStartPos(cp, step, s);
+          const pts = def.ball.bend || def.ball.loft ? curvePts(a0, def.ball.to, def.ball.bend, def.ball.loft) : [a0, def.ball.to];
+          arrows.push({ pts: trimPath(pts, 1.2, 1.4), style: ARROW_STYLE.loose, order: -1 });
         }
       }
       arrows.sort((a, b) => a.order - b.order);
@@ -1406,9 +1569,31 @@
     clip.players.forEach(p => { if (p.ball && !(st.used || []).includes(p.id)) drawBall(ctx, attached(cp, step, p.id, u)); });
     // faded players (p.dim); a step can change it from then on with dim: { id: true|false } (e.g. players rotating in)
     const dimOf = p => cp.steps.reduce((d, st) => (st.index <= step.index && st.def.dim && p.id in st.def.dim ? st.def.dim[p.id] : d), !!p.dim);
-    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, dimOf(p) ? 0.4 : 1, p.label, teamColor(cp, p.team)));
+    // a step can change a player's team colour with team: { id: 'o' } (e.g. players swapping roles); it fades over their move
+    const colorOf = p => {
+      let team = p.team, next = null;
+      cp.steps.forEach(st => {
+        if (!st.def.team || !(p.id in st.def.team)) return;
+        if (st.index < step.index || phase === 'outro') team = st.def.team[p.id];
+        else if (st.index === step.index) next = st.def.team[p.id];
+      });
+      if (!next) return teamColor(cp, team);
+      const m = (step.def.moves || []).find(mm => mm.id === p.id);
+      const k = m ? clamp((u - (m.start != null ? m.start : 0)) / ((m.end != null ? m.end : 1) - (m.start != null ? m.start : 0))) : u;
+      return mixHex(teamColor(cp, team), teamColor(cp, next), k);
+    };
+    clip.players.forEach(p => drawPlayer(ctx, playerPos(step, p.id, u), p.team, dimOf(p) ? 0.4 : 1, p.label, colorOf(p)));
     // ball
-    if (clip.ball) drawBall(ctx, ballPos(cp, step, u));
+    if (clip.ball) {
+      const bp = ballPos(cp, step, u), lift = ballLift(cp, step, u);
+      if (lift > 0.2) {
+        // shadow on the ground, ball up in the air (a little bigger the higher it goes)
+        const [sx, sy] = toPx(bp);
+        ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        ctx.beginPath(); ctx.ellipse(sx, sy + 3, 8, 3.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+        drawBall(ctx, [bp[0], bp[1] - lift], 1 + Math.min(lift, 15) * 0.025);
+      } else drawBall(ctx, bp);
+    }
     if (clip.ball2 && step.startState.ball2) drawBall(ctx, ballPos(cp, ball2Step(step), u));
     if (clip.ball3 && step.startState.ball3) drawBall(ctx, ballPos(cp, ball2Step(step, 3), u));
     // tags on top
@@ -1447,7 +1632,9 @@
       ctx.font = `600 20px ${FONT}`;
       ctx.fillText((clip.kicker || '').toUpperCase(), PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h / 2 - 50);
       ctx.fillStyle = C.accent;
-      ctx.font = `800 54px ${FONT}`;
+      // long titles shrink to fit the pitch (short ones stay at 54px)
+      let ts = 54;
+      do { ctx.font = `800 ${ts}px ${FONT}`; ts -= 2; } while (ts > 30 && ctx.measureText(clip.title.toUpperCase()).width > PITCH.w - 40);
       ctx.fillText(clip.title.toUpperCase(), PITCH.x + PITCH.w / 2, PITCH.y + PITCH.h / 2 + 10);
       ctx.fillStyle = C.text;
       ctx.font = `500 22px ${FONT}`;
